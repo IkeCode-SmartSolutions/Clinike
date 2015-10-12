@@ -1,0 +1,40 @@
+namespace IkeCode.Clinike.Data.Models
+{
+    using IkeCode.Clinike.Data.Enums;
+    using Newtonsoft.Json;
+    using System.ComponentModel.DataAnnotations;
+    using System.Text.RegularExpressions;
+
+    public partial class Phone : BaseModel<Phone>
+    {
+        public Phone()
+            : base()
+        {
+        }
+
+        public Phone(Phone model)
+            : base(model)
+        {
+            Number = model.Number;
+            PhoneType = model.PhoneType;
+            PersonId = model.PersonId;
+        }
+
+        [Required]
+        [StringLength(30)]
+        public string Number { get; set; }
+
+        public PhoneType PhoneType { get; set; }
+
+        public int PersonId { get; set; }
+
+        [JsonIgnore]
+        public virtual Person Person { get; set; }
+
+        public override void PrepareToDatabase()
+        {
+            base.PrepareToDatabase();
+            Number = Regex.Replace(Number, @"[^\d]", "");
+        }
+    }
+}

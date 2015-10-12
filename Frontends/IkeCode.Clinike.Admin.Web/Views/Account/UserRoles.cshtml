@@ -1,0 +1,69 @@
+﻿@model SelectUserRolesViewModel
+@{
+    ViewBag.Title = "Permissões de Usuário";
+}
+<div class="col-xs-12 col-sm-12">
+    <div class="box">
+        <div class="box-header">
+            <div class="box-name">
+                <i class="fa fa-user"></i>
+                <span>Edição de Usuário</span>
+            </div>
+            <div class="box-icons">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+                <a class="expand-link">
+                    <i class="fa fa-expand"></i>
+                </a>
+            </div>
+            <div class="no-move"></div>
+        </div>
+        <div class="box-content">
+            <h4 class="page-header">Editando permissões de @Html.DisplayFor(model => model.UserName)</h4>
+
+            @using (Html.BeginRouteForm("AccountEdit", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.Id)
+                @Html.ValidationSummary(true)
+
+                <div class="row form-group">
+                    <div class="col-sm-4">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CustomCheckBoxFor(m => m.Roles)
+                                <i class="fa fa-square-o"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-10 col-sm-2">
+                        <input type="submit" value="Salvar" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div>
+        @Html.RouteLink("Voltar para a Lista", "AccountIndex")
+    </div>
+</div>
+
+<h4>Select Role Assignments</h4>
+<table>
+    <tr>
+        <th>
+            Select
+        </th>
+        <th>
+            Role
+        </th>
+    </tr>
+    @Html.EditorFor(model => model.Roles)
+</table>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

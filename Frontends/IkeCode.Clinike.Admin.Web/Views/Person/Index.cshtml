@@ -1,0 +1,230 @@
+﻿@model PersonViewModel
+@using System.Linq
+@{
+    ViewBag.Title = "Cadastro -> Pessoa";
+}
+
+<div class="col-xs-12 col-sm-12">
+    <div class="box">
+        <div class="box-header">
+            <div class="box-name">
+                <i class="fa fa-user"></i>
+                <span>Cadastro de Pessoa</span>
+            </div>
+            <div class="box-icons">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+                <a class="expand-link">
+                    <i class="fa fa-expand"></i>
+                </a>
+            </div>
+            <div class="no-move"></div>
+        </div>
+        <div class="box-content">
+            <h4 class="page-header">Cadastro de Pessoa</h4>
+            @using (Html.BeginRouteForm("PersonPost",
+                                    new { id = Model.Person.Id },
+                                    FormMethod.Post,
+                                    new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken();
+
+                @Html.HiddenFor(m => m.Person.Id)
+                @Html.HiddenFor(m => m.Person.DateIns)
+                @Html.HiddenFor(m => m.Person.LastUpdate)
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Person.Name, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.Person.Name, new { placeholder = "obrigatório", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Person.Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Person.Email, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <div class="input-group-addon">@@</div>
+                            @Html.TextBoxFor(m => m.Person.Email, new { placeholder = "email@provedor.com", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Person.Email)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Person.ProfileImage, new { @class = "col-sm-2 control-label" })
+                    @Html.HiddenFor(m => m.Person.ProfileImageUrl)
+                    @if (!string.IsNullOrWhiteSpace(Model.Person.ProfileImageUrl))
+                    {
+                        <img src="@Model.Person.ProfileImageUrl"
+                             class="cycle"
+                             alt="120x120" style="width: 120px; height: 120px;">
+                    }
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.Person.ProfileImage, new { type = "file", accept = "image/*", title = "Selecione uma foto para o perfil", @class = "btn-success" })
+                        @Html.ValidationMessageFor(m => m.Person.ProfileImage)
+                    </div>
+                </div>
+
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#naturalPerson" aria-controls="naturalPerson" role="tab" data-toggle="tab">Pessoa Física</a></li>
+                        <li role="presentation"><a href="#doctor" aria-controls="doctor" role="tab" data-toggle="tab">Médico</a></li>
+                        <li role="presentation"><a href="#legalPerson" aria-controls="legalPerson" role="tab" data-toggle="tab">Pessoa Jurídica</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="naturalPerson">
+                            @Html.HiddenFor(m => m.Person.NaturalPerson.Id)
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Person.NaturalPerson.Birthdate, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-3">
+                                    @Html.TextBoxFor(m => m.Person.NaturalPerson.Birthdate, new { @class = "form-control", @data_datetimepicker = "date" })
+                                    @Html.ValidationMessageFor(m => m.Person.NaturalPerson.Birthdate)
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                @Html.LabelFor(m => m.Person.NaturalPerson.Gender, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-8">
+                                    @Html.RadioButtonForEnum(m => m.Person.NaturalPerson.Gender, 2)
+                                    @Html.ValidationMessageFor(m => m.Person.NaturalPerson.Gender)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="doctor">
+                            @Html.HiddenFor(m => m.Person.Doctor.Id)
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Person.Doctor.AdmissionDate, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-3">
+                                    @Html.TextBoxFor(m => m.Person.Doctor.AdmissionDate, new { @class = "form-control", @data_datetimepicker = "date" })
+                                    @Html.ValidationMessageFor(m => m.Person.Doctor.AdmissionDate)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="legalPerson">
+                            @Html.HiddenFor(m => m.Person.LegalPerson.Id)
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Person.LegalPerson.CompanyName, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.Person.LegalPerson.CompanyName, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Person.LegalPerson.CompanyName)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Person.LegalPerson.SocialName, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.Person.LegalPerson.SocialName, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Person.LegalPerson.SocialName)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-8 col-sm-4">
+                        <button type="reset" class="btn btn-default btn-label-left">
+                            Limpar
+                        </button>
+
+                        <button type="button" class="btn btn-danger btn-label-left">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            Excluir
+                        </button>
+
+                        <button type="submit" class="btn btn-primary btn-label-left">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            Salvar
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Model.Person.Id > 0)
+    {
+        <div class="box">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="glyphicon glyphicon-earphone"></i>
+                    <span>Telefones</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content" style="display: none">
+                <div id="phonesContainer">
+                </div>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-envelope"></i>
+                    <span>Endereços</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content" style="display: none">
+                <div id="addessesContainer">
+                </div>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="glyphicon glyphicon-book"></i>
+                    <span>Documentos</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content" style="display: none">
+                <div id="documentsContainer">
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/ViewModels/Person.js"></script>
+    <script type="text/javascript">
+        person.Id = @Model.Person.Id;
+    </script>
+}

@@ -1,0 +1,29 @@
+﻿<div id="sidebar-left" class="col-xs-2 col-sm-2">
+    <ul class="nav main-menu">
+        <li>
+            <a href="/" class="active">
+                <i class="fa fa-dashboard"></i>
+                <span class="hidden-xs">Painel de Controle</span>
+            </a>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" id="_registeringMenu">
+                <i class="fa fa-pencil-square-o"></i>
+                <span class="hidden-xs">Cadastros</span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>@Html.RouteLink("Pessoas", "Person")</li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" id="_accessControlMenu">
+                <i class="fa fa-user"></i>
+                <span class="hidden-xs">Controle de Acesso</span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>@Html.RouteLink("Adicionar Usuário", "AccountRegister")</li>
+                <li>@Html.RouteLink("Administrar", "AccountIndex")</li>
+            </ul>
+        </li>
+    </ul>
+</div>
