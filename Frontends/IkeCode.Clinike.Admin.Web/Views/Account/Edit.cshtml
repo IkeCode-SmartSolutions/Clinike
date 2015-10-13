@@ -2,12 +2,13 @@
 @{
     ViewBag.Title = "Editar Usuário";
 }
+
 <div class="col-xs-12 col-sm-12">
     <div class="box">
         <div class="box-header">
             <div class="box-name">
                 <i class="fa fa-user"></i>
-                <span>Edição de Usuário</span>
+                <span>Usuário</span>
             </div>
             <div class="box-icons">
                 <a class="collapse-link">
@@ -20,7 +21,7 @@
             <div class="no-move"></div>
         </div>
         <div class="box-content">
-            <h4 class="page-header">Editar</h4>
+            <h4 class="page-header">Editar Usuário</h4>
 
             @using (Html.BeginRouteForm("AccountEdit", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
             {
@@ -48,10 +49,10 @@
                             <input type="submit" value="Salvar" class="btn btn-default" />
                         </div>
                     </div>
+                    <div class="form-actions no-color small">
+                        @Html.ActionLink("< Voltar a lista", "AccountIndex")
+                    </div>
             }
         </div>
-    </div>
-    <div>
-        @Html.RouteLink("Voltar para a Lista", "AccountIndex")
     </div>
 </div>

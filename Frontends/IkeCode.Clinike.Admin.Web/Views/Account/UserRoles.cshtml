@@ -7,7 +7,7 @@
         <div class="box-header">
             <div class="box-name">
                 <i class="fa fa-user"></i>
-                <span>Edição de Usuário</span>
+                <span>Usuário</span>
             </div>
             <div class="box-icons">
                 <a class="collapse-link">
@@ -20,50 +20,63 @@
             <div class="no-move"></div>
         </div>
         <div class="box-content">
-            <h4 class="page-header">Editando permissões de @Html.DisplayFor(model => model.UserName)</h4>
-
-            @using (Html.BeginRouteForm("AccountEdit", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+            <h4 class="page-header">Editando permissões de '@Html.DisplayFor(model => model.UserName)'</h4>
+            @using (Html.BeginRouteForm("AccountUserRolesPost", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.UserName)
                 @Html.ValidationSummary(true)
+
+                @*<div class="row form-group">
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.EditorFor(m => m.Roles)
+                                </label>
+                            </div>
+                        </div>
+                    </div>*@
+
+                @*<div class="row form-group">
+                    @Html.CustomCheckBoxFor(m => m.Roles)
+                </div>*@
 
                 <div class="row form-group">
                     <div class="col-sm-4">
-                        <div class="checkbox">
-                            <label>
-                                @Html.CustomCheckBoxFor(m => m.Roles)
-                                <i class="fa fa-square-o"></i>
-                            </label>
-                        </div>
+                        @Html.EditorFor(m => m.Roles)
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-10 col-sm-2">
-                        <input type="submit" value="Salvar" class="btn btn-default" />
+                    @*<div class="row form-group">
+                            <div class="col-sm-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" checked=""/>
+                                        One
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" checked="" />
+                                        <input type="hidden" value="asd" />
+                                        Two
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>*@
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-10 col-sm-2">
+                            <input type="submit" value="Salvar" class="btn btn-default" />
+                        </div>
                     </div>
-                </div>
+                    <div class="form-actions no-color small">
+                        @Html.ActionLink("< Voltar a lista", "AccountIndex")
+                    </div>
             }
         </div>
     </div>
-    <div>
-        @Html.RouteLink("Voltar para a Lista", "AccountIndex")
-    </div>
-</div>
-
-<h4>Select Role Assignments</h4>
-<table>
-    <tr>
-        <th>
-            Select
-        </th>
-        <th>
-            Role
-        </th>
-    </tr>
-    @Html.EditorFor(model => model.Roles)
-</table>
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>

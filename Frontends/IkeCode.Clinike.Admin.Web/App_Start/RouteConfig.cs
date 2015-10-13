@@ -87,6 +87,16 @@ namespace IkeCode.Clinike.Admin.Web
             );
 
             routes.MapRoute(
+                name: "AccountUserRolesPost",
+                url: "controle-de-acesso/{id}/permissoes/salvar",
+                defaults: new
+                {
+                    controller = "Account",
+                    action = "UserRoles"
+                }
+            );
+
+            routes.MapRoute(
                 name: "AccountDelete",
                 url: "controle-de-acesso/{id}/excluir",
                 defaults: new

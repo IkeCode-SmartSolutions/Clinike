@@ -63,7 +63,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -79,9 +78,14 @@
     <Compile Include="Migrations\201508211757377_v1_0_0_InitialClinikeModels.Designer.cs">
       <DependentUpon>201508211757377_v1_0_0_InitialClinikeModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510122350373_V1_0_0_AddColumn_Roles_Title.cs" />
+    <Compile Include="Migrations\201510122350373_V1_0_0_AddColumn_Roles_Title.Designer.cs">
+      <DependentUpon>201510122350373_V1_0_0_AddColumn_Roles_Title.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\ClinikeIdentityRole.cs" />
     <Compile Include="Models\ClinikeUser.cs" />
     <Compile Include="Models\Doctor.cs" />
     <Compile Include="Models\Document.cs" />
@@ -118,6 +122,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201508211757377_v1_0_0_InitialClinikeModels.resx">
       <DependentUpon>201508211757377_v1_0_0_InitialClinikeModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510122350373_V1_0_0_AddColumn_Roles_Title.resx">
+      <DependentUpon>201510122350373_V1_0_0_AddColumn_Roles_Title.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

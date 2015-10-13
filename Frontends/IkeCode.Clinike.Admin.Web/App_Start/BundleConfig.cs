@@ -24,7 +24,6 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Include("~/plugins/jquery-knob/jquery.knob.min.js");
             jsBundles.Include("~/plugins/bootstrapvalidator/bootstrapValidator.min.js");
             jsBundles.Include("~/plugins/d3/d3.min.js");
-            jsBundles.Include("~/plugins/d3/d3.min.js");
             jsBundles.Include("~/plugins/datatables/jquery.dataTables.min.js");
             jsBundles.Include("~/plugins/datatables/ZeroClipboard.js");
             jsBundles.Include("~/plugins/datatables/TableTools.js");

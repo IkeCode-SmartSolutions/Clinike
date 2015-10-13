@@ -93,13 +93,13 @@ namespace IkeCode.Clinike.Data.Migrations
 
         void SeedUserAndRoles()
         {
-            var idManager = new IdentityManager();
-            SeedRole(idManager, "Admin");
-            SeedRole(idManager, "ReadOnly");
-            SeedRole(idManager, "CanCreate");
-            SeedRole(idManager, "CanDelete");
-            SeedRole(idManager, "CanEdit");
-            SeedRole(idManager, "User");
+            var idManager = new ClinikeIdentityManager();
+            SeedRole(idManager, "Admin", "Admin");
+            SeedRole(idManager, "User", "User");
+            SeedRole(idManager, "ReadOnly", "Read Only");
+            SeedRole(idManager, "CanCreate", "Can Create");
+            SeedRole(idManager, "CanDelete", "Can Delete");
+            SeedRole(idManager, "CanEdit", "Can Edit");
 
             var dbUser = ClinikeUserEx.Find(i => i.Email == "ikecode@gmail.com");
             if (dbUser == null || string.IsNullOrWhiteSpace(dbUser.Id))
@@ -124,15 +124,18 @@ namespace IkeCode.Clinike.Data.Migrations
             SeedUserRoles(idManager, dbUser);
         }
 
-        void SeedRole(IdentityManager idManager, string roleName)
+        void SeedRole(ClinikeIdentityManager idManager, string roleName, string title)
         {
             if (!idManager.RoleExists(roleName))
             {
-                idManager.CreateRole(roleName);
+                var role = new ClinikeIdentityRole();
+                role.Name = roleName;
+                role.Title = title;
+                idManager.CreateRole(role);
             }
         }
 
-        void SeedUserRoles(IdentityManager idManager, ClinikeUser dbUser)
+        void SeedUserRoles(ClinikeIdentityManager idManager, ClinikeUser dbUser)
         {
             idManager.ClearUserRoles(dbUser.Id);
             idManager.AddUserToRole(dbUser.Id, "Admin");

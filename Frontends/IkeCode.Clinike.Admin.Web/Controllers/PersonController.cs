@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity.Migrations;
 using Clinike.Admin.Base;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 using Microsoft.Owin.Security;
 using IkeCode.Clinike.Data.Models;
 using IkeCode.Clinike.Admin.Web.ViewModels;
@@ -39,7 +34,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             
             if (id > 0)
             {
-                this.Run<PersonViewModel>("PersonController.Index(id)",
+                Run("PersonController.Index(id)",
                     () =>
                     {
                         var person = Person.Get(id, new string[]
@@ -68,7 +63,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             var vm = new PersonViewModel();
             if (person != null)
             {
-                this.Run("PersonController.Post(id)",
+                Run("PersonController.Post(id)",
                     () =>
                     {
                         Person.AddOrUpdate(i => i.Id, person);

@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Entity\IkeCodeIdentityDbContext.cs" />
     <Compile Include="Entity\IkeCodeDbContext.cs" />
+    <Compile Include="Identity\IkeCodeIdentityManager.cs" />
     <Compile Include="Model\Enums\DatabaseType.cs" />
     <Compile Include="Model\Interfaces\IIkeCodeModel.cs" />
     <Compile Include="Model\IkeCodeEntityBaseModelEx.cs" />

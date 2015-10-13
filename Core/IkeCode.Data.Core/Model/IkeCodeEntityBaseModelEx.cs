@@ -208,7 +208,9 @@ namespace IkeCode.Web.Core.Model
                 TObject existing = _context.Set<TObject>().Find(key);
                 if (existing != null)
                 {
+                    _context.Set<TObject>().Attach(existing);
                     _context.Entry(existing).CurrentValues.SetValues(updated);
+
                     _context.SaveChanges();
                 }
                 return updated;
@@ -225,7 +227,9 @@ namespace IkeCode.Web.Core.Model
                 TObject existing = await _context.Set<TObject>().FindAsync(key);
                 if (existing != null)
                 {
+                    _context.Set<TObject>().Attach(existing);
                     _context.Entry(existing).CurrentValues.SetValues(updated);
+
                     await _context.SaveChangesAsync();
                 }
 
@@ -237,7 +241,9 @@ namespace IkeCode.Web.Core.Model
         {
             RunStatic((_context) =>
             {
+                _context.Set<TObject>().Attach(t);
                 _context.Set<TObject>().Remove(t);
+
                 _context.SaveChanges();
             });
         }
@@ -246,6 +252,7 @@ namespace IkeCode.Web.Core.Model
         {
             using (var _context = GetDefaultContext())
             {
+                _context.Set<TObject>().Attach(t);
                 _context.Set<TObject>().Remove(t);
 
                 return await _context.SaveChangesAsync();

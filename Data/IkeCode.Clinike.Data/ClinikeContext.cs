@@ -5,7 +5,6 @@
     using IkeCode.Data.Core.Entity;
     using IkeCode.Data.Core.Model.Enums;
 
-    //[DbConfigurationType(typeof(MySqlEFConfiguration))] //Feito no web.config on <entityFramework/>
     public class ClinikeContext : IkeCodeIdentityDbContext<ClinikeUser>
     {
         //TODO factory to get connection string name based on data

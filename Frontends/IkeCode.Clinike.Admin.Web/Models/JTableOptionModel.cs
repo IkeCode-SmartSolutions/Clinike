@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc.Html;
+﻿using System.Collections.Generic;
 
 namespace IkeCode.Clinike.Admin.Web.Models
 {

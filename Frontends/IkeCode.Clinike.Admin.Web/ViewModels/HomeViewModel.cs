@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace IkeCode.Clinike.Admin.Web.ViewModels
+﻿namespace IkeCode.Clinike.Admin.Web.ViewModels
 {
     public class HomeViewModel
     {

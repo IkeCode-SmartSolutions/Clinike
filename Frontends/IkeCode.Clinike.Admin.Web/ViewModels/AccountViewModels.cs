@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using IkeCode.Clinike.Data.Models;
 using IkeCode.Clinike.Data;
+using IkeCode.Web.Core.Model.Interfaces;
 
 namespace IkeCode.Clinike.Admin.Web.ViewModels
 {
@@ -67,8 +68,8 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
         {
             var user = new ClinikeUser()
             {
-                UserName = this.UserName,
-                Email = this.Email,
+                UserName = UserName,
+                Email = Email,
             };
             return user;
         }
@@ -82,9 +83,9 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
         // Allow Initialization with an instance of ApplicationUser:
         public EditUserViewModel(ClinikeUser user)
         {
-            this.Id = user.Id;
-            this.UserName = user.UserName;
-            this.Email = user.Email;
+            Id = user.Id;
+            UserName = user.UserName;
+            Email = user.Email;
         }
 
         public string Id { get; set; }
@@ -102,25 +103,25 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
     {
         public SelectUserRolesViewModel()
         {
-            this.Roles = new List<SelectRoleEditorViewModel>();
+            Roles = new List<SelectRoleEditorViewModel>();
         }
         
         // Enable initialization with an instance of ApplicationUser:
         public SelectUserRolesViewModel(ClinikeUser user)
             : this()
         {
-            this.UserName = user.UserName;
-            this.Id = user.Id;
+            UserName = user.UserName;
+            Id = user.Id;
 
             var Db = new ClinikeContext();
 
             // Add all available roles to the list of EditorViewModels:
-            var allRoles = IdentityRoleEx.GetAll();
+            var allRoles = ClinikeIdentityRoleEx.GetAll();
             foreach (var role in allRoles)
             {
                 // An EditorViewModel will be used by Editor Template:
                 var rvm = new SelectRoleEditorViewModel(role);
-                this.Roles.Add(rvm);
+                Roles.Add(rvm);
             }
 
             // Set the Selected property to true for those roles for 
@@ -128,7 +129,7 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
             foreach (var userRole in user.Roles)
             {
                 var checkUserRole =
-                    this.Roles.Find(r => r.RoleId == userRole.RoleId);
+                    Roles.Find(r => r.Id == userRole.RoleId);
                 checkUserRole.Selected = true;
             }
         }
@@ -139,20 +140,23 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
     }
 
     // Used to display a single role with a checkbox, within a list structure:
-    public class SelectRoleEditorViewModel
+    public class SelectRoleEditorViewModel : IIkeCodeCheckBoxModel
     {
         public SelectRoleEditorViewModel() { }
-        public SelectRoleEditorViewModel(IdentityRole role)
+        public SelectRoleEditorViewModel(ClinikeIdentityRole role)
         {
-            this.RoleName = role.Name;
-            this.RoleId = role.Id;
+            Name = role.Name;
+            Id = role.Id;
+            Title = role.Title;
         }
 
         public bool Selected { get; set; }
 
         [Required]
-        public string RoleName { get; set; }
+        public string Name { get; set; }
 
-        public string RoleId { get; set; }
+        public string Title { get; set; }
+
+        public string Id { get; set; }
     }
 }

@@ -1021,6 +1021,9 @@ ul.DTTT_dropdown.dropdown-menu > li:hover > a {
 .checkbox input[type=checkbox]:checked + i:before, .checkbox-inline input[type=checkbox]:checked + i:before {
   content:"\f046";
 }
+.checkbox input[type=checkbox]:checked + input[type=hidden] + i:before, .checkbox-inline input[type=checkbox]:checked + input[type=hidden] + i:before {
+  content:"\f046";
+}
 .radio input[type=radio]:checked + i:before, .radio-inline input[type=radio]:checked + i:before {
   content:"\f192";
 }

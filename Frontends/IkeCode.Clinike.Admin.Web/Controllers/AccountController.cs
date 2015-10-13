@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -198,15 +196,14 @@ namespace Clinike.Admin.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(string id)
         {
-            var user = ClinikeUserEx.Find(u => u.Id == id);
-            ClinikeUserEx.Delete(user);
+            ClinikeUserEx.Delete(id);
             return RedirectToRoute("AccountIndex");
         }
 
         [Authorize(Roles = "Admin")]
         public ActionResult UserRoles(string id)
         {
-            var user = ClinikeUserEx.Find(u => u.Id == id);
+            var user = ClinikeUserEx.Find(u => u.Id == id, new List<string> { "Roles" });
             var model = new SelectUserRolesViewModel(user);
             return View(model);
         }
@@ -218,14 +215,14 @@ namespace Clinike.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var idManager = new IdentityManager();
+                var idManager = new ClinikeIdentityManager();
                 var user = ClinikeUserEx.Find(u => u.UserName == model.UserName);
                 idManager.ClearUserRoles(user.Id);
                 foreach (var role in model.Roles)
                 {
                     if (role.Selected)
                     {
-                        idManager.AddUserToRole(user.Id, role.RoleName);
+                        idManager.AddUserToRole(user.Id, role.Name);
                     }
                 }
                 return RedirectToRoute("AccountIndex");

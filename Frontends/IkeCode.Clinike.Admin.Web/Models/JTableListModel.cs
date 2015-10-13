@@ -1,11 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
 
 namespace IkeCode.Clinike.Admin.Web.Models
 {
@@ -18,22 +12,22 @@ namespace IkeCode.Clinike.Admin.Web.Models
 
         public JTableListModel()
         {
-            this.Result = "OK";
-            this.Records = new List<T>();
-            this.TotalRecordCount = 0;
+            Result = "OK";
+            Records = new List<T>();
+            TotalRecordCount = 0;
         }
 
         public JTableListModel(ICollection<T> records)
             : this()
         {
-            this.Records = records;
-            this.TotalRecordCount = records.Count;
+            Records = records;
+            TotalRecordCount = records.Count;
         }
 
         public JTableListModel(string message)
         {
-            this.Result = "ERROR";
-            this.Message = message;
+            Result = "ERROR";
+            Message = message;
         }
 
         public string ToJson()
