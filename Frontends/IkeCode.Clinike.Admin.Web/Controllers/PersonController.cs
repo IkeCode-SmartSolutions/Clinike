@@ -13,14 +13,6 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
     [Authorize]
     public class PersonController : BaseAuthController
     {
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
         public PersonController()
             : base()
         {

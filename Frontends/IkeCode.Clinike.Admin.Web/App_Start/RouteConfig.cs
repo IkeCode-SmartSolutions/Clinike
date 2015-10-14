@@ -108,11 +108,32 @@ namespace IkeCode.Clinike.Admin.Web
 
             routes.MapRoute(
                 name: "AccountLogin",
-                url: "login",
+                url: "login/{actionPerformed}",
                 defaults: new
                 {
                     controller = "Account",
-                    action = "Login"
+                    action = "Login",
+                    actionPerformed = ""
+                }
+            );
+
+            routes.MapRoute(
+                name: "AccountLostPassword",
+                url: "esqueci-minha-senha",
+                defaults: new
+                {
+                    controller = "Account",
+                    action = "LostPassword",
+                }
+            );
+
+            routes.MapRoute(
+                name: "AccountRequestLogin",
+                url: "solicitar-login",
+                defaults: new
+                {
+                    controller = "Account",
+                    action = "RequestLogin",
                 }
             );
 

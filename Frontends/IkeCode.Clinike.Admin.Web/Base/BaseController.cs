@@ -172,5 +172,15 @@ namespace Clinike.Admin.Base
                 return new { Result = "ERROR", Message = e.Message };
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && UserManager != null)
+            {
+                UserManager.Dispose();
+                UserManager = null;
+            }
+            base.Dispose(disposing);
+        }
     }
 }

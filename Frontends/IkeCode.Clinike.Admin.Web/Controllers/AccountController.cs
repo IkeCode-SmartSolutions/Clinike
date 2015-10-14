@@ -3,10 +3,12 @@ using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using System.Linq;
 using System.Web.Mvc;
 using Clinike.Admin.Base;
 using IkeCode.Clinike.Data.Models;
 using IkeCode.Clinike.Admin.Web.ViewModels;
+using System.Web.UI;
 
 namespace Clinike.Admin.Controllers
 {
@@ -27,10 +29,12 @@ namespace Clinike.Admin.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl, string actionPerformed)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            var model = new LoginViewModel();
+            model.ActionPerformed = !string.IsNullOrWhiteSpace(actionPerformed);
+            return View(model);
         }
 
         [HttpPost]
@@ -38,18 +42,36 @@ namespace Clinike.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            model.CleanModelState(ModelState);
+
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
-                    await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                    var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+                    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = model.RememberMe }, identity);
+
+                    if (Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Nome de usuário e/ou senha inválido(s).");
+                    model.ValidationSummary.AddMessage("Nome de usuário e/ou senha inválido(s).");
                 }
+            }
+            else
+            {
+
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(i => i.ErrorMessage)).ToList();
+                model.ValidationSummary.AddMessages(errors);
             }
 
             // If we got this far, something failed, redisplay form
@@ -81,6 +103,89 @@ namespace Clinike.Admin.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult LostPassword()
+        {
+            var model = new LostPasswordViewModel(true);
+            return View("_LostPassword", model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult LostPassword(LostPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.IncludeLayout = true;
+
+                if (string.IsNullOrWhiteSpace(model.Email) && string.IsNullOrWhiteSpace(model.UniqueCode))
+                {
+                    model.ValidationSummary.AddMessage("Insira ao menos uma das informações solicitadas para continuar");
+                }
+                else
+                {
+                    ClinikeUser user = null;
+
+                    if (!string.IsNullOrWhiteSpace(model.UniqueCode))
+                    {
+                        user = ClinikeUserEx.Find(i => i.UniqueId == model.UniqueCode);
+                    }
+                    else if (!string.IsNullOrWhiteSpace(model.Email))
+                    {
+                        user = ClinikeUserEx.Find(i => i.Email == model.Email);
+                    }
+
+                    if (user == null)
+                    {
+                        model.ValidationSummary.AddMessage("Email ou Código Unico invalido. Revise as informações, se o erro persisitir contate seu Médico.");
+                    }
+                    else
+                    {
+                        return RedirectToRoute("AccountLogin", new { actionPerformed = "senha-requisitada" });
+                    }
+                }
+
+                return View("_LostPassword", model);
+            }
+
+            return RedirectToRoute("AccountLogin");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult RequestLogin()
+        {
+            var model = new LostPasswordViewModel(true);
+            return View("_RequestLogin", model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult RequestLogin(LostPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.IncludeLayout = true;
+
+                if (string.IsNullOrWhiteSpace(model.Email) && string.IsNullOrWhiteSpace(model.UniqueCode))
+                {
+                    model.ValidationSummary.AddMessage("Insira ao menos uma das informações solicitadas para continuar");
+                }
+                else
+                {
+                    return RedirectToRoute("AccountLogin", new { actionPerformed = "login-requisitado" });
+                }
+
+                return View("_RequestLogin", model);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToRoute("AccountLogin");
+        }
+
         [Authorize(Roles = "Admin")]
         public ActionResult Manage(ManageMessageId? message)
         {
@@ -90,6 +195,7 @@ namespace Clinike.Admin.Controllers
                 : message == ManageMessageId.RemoveLoginSuccess ? "O Login Externo foi removido com sucesso."
                 : message == ManageMessageId.Error ? "Ocorreu um erro. Se persistir contate o administrador do sistema."
                 : "";
+
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
@@ -230,32 +336,7 @@ namespace Clinike.Admin.Controllers
             return View();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && UserManager != null)
-            {
-                UserManager.Dispose();
-                UserManager = null;
-            }
-            base.Dispose(disposing);
-        }
-
         #region Helpers
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
-        private async Task SignInAsync(ClinikeUser user, bool isPersistent)
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-            var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
-        }
 
         private void AddErrors(IdentityResult result)
         {
@@ -281,18 +362,6 @@ namespace Clinike.Admin.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             Error
-        }
-
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
         }
 
         #endregion
