@@ -1,0 +1,25 @@
+﻿@model PersonViewModel
+
+<div class="box">
+    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Médico", "fa fa-user-md", Model.Person.Doctor.Id == 0))
+    <div class="box-content">
+        @using (Html.BeginRouteForm("PersonPost",
+                                    new { id = Model.Person.Id },
+                                    FormMethod.Post,
+                                    new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken();
+            @Html.HiddenFor(m => m.Person.Doctor.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Person.Doctor.AdmissionDate, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.Person.Doctor.AdmissionDate, new { @class = "form-control", @data_datetimepicker = "date" })
+                    @Html.ValidationMessageFor(m => m.Person.Doctor.AdmissionDate)
+                </div>
+            </div>
+
+            @Html.Partial("Forms/_FormButtons")
+        }
+    </div>
+</div>

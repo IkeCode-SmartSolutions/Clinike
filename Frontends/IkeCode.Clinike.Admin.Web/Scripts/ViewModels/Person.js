@@ -17,70 +17,90 @@ var person = new Person();
 ko.applyBindings(person, document.getElementById('_personForm'));
 
 $(function () {
-    $('#phonesContainer').jtable({
-        title: 'Telefones'
-        , actions: {
-            listAction: function (postData, jtParams) {
-                return $.Deferred(function ($dfd) {
-                    $.ajax({
-                        url: '/Person/GetPhones?personId=' + person.Id + '&jtStartIndex=' + jtParams.jtStartIndex + '&jtPageSize=' + jtParams.jtPageSize + '&jtSorting=' + jtParams.jtSorting,
-                        type: 'GET',
-                        dataType: 'json',
-                        data: postData,
-                        success: function (data) {
-                            $dfd.resolve($.parseJSON(data));
-                        },
-                        error: function () {
-                            $dfd.reject();
-                        }
-                    });
-                });
+    //$('#phonesContainer').jtable({
+    //    title: 'Telefones'
+    //    , actions: {
+    //        listAction: function (postData, jtParams) {
+    //            return $.Deferred(function ($dfd) {
+    //                $.ajax({
+    //                    url: '/Person/GetPhones?personId=' + person.Id + '&jtStartIndex=' + jtParams.jtStartIndex + '&jtPageSize=' + jtParams.jtPageSize + '&jtSorting=' + jtParams.jtSorting,
+    //                    type: 'GET',
+    //                    dataType: 'json',
+    //                    data: postData,
+    //                    success: function (data) {
+    //                        $dfd.resolve($.parseJSON(data));
+    //                    },
+    //                    error: function () {
+    //                        $dfd.reject();
+    //                    }
+    //                });
+    //            });
+    //        }
+    //        , createAction: '/Person/PostPhone'
+    //        , updateAction: '/Person/PostPhone'
+    //        , deleteAction: '/Person/DeletePhone'
+    //    }
+    //    , fields: {
+    //        Id: {
+    //            key: true,
+    //            list: false,
+    //            type: 'hidden'
+    //        }
+    //        , PersonId: {
+    //            list: false,
+    //            type: 'hidden',
+    //            defaultValue: person.Id
+    //        }
+    //        , DateIns: {
+    //            list: false,
+    //            type: 'hidden'
+    //        }
+    //        , LastUpdate: {
+    //            list: false,
+    //            type: 'hidden'
+    //        }
+    //        , Number: {
+    //            title: 'Número',
+    //            display: function (data) {
+    //                return '<span name="spanNumber">' + data.record.Number + '</span>';
+    //            }
+    //        }
+    //        , PhoneType: {
+    //            title: 'Tipo',
+    //            options: '/helpers/GetJsonFromEnum?enumName=PhoneType&enumNamespace=Enums&assemblyName=IkeCode.Clinike.Data'
+    //        }
+    //    }
+    //    , recordsLoaded: function (event, data) {
+    //        //$('[name="spanNumber"]').mask('(00) 00000-0000');
+    //    }
+    //    , formCreated: function (event, data) {
+    //        //data.form.find('[name="Number"]').attr('placeholder', '(__) _____-____').mask(person.BRPhoneMask, spOptions);
+    //    }
+    //    , formClosed: function (event, data) {
+    //        //$('[name="Number"]').unmask();
+    //    }
+    //});
+    //$('#phonesContainer').jtable('load');
+
+    $('#phonesContainer').datagrid({
+        url: '/Person/GetPhones?personId=' + person.Id
+        , toolbar: '#phoneToolbar'
+        , columns: [[
+            { field: 'Id', title: 'Id', hidden: true }
+            , { field: 'PersonId', title: 'PersonId', hidden: true }
+            , { field: 'DateIns', title: 'DateIns', hidden: true }
+            , { field: 'LastUpdate', title: 'LastUpdate', hidden: true }
+            , { field: 'Number', title: 'Numero', width: 200 }
+            , { field: 'PhoneType', title: 'Tipo', width: 200 }
+        ]]
+        , onLoadSuccess: function (items) {
+            var parent = $(this).parents('.box-content');
+            var collapsed = $(parent).data('collapsed');
+            if (collapsed !== undefined && collapsed == true) {
+                $(parent).css('display', 'none');
             }
-            , createAction: '/Person/PostPhone'
-            , updateAction: '/Person/PostPhone'
-            , deleteAction: '/Person/DeletePhone'
-        }
-        , fields: {
-            Id: {
-                key: true,
-                list: false,
-                type: 'hidden'
-            }
-            , PersonId: {
-                list: false,
-                type: 'hidden',
-                defaultValue: person.Id
-            }
-            , DateIns: {
-                list: false,
-                type: 'hidden'
-            }
-            , LastUpdate: {
-                list: false,
-                type: 'hidden'
-            }
-            , Number: {
-                title: 'Número',
-                display: function (data) {
-                    return '<span name="spanNumber">' + data.record.Number + '</span>';
-                }
-            }
-            , PhoneType: {
-                title: 'Tipo',
-                options: '/helpers/GetJsonFromEnum?enumName=PhoneType&enumNamespace=Enums&assemblyName=Clinike.DatabaseModel'
-            }
-        }
-        , recordsLoaded: function (event, data) {
-            //$('[name="spanNumber"]').mask('(00) 00000-0000');
-        }
-        , formCreated: function (event, data) {
-            //data.form.find('[name="Number"]').attr('placeholder', '(__) _____-____').mask(person.BRPhoneMask, spOptions);
-        }
-        , formClosed: function (event, data) {
-            //$('[name="Number"]').unmask();
         }
     });
-    $('#phonesContainer').jtable('load');
 
     $('#documentsContainer').jtable({
         title: 'Documentos'
@@ -206,7 +226,7 @@ $(function () {
             }
             , AddressType: {
                 title: 'Tipo',
-                options: '/helpers/GetJsonFromEnum?enumName=AddressType&enumNamespace=Enums&assemblyName=Clinike.DatabaseModel'
+                options: '/helpers/GetJsonFromEnum?enumName=AddressType&enumNamespace=Enums&assemblyName=IkeCode.Clinike.Data'
             }
         }
         , recordsLoaded: function (event, data) {

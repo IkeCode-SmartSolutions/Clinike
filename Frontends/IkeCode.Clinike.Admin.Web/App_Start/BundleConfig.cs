@@ -14,6 +14,8 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Include("~/Scripts/jquery-{version}.js");
             jsBundles.Include("~/Scripts/jquery.ext.js");
             jsBundles.Include("~/Scripts/bootstrap.min.js");
+            jsBundles.Include("~/Scripts/jquery.easyui.min.js");
+            jsBundles.IncludeDirectory("~/Scripts/plugins", "jquery.*", true);
             jsBundles.Include("~/Scripts/common.js");
             //plugins
             jsBundles.Include("~/Scripts/bootstrap.file-input.js");
@@ -54,6 +56,8 @@ namespace IkeCode.Clinike.Admin.Web
             styleBundle.Include("~/plugins/justified-gallery/justifiedGallery.min.js", new CssRewriteUrlTransform());
             styleBundle.Include("~/plugins/select2/select2.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/bootstrap.theme.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/easyui-theme/*.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/easyui.*", new CssRewriteUrlTransform());
 
             styleBundle.Include("~/Content/common.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Scripts/jtable/themes/metro/lightgray/jtable.min.css", new CssRewriteUrlTransform());

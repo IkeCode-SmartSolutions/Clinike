@@ -1,0 +1,33 @@
+﻿@model PersonViewModel
+<div class="box">
+    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Fisica", "fa fa-user", Model.Person.NaturalPerson.Id == 0))
+    <div class="box-content">
+        @using (Html.BeginRouteForm("PersonPost",
+                                    new { id = Model.Person.Id },
+                                    FormMethod.Post,
+                                    new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken();
+            @Html.HiddenFor(m => m.Person.NaturalPerson.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Person.NaturalPerson.Birthdate, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.Person.NaturalPerson.Birthdate, new { @class = "form-control", @data_datetimepicker = "date" })
+                    @Html.ValidationMessageFor(m => m.Person.NaturalPerson.Birthdate)
+                </div>
+            </div>
+
+            <div class="row form-group">
+                @Html.LabelFor(m => m.Person.NaturalPerson.Gender, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    @Html.RadioButtonForEnum(m => m.Person.NaturalPerson.Gender, 2)
+                    @Html.ValidationMessageFor(m => m.Person.NaturalPerson.Gender)
+                </div>
+            </div>
+
+            @Html.Partial("Forms/_FormButtons")
+        }
+    </div>
+</div>
+

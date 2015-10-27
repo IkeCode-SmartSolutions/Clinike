@@ -1,0 +1,55 @@
+﻿@model PersonViewModel
+
+<div class="box">
+    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Cadastro de Pessoa", "fa fa-user"))
+    <div class="box-content">
+        <h4 class="page-header">Pessoa</h4>
+        @using (Html.BeginRouteForm("PersonPost",
+                                    new { id = Model.Person.Id },
+                                    FormMethod.Post,
+                                    new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken();
+
+            @Html.HiddenFor(m => m.Person.Id)
+            @Html.HiddenFor(m => m.Person.DateIns)
+            @Html.HiddenFor(m => m.Person.LastUpdate)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Person.Name, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.Person.Name, new { placeholder = "Fulano da Silva", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Person.Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Person.Email, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <div class="input-group-addon">@@</div>
+                        @Html.TextBoxFor(m => m.Person.Email, new { placeholder = "email@provedor.com", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Person.Email)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Person.ProfileImage, new { @class = "col-sm-2 control-label" })
+                @Html.HiddenFor(m => m.Person.ProfileImageUrl)
+                @if (!string.IsNullOrWhiteSpace(Model.Person.ProfileImageUrl))
+                {
+                    <img src="@Model.Person.ProfileImageUrl"
+                         class="cycle"
+                         alt="120x120" style="width: 120px; height: 120px;">
+                }
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.Person.ProfileImage, new { type = "file", accept = "image/*", title = "Selecione uma foto para o perfil", @class = "btn-success" })
+                    @Html.ValidationMessageFor(m => m.Person.ProfileImage)
+                </div>
+            </div>
+
+            @Html.Partial("Forms/_FormButtons")
+        }
+    </div>
+</div>

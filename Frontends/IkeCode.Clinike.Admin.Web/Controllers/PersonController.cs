@@ -60,14 +60,77 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     {
                         Person.AddOrUpdate(i => i.Id, person);
 
-                        vm.Person = Person.Get(person.Id, new List<string>
-                                                              {
-                                                                  "NaturalPerson",
-                                                                  "LegalPerson",
-                                                                  "Doctor"
-                                                              });
+                        vm.Person = Person.Get(person.Id);
                     }, person.Id);
-                //vm.Notify = new NotifyViewModel("Cadastro salvo com sucesso!");
+            }
+            else
+            {
+                //vm.Notify = new NotifyViewModel("Ocorreu um problema ao salvar o registro!", theme: "red");
+            }
+            return View("Index", vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult PostNaturalPerson(NaturalPerson person)
+        {
+            var vm = new PersonViewModel();
+            if (person != null)
+            {
+                Run("PersonController.Post(id)",
+                    () =>
+                    {
+                        NaturalPerson.AddOrUpdate(i => i.Id, person);
+
+                        //vm.Person = NaturalPerson.Get(person.Id);
+                    }, person.Id);
+            }
+            else
+            {
+                //vm.Notify = new NotifyViewModel("Ocorreu um problema ao salvar o registro!", theme: "red");
+            }
+            return View("Index", vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult PostDoctor(Doctor doctor)
+        {
+            var vm = new PersonViewModel();
+            if (doctor != null)
+            {
+                Run("PersonController.PostDoctor(id)",
+                    () =>
+                    {
+                        Doctor.AddOrUpdate(i => i.Id, doctor);
+
+                        //vm.Person = Doctor.Get(person.Id);
+                    }, doctor.Id);
+            }
+            else
+            {
+                //vm.Notify = new NotifyViewModel("Ocorreu um problema ao salvar o registro!", theme: "red");
+            }
+            return View("Index", vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult PostLegalPerson(LegalPerson person)
+        {
+            var vm = new PersonViewModel();
+            if (person != null)
+            {
+                Run("PersonController.PostLegalPerson(id)",
+                    () =>
+                    {
+                        LegalPerson.AddOrUpdate(i => i.Id, person);
+
+                        //vm.Person = LegalPerson.Get(person.Id);
+                    }, person.Id);
             }
             else
             {
@@ -194,7 +257,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     try
                     {
                         var phones = Phone.FindAll(i => i.PersonId == personId);
-                        var result = new JTableListModel<Phone>(phones).ToJson();
+                        var result = new EasyUiListModel<Phone>(phones);
 
                         return Json(result, JsonRequestBehavior.AllowGet);
                     }

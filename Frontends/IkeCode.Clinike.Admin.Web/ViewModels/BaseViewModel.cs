@@ -19,7 +19,10 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
 
         public virtual void CleanModelState(ModelStateDictionary modelState)
         {
+            modelState.Remove("ValidationSummary");
+            modelState.Remove("ActionPerformed");
 
+            ValidationSummary = ValidationSummary ?? new ValidationSummaryEditorViewModel();
         }
     }
 }

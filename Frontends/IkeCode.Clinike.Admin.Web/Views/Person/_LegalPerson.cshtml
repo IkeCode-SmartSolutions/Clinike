@@ -1,0 +1,33 @@
+﻿@model PersonViewModel
+
+<div class="box">
+    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Jurídica", "fa fa-user", Model.Person.LegalPerson.Id == 0))
+    <div class="box-content">
+        @using (Html.BeginRouteForm("PersonPost",
+                                    new { id = Model.Person.Id },
+                                    FormMethod.Post,
+                                    new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken();
+            @Html.HiddenFor(m => m.Person.LegalPerson.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Person.LegalPerson.CompanyName, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.Person.LegalPerson.CompanyName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Person.LegalPerson.CompanyName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Person.LegalPerson.SocialName, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.Person.LegalPerson.SocialName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Person.LegalPerson.SocialName)
+                </div>
+            </div>
+
+            @Html.Partial("Forms/_FormButtons")
+        }
+    </div>
+</div>

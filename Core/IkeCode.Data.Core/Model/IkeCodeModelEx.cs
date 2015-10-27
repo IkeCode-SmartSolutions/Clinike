@@ -63,13 +63,22 @@
         {
             return RunStatic((_context) =>
             {
-                var member = (identifier.Body as MemberExpression).Member;
-                var memberValue = entity.GetType().GetProperty(member.Name).GetValue(entity);
+                var memberName = "";
+                var body = identifier.Body;
+                if (body.NodeType == ExpressionType.Convert)
+                    body = ((UnaryExpression)body).Operand;
+
+                if ((body as MemberExpression) != null)
+                {
+                    memberName = (body as MemberExpression).Member.Name;
+                }
+
+                var memberValue = entity.GetType().GetProperty(memberName).GetValue(entity);
                 if (memberValue == null)
                     throw new InvalidOperationException("Unable to perform AddOrUpdate method because your Identifier does not have value on the Entity passed");
 
                 var parameter = Expression.Parameter(typeof(TObject));
-                var memberExpression = Expression.Property(parameter, member.Name);
+                var memberExpression = Expression.Property(parameter, memberName);
 
                 Expression<Func<TObject, bool>> result = Expression.Lambda<Func<TObject, bool>>(Expression.Equal(memberExpression, Expression.Constant(memberValue)), parameter);
 
