@@ -12,55 +12,48 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Orderer = new AsDefinedBundleOrderer();
             jsBundles.Include("~/Scripts/modernizr-{version}.js");
             jsBundles.Include("~/Scripts/jquery-{version}.js");
-            jsBundles.Include("~/Scripts/jquery.ext.js");
             jsBundles.Include("~/Scripts/bootstrap.min.js");
-            jsBundles.Include("~/Scripts/jquery.easyui.min.js");
-            jsBundles.IncludeDirectory("~/Scripts/plugins", "jquery.*", true);
-            jsBundles.Include("~/Scripts/common.js");
+
             //plugins
             jsBundles.Include("~/Scripts/bootstrap.file-input.js");
-            jsBundles.Include("~/plugins/jquery-ui/jquery-ui.min.js");
-            jsBundles.Include("~/plugins/jquery-ui/i18n/jquery.ui.datepicker-pt-BR.min.js");
-            jsBundles.Include("~/plugins/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js");
-            jsBundles.Include("~/plugins/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-addon-i18n.min.js");
-            jsBundles.Include("~/plugins/jquery-knob/jquery.knob.min.js");
-            jsBundles.Include("~/plugins/bootstrapvalidator/bootstrapValidator.min.js");
-            jsBundles.Include("~/plugins/d3/d3.min.js");
-            jsBundles.Include("~/plugins/datatables/jquery.dataTables.min.js");
-            jsBundles.Include("~/plugins/datatables/ZeroClipboard.js");
-            jsBundles.Include("~/plugins/datatables/TableTools.js");
-            jsBundles.Include("~/plugins/datatables/dataTables.bootstrap.js");
-            jsBundles.Include("~/plugins/fancybox/jquery.fancybox.js");
-            jsBundles.Include("~/plugins/fineuploader/jquery.fineuploader-5.0.5.min.js");
-            jsBundles.Include("~/plugins/moment/moment-with-locales.min.js");
-            jsBundles.Include("~/plugins/fullcalendar/fullcalendar.min.js");
-            jsBundles.Include("~/plugins/fullcalendar/lang/pt-br.js");
-            jsBundles.Include("~/plugins/justified-gallery/jquery.justifiedGallery.min.js");
-            jsBundles.Include("~/plugins/raphael/raphael-min.js");
-            jsBundles.Include("~/plugins/morris/morris.min.js");
-            jsBundles.Include("~/plugins/select2/select2.min.js");
-            jsBundles.Include("~/plugins/select2/select2_locale_pt-PT.js");
+            jsBundles.Include("~/Scripts/plugins/jquery-ui/jquery-ui.min.js");
+            jsBundles.Include("~/Scripts/plugins/jquery-ui/i18n/jquery.ui.datepicker-pt-BR.min.js");
+            jsBundles.Include("~/Scripts/plugins/bootstrapvalidator/bootstrapValidator.min.js");
+
+            jsBundles.Include("~/Scripts/plugins/jquery.easyui.min.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.form.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.accordion.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.calendar.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.combobox.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.datebox.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.draggable.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.droppable.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.linkbutton.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.mask-1.13.4.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.menu.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.parser.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.progressbar.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.propertygrid.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.resizable.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.slider.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.tabs.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.window.js");
+            jsBundles.Include("~/Scripts/plugins/jquery.ext.js");
 
 
-            jsBundles.Include("~/Scripts/jtable/jquery.jtable.js");
-            jsBundles.Include("~/Scripts/jtable/localization/jquery.jtable.pt-BR.js");
             jsBundles.Include("~/Scripts/knockout-{version}.js");
+            jsBundles.Include("~/Scripts/common.js");
             bundles.Add(jsBundles);
 
             var styleBundle = new StyleBundle("~/cssBundles/styles");
             styleBundle.Orderer = new AsDefinedBundleOrderer();
             styleBundle.Include("~/Content/bootstrap.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/plugins/jquery-ui/jquery-ui.min.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/plugins/fancybox/jquery.fancybox.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/plugins/fullcalendar/fullcalendar.min.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/plugins/justified-gallery/justifiedGallery.min.js", new CssRewriteUrlTransform());
-            styleBundle.Include("~/plugins/select2/select2.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Scripts/plugins/jquery-ui/jquery-ui.min.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/bootstrap.theme.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/easyui-theme/*.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/easyui.*", new CssRewriteUrlTransform());
 
             styleBundle.Include("~/Content/common.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/Scripts/jtable/themes/metro/lightgray/jtable.min.css", new CssRewriteUrlTransform());
             bundles.Add(styleBundle);
 
             var loginStyleBundle = new StyleBundle("~/cssBundles/loginStyles");

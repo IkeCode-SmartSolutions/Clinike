@@ -156,6 +156,14 @@
     self.initTabs = function () {
         $("div[data-tabs]").tabs();
     }
+
+    self.CollapseBoxAfterDatagridLoad = function (container) {
+        var parent = $(container).parents('.box-content');
+        var collapsed = $(parent).data('collapsed');
+        if (collapsed !== undefined && collapsed == true) {
+            $(parent).css('display', 'none');
+        }
+    }
 }
 
 var common = new Common();
