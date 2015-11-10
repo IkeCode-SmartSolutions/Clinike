@@ -2,6 +2,7 @@ namespace IkeCode.Clinike.Data.Models
 {
     using IkeCode.Clinike.Data.Enums;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
     using System.ComponentModel.DataAnnotations;
     using System.Text.RegularExpressions;
 
@@ -24,6 +25,7 @@ namespace IkeCode.Clinike.Data.Models
         [StringLength(30)]
         public string Number { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public PhoneType PhoneType { get; set; }
 
         public int PersonId { get; set; }

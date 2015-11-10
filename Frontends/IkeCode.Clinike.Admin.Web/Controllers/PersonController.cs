@@ -7,6 +7,7 @@ using Microsoft.Owin.Security;
 using IkeCode.Clinike.Data.Models;
 using IkeCode.Clinike.Admin.Web.ViewModels;
 using IkeCode.Clinike.Admin.Web.Models;
+using Newtonsoft.Json;
 
 namespace IkeCode.Clinike.Admin.Web.Controllers
 {
@@ -258,13 +259,13 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     {
                         var phones = Phone.FindAll(i => i.PersonId == personId);
                         var result = new EasyUiListModel<Phone>(phones);
-
-                        return Json(result, JsonRequestBehavior.AllowGet);
+                        
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
-                        var result = new JTableListModel<Phone>(ex.Message);
-                        return Json(result, JsonRequestBehavior.AllowGet);
+                        var result = new EasyUiListModel<Phone>(ex.Message);
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                 }, personId);
         }
@@ -278,14 +279,14 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     try
                     {
                         var documents = Document.FindAll(i => i.PersonId == personId, new List<string> { "DocumentType" });
-                        var result = new JTableListModel<Document>(documents).ToJson();
+                        var result = new EasyUiListModel<Document>(documents);
 
-                        return Json(result, JsonRequestBehavior.AllowGet);
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
-                        var result = new JTableListModel<Document>(ex.Message);
-                        return Json(result, JsonRequestBehavior.AllowGet);
+                        var result = new EasyUiListModel<Document>(ex.Message);
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                 }, personId);
         }
@@ -299,14 +300,14 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     try
                     {
                         var addresses = Address.FindAll(i => i.PersonId == personId);
-                        var result = new JTableListModel<Address>(addresses).ToJson();
+                        var result = new EasyUiListModel<Address>(addresses);
 
-                        return Json(result, JsonRequestBehavior.AllowGet);
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
-                        var result = new JTableListModel<Address>(ex.Message);
-                        return Json(result, JsonRequestBehavior.AllowGet);
+                        var result = new EasyUiListModel<Address>(ex.Message);
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                 }, personId);
         }

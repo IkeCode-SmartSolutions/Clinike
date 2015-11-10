@@ -192,6 +192,7 @@
     <Content Include="Config\General.xml" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.theme.black.css" />
     <Content Include="Content\bootstrap.theme.css" />
     <Content Include="Content\common.css" />
     <Content Include="Content\easyui-theme\accordion.css" />
@@ -450,6 +451,9 @@
     <Content Include="Scripts\plugins\jquery.slider.js" />
     <Content Include="Scripts\plugins\jquery.tabs.js" />
     <Content Include="Scripts\plugins\jquery.window.js" />
+    <Content Include="Scripts\ViewModels\Address.js" />
+    <Content Include="Scripts\ViewModels\Document.js" />
+    <Content Include="Scripts\ViewModels\Phone.js" />
     <Content Include="Scripts\ViewModels\Person.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -488,9 +492,8 @@
     <Content Include="Views\Shared\EditorTemplates\ValidationSummaryEditorViewModel.cshtml" />
     <Content Include="Views\Shared\Forms\_FormButtons.cshtml" />
     <Content Include="Views\Shared\Forms\_BoxHeader.cshtml" />
-    <Content Include="Views\Person\_Documents.cshtml" />
-    <Content Include="Views\Person\_Phones.cshtml" />
-    <Content Include="Views\Person\_Addresses.cshtml" />
+    <Content Include="Views\Person\_DocumentsGrid.cshtml" />
+    <Content Include="Views\Person\_AddressesGrid.cshtml" />
     <Content Include="Views\Person\_Doctor.cshtml" />
     <Content Include="Views\Person\_LegalPerson.cshtml" />
     <Content Include="Views\Person\_NaturalPerson.cshtml" />

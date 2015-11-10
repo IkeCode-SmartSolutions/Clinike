@@ -1,5 +1,4 @@
 ﻿@model PersonViewModel
-@using System.Linq
 @{
     ViewBag.Title = "Cadastro -> Pessoa";
 }
@@ -18,14 +17,17 @@
         
         @Html.Partial("_PhonesGrid")
         
-        @Html.Partial("_Addresses")
+        @Html.Partial("_AddressesGrid")
         
-        @Html.Partial("_Documents")
+        @Html.Partial("_DocumentsGrid")
     }
 </div>
 @section scripts{
-    <script type="text/javascript" src="~/Scripts/ViewModels/Person.js"></script>
-    <script type="text/javascript">
-        person.Id = @Model.Person.Id;
-    </script>
+<script type="text/javascript" src="~/Scripts/ViewModels/Person.js"></script>
+<script type="text/javascript" src="~/Scripts/ViewModels/Phone.js"></script>
+<script type="text/javascript" src="~/Scripts/ViewModels/Address.js"></script>
+<script type="text/javascript" src="~/Scripts/ViewModels/Document.js"></script>
+<script type="text/javascript">
+    person.Id = @Model.Person.Id;
+</script>
 }

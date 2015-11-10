@@ -1,0 +1,11 @@
+﻿<div class="box">
+    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Endereços", "fa fa-map-marker", true))
+    <div class="box-content" data-collapsed="true">
+        <table id="addressesGrid" title="Endereços" style="width:950px;height:250px"></table>
+        <div id="addressesToolbar">
+            <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="address.New()">Novo</a>
+            <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="address.Edit()">Editar</a>
+            <a href="#" class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="address.Delete()">Remover</a>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,11 @@
 ﻿<div class="box">
     @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Telefones", "fa fa-phone", true))
     <div class="box-content" data-collapsed="true">
-        <table id="phonesContainer" title="Telefones" class="easyui-datagrid" style="width:650px;height:250px"></table>
-        <div id="phoneToolbar">
-            <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="newUser()">New User</a>
-            <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="editUser()">Edit User</a>
-            <a href="#" class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="destroyUser()">Remove User</a>
+        <table id="phonesGrid" title="Telefones" style="width:850px;height:250px"></table>
+        <div id="phonesToolbar">
+            <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="phone.New()">Novo</a>
+            <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="phone.Edit()">Editar</a>
+            <a href="#" class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="phone.Delete()">Remover</a>
         </div>
     </div>
 </div>

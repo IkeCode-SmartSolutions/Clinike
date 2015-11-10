@@ -157,12 +157,50 @@
         $("div[data-tabs]").tabs();
     }
 
+    self.LoadMessage = 'Carregando as informações, por favor aguarde...';
+
     self.CollapseBoxAfterDatagridLoad = function (container) {
         var parent = $(container).parents('.box-content');
         var collapsed = $(parent).data('collapsed');
         if (collapsed !== undefined && collapsed == true) {
             $(parent).css('display', 'none');
         }
+    }
+
+    self.EasyUIDataGridLoader = function (url, params, success, error, requestType, enableLog) {
+
+        requestType = requestType === undefined || requestType == null ? 'GET' : requestType;
+        enableLog = enableLog === undefined || enableLog == null ? false : enableLog;
+
+        jQuery.ajax({
+            url: url,
+            data: params,
+            type: requestType,
+            success: function (data, textStatus, jqXHR) {
+                var parsedData = $.parseJSON(data);
+
+                if (enableLog) {
+                    console.log('requestType', requestType);
+                    console.log('data', data);
+                    console.log('parsedData', parsedData);
+                    console.log('parsedData !== undefined', parsedData !== undefined);
+                    console.log('parsedData != null', parsedData != null);
+                    console.log('parsedData.success', parsedData.success);
+                    console.log('parsedData.message' ,parsedData.message);
+                }
+
+                if (parsedData !== undefined && parsedData != null && parsedData.success) {
+                    success(parsedData);
+                }
+                else if (parsedData !== undefined && parsedData != null && !parsedData.success) {
+                    error();
+                    $.messager.alert('Ooops...', parsedData.message, 'warning');
+                } else {
+                    error();
+                    $.messager.alert('Error!', 'Ocorreu um erro do lado do servidor, se o erro persistir favor contatar o administrador do sistema.', 'error');
+                }
+            }
+        });
     }
 }
 
