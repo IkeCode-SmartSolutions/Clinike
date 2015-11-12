@@ -86,36 +86,36 @@
 
     self.LoadDataGrid = function (selector) {
         $(selector).datagrid({
-        idField: 'Id'
-        , toolbar: '#addressesToolbar'
-        , rownumbers: true
-        , pagination: true
-        , singleSelect: true
-        , striped: true
-        , loadMsg: common.LoadMessage
-        , columns: [[
-            { field: 'Id', hidden: true }
-            , { field: 'PersonId', hidden: true }
-            , { field: 'DateIns', hidden: true }
-            , { field: 'LastUpdate', hidden: true }
-            , { field: 'Street', title: 'Rua', width: 200 }
-            , { field: 'Number', title: 'Nº', width: 80 }
-            , { field: 'Complement', title: 'Complemento', width: 120 }
-            , {
-                field: 'AddressType'
-                , title: 'Tipo'
-                , width: 200
-                //, formatter: function (value, row, index) {
-                //    return value.Name;
-                //}
+            idField: 'Id'
+            , toolbar: '#addressesToolbar'
+            , rownumbers: true
+            , pagination: true
+            , singleSelect: true
+            , striped: true
+            , loadMsg: dataGridHelper.LoadMessage
+            , columns: [[
+                { field: 'Id', hidden: true }
+                , { field: 'PersonId', hidden: true }
+                , { field: 'DateIns', hidden: true }
+                , { field: 'LastUpdate', hidden: true }
+                , { field: 'Street', title: 'Rua', width: 200 }
+                , { field: 'Number', title: 'Nº', width: 80 }
+                , { field: 'Complement', title: 'Complemento', width: 120 }
+                , {
+                    field: 'AddressType'
+                    , title: 'Tipo'
+                    , width: 200
+                    //, formatter: function (value, row, index) {
+                    //    return value.Name;
+                    //}
+                }
+            ]]
+            , onLoadSuccess: function (items) {
+                dataGridHelper.CollapseBoxAfterLoad(this);
             }
-        ]]
-        , onLoadSuccess: function (items) {
-            common.CollapseBoxAfterDatagridLoad(this);
-        }
-        , loader: function (param, success, error) {
-            common.EasyUIDataGridLoader('/Person/GetAddresses', { personId: person.Id }, success, error);
-        }
+            , loader: function (param, success, error) {
+                dataGridHelper.Loader('/Person/GetAddresses', { personId: person.Id }, success, error);
+            }
         });
     }
 }

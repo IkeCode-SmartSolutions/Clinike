@@ -42,7 +42,10 @@ namespace IkeCode.Clinike.Admin.Web
 
 
             jsBundles.Include("~/Scripts/knockout-{version}.js");
+            jsBundles.Include("~/Scripts/knockout.mapping-latest.js");
+
             jsBundles.Include("~/Scripts/common.js");
+            jsBundles.Include("~/Scripts/dataGridHelper.js");
             bundles.Add(jsBundles);
 
             var styleBundle = new StyleBundle("~/cssBundles/styles");

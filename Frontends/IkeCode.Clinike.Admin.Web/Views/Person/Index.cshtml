@@ -16,12 +16,13 @@
 
         
         @Html.Partial("_PhonesGrid")
+
+        @*@Html.Partial("_AddressesGrid")
         
-        @Html.Partial("_AddressesGrid")
-        
-        @Html.Partial("_DocumentsGrid")
+        @Html.Partial("_DocumentsGrid")*@
     }
 </div>
+@Html.Partial("_PhoneEditor")
 @section scripts{
 <script type="text/javascript" src="~/Scripts/ViewModels/Person.js"></script>
 <script type="text/javascript" src="~/Scripts/ViewModels/Phone.js"></script>
