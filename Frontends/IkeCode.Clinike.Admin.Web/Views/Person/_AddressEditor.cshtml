@@ -1,11 +1,11 @@
-﻿<div class="modal fade" id="addressEditorModal" tabindex="-1" role="dialog" aria-labelledby="addressEditorModalLabel">
+﻿<div class="modal fade" id="phoneEditorModal" tabindex="-1" role="dialog" aria-labelledby="phoneEditorModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="addressEditorModalLabel">Edição de Endereço</h4>
+                <h4 class="modal-title" id="phoneEditorModalLabel">Edição de Telefone</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -15,9 +15,9 @@
                           role="form">
 
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">Endereço</label>
+                            <label class="col-sm-4 control-label">Número</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" data-bind="value: Street">
+                                <input type="text" class="form-control" data-bind="value: Number">
                             </div>
                         </div>
 
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="addressEditorModalSaveButton" class="btn btn-primary btn-label-left" data-bind="click: Save">
+                <button id="phoneEditorModalSaveButton" class="btn btn-primary btn-label-left" data-bind="click: Save">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     Salvar
                 </button>

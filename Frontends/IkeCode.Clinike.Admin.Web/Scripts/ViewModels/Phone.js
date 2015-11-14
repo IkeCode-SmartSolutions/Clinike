@@ -4,6 +4,11 @@
 ///<reference path="../typings/knockout/knockout.d.ts" />
 ///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var PhoneViewModel = (function () {
     function PhoneViewModel(initialData) {
         if (common.EnableLogGlobal) {
@@ -20,7 +25,7 @@ var PhoneViewModel = (function () {
             console.log('ko.mapping.toJSON(this)', data);
         }
         $.ajax({
-            url: '/Phone/PostPhone',
+            url: '/Phone/Post',
             data: data,
             type: 'POST',
             contentType: 'application/json',
@@ -39,15 +44,23 @@ var PhoneViewModel = (function () {
     };
     return PhoneViewModel;
 })();
-var Phone = (function () {
+var Phone = (function (_super) {
+    __extends(Phone, _super);
     function Phone() {
-        this.SelectedIndex = -1;
+        _super.apply(this, arguments);
+        this._toolBarSelector = '#phonesToolbar';
+        this._gridSelector = '#phonesGrid';
     }
     Phone.prototype.LoadDataGrid = function (selector) {
-        console.log('phone.LoadDataGrid');
+        if (selector === void 0) { selector = this._gridSelector; }
+        if (common.EnableLogGlobal) {
+            console.log('phone.LoadDataGrid');
+        }
+        console.log('this._gridSelector', this._gridSelector);
+        console.log('this._toolBarSelector', this._toolBarSelector);
         $(selector).datagrid({
             idField: 'Id',
-            toolbar: '#phonesToolbar',
+            toolbar: this._toolBarSelector,
             rownumbers: true,
             pagination: true,
             singleSelect: true,
@@ -68,10 +81,6 @@ var Phone = (function () {
                     },
                     { field: 'PhoneType', title: 'Tipo', width: 200 }
                 ]],
-            onLoadSuccess: function (items) {
-                dataGridHelper.CollapseBoxAfterLoad(this);
-                $('[name="spanNumber"]').mask('(00) 00000-0000');
-            },
             onClickRow: function (index, row) {
                 phone.OnClickRow(index, row);
             },
@@ -79,47 +88,45 @@ var Phone = (function () {
                 phone.OnClickRow(index, row);
             },
             loader: function (param, success, error) {
-                dataGridHelper.Loader('/Phone/GetPhones', { personId: person.Id }, success, error);
+                dataGridHelper.Loader('/Phone/GetList', { personId: person.Id }, success, error);
+            },
+            onLoadSuccess: function (items) {
+                if (common.EnableLogGlobal) {
+                    console.log('phone.LoadDataGrid onLoadSuccess');
+                }
+                dataGridHelper.CollapseBoxAfterLoad(this);
+                $('[name="spanNumber"]').mask('(00) 00000-0000');
+                $(phone._toolBarSelector).find('button[data-buttontype="add"], button[data-buttontype="edit"]')
+                    .bind('click', function () { $('#phoneEditorModal').modal('show'); });
+                $(phone._toolBarSelector).find('button[data-buttontype="delete"]').bind('click', function () { phone.Delete(); });
             }
         });
     };
     Phone.prototype.OnClickRow = function (index, row) {
         this.SelectedIndex = index;
-        dataGridHelper.OnClickRow(index, row, '#phonesToolbar');
         var model = new PhoneViewModel(row);
-        ko.applyBindings(model, $('#phoneEditorModal').get(0));
+        dataGridHelper.OnClickRow(index, row, this._toolBarSelector, model, '#phoneEditorModal');
     };
     Phone.prototype.Edit = function () {
-        var selectedRow = $('#phonesGrid').datagrid('getSelected');
+        var selectedRow = $(this._gridSelector).datagrid('getSelected');
         if (common.EnableLogGlobal) {
             console.log('phone.Edit selectedRow', selectedRow);
             console.log('phone.Edit selectedRow.Id', selectedRow.Id);
         }
         if (this.SelectedIndex > -1) {
-            $('#phoneEditorModal').modal('show');
-            $('#phonesGrid').datagrid('updateRow', { index: this.SelectedIndex, row: selectedRow });
-        }
-    };
-    Phone.prototype.Save = function () {
-        var selectedRow = $('#phonesGrid').datagrid('getSelected');
-        if (common.EnableLogGlobal) {
-            console.log('phone.Edit selectedRow', selectedRow);
-            console.log('phone.Edit selectedRow.Id', selectedRow.Id);
-        }
-        if (this.SelectedIndex > -1) {
-            $('#phonesGrid').datagrid('updateRow', { index: this.SelectedIndex, row: selectedRow });
+            $(this._gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: selectedRow });
         }
     };
     Phone.prototype.Delete = function () {
-        var selectedRow = $('#phonesGrid').datagrid('getSelected');
+        var selectedRow = $(this._gridSelector).datagrid('getSelected');
         if (common.EnableLogGlobal) {
             console.log('phone.Delete selectedRow', selectedRow);
             console.log('phone.Delete selectedRow.Id', selectedRow.Id);
         }
         if (this.SelectedIndex > -1) {
-            $('#phonesGrid').datagrid('deleteRow', this.SelectedIndex);
+            $(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
         }
     };
     return Phone;
-})();
+})(BaseDataGridModel);
 var phone = new Phone();

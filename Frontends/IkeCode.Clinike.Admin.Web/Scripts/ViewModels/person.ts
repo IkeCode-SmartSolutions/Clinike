@@ -6,11 +6,11 @@ class Person {
     }
 
     public init() {
-        phone.LoadDataGrid('#phonesGrid');
+        phone.LoadDataGrid();
 
-        documents.LoadDataGrid('#documentsGrid');
+        documents.LoadDataGrid();
 
-        address.LoadDataGrid('#addressesGrid');
+        address.LoadDataGrid();
     }
 }
 

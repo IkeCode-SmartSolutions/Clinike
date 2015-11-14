@@ -12,9 +12,9 @@ using Newtonsoft.Json;
 namespace IkeCode.Clinike.Admin.Web.Controllers
 {
     [Authorize]
-    public class PhoneController : BaseAuthController
+    public class AddressController : BaseAuthController
     {
-        public PhoneController()
+        public AddressController()
             : base()
         {
         }
@@ -22,19 +22,20 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
         [Authorize(Roles = "Admin")]
         public JsonResult Get(int id)
         {
-            return base.Run<JsonResult>("PhoneController.Get(id)",
+            return base.Run<JsonResult>("AddressController.Get(id)",
                 () =>
                 {
                     try
                     {
-                        var phone = Phone.Get(id);
-                        
-                        return Json(phone, JsonRequestBehavior.AllowGet);
+                        var addresses = Address.FindAll(i => i.Id == id);
+                        var result = new EasyUiListModel<Address>(addresses);
+
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
-                        var result = new Phone();
-                        return Json(result, JsonRequestBehavior.AllowGet);
+                        var result = new EasyUiListModel<Address>(ex.Message);
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                 }, id);
         }
@@ -42,19 +43,19 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
         [Authorize(Roles = "Admin")]
         public JsonResult GetList(int personId)
         {
-            return base.Run<JsonResult>("PhoneController.GetList(personId)",
+            return base.Run<JsonResult>("AddressController.GetList(personId)",
                 () =>
                 {
                     try
                     {
-                        var phones = Phone.FindAll(i => i.PersonId == personId);
-                        var result = new EasyUiListModel<Phone>(phones);
+                        var addresses = Address.FindAll(i => i.PersonId == personId);
+                        var result = new EasyUiListModel<Address>(addresses);
 
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
-                        var result = new EasyUiListModel<Phone>(ex.Message);
+                        var result = new EasyUiListModel<Address>(ex.Message);
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                 }, personId);
@@ -62,35 +63,34 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public JsonResult Post(Phone phone)
+        public JsonResult Post(Address address)
         {
-            return base.Run<JsonResult>("PhoneController.PostPhone(id)",
+            return base.Run<JsonResult>("AddressController.Post(id)",
                 () =>
                 {
-                    var result = base.GridRequestResult<Phone>(
-                    () =>
-                    {
-                        Phone.AddOrUpdate(i => i.Id, phone);
-                    }, phone);
+                    var result = base.GridRequestResult<Address>(
+                                 () =>
+                                 {
+                                     Address.AddOrUpdate(i => i.Id, address);
+                                 }, address);
 
                     return Json(result, JsonRequestBehavior.AllowGet);
-                }, phone.Id);
+                }, address.Id);
         }
 
-        [HttpPost]
         [Authorize(Roles = "Admin")]
         public JsonResult Delete(int id)
         {
-            return base.Run<JsonResult>("PhoneController.DeletePhone(id)",
+            return base.Run<JsonResult>("AddressController.Delete(id)",
                 () =>
                 {
-                    var result = base.GridRequestResult<Phone>(
+                    var result = base.GridRequestResult<Address>(
                     () =>
                     {
                         if (id <= 0)
-                            throw new ArgumentException("Parameter -> Phone.Id is required");
+                            throw new ArgumentException("Parameter -> Address.Id is required");
 
-                        Phone.Delete(id);
+                        Address.Delete(id);
                     }, null);
 
                     return Json(result, JsonRequestBehavior.AllowGet);

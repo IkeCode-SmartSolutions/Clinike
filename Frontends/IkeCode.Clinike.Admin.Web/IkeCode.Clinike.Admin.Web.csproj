@@ -171,6 +171,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HelpersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\PhoneController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Global.asax.cs">
@@ -319,6 +321,7 @@
     <Content Include="Content\img\ui-accordion-right.png" />
     <Content Include="Content\img\ui-left.png" />
     <Content Include="Content\img\ui-right.png" />
+    <Content Include="Views\Person\_AddressEditor.cshtml" />
     <TypeScriptCompile Include="Scripts\DataGridHelper.ts" />
     <Content Include="Scripts\common.js">
       <DependentUpon>Common.ts</DependentUpon>
@@ -525,11 +528,15 @@
     <Content Include="Scripts\plugins\jquery.tabs.js" />
     <Content Include="Scripts\plugins\jquery.window.js" />
     <TypeScriptCompile Include="Scripts\ViewModels\Address.ts" />
+    <TypeScriptCompile Include="Scripts\ViewModels\IDataGridModel.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Document.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.allgeneric.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Person.ts" />
     <Content Include="Scripts\ViewModels\Address.js">
       <DependentUpon>Address.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\ViewModels\BaseDataGridModel.js">
+      <DependentUpon>BaseDataGridModel.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\ViewModels\Document.js">
       <DependentUpon>Document.ts</DependentUpon>
@@ -623,6 +630,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.mapping\knockout.mapping.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
+    <TypeScriptCompile Include="Scripts\ViewModels\BaseDataGridModel.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Phone.ts" />
   </ItemGroup>
   <PropertyGroup>

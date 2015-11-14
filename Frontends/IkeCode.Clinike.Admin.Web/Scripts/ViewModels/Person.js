@@ -4,9 +4,9 @@ var Person = (function () {
         this.Id = 0;
     }
     Person.prototype.init = function () {
-        phone.LoadDataGrid('#phonesGrid');
-        documents.LoadDataGrid('#documentsGrid');
-        address.LoadDataGrid('#addressesGrid');
+        phone.LoadDataGrid();
+        documents.LoadDataGrid();
+        address.LoadDataGrid();
     };
     return Person;
 })();

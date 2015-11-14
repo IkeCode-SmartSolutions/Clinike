@@ -53,13 +53,20 @@ var DataGridHelper = (function () {
         });
     };
     ;
-    DataGridHelper.prototype.OnClickRow = function (index, row, selector, enableLog) {
+    DataGridHelper.prototype.OnClickRow = function (index, row, toolbarSelector, model, bindingTarget, enableLog) {
         if (enableLog === void 0) { enableLog = false; }
         if (common.EnableLogGlobal || enableLog) {
             console.log('index', index);
             console.log('row', row);
         }
-        $(selector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
+        $(toolbarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
+        console.log('bindingTarget', bindingTarget);
+        if (bindingTarget.length > 0) {
+            ko.applyBindings(model, $(bindingTarget).get(0));
+        }
+        else {
+            ko.applyBindings(model);
+        }
     };
     ;
     return DataGridHelper;

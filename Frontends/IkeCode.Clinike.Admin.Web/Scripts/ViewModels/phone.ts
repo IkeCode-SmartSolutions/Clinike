@@ -26,7 +26,7 @@ class PhoneViewModel {
         }
 
         $.ajax({
-            url: '/Phone/PostPhone'
+            url: '/Phone/Post'
             , data: data
             , type: 'POST'
             , contentType: 'application/json'
@@ -45,14 +45,21 @@ class PhoneViewModel {
     }
 }
 
-class Phone {
-    SelectedIndex = -1;
+class Phone extends BaseDataGridModel implements IDataGridModel {
+    _toolBarSelector: string = '#phonesToolbar';
+    _gridSelector: string = '#phonesGrid';
 
-    public LoadDataGrid(selector: string) {
-        console.log('phone.LoadDataGrid');
+    public LoadDataGrid(selector: string = this._gridSelector) {
+
+        if (common.EnableLogGlobal) {
+            console.log('phone.LoadDataGrid');
+        }
+        console.log('this._gridSelector', this._gridSelector);
+        console.log('this._toolBarSelector', this._toolBarSelector);
+
         $(selector).datagrid({
             idField: 'Id'
-            , toolbar: '#phonesToolbar'
+            , toolbar: this._toolBarSelector
             , rownumbers: true
             , pagination: true
             , singleSelect: true
@@ -73,10 +80,6 @@ class Phone {
                 }
                 , { field: 'PhoneType', title: 'Tipo', width: 200 }
             ]]
-            , onLoadSuccess: function (items) {
-                dataGridHelper.CollapseBoxAfterLoad(this);
-                $('[name="spanNumber"]').mask('(00) 00000-0000');
-            }
             , onClickRow: function (index, row) {
                 phone.OnClickRow(index, row);
             }
@@ -84,21 +87,33 @@ class Phone {
                 phone.OnClickRow(index, row);
             }
             , loader: function (param, success, error) {
-                dataGridHelper.Loader('/Phone/GetPhones', { personId: person.Id }, success, error);
+                dataGridHelper.Loader('/Phone/GetList', { personId: person.Id }, success, error);
+            }
+            , onLoadSuccess: function (items) {
+
+                if (common.EnableLogGlobal) {
+                    console.log('phone.LoadDataGrid onLoadSuccess');
+                }
+
+                dataGridHelper.CollapseBoxAfterLoad(this);
+                $('[name="spanNumber"]').mask('(00) 00000-0000');
+
+                $(phone._toolBarSelector).find('button[data-buttontype="add"], button[data-buttontype="edit"]')
+                    .bind('click', () => { $('#phoneEditorModal').modal('show'); });
+                $(phone._toolBarSelector).find('button[data-buttontype="delete"]').bind('click', () => { phone.Delete(); });
             }
         });
     }
 
     private OnClickRow(index, row) {
         this.SelectedIndex = index;
-        dataGridHelper.OnClickRow(index, row, '#phonesToolbar');
-
         var model = new PhoneViewModel(row);
-        ko.applyBindings(model, $('#phoneEditorModal').get(0));
+
+        dataGridHelper.OnClickRow(index, row, this._toolBarSelector, model, '#phoneEditorModal');
     }
 
     public Edit() {
-        var selectedRow = $('#phonesGrid').datagrid('getSelected');
+        var selectedRow = $(this._gridSelector).datagrid('getSelected');
 
         if (common.EnableLogGlobal) {
             console.log('phone.Edit selectedRow', selectedRow);
@@ -106,26 +121,12 @@ class Phone {
         }
 
         if (this.SelectedIndex > -1) {
-            $('#phoneEditorModal').modal('show');
-            $('#phonesGrid').datagrid('updateRow', { index: this.SelectedIndex, row: selectedRow });
-        }
-    }
-
-    public Save() {
-        var selectedRow = $('#phonesGrid').datagrid('getSelected');
-
-        if (common.EnableLogGlobal) {
-            console.log('phone.Edit selectedRow', selectedRow);
-            console.log('phone.Edit selectedRow.Id', selectedRow.Id);
-        }
-
-        if (this.SelectedIndex > -1) {
-            $('#phonesGrid').datagrid('updateRow', { index: this.SelectedIndex, row: selectedRow });
+            $(this._gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: selectedRow });
         }
     }
 
     public Delete() {
-        var selectedRow = $('#phonesGrid').datagrid('getSelected');
+        var selectedRow = $(this._gridSelector).datagrid('getSelected');
 
         if (common.EnableLogGlobal) {
             console.log('phone.Delete selectedRow', selectedRow);
@@ -133,7 +134,7 @@ class Phone {
         }
 
         if (this.SelectedIndex > -1) {
-            $('#phonesGrid').datagrid('deleteRow', this.SelectedIndex);
+            $(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
         }
     }
 }

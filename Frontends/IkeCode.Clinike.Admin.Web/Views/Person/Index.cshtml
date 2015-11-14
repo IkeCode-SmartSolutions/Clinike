@@ -23,12 +23,13 @@
     }
 </div>
 @Html.Partial("_PhoneEditor")
+@Html.Partial("_AddressEditor")
 @section scripts{
-    #IF DEBUG{
+    @*#IF DEBUG{
     <script type="text/javascript">
         common.EnableLogGlobal = true;
     </script>
-    }
+    }*@
 
     <script type="text/javascript" src="~/Scripts/ViewModels/Person.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Phone.js"></script>

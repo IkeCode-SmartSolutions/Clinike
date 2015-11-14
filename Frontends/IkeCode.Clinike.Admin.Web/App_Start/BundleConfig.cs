@@ -46,6 +46,7 @@ namespace IkeCode.Clinike.Admin.Web
 
             jsBundles.Include("~/Scripts/common.js");
             jsBundles.Include("~/Scripts/dataGridHelper.js");
+            jsBundles.Include("~/Scripts/ViewModels/baseDataGridModel.js");
             bundles.Add(jsBundles);
 
             var styleBundle = new StyleBundle("~/cssBundles/styles");
