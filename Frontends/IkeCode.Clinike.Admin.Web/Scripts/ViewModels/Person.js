@@ -1,20 +1,13 @@
 "use strict";
-//function Person() {
-//    var self = this;
-//    self.Id = 0;
-//}
-//var person = new Person();
-//$(function () {
-//    phone.LoadDataGrid('#phonesGrid');
-//    documents.LoadDataGrid('#documentsGrid');
-//    address.LoadDataGrid('#addressesGrid');
-//});
-var person = (function () {
-    function person() {
-        //phone.prototype.LoadDataGrid('#phonesGrid');
+var Person = (function () {
+    function Person() {
         this.Id = 0;
-        //documents.LoadDataGrid('#documentsGrid');
-        //address.LoadDataGrid('#addressesGrid');
     }
-    return person;
+    Person.prototype.init = function () {
+        phone.LoadDataGrid('#phonesGrid');
+        documents.LoadDataGrid('#documentsGrid');
+        address.LoadDataGrid('#addressesGrid');
+    };
+    return Person;
 })();
+var person = new Person();

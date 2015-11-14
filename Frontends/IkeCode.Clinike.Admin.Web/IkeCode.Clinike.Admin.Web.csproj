@@ -194,9 +194,15 @@
   <ItemGroup>
     <Content Include="Config\General.xml" />
     <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap.theme.black.css" />
-    <Content Include="Content\bootstrap.theme.css" />
+    <Content Include="Content\bootstrap.min.css">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
+    <Content Include="Content\bootstrap.theme.black.css">
+      <DependentUpon>bootstrap.theme.css</DependentUpon>
+    </Content>
+    <Content Include="Content\bootstrap.theme.css">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
     <Content Include="Content\common.css" />
     <Content Include="Content\easyui-theme\accordion.css" />
     <Content Include="Content\easyui-theme\calendar.css" />
@@ -295,7 +301,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.css.map">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
     <Content Include="Content\img\avatar.jpg" />
     <Content Include="Content\img\chevron-left.png" />
     <Content Include="Content\img\chevron-right.png" />
@@ -311,19 +319,25 @@
     <Content Include="Content\img\ui-accordion-right.png" />
     <Content Include="Content\img\ui-left.png" />
     <Content Include="Content\img\ui-right.png" />
-    <TypeScriptCompile Include="Scripts\dataGridHelper.ts" />
+    <TypeScriptCompile Include="Scripts\DataGridHelper.ts" />
     <Content Include="Scripts\common.js">
-      <DependentUpon>common.ts</DependentUpon>
+      <DependentUpon>Common.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\dataGridHelper.js">
-      <DependentUpon>dataGridHelper.ts</DependentUpon>
+      <DependentUpon>DataGridHelper.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
+    <Content Include="Scripts\knockout.mapping-latest.debug.js">
+      <DependentUpon>knockout.mapping-latest.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\plugins\bootstrapvalidator\bootstrapValidator.css" />
     <Content Include="Scripts\plugins\bootstrapvalidator\bootstrapValidator.js" />
-    <Content Include="Scripts\plugins\bootstrapvalidator\bootstrapValidator.min.css" />
-    <Content Include="Scripts\plugins\bootstrapvalidator\bootstrapValidator.min.js" />
+    <Content Include="Scripts\plugins\bootstrapvalidator\bootstrapValidator.min.css">
+      <DependentUpon>bootstrapValidator.css</DependentUpon>
+    </Content>
+    <Content Include="Scripts\plugins\bootstrapvalidator\bootstrapValidator.min.js">
+      <DependentUpon>bootstrapValidator.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\plugins\bootstrapvalidator\language\ar_MA.js" />
     <Content Include="Scripts\plugins\bootstrapvalidator\language\be_FR.js" />
     <Content Include="Scripts\plugins\bootstrapvalidator\language\be_NL.js" />
@@ -444,8 +458,12 @@
     <Content Include="Scripts\plugins\jquery-ui\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Scripts\plugins\jquery-ui\jquery-ui.css" />
     <Content Include="Scripts\plugins\jquery-ui\jquery-ui.js" />
-    <Content Include="Scripts\plugins\jquery-ui\jquery-ui.min.css" />
-    <Content Include="Scripts\plugins\jquery-ui\jquery-ui.min.js" />
+    <Content Include="Scripts\plugins\jquery-ui\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.css</DependentUpon>
+    </Content>
+    <Content Include="Scripts\plugins\jquery-ui\jquery-ui.min.js">
+      <DependentUpon>jquery-ui.js</DependentUpon>
+    </Content>
     <Content Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
     <Content Include="Config\IkeCodeLog.config" />
     <None Include="Config\IkeCodeLog.Debug.config">
@@ -465,17 +483,29 @@
     <Content Include="Content\login\css\fonts\franchise-bold-webfont.eot" />
     <Content Include="Content\login\css\fonts\franchise-bold-webfont.ttf" />
     <Content Include="Content\login\css\fonts\franchise-bold-webfont.woff" />
-    <Content Include="Scripts\bootstrap.file-input.js" />
+    <Content Include="Scripts\bootstrap.file-input.js">
+      <DependentUpon>bootstrap.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <TypeScriptCompile Include="Scripts\common.ts" />
-    <None Include="Scripts\jquery-2.1.4-vsdoc.js" />
+    <Content Include="Scripts\bootstrap.min.js">
+      <DependentUpon>bootstrap.js</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Scripts\Common.ts" />
+    <None Include="Scripts\jquery-2.1.4-vsdoc.js">
+      <DependentUpon>jquery-2.1.4.js</DependentUpon>
+    </None>
     <Content Include="Scripts\jquery-2.1.4.js" />
-    <Content Include="Scripts\jquery-2.1.4.min.js" />
-    <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Scripts\jquery-2.1.4.min.js">
+      <DependentUpon>jquery-2.1.4.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-2.1.4.min.map">
+      <DependentUpon>jquery-2.1.4.min.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\plugins\jquery.easyui.min.js" />
     <Content Include="Scripts\plugins\jquery.ext.js" />
-    <Content Include="Scripts\knockout-3.3.0.debug.js" />
+    <Content Include="Scripts\knockout-3.3.0.debug.js">
+      <DependentUpon>knockout-3.3.0.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\knockout-3.3.0.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\plugins\jquery.accordion.js" />
@@ -494,14 +524,21 @@
     <Content Include="Scripts\plugins\jquery.slider.js" />
     <Content Include="Scripts\plugins\jquery.tabs.js" />
     <Content Include="Scripts\plugins\jquery.window.js" />
-    <Content Include="Scripts\ViewModels\Address.js" />
-    <Content Include="Scripts\ViewModels\Document.js" />
-    <TypeScriptCompile Include="Scripts\ViewModels\person.ts" />
+    <TypeScriptCompile Include="Scripts\ViewModels\Address.ts" />
+    <TypeScriptCompile Include="Scripts\ViewModels\Document.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.allgeneric.d.ts" />
+    <TypeScriptCompile Include="Scripts\ViewModels\Person.ts" />
+    <Content Include="Scripts\ViewModels\Address.js">
+      <DependentUpon>Address.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\ViewModels\Document.js">
+      <DependentUpon>Document.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\ViewModels\person.js">
-      <DependentUpon>person.ts</DependentUpon>
+      <DependentUpon>Person.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\ViewModels\phone.js">
-      <DependentUpon>phone.ts</DependentUpon>
+      <DependentUpon>Phone.ts</DependentUpon>
     </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -586,7 +623,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.mapping\knockout.mapping.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
-    <TypeScriptCompile Include="Scripts\ViewModels\phone.ts" />
+    <TypeScriptCompile Include="Scripts\ViewModels\Phone.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

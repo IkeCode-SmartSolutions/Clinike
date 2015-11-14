@@ -1,7 +1,6 @@
-"use strict";
-var Address = (function () {
-    function Address() {
-    }
+﻿"use strict";
+class Address {
+    
     //$('#addessesContainer').jtable({
     //    title: 'Endereços'
     //    , actions: {
@@ -84,37 +83,41 @@ var Address = (function () {
     //        //$('[name="ZipCode"]').unmask();
     //    }
     //});
-    Address.prototype.LoadDataGrid = function (selector) {
+
+    public LoadDataGrid(selector) {
         $(selector).datagrid({
-            idField: 'Id',
-            toolbar: '#addressesToolbar',
-            rownumbers: true,
-            pagination: true,
-            singleSelect: true,
-            striped: true,
-            loadMsg: dataGridHelper.LoadMessage,
-            columns: [[
-                    { field: 'Id', hidden: true },
-                    { field: 'PersonId', hidden: true },
-                    { field: 'DateIns', hidden: true },
-                    { field: 'LastUpdate', hidden: true },
-                    { field: 'Street', title: 'Rua', width: 200 },
-                    { field: 'Number', title: 'Nº', width: 80 },
-                    { field: 'Complement', title: 'Complemento', width: 120 },
-                    {
-                        field: 'AddressType',
-                        title: 'Tipo',
-                        width: 200
-                    }
-                ]],
-            onLoadSuccess: function (items) {
+            idField: 'Id'
+            , toolbar: '#addressesToolbar'
+            , rownumbers: true
+            , pagination: true
+            , singleSelect: true
+            , striped: true
+            , loadMsg: dataGridHelper.LoadMessage
+            , columns: [[
+                { field: 'Id', hidden: true }
+                , { field: 'PersonId', hidden: true }
+                , { field: 'DateIns', hidden: true }
+                , { field: 'LastUpdate', hidden: true }
+                , { field: 'Street', title: 'Rua', width: 200 }
+                , { field: 'Number', title: 'Nº', width: 80 }
+                , { field: 'Complement', title: 'Complemento', width: 120 }
+                , {
+                    field: 'AddressType'
+                    , title: 'Tipo'
+                    , width: 200
+                    //, formatter: function (value, row, index) {
+                    //    return value.Name;
+                    //}
+                }
+            ]]
+            , onLoadSuccess: function (items) {
                 dataGridHelper.CollapseBoxAfterLoad(this);
-            },
-            loader: function (param, success, error) {
+            }
+            , loader: function (param, success, error) {
                 dataGridHelper.Loader('/Person/GetAddresses', { personId: person.Id }, success, error);
             }
         });
-    };
-    return Address;
-})();
+    }
+}
+
 var address = new Address();

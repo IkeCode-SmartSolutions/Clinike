@@ -5,9 +5,9 @@
     <div class="box-content">
         <h4 class="page-header">Pessoa</h4>
         @using (Html.BeginRouteForm("PersonPost",
-                                    new { id = Model.Person.Id },
-                                    FormMethod.Post,
-                                    new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
+                                        new { id = Model.Person.Id },
+                                        FormMethod.Post,
+                                        new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken();
 
@@ -49,7 +49,26 @@
                 </div>
             </div>
 
-            @Html.Partial("Forms/_FormButtons")
+            <div class="form-group">
+                <div class="col-sm-offset-8 col-sm-4">
+                    <button type="reset" class="btn btn-default btn-label-left">
+                        Limpar
+                    </button>
+
+                    @if (Model.Person.Id > 0)
+                    {
+                        <button type="button" class="btn btn-danger btn-label-left">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            Excluir
+                        </button>
+                    }
+
+                    <button type="submit" class="btn btn-primary btn-label-left">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        Salvar
+                    </button>
+                </div>
+            </div>
         }
     </div>
 </div>

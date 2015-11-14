@@ -19,6 +19,27 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
         {
         }
 
+        [Authorize(Roles = "Admin")]
+        public JsonResult GetPhones(int personId)
+        {
+            return base.Run<JsonResult>("PersonController.GetPhones(personId)",
+                () =>
+                {
+                    try
+                    {
+                        var phones = Phone.FindAll(i => i.PersonId == personId);
+                        var result = new EasyUiListModel<Phone>(phones);
+
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
+                    }
+                    catch (Exception ex)
+                    {
+                        var result = new EasyUiListModel<Phone>(ex.Message);
+                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
+                    }
+                }, personId);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public JsonResult PostPhone(Phone phone)
@@ -26,7 +47,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             return base.Run<JsonResult>("PersonController.PostPhone(id)",
                 () =>
                 {
-                    var result = base.JTableResult<Phone>(
+                    var result = base.GridRequestResult<Phone>(
                     () =>
                     {
                         Phone.AddOrUpdate(i => i.Id, phone);
@@ -43,7 +64,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             return base.Run<JsonResult>("PersonController.DeletePhone(id)",
                 () =>
                 {
-                    var result = base.JTableResult<Phone>(
+                    var result = base.GridRequestResult<Phone>(
                     () =>
                     {
                         if (id <= 0)
@@ -54,27 +75,6 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
 
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }, id);
-        }
-
-        [Authorize(Roles = "Admin")]
-        public JsonResult GetPhones(int personId)
-        {
-            return base.Run<JsonResult>("PersonController.GetPhones(personId)",
-                () =>
-                {
-                    try
-                    {
-                        var phones = Phone.FindAll(i => i.PersonId == personId);
-                        var result = new EasyUiListModel<Phone>(phones);
-                        
-                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
-                    }
-                    catch (Exception ex)
-                    {
-                        var result = new EasyUiListModel<Phone>(ex.Message);
-                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
-                    }
-                }, personId);
         }
     }
 }

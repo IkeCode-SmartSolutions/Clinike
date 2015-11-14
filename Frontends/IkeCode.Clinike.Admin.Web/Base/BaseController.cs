@@ -93,7 +93,7 @@ namespace Clinike.Admin.Base
             }
         }
 
-        public object JTableResult<T>(Action action, T obj)
+        public object GridRequestResult<T>(Action action, T obj)
         {
             var errorMessage = new StringBuilder();
             try
@@ -172,7 +172,7 @@ namespace Clinike.Admin.Base
                 return new { Result = "ERROR", Message = e.Message };
             }
         }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing && UserManager != null)

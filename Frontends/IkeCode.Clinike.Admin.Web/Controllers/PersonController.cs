@@ -147,7 +147,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             return base.Run<JsonResult>("PersonController.PostAddress(id)",
                 () =>
                 {
-                    var result = base.JTableResult<Address>(
+                    var result = base.GridRequestResult<Address>(
                                  () =>
                                  {
                                      Address.AddOrUpdate(i => i.Id, address);
@@ -163,7 +163,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             return base.Run<JsonResult>("PersonController.DeleteAddress(id)",
                 () =>
                 {
-                    var result = base.JTableResult<Address>(
+                    var result = base.GridRequestResult<Address>(
                     () =>
                     {
                         if (id <= 0)
@@ -183,7 +183,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             return base.Run<JsonResult>("PersonController.PostDocument(id)",
                 () =>
                 {
-                    var result = base.JTableResult<Document>(
+                    var result = base.GridRequestResult<Document>(
                     () =>
                     {
                         Document.AddOrUpdate(i => i.Id, document);
@@ -199,7 +199,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             return base.Run<JsonResult>("PersonController.DeleteDocument(id)",
                 () =>
                 {
-                    var result = base.JTableResult<Document>(
+                    var result = base.GridRequestResult<Document>(
                     () =>
                     {
                         if (id <= 0)
