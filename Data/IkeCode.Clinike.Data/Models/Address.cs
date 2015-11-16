@@ -1,12 +1,14 @@
 namespace IkeCode.Clinike.Data.Models
 {
     using IkeCode.Clinike.Data.Enums;
+    using IkeCode.Web.Core.CustomAttributes;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Text.RegularExpressions;
 
+    [ExportToJavascript]
     public partial class Address : BaseModel<Address>
     {
         public Address()

@@ -1,11 +1,13 @@
 namespace IkeCode.Clinike.Data.Models
 {
     using IkeCode.Clinike.Data.Enums;
+    using IkeCode.Web.Core.CustomAttributes;
     using Newtonsoft.Json;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    [ExportToJavascript]
     public partial class NaturalPerson : BaseModel<NaturalPerson>
     {
         public NaturalPerson()

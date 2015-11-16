@@ -1,10 +1,12 @@
 namespace IkeCode.Clinike.Data.Models
 {
+    using IkeCode.Web.Core.CustomAttributes;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Web;
 
+    [ExportToJavascript]
     public partial class Person : BaseModel<Person>
     {
         public Person()

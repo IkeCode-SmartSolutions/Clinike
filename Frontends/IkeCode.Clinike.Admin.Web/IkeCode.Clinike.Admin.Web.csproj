@@ -330,14 +330,12 @@
     <Content Include="Scripts\Models\EnumCache.js">
       <DependentUpon>EnumCache.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\Models\Model.Enums.js">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Enums.tt</DependentUpon>
+    <Content Include="Scripts\Models\PocoModels.js">
+      <DependentUpon>PocoModels.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\Models\Model.Enums.tt">
+    <Content Include="Scripts\Models\PocoModels.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.Enums.js</LastGenOutput>
+      <LastGenOutput>PocoModels.ts</LastGenOutput>
     </Content>
     <Content Include="Scripts\System\Collections\Generic\List.js" />
     <Content Include="Scripts\System\Collections\Generic\List.min.js" />
@@ -561,6 +559,11 @@
     <Content Include="Scripts\plugins\jquery.window.js" />
     <TypeScriptCompile Include="Scripts\Models\BaseDataGridModel.ts" />
     <TypeScriptCompile Include="Scripts\Models\EnumCache.ts" />
+    <TypeScriptCompile Include="Scripts\Models\PocoModels.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PocoModels.tt</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\System\Collections\Generic\List.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IEqualityComparer.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IGrouping.ts" />

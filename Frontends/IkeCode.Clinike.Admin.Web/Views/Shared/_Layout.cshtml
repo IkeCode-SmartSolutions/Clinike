@@ -54,10 +54,11 @@
 
     @Scripts.Render("~/jsBundles/jquery")
 
-    @RenderSection("scripts", required: false)
     <script type="text/javascript">
-        Common._modelAssemblyName = 'IkeCode.Clinike.Data';
-        Common._enumNamespaceName = 'Enums';
+        common._modelAssemblyName = 'IkeCode.Clinike.Data';
+        common._enumNamespaceName = 'Enums';
     </script>
+
+    @RenderSection("scripts", required: false)
 </body>
 </html>

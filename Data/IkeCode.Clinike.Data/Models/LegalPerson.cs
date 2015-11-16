@@ -1,9 +1,11 @@
 namespace IkeCode.Clinike.Data.Models
 {
+    using IkeCode.Web.Core.CustomAttributes;
     using Newtonsoft.Json;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    [ExportToJavascript]
     public partial class LegalPerson : BaseModel<LegalPerson>
     {
         public LegalPerson()

@@ -1,6 +1,13 @@
 ﻿using Clinike.Admin.Base;
 using IkeCode.Clinike.Admin.Web.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Web.Mvc;
+using System.Linq;
+using System.Text;
+using IkeCode.Web.Core.CustomAttributes;
 
 namespace IkeCode.Clinike.Admin.Web.Controllers
 {

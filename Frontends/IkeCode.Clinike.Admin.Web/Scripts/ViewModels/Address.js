@@ -40,10 +40,10 @@ var AddressViewModel = (function (_super) {
         ko.applyBindings(new AddressViewModel(), target);
     };
     AddressViewModel.prototype.Save = function () {
-        var data = ko.mapping.toJSON(this);
-        if (common.EnableLogGlobal) {
-            console.log('ko.mapping.toJSON(this)', data);
-        }
+        //var data = this.toJSON();
+        //if (common.EnableLogGlobal) {
+        //console.log('ko.mapping.toJSON(this)', data);
+        //}
         //$.ajax({
         //    url: '/Address/Post'
         //    , data: data
@@ -72,7 +72,6 @@ var Address = (function (_super) {
         this._gridSelector = '#addressesGrid';
         this._modalSelector = '#addressEditorModal';
         this.addressViewModel = new AddressViewModel();
-        console.log(Common._modelAssemblyName);
         common.GetJsonEnum('AddressType');
         $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click', function () {
             address.addressViewModel.ClearData();

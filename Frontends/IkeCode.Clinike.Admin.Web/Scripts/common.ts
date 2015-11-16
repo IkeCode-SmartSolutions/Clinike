@@ -7,8 +7,8 @@
 
 "use strict";
 class Common {
-    static _modelAssemblyName: string = '';
-    static _enumNamespaceName: string = '';
+    _modelAssemblyName: string = '';
+    _enumNamespaceName: string = '';
 
     EnableLogGlobal: boolean = false;
     constructor() {
@@ -155,20 +155,17 @@ class Common {
         return value === undefined || value == null ? defaultValue : value;
     };
 
-    public GetJsonEnum(enumName: string): any {
+    public GetJsonEnum(enumName: string
+        , modelAssemblyName: string = this._modelAssemblyName
+        , enumNamespaceName: string = this._enumNamespaceName): any {
         $.getJSON('/Helpers/GetJsonFromEnum'
             , {
-                enumNamespace: Common._enumNamespaceName
-                , assemblyName: Common._modelAssemblyName
+                enumNamespace: this._enumNamespaceName
+                , assemblyName: this._modelAssemblyName
                 , enumName: enumName
             }
             , (data, textStatus, jqXHR) => {
-
-                if (common.EnableLogGlobal) {
-                    console.log('GetAddressTypes data', data);
-                }
-
-                return enumCache.Add('AddressType', data.Options);
+                return enumCache.Add(enumName, data.Options);
             });
     }
 

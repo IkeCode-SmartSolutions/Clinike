@@ -1,0 +1,384 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.ComponentModel" #>
+<#@ assembly name="System.ComponentModel.DataAnnotations" #>
+<#@ assembly name="$(TargetDir)IkeCode.Web.Core.dll" #>
+<#@ assembly name="$(TargetDir)IkeCode.Clinike.Data.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.ComponentModel.DataAnnotations" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="IkeCode.Web.Core.CustomAttributes" #>
+<#@ output extension=".ts" #>
+<#
+    var allClasses = GetAllClasses();
+    var allClassTypes = allClasses.Select(c => c.ClassType);
+ 
+    Write("// Interfaces\r\n");
+    WriteInterfaces(allClasses, allClassTypes);
+ 
+    Write("// Classes\r\n");
+    WriteClasses(allClasses, allClassTypes);
+#>
+<#+
+        class ClassDetails
+        {
+            public Type ClassType;
+            public PropertyInfo KeyProperty;
+            public PropertyInfo TimestampProperty;
+            public List<PropertyInfo> OtherProperties;
+        }
+ 
+        private IEnumerable<ClassDetails> GetAllClasses()
+        {
+			var allAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = allAssemblies
+				.SelectMany(assem => assem.GetTypes().Where(i => i.IsDefined(typeof(ExportToJavascriptAttribute))).ToList()).ToList();
+            var details = assemblies.Select(t => new ClassDetails
+                {
+                    ClassType = t,
+                    KeyProperty = GetKeyProperty(t),
+                    TimestampProperty = GetTimestampProperty(t),
+                    OtherProperties = GetOtherProperties(t)
+                }).ToArray();
+ 
+            return details;
+        }
+ 
+        private PropertyInfo GetKeyProperty(Type type)
+        {
+            return type.GetProperties()
+                .Where(p => p.IsDefined(typeof(KeyAttribute), true))
+                .FirstOrDefault();
+        }
+ 
+        private PropertyInfo GetTimestampProperty(Type type)
+        {
+            return type.GetProperties()
+                .Where(p => p.IsDefined(typeof(TimestampAttribute), true))
+                .FirstOrDefault();
+        }
+ 
+        private List<PropertyInfo> GetOtherProperties(Type type)
+        {
+            return type.GetProperties()
+                .Where(p => p.IsDefined(typeof(KeyAttribute), true) == false &&
+                    p.IsDefined(typeof(TimestampAttribute), true) == false).ToList();
+        }
+ 
+        private string GetTypeScriptType(Type type, IEnumerable<Type> allClasses)
+        {
+            if (type == typeof(bool))
+            {
+                return "boolean";
+            }
+            if (type == typeof(string))
+            {
+                return "string";
+            }
+            if (type == typeof(DateTime))
+            {
+                return "Date";
+            }
+            if (type == typeof(DateTimeOffset))
+            {
+                return "Date";
+            }
+            if (type == typeof(int))
+            {
+                return "number";
+            }
+            if (type == typeof(decimal))
+            {
+                return "number";
+            }
+            if (type == typeof(double))
+            {
+                return "number";
+            }
+            if (type == typeof(float))
+            {
+                return "number";
+            }
+            if (type == typeof(long))
+            {
+                return "number";
+            }
+            if (type.IsGenericType && type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            {
+                var genericType = type.GenericTypeArguments[0];
+                var match = allClasses.Where(c => c == genericType).FirstOrDefault();
+                if (match != null)
+                {
+                    return "Array<" + match.Name + ">";
+                }
+                return "Array<" + GetTypeScriptType(genericType, allClasses) + ">";
+            }
+            if (type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            {
+                return "Array<any>";
+            }
+            if (type.IsClass)
+            {
+                return "Object";
+            }
+            return "any";
+        }
+ 
+        private string GetKOTypeScriptType(Type type, IEnumerable<Type> allClasses)
+        {
+            if (type == typeof(bool))
+            {
+                return "KnockoutObservable<boolean>";
+            }
+            if (type == typeof(string))
+            {
+                return "KnockoutObservable<string>";
+            }
+            if (type == typeof(DateTime))
+            {
+                return "KnockoutObservable<Date>";
+            }
+            if (type == typeof(DateTimeOffset))
+            {
+                return "KnockoutObservable<Date>";
+            }
+            if (type == typeof(int))
+            {
+                return "KnockoutObservable<number>";
+            }
+            if (type == typeof(decimal))
+            {
+                return "KnockoutObservable<number>";
+            }
+            if (type == typeof(double))
+            {
+                return "KnockoutObservable<number>";
+            }
+            if (type == typeof(float))
+            {
+                return "KnockoutObservable<number>";
+            }
+            if (type == typeof(long))
+            {
+                return "KnockoutObservable<number>";
+            }
+            if (type.IsGenericType && type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            {
+                var genericType = type.GenericTypeArguments[0];
+                var match = allClasses.Where(c => c == genericType).FirstOrDefault();
+                if (match != null)
+                {
+                    return "KnockoutObservableArray<" + match.Name + ">";
+                }
+                return "KnockoutObservableArray<" + GetTypeScriptType(genericType, allClasses) + ">";
+            }
+            if (type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            {
+                return "KnockoutObservableArray<any>";
+            }
+            if (type.IsClass)
+            {
+                return "KnockoutObservable<Object>";
+            }
+            return "KnockoutObservable<any>";
+        }
+ 
+        private string GetKOConstructor(string name, Type type, IEnumerable<Type> allClasses)
+        {
+            if (type == typeof(bool))
+            {
+                return "ko.observable(data." + name + ")";
+            }
+            if (type == typeof(string))
+            {
+                return "ko.observable(data." + name + ")";
+            }
+            if (type == typeof(DateTime))
+            {
+                return "ko.observable(data." + name + ")";
+            }
+            if (type == typeof(DateTimeOffset))
+            {
+                return "ko.observable(data." + name + ")";
+            }
+            if (type == typeof(int))
+            {
+                return "ko.observable(data." + name + ")";
+            }
+            if (type == typeof(decimal))
+            {
+                return "ko.observable(data." + name + ")";
+            }
+            if (type == typeof(double))
+            {
+                return "ko.observable(data." + name + ")";
+            }
+            if (type == typeof(float))
+            {
+                return "ko.observable(data." + name + ")";
+            }
+            if (type == typeof(long))
+            {
+                return "ko.observable(data." + name + ")";
+            }
+            if (type.IsGenericType && type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            {
+                var genericType = type.GenericTypeArguments[0];
+                var match = allClasses.Where(c => c == genericType).FirstOrDefault();
+                if (match != null)
+                {
+                    return "ko.observableArray(data." + name + ")";
+                }
+                return "ko.observableArray(data." + name + ")";
+            }
+            if (type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            {
+                return "ko.observableArray(data." + name + ")";
+            }
+            if (type.IsClass)
+            {
+                return "ko.observable(data." + name + ")";
+            }
+ 
+            return "ko.observable(data." + name + ")";
+        }
+ 
+		private string GetKOConstructorWithoutBindValue(Type type, IEnumerable<Type> allClasses)
+        {
+            if (type == typeof(bool))
+            {
+                return "ko.observable()";
+            }
+            if (type == typeof(string))
+            {
+                return "ko.observable()";
+            }
+            if (type == typeof(DateTime))
+            {
+                return "ko.observable()";
+            }
+            if (type == typeof(DateTimeOffset))
+            {
+                return "ko.observable()";
+            }
+            if (type == typeof(int))
+            {
+                return "ko.observable()";
+            }
+            if (type == typeof(decimal))
+            {
+                return "ko.observable()";
+            }
+            if (type == typeof(double))
+            {
+                return "ko.observable()";
+            }
+            if (type == typeof(float))
+            {
+                return "ko.observable()";
+            }
+            if (type == typeof(long))
+            {
+                return "ko.observable()";
+            }
+            if (type.IsGenericType && type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            {
+                var genericType = type.GenericTypeArguments[0];
+                var match = allClasses.Where(c => c == genericType).FirstOrDefault();
+                if (match != null)
+                {
+                    return "ko.observableArray()";
+                }
+                return "ko.observableArray()";
+            }
+            if (type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+            {
+                return "ko.observableArray()";
+            }
+            if (type.IsClass)
+            {
+                return "ko.observable()";
+            }
+ 
+            return "ko.observable()";
+        }
+ 
+        private void WriteClasses(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
+        {
+            foreach (ClassDetails aClass in allClasses)
+            {
+                // Write a Knockout Class
+                Write("class " + aClass.ClassType.Name + "Poco {\r\n");
+                // Write the Properties
+                Write("    rowData: I" + aClass.ClassType.Name + ";\r\n\r\n");
+                foreach (PropertyInfo pi in aClass.OtherProperties)
+                {
+                    //Write("    {0}: {1};\r\n", pi.Name, GetKOTypeScriptType(pi.PropertyType, allClassTypes));
+					Write("    {0} = {1};\r\n", pi.Name, GetKOConstructorWithoutBindValue(pi.PropertyType, allClassTypes));
+                }
+ 
+                // Write the Constructor Method
+				Write("\n	constructor(data?: I" + aClass.ClassType.Name + ") {\r\n");
+				Write("		if(data) {\r\n");
+                Write("			this.rowData = data;\r\n");
+                foreach (PropertyInfo pi in aClass.OtherProperties)
+                {
+                    Write("			this.{0} = {1};\r\n", pi.Name, GetKOConstructor(pi.Name, pi.PropertyType, allClassTypes));
+                }
+				Write("		}\r\n");
+                Write("	}\r\n\r\n");
+ 
+                // Create toJS Method
+                Write("    toJSON():I" + aClass.ClassType.Name + " {\r\n");
+                Write("        var _js = ko.mapping.toJSON(this);\r\n");
+                if (aClass.KeyProperty != null)
+                {
+                    Write("        _js." + aClass.KeyProperty.Name + " = this.rowData." + aClass.KeyProperty.Name + ";\r\n");
+                }
+                if (aClass.TimestampProperty != null)
+                {
+                    Write("        _js." + aClass.TimestampProperty.Name + " = this.rowData." + aClass.TimestampProperty.Name + ";\r\n");
+                }
+                Write("        return _js;\r\n");
+                Write("    }\r\n\r\n");
+ 
+                // Create update() Method
+                Write("    Update(data: I" + aClass.ClassType.Name + ") {\r\n");
+                Write("        this.rowData = data;\r\n");
+                foreach (PropertyInfo pi in aClass.OtherProperties)
+                {
+                    Write("        this.{0}(data.{0});\r\n", pi.Name);
+                }
+                Write("    }\r\n");
+ 
+                // Close the Class
+                Write("}\r\n\r\n");
+            }
+        }
+ 
+        private void WriteInterfaces(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
+        {
+            foreach (ClassDetails aClass in allClasses)
+            {
+                // Write an Interface for Data
+                Write("interface I" + aClass.ClassType.Name + " {\r\n");
+ 
+                if (aClass.KeyProperty != null)
+                {
+                    Write("    {0}: {1};\r\n", aClass.KeyProperty.Name, GetTypeScriptType(aClass.KeyProperty.PropertyType, allClassTypes));
+                }
+                foreach (PropertyInfo pi in aClass.OtherProperties)
+                {
+                    Write("    {0}: {1};\r\n", pi.Name, GetTypeScriptType(pi.PropertyType, allClassTypes));
+                }
+                if (aClass.TimestampProperty != null)
+                {
+                    Write("    {0}: {1};\r\n", aClass.TimestampProperty.Name, GetTypeScriptType(aClass.TimestampProperty.PropertyType, allClassTypes));
+                }
+                Write("}\r\n\r\n");
+            }
+        }
+#>

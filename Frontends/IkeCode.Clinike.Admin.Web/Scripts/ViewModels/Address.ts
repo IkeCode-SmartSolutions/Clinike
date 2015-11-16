@@ -46,11 +46,11 @@ class AddressViewModel extends BaseViewModel {
     }
 
     public Save(): void {
-        var data = ko.mapping.toJSON(this);
+        //var data = this.toJSON();
 
-        if (common.EnableLogGlobal) {
-            console.log('ko.mapping.toJSON(this)', data);
-        }
+        //if (common.EnableLogGlobal) {
+            //console.log('ko.mapping.toJSON(this)', data);
+        //}
 
         //$.ajax({
         //    url: '/Address/Post'
@@ -83,7 +83,6 @@ class Address extends BaseDataGridModel implements IDataGridModel {
 
         this.addressViewModel = new AddressViewModel();
 
-        console.log(Common._modelAssemblyName);
         common.GetJsonEnum('AddressType');
 
         $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click',

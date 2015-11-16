@@ -1,11 +1,13 @@
 namespace IkeCode.Clinike.Data.Models
 {
     using IkeCode.Clinike.Data.Enums;
+    using IkeCode.Web.Core.CustomAttributes;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using System.ComponentModel.DataAnnotations;
     using System.Text.RegularExpressions;
 
+    [ExportToJavascript]
     public partial class Phone : BaseModel<Phone>
     {
         public Phone()

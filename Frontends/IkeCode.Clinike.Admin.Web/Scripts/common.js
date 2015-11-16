@@ -7,6 +7,8 @@
 "use strict";
 var Common = (function () {
     function Common() {
+        this._modelAssemblyName = '';
+        this._enumNamespaceName = '';
         this.EnableLogGlobal = false;
     }
     Common.prototype.init = function () {
@@ -135,24 +137,21 @@ var Common = (function () {
         return value === undefined || value == null ? defaultValue : value;
     };
     ;
-    Common.prototype.GetJsonEnum = function (enumName) {
+    Common.prototype.GetJsonEnum = function (enumName, modelAssemblyName, enumNamespaceName) {
+        if (modelAssemblyName === void 0) { modelAssemblyName = this._modelAssemblyName; }
+        if (enumNamespaceName === void 0) { enumNamespaceName = this._enumNamespaceName; }
         $.getJSON('/Helpers/GetJsonFromEnum', {
-            enumNamespace: Common._enumNamespaceName,
-            assemblyName: Common._modelAssemblyName,
+            enumNamespace: this._enumNamespaceName,
+            assemblyName: this._modelAssemblyName,
             enumName: enumName
         }, function (data, textStatus, jqXHR) {
-            if (common.EnableLogGlobal) {
-                console.log('GetAddressTypes data', data);
-            }
-            return enumCache.Add('AddressType', data.Options);
+            return enumCache.Add(enumName, data.Options);
         });
     };
     Common.MergeObjects = function (obj, obj2) {
         var result = $.extend({}, obj, obj2);
         return result;
     };
-    Common._modelAssemblyName = '';
-    Common._enumNamespaceName = '';
     return Common;
 })();
 var common = new Common();
