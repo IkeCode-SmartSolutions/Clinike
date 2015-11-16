@@ -135,6 +135,24 @@ var Common = (function () {
         return value === undefined || value == null ? defaultValue : value;
     };
     ;
+    Common.prototype.GetJsonEnum = function (enumName) {
+        $.getJSON('/Helpers/GetJsonFromEnum', {
+            enumNamespace: Common._enumNamespaceName,
+            assemblyName: Common._modelAssemblyName,
+            enumName: enumName
+        }, function (data, textStatus, jqXHR) {
+            if (common.EnableLogGlobal) {
+                console.log('GetAddressTypes data', data);
+            }
+            return enumCache.Add('AddressType', data.Options);
+        });
+    };
+    Common.MergeObjects = function (obj, obj2) {
+        var result = $.extend({}, obj, obj2);
+        return result;
+    };
+    Common._modelAssemblyName = '';
+    Common._enumNamespaceName = '';
     return Common;
 })();
 var common = new Common();

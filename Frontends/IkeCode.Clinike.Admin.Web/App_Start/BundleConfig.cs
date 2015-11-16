@@ -12,6 +12,7 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Orderer = new AsDefinedBundleOrderer();
             jsBundles.Include("~/Scripts/modernizr-{version}.js");
             jsBundles.Include("~/Scripts/jquery-{version}.js");
+            jsBundles.Include("~/Scripts/linq.js");
             jsBundles.Include("~/Scripts/bootstrap.min.js");
 
             //plugins
@@ -44,9 +45,11 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Include("~/Scripts/knockout-{version}.js");
             jsBundles.Include("~/Scripts/knockout.mapping-latest.js");
 
+            jsBundles.Include("~/Scripts/Models/EnumCache.js");
             jsBundles.Include("~/Scripts/common.js");
-            jsBundles.Include("~/Scripts/dataGridHelper.js");
-            jsBundles.Include("~/Scripts/ViewModels/baseDataGridModel.js");
+            jsBundles.Include("~/Scripts/DataGridHelper.js");
+            jsBundles.Include("~/Scripts/Models/BaseViewModel.js");
+            jsBundles.Include("~/Scripts/Models/BaseDataGridModel.js");
             bundles.Add(jsBundles);
 
             var styleBundle = new StyleBundle("~/cssBundles/styles");

@@ -321,6 +321,38 @@
     <Content Include="Content\img\ui-accordion-right.png" />
     <Content Include="Content\img\ui-left.png" />
     <Content Include="Content\img\ui-right.png" />
+    <Content Include="Scripts\Models\BaseDataGridModel.js">
+      <DependentUpon>BaseDataGridModel.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Models\BaseViewModel.js">
+      <DependentUpon>BaseViewModel.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Models\EnumCache.js">
+      <DependentUpon>EnumCache.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Models\Model.Enums.js">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Enums.tt</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Models\Model.Enums.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model.Enums.js</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\System\Collections\Generic\List.js" />
+    <Content Include="Scripts\System\Collections\Generic\List.min.js" />
+    <Content Include="Scripts\typings\System\Collections\Generic\List.js">
+      <DependentUpon>List.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\typings\System\Collections\IEqualityComparer.js">
+      <DependentUpon>IEqualityComparer.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\typings\System\Collections\IGrouping.js">
+      <DependentUpon>IGrouping.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\typings\System\Object.js">
+      <DependentUpon>Object.ts</DependentUpon>
+    </Content>
     <Content Include="Views\Person\_AddressEditor.cshtml" />
     <TypeScriptCompile Include="Scripts\DataGridHelper.ts" />
     <Content Include="Scripts\common.js">
@@ -527,16 +559,19 @@
     <Content Include="Scripts\plugins\jquery.slider.js" />
     <Content Include="Scripts\plugins\jquery.tabs.js" />
     <Content Include="Scripts\plugins\jquery.window.js" />
+    <TypeScriptCompile Include="Scripts\Models\BaseDataGridModel.ts" />
+    <TypeScriptCompile Include="Scripts\Models\EnumCache.ts" />
+    <TypeScriptCompile Include="Scripts\typings\System\Collections\Generic\List.ts" />
+    <TypeScriptCompile Include="Scripts\typings\System\Collections\IEqualityComparer.ts" />
+    <TypeScriptCompile Include="Scripts\typings\System\Collections\IGrouping.ts" />
+    <TypeScriptCompile Include="Scripts\typings\System\Object.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Address.ts" />
-    <TypeScriptCompile Include="Scripts\ViewModels\IDataGridModel.d.ts" />
+    <TypeScriptCompile Include="Scripts\Models\IDataGridModel.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Document.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.allgeneric.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Person.ts" />
     <Content Include="Scripts\ViewModels\Address.js">
       <DependentUpon>Address.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\ViewModels\BaseDataGridModel.js">
-      <DependentUpon>BaseDataGridModel.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\ViewModels\Document.js">
       <DependentUpon>Document.ts</DependentUpon>
@@ -630,8 +665,11 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.mapping\knockout.mapping.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
-    <TypeScriptCompile Include="Scripts\ViewModels\BaseDataGridModel.ts" />
+    <TypeScriptCompile Include="Scripts\Models\BaseViewModel.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Phone.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

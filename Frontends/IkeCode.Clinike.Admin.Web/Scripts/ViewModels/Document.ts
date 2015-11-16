@@ -2,6 +2,7 @@
 class Documents extends BaseDataGridModel implements IDataGridModel {
     _toolBarSelector: string = '#documentsToolbar';
     _gridSelector: string = '#documentsGrid';
+    _modalSelector: string = '#documentEditorModal';
 
     public LoadDataGrid(selector: string = this._gridSelector) {
         $(selector).datagrid({

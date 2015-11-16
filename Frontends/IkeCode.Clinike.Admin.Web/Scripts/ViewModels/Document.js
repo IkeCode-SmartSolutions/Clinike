@@ -10,6 +10,7 @@ var Documents = (function (_super) {
         _super.apply(this, arguments);
         this._toolBarSelector = '#documentsToolbar';
         this._gridSelector = '#documentsGrid';
+        this._modalSelector = '#documentEditorModal';
     }
     Documents.prototype.LoadDataGrid = function (selector) {
         if (selector === void 0) { selector = this._gridSelector; }

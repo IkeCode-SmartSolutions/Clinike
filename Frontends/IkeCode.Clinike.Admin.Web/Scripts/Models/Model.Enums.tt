@@ -1,0 +1,100 @@
+﻿<#@ template debug="true" hostspecific="true" #>
+<#@ output extension=".js" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Microsoft.VisualStudio.Shell.Interop.8.0" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="EnvDTE80" #>
+<#@ assembly name="VSLangProj" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="Microsoft.VisualStudio.Shell.Interop" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="EnvDTE80" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+/* This file is auto-generated. DO NOT CHANGE */
+
+window.Enums = { };
+
+<#
+Prepare(this);
+foreach(ProjectItem pi in FindProjectItemsIn(CurrentProject.ProjectItems.Item("Models"))) {
+	DumpEnumerationsFrom(pi);
+}
+#><#+
+static TextTransformation TT;
+static DTE Dte;
+static Project CurrentProject;
+
+IList<ProjectItem> FindProjectItemsIn(ProjectItem start) {
+	var list = new List<ProjectItem>();
+	FindProjectItemsIn(start, list);
+	return list;
+}
+
+static bool IsFolder(ProjectItem item) {
+    return (item.Kind == Constants.vsProjectItemKindPhysicalFolder);
+}
+
+void FindProjectItemsIn(ProjectItem start, IList<ProjectItem> list) {
+	foreach(ProjectItem item in start.ProjectItems) {
+		if(IsFolder(item)) {
+			FindProjectItemsIn(item, list);
+			continue;
+		}
+		list.Add(item);
+	}
+}
+
+void DumpEnumerationsFrom(ProjectItem file) {
+	var enumerations = new List<CodeEnum>();
+	FindEnum(file.FileCodeModel.CodeElements, enumerations);
+
+	if(enumerations.Count > 0) TT.WriteLine("// {0}",file.Name);
+
+	foreach(CodeEnum enumeration in enumerations) {
+		TT.Write("window.Enums.{0}=(new Enums())", enumeration.Name);
+		foreach(CodeElement ce in enumeration.Children) {
+			var cv = ce as CodeVariable;
+			if(cv == null) continue;
+			TT.Write("\r\n\t.add(\"{0}\", {1})", cv.Name, cv.InitExpression ?? "undefined");
+		}
+		TT.WriteLine(";\r\n");
+	}
+	
+
+}
+
+void Prepare(TextTransformation tt) {
+	TT = tt;
+    // Get the DTE service from the host
+    var serviceProvider = Host as IServiceProvider;
+    if (serviceProvider != null) {
+        Dte = serviceProvider.GetService(typeof(SDTE)) as DTE;
+    }
+
+	var projectItem = Dte.Solution.FindProjectItem(Host.TemplateFile);
+	CurrentProject = projectItem.ContainingProject;
+}
+
+private void FindEnum(CodeElements elements, IList<CodeEnum> enums)
+{
+	foreach (CodeElement element in elements)
+	{
+		CodeEnum enumeration = element as CodeEnum;
+		if (enumeration != null) enums.Add(enumeration);
+		FindEnum(element.Children, enums);
+	}	
+}
+
+public static ProjectItem FindProjectItem(string fileName)
+{
+    if (fileName == null) throw new ArgumentNullException("fileName");
+    return Dte.Solution.FindProjectItem(fileName);
+}
+
+#>

@@ -5,17 +5,9 @@
 ///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
 
 "use strict";
-class PhoneViewModel {
+class PhoneViewModel extends BaseViewModel {
     constructor(initialData: any) {
-        if (common.EnableLogGlobal) {
-            console.log('PhoneViewModel constructor');
-        }
-
-        ko.mapping.fromJS(initialData, {}, this);
-
-        if (common.EnableLogGlobal) {
-            console.log('PhoneViewModel initialData', initialData);
-        }
+        super();
     }
 
     public Save(): void {
@@ -48,15 +40,14 @@ class PhoneViewModel {
 class Phone extends BaseDataGridModel implements IDataGridModel {
     _toolBarSelector: string = '#phonesToolbar';
     _gridSelector: string = '#phonesGrid';
+    _modalSelector: string = '#phoneEditorModal';
 
     public LoadDataGrid(selector: string = this._gridSelector) {
 
         if (common.EnableLogGlobal) {
             console.log('phone.LoadDataGrid');
         }
-        console.log('this._gridSelector', this._gridSelector);
-        console.log('this._toolBarSelector', this._toolBarSelector);
-
+        
         $(selector).datagrid({
             idField: 'Id'
             , toolbar: this._toolBarSelector

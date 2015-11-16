@@ -4,6 +4,7 @@ namespace IkeCode.Clinike.Data.Models
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Text.RegularExpressions;
 
     public partial class Address : BaseModel<Address>
@@ -42,6 +43,12 @@ namespace IkeCode.Clinike.Data.Models
 
         [JsonConverter(typeof(StringEnumConverter))]
         public AddressType AddressType { get; set; }
+
+        [NotMapped]
+        public int AddressTypeId
+        {
+            get { return (int)AddressType; }
+        }
 
         public int PersonId { get; set; }
 

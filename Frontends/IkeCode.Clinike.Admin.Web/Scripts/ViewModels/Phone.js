@@ -9,15 +9,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var PhoneViewModel = (function () {
+var PhoneViewModel = (function (_super) {
+    __extends(PhoneViewModel, _super);
     function PhoneViewModel(initialData) {
-        if (common.EnableLogGlobal) {
-            console.log('PhoneViewModel constructor');
-        }
-        ko.mapping.fromJS(initialData, {}, this);
-        if (common.EnableLogGlobal) {
-            console.log('PhoneViewModel initialData', initialData);
-        }
+        _super.call(this);
     }
     PhoneViewModel.prototype.Save = function () {
         var data = ko.mapping.toJSON(this);
@@ -43,21 +38,20 @@ var PhoneViewModel = (function () {
         });
     };
     return PhoneViewModel;
-})();
+})(BaseViewModel);
 var Phone = (function (_super) {
     __extends(Phone, _super);
     function Phone() {
         _super.apply(this, arguments);
         this._toolBarSelector = '#phonesToolbar';
         this._gridSelector = '#phonesGrid';
+        this._modalSelector = '#phoneEditorModal';
     }
     Phone.prototype.LoadDataGrid = function (selector) {
         if (selector === void 0) { selector = this._gridSelector; }
         if (common.EnableLogGlobal) {
             console.log('phone.LoadDataGrid');
         }
-        console.log('this._gridSelector', this._gridSelector);
-        console.log('this._toolBarSelector', this._toolBarSelector);
         $(selector).datagrid({
             idField: 'Id',
             toolbar: this._toolBarSelector,

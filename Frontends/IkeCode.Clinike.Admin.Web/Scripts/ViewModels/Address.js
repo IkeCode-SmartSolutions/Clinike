@@ -4,47 +4,87 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AddressViewModel = (function () {
-    function AddressViewModel(initialData) {
-        if (common.EnableLogGlobal) {
-            console.log('AddressViewModel constructor');
-        }
-        ko.mapping.fromJS(initialData, {}, this);
+var AddressViewModel = (function (_super) {
+    __extends(AddressViewModel, _super);
+    function AddressViewModel() {
+        _super.call(this);
+        this.AddressTypes = ko.observableArray();
+        this.PersonId = ko.observable();
+        this.Street = ko.observable();
+        this.Number = ko.observable();
+        this.Neighborhood = ko.observable();
+        this.State = ko.observable();
+        this.City = ko.observable();
+        this.ZipCode = ko.observable();
+        this.Complement = ko.observable();
+        this.AddressType = ko.observable();
+        this.AddressTypeId = ko.observable();
+        this.AddressTypes(enumCache.Get("AddressType"));
+    }
+    AddressViewModel.prototype.SetData = function (initialData) {
+        var target = $(address._modalSelector).find('div[data-type="kobind"]').get(0);
+        ko.cleanNode(target);
+        this.AddressTypes(enumCache.Get("AddressType"));
+        ko.applyBindings(initialData, target);
+    };
+    AddressViewModel.prototype.RefreshData = function (initialData) {
         if (common.EnableLogGlobal) {
             console.log('AddressViewModel initialData', initialData);
         }
-    }
+        ko.mapping.fromJS(initialData, {}, this);
+        this.SetData(this);
+    };
+    AddressViewModel.prototype.ClearData = function () {
+        var target = $(address._modalSelector).find('div[data-type="kobind"]').get(0);
+        ko.cleanNode(target);
+        ko.applyBindings(new AddressViewModel(), target);
+    };
     AddressViewModel.prototype.Save = function () {
         var data = ko.mapping.toJSON(this);
         if (common.EnableLogGlobal) {
             console.log('ko.mapping.toJSON(this)', data);
         }
-        $.ajax({
-            url: '/Address/Post',
-            data: data,
-            type: 'POST',
-            contentType: 'application/json',
-            success: function (data, textStatus, jqXHR) {
-                if (common.EnableLogGlobal) {
-                    console.log('textStatus', textStatus);
-                    console.log('data', data);
-                }
-            },
-            error: function () {
-                if (common.EnableLogGlobal) {
-                    console.log('error');
-                }
-            }
-        });
+        //$.ajax({
+        //    url: '/Address/Post'
+        //    , data: data
+        //    , type: 'POST'
+        //    , contentType: 'application/json'
+        //    , success: function (data, textStatus, jqXHR) {
+        //        if (common.EnableLogGlobal) {
+        //            console.log('textStatus', textStatus);
+        //            console.log('data', data);
+        //        }
+        //    }
+        //    , error: function () {
+        //        if (common.EnableLogGlobal) {
+        //            console.log('error');
+        //        }
+        //    }
+        //});
     };
     return AddressViewModel;
-})();
+})(BaseViewModel);
 var Address = (function (_super) {
     __extends(Address, _super);
     function Address() {
-        _super.apply(this, arguments);
+        _super.call(this);
         this._toolBarSelector = '#addressesToolbar';
         this._gridSelector = '#addressesGrid';
+        this._modalSelector = '#addressEditorModal';
+        this.addressViewModel = new AddressViewModel();
+        console.log(Common._modelAssemblyName);
+        common.GetJsonEnum('AddressType');
+        $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click', function () {
+            address.addressViewModel.ClearData();
+            $('#addressEditorModal').modal('show');
+        });
+        $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click', function () {
+            address.addressViewModel.RefreshData(address.SelectedRow);
+            $('#addressEditorModal').modal('show');
+        });
+        $(this._toolBarSelector).find('button[data-buttontype="delete"]').bind('click', function () {
+            //address.Delete();
+        });
     }
     Address.prototype.LoadDataGrid = function (selector) {
         if (selector === void 0) { selector = this._gridSelector; }
@@ -61,6 +101,7 @@ var Address = (function (_super) {
                     { field: 'PersonId', hidden: true },
                     { field: 'DateIns', hidden: true },
                     { field: 'LastUpdate', hidden: true },
+                    { field: 'AddressTypeId', hidden: true },
                     { field: 'Street', title: 'Endereço', width: 200 },
                     { field: 'Number', title: 'Nº', width: 60 },
                     { field: 'Complement', title: 'Complemento', width: 110 },
@@ -85,6 +126,7 @@ var Address = (function (_super) {
             },
             onDblClickRow: function (index, row) {
                 address.OnClickRow(index, row);
+                $('#addressEditorModal').modal('show');
             },
             loader: function (param, success, error) {
                 dataGridHelper.Loader('/Address/GetList', { personId: person.Id }, success, error);
@@ -95,16 +137,14 @@ var Address = (function (_super) {
                 }
                 dataGridHelper.CollapseBoxAfterLoad(this);
                 $('[name="spanZipCode"]').mask('00000-000');
-                $(address._toolBarSelector).find('button[data-buttontype="add"], button[data-buttontype="edit"]')
-                    .bind('click', function () { $('#addressEditorModal').modal('show'); });
-                $(address._toolBarSelector).find('button[data-buttontype="delete"]').bind('click', function () { phone.Delete(); });
             }
         });
     };
     Address.prototype.OnClickRow = function (index, row) {
         this.SelectedIndex = index;
-        var model = new AddressViewModel(row);
-        dataGridHelper.OnClickRow(index, row, this._toolBarSelector, model, '#addressEditorModal');
+        this.SelectedRow = row;
+        this.addressViewModel.RefreshData(row);
+        $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
     };
     return Address;
 })(BaseDataGridModel);

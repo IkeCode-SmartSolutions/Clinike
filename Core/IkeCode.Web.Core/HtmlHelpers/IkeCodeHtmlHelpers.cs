@@ -1,14 +1,16 @@
-﻿using IkeCode.Web.Core.CustomAttributes;
-using IkeCode.Web.Core.Model.Interfaces;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Web.Routing;
-
-namespace System.Web.Mvc.Html
+﻿namespace System.Web.Mvc.Html
 {
+    using IkeCode.Web.Core.CustomAttributes;
+    using Newtonsoft.Json;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq.Expressions;
+    using System.Reflection;
+    using System.Text;
+    using System.Web.Routing;
+    using System.Linq;
+    using Collections.Generic;
+    using Helpers;
+
     public static class IkeCodeHtmlHelpers
     {
         public static MvcHtmlString RadioButtonForEnum<TModel, TProperty>(
@@ -113,6 +115,28 @@ namespace System.Web.Mvc.Html
         public static string Serialize(this object obj)
         {
             return JsonConvert.SerializeObject(obj, new JsonSerializerSettings() { Formatting = Formatting.None, NullValueHandling = NullValueHandling.Ignore });
+        }
+
+        /// <summary>
+        /// Returns a Javascript HTML that resister on window.Enum the desired C# Enum
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="helper"></param>
+        /// <returns>Use it like this -> Enum.EnumName.EnumValue, e.g.: Enum.Status.Completed</returns>
+        public static HtmlString GetEnumsAsJavascript<T>(this HtmlHelper helper) 
+            where T : struct
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<script type=\"text/javascript\">");
+            sb.AppendLine("if(!window.Enum) Enum = {};");
+
+            object enumeration = Activator.CreateInstance(typeof(T));
+            Dictionary<string, object> enums = typeof(T).GetFields().ToDictionary(x => x.Name, x => x.GetValue(enumeration));
+
+            sb.AppendLine("Enum." + typeof(T).Name + " = " + Json.Encode(enums) + " ;");
+            sb.AppendLine("</script>");
+
+            return new HtmlString(sb.ToString());
         }
     }
 }
