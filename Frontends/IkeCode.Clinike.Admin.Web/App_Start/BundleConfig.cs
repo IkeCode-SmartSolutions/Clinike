@@ -44,6 +44,7 @@ namespace IkeCode.Clinike.Admin.Web
 
             jsBundles.Include("~/Scripts/knockout-{version}.js");
             jsBundles.Include("~/Scripts/knockout.mapping-latest.js");
+            jsBundles.Include("~/Scripts/knockout.validation.js");
 
             jsBundles.Include("~/Scripts/Models/EnumCache.js");
             jsBundles.Include("~/Scripts/Models/PocoModels.js");

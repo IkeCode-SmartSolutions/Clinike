@@ -14,6 +14,7 @@ class PhoneViewModel extends PhonePoco implements IKoViewModel {
             console.log('PhoneViewModel -> initialData', initialData);
         }
 
+        ko.validation.init({ insertMessages: false });
         ko.mapping.fromJS(initialData, {}, this);
 
         var target = $(address._modalSelector).find('[data-type="kobind"]').get(0);

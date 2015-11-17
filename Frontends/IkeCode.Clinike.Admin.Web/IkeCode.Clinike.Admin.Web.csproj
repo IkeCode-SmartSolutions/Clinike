@@ -321,6 +321,13 @@
     <Content Include="Content\img\ui-accordion-right.png" />
     <Content Include="Content\img\ui-left.png" />
     <Content Include="Content\img\ui-right.png" />
+    <Content Include="Scripts\knockout.validation.js" />
+    <Content Include="Scripts\knockout.validation.min.js">
+      <DependentUpon>knockout.validation.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\knockout.validation.min.js.map">
+      <DependentUpon>knockout.validation.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\Models\BaseDataGridModel.js">
       <DependentUpon>BaseDataGridModel.ts</DependentUpon>
     </Content>
@@ -565,6 +572,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PocoModels.tt</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\Generic\List.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IEqualityComparer.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IGrouping.ts" />

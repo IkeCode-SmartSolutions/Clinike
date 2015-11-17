@@ -19,6 +19,7 @@ var PhoneViewModel = (function (_super) {
         if (common.EnableLogGlobal) {
             console.log('PhoneViewModel -> initialData', initialData);
         }
+        ko.validation.init({ insertMessages: false });
         ko.mapping.fromJS(initialData, {}, this);
         var target = $(address._modalSelector).find('[data-type="kobind"]').get(0);
         ko.cleanNode(target);

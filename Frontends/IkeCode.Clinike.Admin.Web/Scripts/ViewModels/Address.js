@@ -1,3 +1,8 @@
+///<reference path="../typings/jquery/jquery.d.ts" />
+///<reference path="../typings/jquery.plugins/jquery.easyui.d.ts" />
+///<reference path="../typings/jquery.plugins/jquery.mask.d.ts" />
+///<reference path="../typings/knockout/knockout.d.ts" />
+///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -21,9 +26,9 @@ var AddressViewModel = (function (_super) {
         this.AddressTypes(enumCache.Get("AddressType"));
     };
     AddressViewModel.prototype.Save = function () {
-        var data = this.toJSON();
+        var data = this.toJSON(this);
         //if (common.EnableLogGlobal) {
-        console.log('ko.mapping.toJSON(this)', data);
+        console.log('this.toJSON(this)', data);
         //}
         //$.ajax({
         //    url: '/Address/Post'
@@ -84,6 +89,7 @@ var Address = (function (_super) {
                     { field: 'AddressTypeId', hidden: true },
                     { field: 'Street', title: 'Endereço', width: 200 },
                     { field: 'Number', title: 'Nº', width: 60 },
+                    { field: 'Neighborhood', title: 'Bairro', width: 110 },
                     { field: 'Complement', title: 'Complemento', width: 110 },
                     {
                         field: 'ZipCode',
@@ -117,6 +123,8 @@ var Address = (function (_super) {
                 }
                 dataGridHelper.CollapseBoxAfterLoad(this);
                 $('[name="spanZipCode"]').mask('00000-000');
+                address.addressViewModel.SetData(new AddressViewModel());
+                $(address._modalSelector).modal('show');
             }
         });
     };

@@ -1,4 +1,10 @@
-﻿"use strict";
+﻿///<reference path="../typings/jquery/jquery.d.ts" />
+///<reference path="../typings/jquery.plugins/jquery.easyui.d.ts" />
+///<reference path="../typings/jquery.plugins/jquery.mask.d.ts" />
+///<reference path="../typings/knockout/knockout.d.ts" />
+///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
+
+"use strict";
 class AddressViewModel extends AddressPoco implements IKoViewModel {
 
     AddressTypes = ko.observableArray();
@@ -18,10 +24,10 @@ class AddressViewModel extends AddressPoco implements IKoViewModel {
     }
 
     public Save(): void {
-        var data = this.toJSON();
+        var data = this.toJSON(this);
 
         //if (common.EnableLogGlobal) {
-            console.log('ko.mapping.toJSON(this)', data);
+            console.log('this.toJSON(this)', data);
         //}
 
         //$.ajax({
@@ -92,6 +98,7 @@ class Address extends BaseDataGridModel implements IDataGridModel {
                 , { field: 'AddressTypeId', hidden: true }
                 , { field: 'Street', title: 'Endereço', width: 200 }
                 , { field: 'Number', title: 'Nº', width: 60 }
+                , { field: 'Neighborhood', title: 'Bairro', width: 110 }
                 , { field: 'Complement', title: 'Complemento', width: 110 }
                 , {
                     field: 'ZipCode'
@@ -126,6 +133,9 @@ class Address extends BaseDataGridModel implements IDataGridModel {
 
                 dataGridHelper.CollapseBoxAfterLoad(this);
                 $('[name="spanZipCode"]').mask('00000-000');
+
+                address.addressViewModel.SetData(new AddressViewModel());
+                $(address._modalSelector).modal('show');
             }
         });
     }
