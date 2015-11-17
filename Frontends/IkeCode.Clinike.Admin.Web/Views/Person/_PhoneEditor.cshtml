@@ -7,28 +7,30 @@
                 </button>
                 <h4 class="modal-title" id="phoneEditorModalLabel">Telefone</h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <form action="#"
-                          class="form-horizontal"
-                          id="_phoneForm"
-                          role="form">
+            <div data-type="kobind">
+                <div class="modal-body">
+                    <div class="row">
+                        <form action="#"
+                              class="form-horizontal"
+                              id="_phoneForm"
+                              role="form">
 
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Número</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" data-bind="value: Number">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Número</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" data-bind="value: Number">
+                                </div>
                             </div>
-                        </div>
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button id="phoneEditorModalSaveButton" class="btn btn-primary btn-label-left" data-bind="click: Save">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                    Salvar
-                </button>
+                <div class="modal-footer">
+                    <button id="phoneEditorModalSaveButton" class="btn btn-primary btn-label-left" data-bind="click: Save">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        Salvar
+                    </button>
+                </div>
             </div>
         </div>
     </div>

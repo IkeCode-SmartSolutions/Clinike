@@ -1,55 +1,27 @@
 ﻿"use strict";
-class AddressViewModel extends BaseViewModel {
+class AddressViewModel extends AddressPoco implements IKoViewModel {
 
     AddressTypes = ko.observableArray();
-
-    PersonId = ko.observable();
-    Street = ko.observable();
-    Number = ko.observable();
-    Neighborhood = ko.observable();
-    State = ko.observable();
-    City = ko.observable();
-    ZipCode = ko.observable();
-    Complement = ko.observable();
-    AddressType = ko.observable();
-    AddressTypeId = ko.observable();
-
-    constructor() {
-        super();
-
-        this.AddressTypes(enumCache.Get("AddressType"));
-    }
-
-    private SetData(initialData: any): void {
-        var target = $(address._modalSelector).find('div[data-type="kobind"]').get(0);
-        ko.cleanNode(target);
-
-        this.AddressTypes(enumCache.Get("AddressType"));
-
-        ko.applyBindings(initialData, target);
-    }
-
-    public RefreshData(initialData: any): void {
+    
+    public SetData(initialData: any): void {
         if (common.EnableLogGlobal) {
-            console.log('AddressViewModel initialData', initialData);
+            console.log('AddressViewModel -> initialData', initialData);
         }
-
+        
         ko.mapping.fromJS(initialData, {}, this);
 
-        this.SetData(this);
-    }
-
-    public ClearData() {
-        var target = $(address._modalSelector).find('div[data-type="kobind"]').get(0);
+        var target = $(address._modalSelector).find('[data-type="kobind"]').get(0);
         ko.cleanNode(target);
-        ko.applyBindings(new AddressViewModel(), target);
+        ko.applyBindings(this, target);
+
+        this.AddressTypes(enumCache.Get("AddressType"));
     }
 
     public Save(): void {
-        //var data = this.toJSON();
+        var data = this.toJSON();
 
         //if (common.EnableLogGlobal) {
-            //console.log('ko.mapping.toJSON(this)', data);
+            console.log('ko.mapping.toJSON(this)', data);
         //}
 
         //$.ajax({
@@ -87,14 +59,14 @@ class Address extends BaseDataGridModel implements IDataGridModel {
 
         $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click',
             () => {
-                address.addressViewModel.ClearData();
-                $('#addressEditorModal').modal('show');
+                address.addressViewModel.SetData(new AddressViewModel());
+                $(address._modalSelector).modal('show');
             });
 
         $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click',
             () => {
-                address.addressViewModel.RefreshData(address.SelectedRow);
-                $('#addressEditorModal').modal('show');
+                address.addressViewModel.SetData(address.SelectedRow);
+                $(address._modalSelector).modal('show');
             });
 
         $(this._toolBarSelector).find('button[data-buttontype="delete"]').bind('click',
@@ -142,7 +114,7 @@ class Address extends BaseDataGridModel implements IDataGridModel {
             }
             , onDblClickRow: function (index, row) {
                 address.OnClickRow(index, row);
-                $('#addressEditorModal').modal('show');
+                $(address._modalSelector).modal('show');
             }
             , loader: function (param, success, error) {
                 dataGridHelper.Loader('/Address/GetList', { personId: person.Id }, success, error);
@@ -161,7 +133,7 @@ class Address extends BaseDataGridModel implements IDataGridModel {
     private OnClickRow(index, row) {
         this.SelectedIndex = index;
         this.SelectedRow = row;
-        this.addressViewModel.RefreshData(row);
+        this.addressViewModel.SetData(row);
 
         $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
     }

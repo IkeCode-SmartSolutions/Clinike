@@ -7,42 +7,23 @@ var __extends = (this && this.__extends) || function (d, b) {
 var AddressViewModel = (function (_super) {
     __extends(AddressViewModel, _super);
     function AddressViewModel() {
-        _super.call(this);
+        _super.apply(this, arguments);
         this.AddressTypes = ko.observableArray();
-        this.PersonId = ko.observable();
-        this.Street = ko.observable();
-        this.Number = ko.observable();
-        this.Neighborhood = ko.observable();
-        this.State = ko.observable();
-        this.City = ko.observable();
-        this.ZipCode = ko.observable();
-        this.Complement = ko.observable();
-        this.AddressType = ko.observable();
-        this.AddressTypeId = ko.observable();
-        this.AddressTypes(enumCache.Get("AddressType"));
     }
     AddressViewModel.prototype.SetData = function (initialData) {
-        var target = $(address._modalSelector).find('div[data-type="kobind"]').get(0);
-        ko.cleanNode(target);
-        this.AddressTypes(enumCache.Get("AddressType"));
-        ko.applyBindings(initialData, target);
-    };
-    AddressViewModel.prototype.RefreshData = function (initialData) {
         if (common.EnableLogGlobal) {
-            console.log('AddressViewModel initialData', initialData);
+            console.log('AddressViewModel -> initialData', initialData);
         }
         ko.mapping.fromJS(initialData, {}, this);
-        this.SetData(this);
-    };
-    AddressViewModel.prototype.ClearData = function () {
-        var target = $(address._modalSelector).find('div[data-type="kobind"]').get(0);
+        var target = $(address._modalSelector).find('[data-type="kobind"]').get(0);
         ko.cleanNode(target);
-        ko.applyBindings(new AddressViewModel(), target);
+        ko.applyBindings(this, target);
+        this.AddressTypes(enumCache.Get("AddressType"));
     };
     AddressViewModel.prototype.Save = function () {
-        //var data = this.toJSON();
+        var data = this.toJSON();
         //if (common.EnableLogGlobal) {
-        //console.log('ko.mapping.toJSON(this)', data);
+        console.log('ko.mapping.toJSON(this)', data);
         //}
         //$.ajax({
         //    url: '/Address/Post'
@@ -63,7 +44,7 @@ var AddressViewModel = (function (_super) {
         //});
     };
     return AddressViewModel;
-})(BaseViewModel);
+})(AddressPoco);
 var Address = (function (_super) {
     __extends(Address, _super);
     function Address() {
@@ -74,12 +55,12 @@ var Address = (function (_super) {
         this.addressViewModel = new AddressViewModel();
         common.GetJsonEnum('AddressType');
         $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click', function () {
-            address.addressViewModel.ClearData();
-            $('#addressEditorModal').modal('show');
+            address.addressViewModel.SetData(new AddressViewModel());
+            $(address._modalSelector).modal('show');
         });
         $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click', function () {
-            address.addressViewModel.RefreshData(address.SelectedRow);
-            $('#addressEditorModal').modal('show');
+            address.addressViewModel.SetData(address.SelectedRow);
+            $(address._modalSelector).modal('show');
         });
         $(this._toolBarSelector).find('button[data-buttontype="delete"]').bind('click', function () {
             //address.Delete();
@@ -125,7 +106,7 @@ var Address = (function (_super) {
             },
             onDblClickRow: function (index, row) {
                 address.OnClickRow(index, row);
-                $('#addressEditorModal').modal('show');
+                $(address._modalSelector).modal('show');
             },
             loader: function (param, success, error) {
                 dataGridHelper.Loader('/Address/GetList', { personId: person.Id }, success, error);
@@ -142,7 +123,7 @@ var Address = (function (_super) {
     Address.prototype.OnClickRow = function (index, row) {
         this.SelectedIndex = index;
         this.SelectedRow = row;
-        this.addressViewModel.RefreshData(row);
+        this.addressViewModel.SetData(row);
         $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
     };
     return Address;

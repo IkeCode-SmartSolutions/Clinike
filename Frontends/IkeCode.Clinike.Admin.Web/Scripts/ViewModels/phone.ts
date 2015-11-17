@@ -5,9 +5,22 @@
 ///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
 
 "use strict";
-class PhoneViewModel extends BaseViewModel {
-    constructor(initialData: any) {
-        super();
+class PhoneViewModel extends PhonePoco implements IKoViewModel {
+
+    PhoneTypes = ko.observableArray();
+
+    public SetData(initialData: any): void {
+        if (common.EnableLogGlobal) {
+            console.log('PhoneViewModel -> initialData', initialData);
+        }
+
+        ko.mapping.fromJS(initialData, {}, this);
+
+        var target = $(address._modalSelector).find('[data-type="kobind"]').get(0);
+        ko.cleanNode(target);
+        ko.applyBindings(this, target);
+
+        this.PhoneTypes(enumCache.Get("PhoneType"));
     }
 
     public Save(): void {
@@ -17,23 +30,23 @@ class PhoneViewModel extends BaseViewModel {
             console.log('ko.mapping.toJSON(this)', data);
         }
 
-        $.ajax({
-            url: '/Phone/Post'
-            , data: data
-            , type: 'POST'
-            , contentType: 'application/json'
-            , success: function (data, textStatus, jqXHR) {
-                if (common.EnableLogGlobal) {
-                    console.log('textStatus', textStatus);
-                    console.log('data', data);
-                }
-            }
-            , error: function () {
-                if (common.EnableLogGlobal) {
-                    console.log('error');
-                }
-            }
-        });
+        //$.ajax({
+        //    url: '/Phone/Post'
+        //    , data: data
+        //    , type: 'POST'
+        //    , contentType: 'application/json'
+        //    , success: function (data, textStatus, jqXHR) {
+        //        if (common.EnableLogGlobal) {
+        //            console.log('textStatus', textStatus);
+        //            console.log('data', data);
+        //        }
+        //    }
+        //    , error: function () {
+        //        if (common.EnableLogGlobal) {
+        //            console.log('error');
+        //        }
+        //    }
+        //});
     }
 }
 
@@ -41,6 +54,32 @@ class Phone extends BaseDataGridModel implements IDataGridModel {
     _toolBarSelector: string = '#phonesToolbar';
     _gridSelector: string = '#phonesGrid';
     _modalSelector: string = '#phoneEditorModal';
+    phoneViewModel: PhoneViewModel;
+
+    constructor() {
+        super();
+
+        this.phoneViewModel = new PhoneViewModel();
+
+        common.GetJsonEnum('PhoneType');
+
+        $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click',
+            () => {
+                phone.phoneViewModel.SetData(new PhoneViewModel());
+                $(phone._modalSelector).modal('show');
+            });
+
+        $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click',
+            () => {
+                phone.phoneViewModel.SetData(address.SelectedRow);
+                $(phone._modalSelector).modal('show');
+            });
+
+        $(this._toolBarSelector).find('button[data-buttontype="delete"]').bind('click',
+            () => {
+                //phone.Delete();
+            });
+    }
 
     public LoadDataGrid(selector: string = this._gridSelector) {
 
@@ -98,9 +137,10 @@ class Phone extends BaseDataGridModel implements IDataGridModel {
 
     private OnClickRow(index, row) {
         this.SelectedIndex = index;
-        var model = new PhoneViewModel(row);
+        this.SelectedRow = row;
+        this.phoneViewModel.SetData(row);
 
-        dataGridHelper.OnClickRow(index, row, this._toolBarSelector, model, '#phoneEditorModal');
+        $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
     }
 
     public Edit() {
