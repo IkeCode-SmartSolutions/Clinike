@@ -16,7 +16,7 @@ namespace IkeCode.Clinike.Data.Models
         {
         }
 
-        [Required]
+        [Required(ErrorMessage = "Campo Rua é obrigatório")]
         [StringLength(250)]
         public string Street { get; set; }
 

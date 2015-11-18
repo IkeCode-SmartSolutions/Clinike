@@ -91,15 +91,13 @@ interface IPhone {
 
 // Classes
 class AddressPoco {
-    rowData: IAddress;
-
-    Street = ko.observable().extend({ required: true, minLength: 3 });
-    Number = ko.observable();
+    Street = ko.observable().extend({ required: { params: true, message: 'Campo Rua é obrigatório' } });
+    Number = ko.observable().extend({ required: { params: true, message: 'O Campo Number é obrigatório' } });
     Complement = ko.observable();
-    Neighborhood = ko.observable();
-    ZipCode = ko.observable();
-    City = ko.observable();
-    State = ko.observable();
+    Neighborhood = ko.observable().extend({ required: { params: true, message: 'O Campo Neighborhood é obrigatório' } });
+    ZipCode = ko.observable().extend({ required: { params: true, message: 'O Campo ZipCode é obrigatório' } });
+    City = ko.observable().extend({ required: { params: true, message: 'O Campo City é obrigatório' } });
+    State = ko.observable().extend({ required: { params: true, message: 'O Campo State é obrigatório' } });
     AddressType = ko.observable();
     AddressTypeId = ko.observable();
     PersonId = ko.observable();
@@ -114,7 +112,6 @@ class AddressPoco {
     }
 
     Update(data: IAddress) {
-        this.rowData = data;
         this.Street(data.Street);
         this.Number(data.Number);
         this.Complement(data.Complement);
@@ -133,8 +130,6 @@ class AddressPoco {
 }
 
 class DoctorPoco {
-    rowData: IDoctor;
-
     Id = ko.observable();
     AdmissionDate = ko.observable();
     Person = ko.observable();
@@ -147,7 +142,6 @@ class DoctorPoco {
     }
 
     Update(data: IDoctor) {
-        this.rowData = data;
         this.Id(data.Id);
         this.AdmissionDate(data.AdmissionDate);
         this.Person(data.Person);
@@ -157,9 +151,7 @@ class DoctorPoco {
 }
 
 class DocumentPoco {
-    rowData: IDocument;
-
-    Value = ko.observable();
+    Value = ko.observable().extend({ required: { params: true, message: 'O Campo Value é obrigatório' } });
     DocumentTypeId = ko.observable();
     PersonId = ko.observable();
     DocumentType = ko.observable();
@@ -174,7 +166,6 @@ class DocumentPoco {
     }
 
     Update(data: IDocument) {
-        this.rowData = data;
         this.Value(data.Value);
         this.DocumentTypeId(data.DocumentTypeId);
         this.PersonId(data.PersonId);
@@ -187,11 +178,9 @@ class DocumentPoco {
 }
 
 class LegalPersonPoco {
-    rowData: ILegalPerson;
-
     Id = ko.observable();
-    SocialName = ko.observable();
-    CompanyName = ko.observable();
+    SocialName = ko.observable().extend({ required: { params: true, message: 'O Campo SocialName é obrigatório' } });
+    CompanyName = ko.observable().extend({ required: { params: true, message: 'O Campo CompanyName é obrigatório' } });
     Person = ko.observable();
     DateIns = ko.observable();
     LastUpdate = ko.observable();
@@ -202,7 +191,6 @@ class LegalPersonPoco {
     }
 
     Update(data: ILegalPerson) {
-        this.rowData = data;
         this.Id(data.Id);
         this.SocialName(data.SocialName);
         this.CompanyName(data.CompanyName);
@@ -213,8 +201,6 @@ class LegalPersonPoco {
 }
 
 class NaturalPersonPoco {
-    rowData: INaturalPerson;
-
     Id = ko.observable();
     Gender = ko.observable();
     Birthdate = ko.observable();
@@ -228,7 +214,6 @@ class NaturalPersonPoco {
     }
 
     Update(data: INaturalPerson) {
-        this.rowData = data;
         this.Id(data.Id);
         this.Gender(data.Gender);
         this.Birthdate(data.Birthdate);
@@ -239,10 +224,8 @@ class NaturalPersonPoco {
 }
 
 class PersonPoco {
-    rowData: IPerson;
-
-    Name = ko.observable();
-    Email = ko.observable();
+    Name = ko.observable().extend({ required: { params: true, message: 'O Campo Name é obrigatório' } });
+    Email = ko.observable().extend({ required: { params: true, message: 'O Campo Email é obrigatório' } });
     ProfileImage = ko.observable();
     ProfileImageUrl = ko.observable();
     Doctor = ko.observable();
@@ -261,7 +244,6 @@ class PersonPoco {
     }
 
     Update(data: IPerson) {
-        this.rowData = data;
         this.Name(data.Name);
         this.Email(data.Email);
         this.ProfileImage(data.ProfileImage);
@@ -279,9 +261,7 @@ class PersonPoco {
 }
 
 class PhonePoco {
-    rowData: IPhone;
-
-    Number = ko.observable();
+    Number = ko.observable().extend({ required: { params: true, message: 'O Campo Number é obrigatório' } });
     PhoneType = ko.observable();
     PersonId = ko.observable();
     Person = ko.observable();
@@ -295,7 +275,6 @@ class PhonePoco {
     }
 
     Update(data: IPhone) {
-        this.rowData = data;
         this.Number(data.Number);
         this.PhoneType(data.PhoneType);
         this.PersonId(data.PersonId);

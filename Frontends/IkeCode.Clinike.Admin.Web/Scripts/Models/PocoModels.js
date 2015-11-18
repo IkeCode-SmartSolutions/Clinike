@@ -4,13 +4,13 @@
 // Classes
 var AddressPoco = (function () {
     function AddressPoco() {
-        this.Street = ko.observable().extend({ required: true, minLength: 3 });
-        this.Number = ko.observable();
+        this.Street = ko.observable().extend({ required: { params: true, message: 'Campo Rua é obrigatório' } });
+        this.Number = ko.observable().extend({ required: { params: true, message: 'O Campo Number é obrigatório' } });
         this.Complement = ko.observable();
-        this.Neighborhood = ko.observable();
-        this.ZipCode = ko.observable();
-        this.City = ko.observable();
-        this.State = ko.observable();
+        this.Neighborhood = ko.observable().extend({ required: { params: true, message: 'O Campo Neighborhood é obrigatório' } });
+        this.ZipCode = ko.observable().extend({ required: { params: true, message: 'O Campo ZipCode é obrigatório' } });
+        this.City = ko.observable().extend({ required: { params: true, message: 'O Campo City é obrigatório' } });
+        this.State = ko.observable().extend({ required: { params: true, message: 'O Campo State é obrigatório' } });
         this.AddressType = ko.observable();
         this.AddressTypeId = ko.observable();
         this.PersonId = ko.observable();
@@ -24,7 +24,6 @@ var AddressPoco = (function () {
         return _js;
     };
     AddressPoco.prototype.Update = function (data) {
-        this.rowData = data;
         this.Street(data.Street);
         this.Number(data.Number);
         this.Complement(data.Complement);
@@ -55,7 +54,6 @@ var DoctorPoco = (function () {
         return _js;
     };
     DoctorPoco.prototype.Update = function (data) {
-        this.rowData = data;
         this.Id(data.Id);
         this.AdmissionDate(data.AdmissionDate);
         this.Person(data.Person);
@@ -66,7 +64,7 @@ var DoctorPoco = (function () {
 })();
 var DocumentPoco = (function () {
     function DocumentPoco() {
-        this.Value = ko.observable();
+        this.Value = ko.observable().extend({ required: { params: true, message: 'O Campo Value é obrigatório' } });
         this.DocumentTypeId = ko.observable();
         this.PersonId = ko.observable();
         this.DocumentType = ko.observable();
@@ -80,7 +78,6 @@ var DocumentPoco = (function () {
         return _js;
     };
     DocumentPoco.prototype.Update = function (data) {
-        this.rowData = data;
         this.Value(data.Value);
         this.DocumentTypeId(data.DocumentTypeId);
         this.PersonId(data.PersonId);
@@ -95,8 +92,8 @@ var DocumentPoco = (function () {
 var LegalPersonPoco = (function () {
     function LegalPersonPoco() {
         this.Id = ko.observable();
-        this.SocialName = ko.observable();
-        this.CompanyName = ko.observable();
+        this.SocialName = ko.observable().extend({ required: { params: true, message: 'O Campo SocialName é obrigatório' } });
+        this.CompanyName = ko.observable().extend({ required: { params: true, message: 'O Campo CompanyName é obrigatório' } });
         this.Person = ko.observable();
         this.DateIns = ko.observable();
         this.LastUpdate = ko.observable();
@@ -106,7 +103,6 @@ var LegalPersonPoco = (function () {
         return _js;
     };
     LegalPersonPoco.prototype.Update = function (data) {
-        this.rowData = data;
         this.Id(data.Id);
         this.SocialName(data.SocialName);
         this.CompanyName(data.CompanyName);
@@ -130,7 +126,6 @@ var NaturalPersonPoco = (function () {
         return _js;
     };
     NaturalPersonPoco.prototype.Update = function (data) {
-        this.rowData = data;
         this.Id(data.Id);
         this.Gender(data.Gender);
         this.Birthdate(data.Birthdate);
@@ -142,8 +137,8 @@ var NaturalPersonPoco = (function () {
 })();
 var PersonPoco = (function () {
     function PersonPoco() {
-        this.Name = ko.observable();
-        this.Email = ko.observable();
+        this.Name = ko.observable().extend({ required: { params: true, message: 'O Campo Name é obrigatório' } });
+        this.Email = ko.observable().extend({ required: { params: true, message: 'O Campo Email é obrigatório' } });
         this.ProfileImage = ko.observable();
         this.ProfileImageUrl = ko.observable();
         this.Doctor = ko.observable();
@@ -161,7 +156,6 @@ var PersonPoco = (function () {
         return _js;
     };
     PersonPoco.prototype.Update = function (data) {
-        this.rowData = data;
         this.Name(data.Name);
         this.Email(data.Email);
         this.ProfileImage(data.ProfileImage);
@@ -180,7 +174,7 @@ var PersonPoco = (function () {
 })();
 var PhonePoco = (function () {
     function PhonePoco() {
-        this.Number = ko.observable();
+        this.Number = ko.observable().extend({ required: { params: true, message: 'O Campo Number é obrigatório' } });
         this.PhoneType = ko.observable();
         this.PersonId = ko.observable();
         this.Person = ko.observable();
@@ -193,7 +187,6 @@ var PhonePoco = (function () {
         return _js;
     };
     PhonePoco.prototype.Update = function (data) {
-        this.rowData = data;
         this.Number(data.Number);
         this.PhoneType(data.PhoneType);
         this.PersonId(data.PersonId);

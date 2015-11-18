@@ -29,7 +29,7 @@
     WriteInterfaces(allClasses, allClassTypes);
  
     Write("// Classes\r\n");
-    WriteClasses(allClasses, allClassTypes);
+    WriteClasses2(allClasses, allClassTypes);
 #>
 <#+
         class ClassDetails
@@ -38,6 +38,87 @@
             public PropertyInfo KeyProperty;
             public PropertyInfo TimestampProperty;
             public List<PropertyInfo> OtherProperties;
+            public List<KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>>> Properties2;
+        }
+
+		private void WriteClasses2(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
+        {
+            foreach (ClassDetails aClass in allClasses)
+            {
+                Write("class " + aClass.ClassType.Name + "Poco {\r\n");
+                foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi in aClass.Properties2)
+                {
+                    Write(string.Format("    {0} = {1}", pi.Key.Name, GetKOType(pi.Key.PropertyType, allClassTypes)));
+					//Write(".extend({notify:'always'})");
+                    if (pi.Value.Count() > 0)
+                    {
+                        foreach (var attr in pi.Value)
+                        {
+                            if (attr.AttributeType.Equals(typeof(RequiredAttribute)))
+                            {
+                                Write(".extend({ required: { params: true");
+
+                                var message = attr.NamedArguments.FirstOrDefault(i => i.MemberName == "ErrorMessage");
+                                if (message != null 
+                                    && message.TypedValue != null
+                                    && message.TypedValue.Value != null
+                                    && !string.IsNullOrWhiteSpace(message.TypedValue.Value.ToString()))
+                                {
+									var typeValue = message.TypedValue.Value.ToString();
+									//var msg = SpecialCharacterToHtmlEntities(typeValue);
+                                    Write(string.Format(", message: '{0}'", typeValue));
+                                }
+								else
+								{
+									var format = "O Campo {0} é obrigatório";
+									var msg = string.Format(format, pi.Key.Name);
+									Write(string.Format(", message: '{0}'", msg));
+								}
+
+                                Write(" } })");
+                            }
+
+                            //if (attr.AttributeType.Equals(typeof(RequiredAttribute)))
+                            //{
+                            //    Write(".extend({ required: true })");
+                            //}
+                        }
+                    }
+                    Write(";\r\n");
+                }
+
+                // Create toJS Method
+                Write("\r\n    toJSON(data): I" + aClass.ClassType.Name + " {\r\n");
+                Write("        var _js = ko.mapping.toJSON(data);\r\n");
+                Write("        return _js;\r\n");
+                Write("    }\r\n\r\n");
+
+                // Create update() Method
+                Write("    Update(data: I" + aClass.ClassType.Name + ") {\r\n");
+                foreach (PropertyInfo pi in aClass.OtherProperties)
+                {
+                    Write(string.Format("        this.{0}(data.{0});\r\n", pi.Name));
+                }
+                Write("    }\r\n");
+
+                // Close the Class
+                Write("}\r\n\r\n");
+            }
+        }
+
+		private List<KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>>> GetPropertiesWithAttributes(Type type)
+        {
+            var props = type.GetProperties().ToList();
+            var result = new List<KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>>>();
+
+            foreach (var prop in props)
+            {
+                var attrs = prop.CustomAttributes;
+                var propWithAttributes = new KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>>(prop, attrs);
+                result.Add(propWithAttributes);
+            }
+
+            return result;
         }
  
         private IEnumerable<ClassDetails> GetAllClasses()
@@ -50,7 +131,8 @@
                     ClassType = t,
                     KeyProperty = GetKeyProperty(t),
                     TimestampProperty = GetTimestampProperty(t),
-                    OtherProperties = GetOtherProperties(t)
+                    OtherProperties = GetOtherProperties(t),
+					Properties2 = GetPropertiesWithAttributes(t)
                 }).ToArray();
  
             return details;
@@ -75,6 +157,86 @@
             return type.GetProperties()
                 .Where(p => p.IsDefined(typeof(KeyAttribute), true) == false &&
                     p.IsDefined(typeof(TimestampAttribute), true) == false).ToList();
+        }
+ 
+        private void WriteClasses(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
+        {
+            foreach (ClassDetails aClass in allClasses)
+            {
+                // Write a Knockout Class
+                Write("class " + aClass.ClassType.Name + "Poco {\r\n");
+                foreach (PropertyInfo pi in aClass.OtherProperties)
+                {
+                    //Write("    {0}: {1};\r\n", pi.Name, GetKOTypeScriptType(pi.PropertyType, allClassTypes));
+					Write("    {0} = {1};\r\n", pi.Name, GetKOType(pi.PropertyType, allClassTypes));
+                }
+ 
+                // Write the Constructor Method
+				//Write("\n	constructor(data?: I" + aClass.ClassType.Name + ") {\r\n");
+				//Write("		if(data) {\r\n");
+                //Write("			this.rowData = data;\r\n");
+                //foreach (PropertyInfo pi in aClass.OtherProperties)
+                //{
+                //    Write("			this.{0}(data.{0});\r\n", pi.Name);
+                //}
+				//Write("		}\r\n");
+                //Write("	}\r\n");
+ 
+				//Write("\r\n     protected InternalSetData(initialData: any, selector: string) {");
+				//Write("\r\n		ko.mapping.fromJS(initialData, {}, this);");
+				//Write("\r\n		var target = $(selector).find('[data-type=\"kobind\"]').get(0);");
+				//Write("\r\n		ko.cleanNode(target);");
+				//Write("\r\n		ko.applyBindings(initialData, target);");
+				//Write("\r\n     };\r\n");
+
+                // Create toJS Method
+                Write("\r\n    toJSON(data): I" + aClass.ClassType.Name + " {\r\n");
+                Write("        var _js = ko.mapping.toJSON(data);\r\n");
+                if (aClass.KeyProperty != null)
+                {
+                    Write("        _js." + aClass.KeyProperty.Name + " = this.rowData." + aClass.KeyProperty.Name + ";\r\n");
+                }
+                if (aClass.TimestampProperty != null)
+                {
+                    Write("        _js." + aClass.TimestampProperty.Name + " = this.rowData." + aClass.TimestampProperty.Name + ";\r\n");
+                }
+                Write("        return _js;\r\n");
+                Write("    }\r\n\r\n");
+ 
+                // Create update() Method
+                Write("    Update(data: I" + aClass.ClassType.Name + ") {\r\n");
+                foreach (PropertyInfo pi in aClass.OtherProperties)
+                {
+                    Write("        this.{0}(data.{0});\r\n", pi.Name);
+                }
+                Write("    }\r\n");
+ 
+                // Close the Class
+                Write("}\r\n\r\n");
+            }
+        }
+ 
+        private void WriteInterfaces(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
+        {
+            foreach (ClassDetails aClass in allClasses)
+            {
+                // Write an Interface for Data
+                Write("interface I" + aClass.ClassType.Name + " {\r\n");
+ 
+                if (aClass.KeyProperty != null)
+                {
+                    Write("    {0}: {1};\r\n", aClass.KeyProperty.Name, GetTypeScriptType(aClass.KeyProperty.PropertyType, allClassTypes));
+                }
+                foreach (PropertyInfo pi in aClass.OtherProperties)
+                {
+                    Write("    {0}: {1};\r\n", pi.Name, GetTypeScriptType(pi.PropertyType, allClassTypes));
+                }
+                if (aClass.TimestampProperty != null)
+                {
+                    Write("    {0}: {1};\r\n", aClass.TimestampProperty.Name, GetTypeScriptType(aClass.TimestampProperty.PropertyType, allClassTypes));
+                }
+                Write("}\r\n\r\n");
+            }
         }
  
         private string GetTypeScriptType(Type type, IEnumerable<Type> allClasses)
@@ -314,87 +476,65 @@
  
             return "ko.observable()";
         }
- 
-        private void WriteClasses(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
-        {
-            foreach (ClassDetails aClass in allClasses)
-            {
-                // Write a Knockout Class
-                Write("class " + aClass.ClassType.Name + "Poco {\r\n");
-                // Write the Properties
-                Write("    rowData: I" + aClass.ClassType.Name + ";\r\n\r\n");
-                foreach (PropertyInfo pi in aClass.OtherProperties)
-                {
-                    //Write("    {0}: {1};\r\n", pi.Name, GetKOTypeScriptType(pi.PropertyType, allClassTypes));
-					Write("    {0} = {1};\r\n", pi.Name, GetKOType(pi.PropertyType, allClassTypes));
-                }
- 
-                // Write the Constructor Method
-				//Write("\n	constructor(data?: I" + aClass.ClassType.Name + ") {\r\n");
-				//Write("		if(data) {\r\n");
-                //Write("			this.rowData = data;\r\n");
-                //foreach (PropertyInfo pi in aClass.OtherProperties)
-                //{
-                //    Write("			this.{0}(data.{0});\r\n", pi.Name);
-                //}
-				//Write("		}\r\n");
-                //Write("	}\r\n");
- 
-				//Write("\r\n     protected InternalSetData(initialData: any, selector: string) {");
-				//Write("\r\n		ko.mapping.fromJS(initialData, {}, this);");
-				//Write("\r\n		var target = $(selector).find('[data-type=\"kobind\"]').get(0);");
-				//Write("\r\n		ko.cleanNode(target);");
-				//Write("\r\n		ko.applyBindings(initialData, target);");
-				//Write("\r\n     };\r\n");
 
-                // Create toJS Method
-                Write("\r\n    toJSON(data): I" + aClass.ClassType.Name + " {\r\n");
-                Write("        var _js = ko.mapping.toJSON(data);\r\n");
-                if (aClass.KeyProperty != null)
-                {
-                    Write("        _js." + aClass.KeyProperty.Name + " = this.rowData." + aClass.KeyProperty.Name + ";\r\n");
-                }
-                if (aClass.TimestampProperty != null)
-                {
-                    Write("        _js." + aClass.TimestampProperty.Name + " = this.rowData." + aClass.TimestampProperty.Name + ";\r\n");
-                }
-                Write("        return _js;\r\n");
-                Write("    }\r\n\r\n");
- 
-                // Create update() Method
-                Write("    Update(data: I" + aClass.ClassType.Name + ") {\r\n");
-                Write("        this.rowData = data;\r\n");
-                foreach (PropertyInfo pi in aClass.OtherProperties)
-                {
-                    Write("        this.{0}(data.{0});\r\n", pi.Name);
-                }
-                Write("    }\r\n");
- 
-                // Close the Class
-                Write("}\r\n\r\n");
-            }
-        }
- 
-        private void WriteInterfaces(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
+		private string SpecialCharacterToHtmlEntities(string text)
         {
-            foreach (ClassDetails aClass in allClasses)
-            {
-                // Write an Interface for Data
-                Write("interface I" + aClass.ClassType.Name + " {\r\n");
- 
-                if (aClass.KeyProperty != null)
-                {
-                    Write("    {0}: {1};\r\n", aClass.KeyProperty.Name, GetTypeScriptType(aClass.KeyProperty.PropertyType, allClassTypes));
-                }
-                foreach (PropertyInfo pi in aClass.OtherProperties)
-                {
-                    Write("    {0}: {1};\r\n", pi.Name, GetTypeScriptType(pi.PropertyType, allClassTypes));
-                }
-                if (aClass.TimestampProperty != null)
-                {
-                    Write("    {0}: {1};\r\n", aClass.TimestampProperty.Name, GetTypeScriptType(aClass.TimestampProperty.PropertyType, allClassTypes));
-                }
-                Write("}\r\n\r\n");
-            }
+            text = text.Replace("¡", "&iexcl;");
+            text = text.Replace("¿", "&iquest;");
+            text = text.Replace("'", " &apos; ");
+
+            text = text.Replace("á", "&aacute;");
+            text = text.Replace("é", "&eacute;");
+            text = text.Replace("í", "&iacute;");
+            text = text.Replace("ó", "&oacute;");
+            text = text.Replace("ú", "&uacute;");
+            text = text.Replace("ñ", "&ntilde;");
+            text = text.Replace("ç", "&ccedil;");
+
+            text = text.Replace("Á", "&Aacute;");
+            text = text.Replace("É", "&Eacute;");
+            text = text.Replace("Í", "&Iacute;");
+            text = text.Replace("Ó", "&Oacute;");
+            text = text.Replace("Ú", "&Uacute;");
+            text = text.Replace("Ñ", "&Ntilde;");
+            text = text.Replace("Ç", "&Ccedil;");
+
+            text = text.Replace("à", "&agrave;");
+            text = text.Replace("è", "&egrave;");
+            text = text.Replace("ì", "&igrave;");
+            text = text.Replace("ò", "&ograve;");
+            text = text.Replace("ù", "&ugrave;");
+
+            text = text.Replace("À", "&Agrave;");
+            text = text.Replace("È", "&Egrave;");
+            text = text.Replace("Ì", "&Igrave;");
+            text = text.Replace("Ò", "&Ograve;");
+            text = text.Replace("Ù", "&Ugrave;");
+
+            text = text.Replace("ä", "&auml;");
+            text = text.Replace("ë", "&euml;");
+            text = text.Replace("ï", "&iuml;");
+            text = text.Replace("ö", "&ouml;");
+            text = text.Replace("ü", "&uuml;");
+
+            text = text.Replace("Ä", "&Auml;");
+            text = text.Replace("Ë", "&Euml;");
+            text = text.Replace("Ï", "&Iuml;");
+            text = text.Replace("Ö", "&Ouml;");
+            text = text.Replace("Ü", "&Uuml;");
+
+            text = text.Replace("â", "&acirc;");
+            text = text.Replace("ê", "&ecirc;");
+            text = text.Replace("î", "&icirc;");
+            text = text.Replace("ô", "&ocirc;");
+            text = text.Replace("û", "&ucirc;");
+
+            text = text.Replace("Â", "&Acirc;");
+            text = text.Replace("Ê", "&Ecirc;");
+            text = text.Replace("Î", "&Icirc;");
+            text = text.Replace("Ô", "&Ocirc;");
+            text = text.Replace("Û", "&Ucirc;");
+
+            return text;
         }
 #>

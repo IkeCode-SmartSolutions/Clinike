@@ -27,12 +27,12 @@
 
                         <div class="form-group">
                             <div class="col-sm-10">
-                                <label class="control-label">Endereço <span data-bind="validationMessage: Street"></span></label>
-                                <input type="text" class="form-control" data-bind="value: Street">
+                                <label class="control-label">Endereço</label>
+                                <input type="text" class="form-control" data-bind="value: Street, valueUpdate: 'blur'">
                             </div>
                             <div class="col-sm-2">
                                 <label class="control-label">Nº</label>
-                                <input type="text" class="form-control" data-bind="value: Number">
+                                <input type="text" class="form-control data-bind="value: Number">
                             </div>
                         </div>
 
@@ -52,7 +52,7 @@
                                 <label class="control-label">Cidade</label>
                                 <input type="text" class="form-control" data-bind="value: City">
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-sm-2">
                                 <label class="control-label">UF</label>
                                 <input type="text" class="form-control" data-bind="value: State">
                             </div>

@@ -13,6 +13,8 @@ class AddressViewModel extends AddressPoco implements IKoViewModel {
         if (common.EnableLogGlobal) {
             console.log('AddressViewModel -> initialData', initialData);
         }
+
+        //ko.validation.init({ insertMessages: false });
         
         ko.mapping.fromJS(initialData, {}, this);
 
