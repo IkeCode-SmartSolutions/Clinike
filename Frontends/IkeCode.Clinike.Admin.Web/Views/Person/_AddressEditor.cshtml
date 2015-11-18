@@ -27,38 +27,38 @@
 
                         <div class="form-group">
                             <div class="col-sm-10">
-                                <label class="control-label">Endereço</label>
+                                <label class="control-label">Endereço</label><span class="has-error" data-bind="validationMessage: Street"></span>
                                 <input type="text" class="form-control" data-bind="value: Street, valueUpdate: 'blur'">
                             </div>
                             <div class="col-sm-2">
-                                <label class="control-label">Nº</label>
-                                <input type="text" class="form-control data-bind="value: Number">
+                                <label class="control-label">Nº</label> <span class="has-error" data-bind="validationMessage: Number"></span>
+                                <input type="text" class="form-control" data-bind="value: Number, valueUpdate: 'blur'">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-4">
-                                <label class="control-label">Complemento</label>
-                                <input type="text" class="form-control" data-bind="value: Complement">
+                                <label class="control-label">Complemento</label><span class="has-error" data-bind="validationMessage: Complement"></span>
+                                <input type="text" class="form-control" data-bind="value: Complement, valueUpdate: 'blur'">
                             </div>
                             <div class="col-sm-6">
-                                <label class="control-label">Bairro</label>
-                                <input type="text" class="form-control" data-bind="value: Neighborhood">
+                                <label class="control-label">Bairro</label><span class="has-error" data-bind="validationMessage: Neighborhood"></span>
+                                <input type="text" class="form-control" data-bind="value: Neighborhood, valueUpdate: 'blur'">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-4">
-                                <label class="control-label">Cidade</label>
-                                <input type="text" class="form-control" data-bind="value: City">
+                                <label class="control-label">Cidade</label><span class="has-error" data-bind="validationMessage: City"></span>
+                                <input type="text" class="form-control" data-bind="value: City, valueUpdate: 'blur'">
                             </div>
                             <div class="col-sm-2">
-                                <label class="control-label">UF</label>
-                                <input type="text" class="form-control" data-bind="value: State">
+                                <label class="control-label">UF</label><span class="has-error" data-bind="validationMessage: State"></span>
+                                <input type="text" class="form-control" data-bind="value: State, valueUpdate: 'blur'">
                             </div>
                             <div class="col-sm-4">
-                                <label class="control-label">CEP</label>
-                                <input type="text" class="form-control" data-bind="value: ZipCode">
+                                <label class="control-label">CEP</label><span class="has-error" data-bind="validationMessage: ZipCode"></span>
+                                <input type="text" class="form-control" data-bind="value: ZipCode, valueUpdate: 'blur'">
                             </div>
                         </div>
                     </form>

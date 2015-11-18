@@ -14,7 +14,7 @@ class AddressViewModel extends AddressPoco implements IKoViewModel {
             console.log('AddressViewModel -> initialData', initialData);
         }
 
-        //ko.validation.init({ insertMessages: false });
+        ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
         
         ko.mapping.fromJS(initialData, {}, this);
 

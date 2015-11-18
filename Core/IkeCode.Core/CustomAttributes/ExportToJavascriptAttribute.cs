@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace IkeCode.Web.Core.CustomAttributes
+namespace IkeCode.Core.CustomAttributes
 {
     public class ExportToJavascriptAttribute : Attribute
     {

@@ -1,4 +1,5 @@
-﻿using IkeCode.Web.Core.Model.Interfaces;
+﻿using IkeCode.Core.CustomAttributes;
+using IkeCode.Web.Core.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -40,9 +41,11 @@ namespace IkeCode.Web.Core.Model
         public virtual int Id { get; set; }
 
         [Column(TypeName = "datetime")]
+        [DateTimeDatabaseGenerated]
         public DateTime DateIns { get; set; }
 
         [Column(TypeName = "datetime")]
+        [DateTimeDatabaseGenerated]
         public DateTime LastUpdate { get; set; }
 
         public virtual void PrepareToDatabase()

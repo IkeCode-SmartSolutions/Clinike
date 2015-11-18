@@ -38,7 +38,6 @@
     <Compile Include="Common\Tools.cs" />
     <Compile Include="CustomAttributes\DontParseHtml.cs" />
     <Compile Include="CustomAttributes\EnumRouteNameAttribute.cs" />
-    <Compile Include="CustomAttributes\ExportToJavascriptAttribute.cs" />
     <Compile Include="CustomAttributes\Helpers\EnumDisplayAttributeHelper.cs" />
     <Compile Include="CustomAttributes\Validators\DateRangeAttribute.cs" />
     <Compile Include="CustomAttributes\Validators\MaxDateAttribute.cs" />

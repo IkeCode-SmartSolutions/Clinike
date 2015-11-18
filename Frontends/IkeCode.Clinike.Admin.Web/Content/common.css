@@ -1,21 +1,9 @@
-﻿/*button#EditDialogSaveButton, button#AddRecordDialogSaveButton, button#DeleteDialogButton {
-    background-color: #60a917 !important;
-    color: #ffffff !important;
+﻿input.form-control.has-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #a94442;
 }
-
-button#EditDialogCancelButton, button#AddRecordDialogCancelButton {
-    margin: .5em .4em .5em 0;
-    cursor: pointer;
-    padding: 4px 12px;
-    text-align: center;
-    vertical-align: middle !important;
-    background-color: #d9d9d9;
-    border: 1px transparent solid;
-    color: #222222;
-    border-radius: 0;
-    display: inline-block;
-    outline: none;
-    font-family: 'Segoe UI Light_', 'Open Sans Light', Verdana, Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    line-height: 16px;
-}*/
+span.has-error {
+    color: #a94442;
+    font-size: smaller;
+}

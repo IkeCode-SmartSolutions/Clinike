@@ -19,7 +19,7 @@ var AddressViewModel = (function (_super) {
         if (common.EnableLogGlobal) {
             console.log('AddressViewModel -> initialData', initialData);
         }
-        //ko.validation.init({ insertMessages: false });
+        ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
         ko.mapping.fromJS(initialData, {}, this);
         var target = $(address._modalSelector).find('[data-type="kobind"]').get(0);
         ko.cleanNode(target);
