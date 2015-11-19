@@ -14,15 +14,15 @@ var AddressPoco = (function () {
         this.AddressType = ko.observable();
         this.PersonId = ko.observable();
         this.Person = ko.observable();
-        this.Id = ko.observable();
-        this.DateIns = ko.observable();
-        this.LastUpdate = ko.observable();
     }
     AddressPoco.prototype.toJSON = function (data) {
         var _js = ko.mapping.toJSON(data);
         return _js;
     };
     AddressPoco.prototype.Update = function (data) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
         this.Street(data.Street);
         this.Number(data.Number);
         this.Complement(data.Complement);
@@ -33,30 +33,24 @@ var AddressPoco = (function () {
         this.AddressType(data.AddressType);
         this.PersonId(data.PersonId);
         this.Person(data.Person);
-        this.Id(data.Id);
-        this.DateIns(data.DateIns);
-        this.LastUpdate(data.LastUpdate);
     };
     return AddressPoco;
 })();
 var DoctorPoco = (function () {
     function DoctorPoco() {
-        this.Id = ko.observable();
         this.AdmissionDate = ko.observable();
         this.Person = ko.observable();
-        this.DateIns = ko.observable();
-        this.LastUpdate = ko.observable();
     }
     DoctorPoco.prototype.toJSON = function (data) {
         var _js = ko.mapping.toJSON(data);
         return _js;
     };
     DoctorPoco.prototype.Update = function (data) {
-        this.Id(data.Id);
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
         this.AdmissionDate(data.AdmissionDate);
         this.Person(data.Person);
-        this.DateIns(data.DateIns);
-        this.LastUpdate(data.LastUpdate);
     };
     return DoctorPoco;
 })();
@@ -67,69 +61,60 @@ var DocumentPoco = (function () {
         this.PersonId = ko.observable();
         this.DocumentType = ko.observable();
         this.Person = ko.observable();
-        this.Id = ko.observable();
-        this.DateIns = ko.observable();
-        this.LastUpdate = ko.observable();
     }
     DocumentPoco.prototype.toJSON = function (data) {
         var _js = ko.mapping.toJSON(data);
         return _js;
     };
     DocumentPoco.prototype.Update = function (data) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
         this.Value(data.Value);
         this.DocumentTypeId(data.DocumentTypeId);
         this.PersonId(data.PersonId);
         this.DocumentType(data.DocumentType);
         this.Person(data.Person);
-        this.Id(data.Id);
-        this.DateIns(data.DateIns);
-        this.LastUpdate(data.LastUpdate);
     };
     return DocumentPoco;
 })();
 var LegalPersonPoco = (function () {
     function LegalPersonPoco() {
-        this.Id = ko.observable();
         this.SocialName = ko.observable().extend({ required: { params: true, message: 'O campo Nome Fantasia é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Nome Fantasia deve ter no máximo 250 caracteres' } });
         this.CompanyName = ko.observable().extend({ maxLength: { params: 250, message: 'O campo Razão Social deve ter no máximo 250 caracteres' } }).extend({ required: { params: true, message: 'O campo Razão Social é obrigatório' } });
         this.Person = ko.observable();
-        this.DateIns = ko.observable();
-        this.LastUpdate = ko.observable();
     }
     LegalPersonPoco.prototype.toJSON = function (data) {
         var _js = ko.mapping.toJSON(data);
         return _js;
     };
     LegalPersonPoco.prototype.Update = function (data) {
-        this.Id(data.Id);
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
         this.SocialName(data.SocialName);
         this.CompanyName(data.CompanyName);
         this.Person(data.Person);
-        this.DateIns(data.DateIns);
-        this.LastUpdate(data.LastUpdate);
     };
     return LegalPersonPoco;
 })();
 var NaturalPersonPoco = (function () {
     function NaturalPersonPoco() {
-        this.Id = ko.observable();
         this.Gender = ko.observable();
         this.Birthdate = ko.observable();
         this.Person = ko.observable();
-        this.DateIns = ko.observable();
-        this.LastUpdate = ko.observable();
     }
     NaturalPersonPoco.prototype.toJSON = function (data) {
         var _js = ko.mapping.toJSON(data);
         return _js;
     };
     NaturalPersonPoco.prototype.Update = function (data) {
-        this.Id(data.Id);
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
         this.Gender(data.Gender);
         this.Birthdate(data.Birthdate);
         this.Person(data.Person);
-        this.DateIns(data.DateIns);
-        this.LastUpdate(data.LastUpdate);
     };
     return NaturalPersonPoco;
 })();
@@ -144,15 +129,15 @@ var PersonPoco = (function () {
         this.Addresses = ko.observableArray();
         this.Documents = ko.observableArray();
         this.Phones = ko.observableArray();
-        this.Id = ko.observable();
-        this.DateIns = ko.observable();
-        this.LastUpdate = ko.observable();
     }
     PersonPoco.prototype.toJSON = function (data) {
         var _js = ko.mapping.toJSON(data);
         return _js;
     };
     PersonPoco.prototype.Update = function (data) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
         this.Name(data.Name);
         this.Email(data.Email);
         this.ProfileImageUrl(data.ProfileImageUrl);
@@ -162,9 +147,6 @@ var PersonPoco = (function () {
         this.Addresses(data.Addresses);
         this.Documents(data.Documents);
         this.Phones(data.Phones);
-        this.Id(data.Id);
-        this.DateIns(data.DateIns);
-        this.LastUpdate(data.LastUpdate);
     };
     return PersonPoco;
 })();
@@ -174,22 +156,19 @@ var PhonePoco = (function () {
         this.PhoneType = ko.observable();
         this.PersonId = ko.observable();
         this.Person = ko.observable();
-        this.Id = ko.observable();
-        this.DateIns = ko.observable();
-        this.LastUpdate = ko.observable();
     }
     PhonePoco.prototype.toJSON = function (data) {
         var _js = ko.mapping.toJSON(data);
         return _js;
     };
     PhonePoco.prototype.Update = function (data) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
         this.Number(data.Number);
         this.PhoneType(data.PhoneType);
         this.PersonId(data.PersonId);
         this.Person(data.Person);
-        this.Id(data.Id);
-        this.DateIns(data.DateIns);
-        this.LastUpdate(data.LastUpdate);
     };
     return PhonePoco;
 })();

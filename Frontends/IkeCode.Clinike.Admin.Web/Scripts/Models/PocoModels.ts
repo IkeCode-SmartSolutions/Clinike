@@ -9,4 +9,273 @@
 */
 
 // Interfaces
+interface IAddress {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Street: string;
+    Number: string;
+    Complement: string;
+    Neighborhood: string;
+    ZipCode: string;
+    City: string;
+    State: string;
+    AddressType: any;
+    PersonId: number;
+    Person: Object;
+}
+
+interface IDoctor {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    AdmissionDate: Date;
+    Person: Object;
+}
+
+interface IDocument {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Value: string;
+    DocumentTypeId: number;
+    PersonId: number;
+    DocumentType: Object;
+    Person: Object;
+}
+
+interface ILegalPerson {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    SocialName: string;
+    CompanyName: string;
+    Person: Object;
+}
+
+interface INaturalPerson {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Gender: any;
+    Birthdate: Date;
+    Person: Object;
+}
+
+interface IPerson {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Name: string;
+    Email: string;
+    ProfileImageUrl: string;
+    Doctor: Object;
+    LegalPerson: Object;
+    NaturalPerson: Object;
+    Addresses: Array<Address>;
+    Documents: Array<Document>;
+    Phones: Array<Phone>;
+}
+
+interface IPhone {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Number: string;
+    PhoneType: any;
+    PersonId: number;
+    Person: Object;
+}
+
 // Classes
+class AddressPoco {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Street = ko.observable().extend({ required: { params: true, message: 'Campo Endereço é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Endereço deve ter no máximo 250 caracteres' } });
+    Number = ko.observable().extend({ maxLength: { params: 10, message: 'O campo Number deve ter no máximo 10 caracteres' } }).extend({ required: { params: true, message: 'O campo Number é obrigatório' } });
+    Complement = ko.observable().extend({ maxLength: { params: 50, message: 'O campo Complement deve ter no máximo 50 caracteres' } });
+    Neighborhood = ko.observable().extend({ maxLength: { params: 100, message: 'O campo Neighborhood deve ter no máximo 100 caracteres' } }).extend({ required: { params: true, message: 'O campo Neighborhood é obrigatório' } });
+    ZipCode = ko.observable().extend({ required: { params: true, message: 'O campo ZipCode é obrigatório' } }).extend({ maxLength: { params: 20, message: 'O campo ZipCode deve ter no máximo 20 caracteres' } });
+    City = ko.observable().extend({ maxLength: { params: 150, message: 'O campo City deve ter no máximo 150 caracteres' } }).extend({ required: { params: true, message: 'O campo City é obrigatório' } });
+    State = ko.observable().extend({ maxLength: { params: 2, message: 'O campo State deve ter no máximo 2 caracteres' } }).extend({ required: { params: true, message: 'O campo State é obrigatório' } });
+    AddressType = ko.observable();
+    PersonId = ko.observable();
+    Person = ko.observable();
+
+    toJSON(data): IAddress {
+        var _js = ko.mapping.toJSON(data);
+        return _js;
+    }
+
+    Update(data: IAddress) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
+        this.Street(data.Street);
+        this.Number(data.Number);
+        this.Complement(data.Complement);
+        this.Neighborhood(data.Neighborhood);
+        this.ZipCode(data.ZipCode);
+        this.City(data.City);
+        this.State(data.State);
+        this.AddressType(data.AddressType);
+        this.PersonId(data.PersonId);
+        this.Person(data.Person);
+    }
+}
+
+class DoctorPoco {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    AdmissionDate = ko.observable();
+    Person = ko.observable();
+
+    toJSON(data): IDoctor {
+        var _js = ko.mapping.toJSON(data);
+        return _js;
+    }
+
+    Update(data: IDoctor) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
+        this.AdmissionDate(data.AdmissionDate);
+        this.Person(data.Person);
+    }
+}
+
+class DocumentPoco {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Value = ko.observable().extend({ maxLength: { params: 30, message: 'O campo Value deve ter no máximo 30 caracteres' } }).extend({ required: { params: true, message: 'O campo Value é obrigatório' } });
+    DocumentTypeId = ko.observable();
+    PersonId = ko.observable();
+    DocumentType = ko.observable();
+    Person = ko.observable();
+
+    toJSON(data): IDocument {
+        var _js = ko.mapping.toJSON(data);
+        return _js;
+    }
+
+    Update(data: IDocument) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
+        this.Value(data.Value);
+        this.DocumentTypeId(data.DocumentTypeId);
+        this.PersonId(data.PersonId);
+        this.DocumentType(data.DocumentType);
+        this.Person(data.Person);
+    }
+}
+
+class LegalPersonPoco {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    SocialName = ko.observable().extend({ required: { params: true, message: 'O campo Nome Fantasia é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Nome Fantasia deve ter no máximo 250 caracteres' } });
+    CompanyName = ko.observable().extend({ maxLength: { params: 250, message: 'O campo Razão Social deve ter no máximo 250 caracteres' } }).extend({ required: { params: true, message: 'O campo Razão Social é obrigatório' } });
+    Person = ko.observable();
+
+    toJSON(data): ILegalPerson {
+        var _js = ko.mapping.toJSON(data);
+        return _js;
+    }
+
+    Update(data: ILegalPerson) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
+        this.SocialName(data.SocialName);
+        this.CompanyName(data.CompanyName);
+        this.Person(data.Person);
+    }
+}
+
+class NaturalPersonPoco {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Gender = ko.observable();
+    Birthdate = ko.observable();
+    Person = ko.observable();
+
+    toJSON(data): INaturalPerson {
+        var _js = ko.mapping.toJSON(data);
+        return _js;
+    }
+
+    Update(data: INaturalPerson) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
+        this.Gender(data.Gender);
+        this.Birthdate(data.Birthdate);
+        this.Person(data.Person);
+    }
+}
+
+class PersonPoco {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Name = ko.observable().extend({ required: { params: true, message: 'O campo Nome é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Nome deve ter no máximo 250 caracteres' } });
+    Email = ko.observable().extend({ required: { params: true, message: 'O campo Email é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Email deve ter no máximo 250 caracteres' } });
+    ProfileImageUrl = ko.observable();
+    Doctor = ko.observable();
+    LegalPerson = ko.observable();
+    NaturalPerson = ko.observable();
+    Addresses = ko.observableArray();
+    Documents = ko.observableArray();
+    Phones = ko.observableArray();
+
+    toJSON(data): IPerson {
+        var _js = ko.mapping.toJSON(data);
+        return _js;
+    }
+
+    Update(data: IPerson) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
+        this.Name(data.Name);
+        this.Email(data.Email);
+        this.ProfileImageUrl(data.ProfileImageUrl);
+        this.Doctor(data.Doctor);
+        this.LegalPerson(data.LegalPerson);
+        this.NaturalPerson(data.NaturalPerson);
+        this.Addresses(data.Addresses);
+        this.Documents(data.Documents);
+        this.Phones(data.Phones);
+    }
+}
+
+class PhonePoco {
+    Id: number;
+    DateIns: Date;
+    LastUpdate: Date;
+    Number = ko.observable().extend({ maxLength: { params: 30, message: 'O campo Number deve ter no máximo 30 caracteres' } }).extend({ required: { params: true, message: 'O campo Number é obrigatório' } });
+    PhoneType = ko.observable();
+    PersonId = ko.observable();
+    Person = ko.observable();
+
+    toJSON(data): IPhone {
+        var _js = ko.mapping.toJSON(data);
+        return _js;
+    }
+
+    Update(data: IPhone) {
+        this.Id = data.Id;
+        this.DateIns = data.DateIns;
+        this.LastUpdate = data.LastUpdate;
+        this.Number(data.Number);
+        this.PhoneType(data.PhoneType);
+        this.PersonId(data.PersonId);
+        this.Person(data.Person);
+    }
+}
+

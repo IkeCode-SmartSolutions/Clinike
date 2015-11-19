@@ -1,7 +1,7 @@
 namespace IkeCode.Clinike.Data.Models
 {
     using IkeCode.Clinike.Data.Enums;
-    using IkeCode.Web.Core.CustomAttributes;
+    using IkeCode.Core.CustomAttributes;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using System.ComponentModel.DataAnnotations;

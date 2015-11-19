@@ -52,7 +52,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             var allAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var assemblies = allAssemblies
                 .SelectMany(assem => assem.GetTypes().Where(i => i.IsDefined(typeof(ExportToJavascriptAttribute))
-                    && i.Name.Contains("Address")).ToList()).ToList();
+                    && i.Name.Contains("Address"))).ToList();
             var details = assemblies.Select(t => new ClassDetails
             {
                 ClassType = t,
@@ -86,6 +86,261 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             }
 
             return result;
+        }
+
+        private void WriteClasses(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
+        {
+            foreach (ClassDetails aClass in allClasses)
+            {
+                str.AppendLine("class " + aClass.ClassType.Name + "Poco {\r\n");
+
+                foreach (PropertyInfo dbpi in aClass.DatabaseGeneratedProperties)
+                {
+                    str.AppendLine(string.Format("    {0}: {1};\r\n", dbpi.Name, GetTypeScriptType(dbpi.PropertyType, allClassTypes)));
+                }
+
+                foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi in aClass.Properties)
+                {
+                    str.AppendLine(string.Format("    {0} = {1}", pi.Key.Name, GetKOType(pi.Key.PropertyType, allClassTypes)));
+                    if (pi.Value.Count() > 0)
+                    {
+                        var display = ParseDisplayName(pi);
+
+                        foreach (var attr in pi.Value)
+                        {
+                            var errorMessage = ParseErrorMessage(display, attr);
+
+                            if (attr.AttributeType.Equals(typeof(RequiredAttribute)))
+                            {
+                                ParseRequiredAttribute(display, errorMessage);
+                            }
+
+                            if (attr.AttributeType.Equals(typeof(StringLengthAttribute)))
+                            {
+                                ParseStringLengthAttribute(pi, attr, display, errorMessage);
+                            }
+
+                            if (attr.AttributeType.Equals(typeof(MaxLengthAttribute)))
+                            {
+                                ParseMaxLengthAttribute(pi, display, attr, errorMessage);
+                            }
+
+                            if (attr.AttributeType.Equals(typeof(MinLengthAttribute)))
+                            {
+                                ParseMinLengthAttribute(pi, display, attr, errorMessage);
+                            }
+                        }
+                    }
+                    str.Append(";\r\n");
+                }
+
+                // Create toJS Method
+                str.AppendLine("\r\n    toJSON(data): I" + aClass.ClassType.Name + " {\r\n");
+                str.AppendLine("        var _js = ko.mapping.toJSON(data);\r\n");
+                str.AppendLine("        return _js;\r\n");
+                str.AppendLine("    }\r\n\r\n");
+
+                // Create update() Method
+                str.AppendLine("    Update(data: I" + aClass.ClassType.Name + ") {\r\n");
+                foreach (PropertyInfo piDbGen in aClass.DatabaseGeneratedProperties)
+                {
+                    str.AppendLine(string.Format("        this.{0} = data.{0};\r\n", piDbGen.Name));
+                }
+
+                foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi2 in aClass.Properties)
+                {
+                    str.AppendLine(string.Format("        this.{0}(data.{0});\r\n", pi2.Key.Name));
+                }
+                str.AppendLine("    }\r\n");
+
+                // Close the Class
+                str.AppendLine("}\r\n\r\n");
+            }
+        }
+
+        private void WriteInterfaces(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
+        {
+            foreach (ClassDetails aClass in allClasses)
+            {
+                // str.AppendLine an Interface for Data
+                str.AppendLine("interface I" + aClass.ClassType.Name + " {\r\n");
+
+                foreach (PropertyInfo piDbGen in aClass.DatabaseGeneratedProperties)
+                {
+                    str.AppendLine(string.Format("    {0}: {1};\r\n", piDbGen.Name, GetTypeScriptType(piDbGen.PropertyType, allClassTypes)));
+                }
+
+                foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi in aClass.Properties)
+                {
+                    str.AppendLine(string.Format("    {0}: {1};\r\n", pi.Key.Name, GetTypeScriptType(pi.Key.PropertyType, allClassTypes)));
+                }
+                str.AppendLine("}\r\n\r\n");
+            }
+        }
+
+        private string ParseDisplayName(KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi)
+        {
+            var displayAttr = pi.Value.FirstOrDefault(i => i.AttributeType.Equals(typeof(DisplayAttribute)));
+            if (displayAttr != null)
+            {
+                var name = displayAttr.NamedArguments.FirstOrDefault(i => i.MemberName == "Name");
+                if (name != null
+                    && name.TypedValue != null
+                    && name.TypedValue.Value != null
+                    && !string.IsNullOrWhiteSpace(name.TypedValue.Value.ToString()))
+                {
+                    return name.TypedValue.Value.ToString();
+                }
+            }
+
+            return pi.Key.Name;
+        }
+
+        private string ParseErrorMessage(string display, CustomAttributeData attr)
+        {
+            var errorMessageAttr = attr.NamedArguments.FirstOrDefault(i => i.MemberName == "ErrorMessage");
+            if (errorMessageAttr != null
+                && errorMessageAttr.TypedValue != null
+                && errorMessageAttr.TypedValue.Value != null
+                && !string.IsNullOrWhiteSpace(errorMessageAttr.TypedValue.Value.ToString()))
+            {
+                return errorMessageAttr.TypedValue.Value.ToString().Replace("{display}", display);
+            }
+            return string.Empty;
+        }
+
+        private void ParseRequiredAttribute(string display, string errorMessage)
+        {
+            str.Append(".extend({ required: { params: true");
+
+            if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                str.Append(string.Format(", message: '{0}'", errorMessage));
+            }
+            else
+            {
+                var format = "O campo {0} é obrigatório";
+                var msg = string.Format(format, display);
+                str.Append(string.Format(", message: '{0}'", msg));
+            }
+
+            str.Append(" } })");
+        }
+
+        private void ParseMinLengthAttribute(KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi, string display, CustomAttributeData attr, string errorMessage)
+        {
+            var minLength = attr.ConstructorArguments.FirstOrDefault();
+            if (minLength != null && !string.IsNullOrWhiteSpace(minLength.Value.ToString()))
+            {
+                int minValue = 0;
+                Int32.TryParse(minLength.Value.ToString(), out minValue);
+                AddMinLengthExtend(display, errorMessage, minValue, pi.Key.PropertyType);
+            }
+        }
+
+        private void ParseMaxLengthAttribute(KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi, string display, CustomAttributeData attr, string errorMessage)
+        {
+            var maxLength = attr.ConstructorArguments.FirstOrDefault();
+            if (maxLength != null && !string.IsNullOrWhiteSpace(maxLength.Value.ToString()))
+            {
+                int maxValue = 0;
+                Int32.TryParse(maxLength.Value.ToString(), out maxValue);
+                AddMaxLengthExtend(display, errorMessage, maxValue, pi.Key.PropertyType);
+            }
+        }
+
+        private void ParseStringLengthAttribute(KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi, CustomAttributeData attr, string display, string errorMessage)
+        {
+            var maxLength = attr.ConstructorArguments.FirstOrDefault();
+            if (maxLength != null && !string.IsNullOrWhiteSpace(maxLength.Value.ToString()))
+            {
+                if (!pi.Value.Any(i => i.AttributeType.Equals(typeof(MaxLengthAttribute))))
+                {
+                    int maxValue = 0;
+                    Int32.TryParse(maxLength.Value.ToString(), out maxValue);
+                    AddMaxLengthExtend(display, errorMessage, maxValue, pi.Key.PropertyType);
+                }
+
+                var minLength = attr.NamedArguments.FirstOrDefault(i => i.MemberName == "MinimumLength");
+                if (minLength != null
+                    && minLength.TypedValue != null
+                    && minLength.TypedValue.Value != null
+                    && !string.IsNullOrWhiteSpace(minLength.TypedValue.Value.ToString()))
+                {
+                    if (!pi.Value.Any(i => i.AttributeType.Equals(typeof(MinLengthAttribute))))
+                    {
+                        int minValue = 0;
+                        Int32.TryParse(minLength.TypedValue.Value.ToString(), out minValue);
+
+                        if (minValue > 0)
+                        {
+                            AddMinLengthExtend(display, errorMessage, minValue, pi.Key.PropertyType);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddMaxLengthExtend(string display, string errorMessage, int maxValue, Type propType)
+        {
+            var validationType = string.Empty;
+            var messageFormat = string.Empty;
+            if (propType == typeof(string))
+            {
+                validationType = "maxLength";
+                messageFormat = "O campo {0} deve ter no máximo {1} caracteres";
+            }
+            else
+            {
+                validationType = "max";
+                messageFormat = "O campo {0} deve ser menor que {1}";
+            }
+
+            str.Append(string.Format(".extend({{ {0}: {{ params: {1}", validationType, maxValue));
+
+            if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                var parsedMsg = errorMessage.Replace("{length}", maxValue.ToString());
+                str.Append(string.Format(", message: '{0}'", parsedMsg));
+            }
+            else
+            {
+                var parsedMsg = string.Format(messageFormat, display, maxValue.ToString());
+                str.Append(string.Format(", message: '{0}'", parsedMsg));
+            }
+
+            str.Append(" } })");
+        }
+
+        private void AddMinLengthExtend(string display, string errorMessage, int minValue, Type propType)
+        {
+            var validationType = string.Empty;
+            var messageFormat = string.Empty;
+            if (propType == typeof(string))
+            {
+                validationType = "minLength";
+                messageFormat = "O campo {0} deve ter pelo menos {1} caracteres";
+            }
+            else
+            {
+                validationType = "min";
+                messageFormat = "O campo {0} deve ser maior que {1}";
+            }
+
+            str.Append(string.Format(".extend({{ {0}: {{ params: {1}", validationType, minValue));
+
+            if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                var parsedMsg = errorMessage.Replace("{length}", minValue.ToString());
+                str.Append(string.Format(", message: '{0}'", parsedMsg));
+            }
+            else
+            {
+                var parsedMsg = string.Format(messageFormat, display, minValue.ToString());
+                str.Append(string.Format(", message: '{0}'", parsedMsg));
+            }
+
+            str.Append(" } })");
         }
 
         private string GetTypeScriptType(Type type, IEnumerable<Type> allClasses)
@@ -188,149 +443,6 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             }
 
             return "ko.observable()";
-        }
-
-        private void WriteClasses(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
-        {
-            foreach (ClassDetails aClass in allClasses)
-            {
-                str.AppendLine("class " + aClass.ClassType.Name + "Poco {\r\n");
-
-                foreach (PropertyInfo dbpi in aClass.DatabaseGeneratedProperties)
-                {
-                    str.AppendLine(string.Format("    {0}: {1};", dbpi.Name, GetTypeScriptType(dbpi.PropertyType, allClassTypes)));
-                }
-
-                foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi in aClass.Properties)
-                {
-                    str.AppendLine(string.Format("    {0} = {1}", pi.Key.Name, GetKOType(pi.Key.PropertyType, allClassTypes)));
-                    if (pi.Value.Count() > 0)
-                    {
-                        var display = pi.Key.Name;
-
-                        var displayAttr = pi.Value.FirstOrDefault(i => i.AttributeType.Equals(typeof(DisplayAttribute)));
-                        if (displayAttr != null)
-                        {
-                            var name = displayAttr.NamedArguments.FirstOrDefault(i => i.MemberName == "Name");
-                            if (name != null
-                                && name.TypedValue != null
-                                && name.TypedValue.Value != null
-                                && !string.IsNullOrWhiteSpace(name.TypedValue.Value.ToString()))
-                            {
-                                display = name.TypedValue.Value.ToString();
-                            }
-                        }
-
-                        foreach (var attr in pi.Value)
-                        {
-                            var errorMessage = string.Empty;
-                            var errorMessageAttr = attr.NamedArguments.FirstOrDefault(i => i.MemberName == "ErrorMessage");
-                            if (errorMessageAttr != null
-                                && errorMessageAttr.TypedValue != null
-                                && errorMessageAttr.TypedValue.Value != null
-                                && !string.IsNullOrWhiteSpace(errorMessageAttr.TypedValue.Value.ToString()))
-                            {
-                                errorMessage = errorMessageAttr.TypedValue.Value.ToString().Replace("{display}", display);
-                            }
-
-                            if (attr.AttributeType.Equals(typeof(RequiredAttribute)))
-                            {
-                                str.Append(".extend({ required: { params: true");
-
-                                if (!string.IsNullOrWhiteSpace(errorMessage))
-                                {
-                                    str.Append(string.Format(", message: '{0}'", errorMessage));
-                                }
-                                else
-                                {
-                                    var format = "O campo {0} é obrigatório";
-                                    var msg = string.Format(format, display);
-                                    str.Append(string.Format(", message: '{0}'", msg));
-                                }
-
-                                str.Append(" } })");
-                            }
-
-                            if (attr.AttributeType.Equals(typeof(StringLengthAttribute)))
-                            {
-                                var maxLength = attr.ConstructorArguments.FirstOrDefault();
-                                if (maxLength != null && !string.IsNullOrWhiteSpace(maxLength.Value.ToString()))
-                                {
-                                    int maxValue = 0;
-                                    Int32.TryParse(maxLength.Value.ToString(), out maxValue);
-                                    str.Append(string.Format(".extend({{ maxLength: {{ params: {0}", maxValue));
-
-                                    if (!string.IsNullOrWhiteSpace(errorMessage))
-                                    {
-                                        var parsedMsg = errorMessage.Replace("{length}", maxValue.ToString());
-                                        str.Append(string.Format(", message: '{0}'", parsedMsg));
-                                    }
-                                    else
-                                    {
-                                        var parsedMsg = string.Format("O campo {0} deve ter no máximo {1} caracteres", display, maxValue.ToString());
-                                        str.Append(string.Format(", message: '{0}'", parsedMsg));
-                                    }
-
-                                    str.Append(" } })");
-
-                                    var minLength = attr.NamedArguments.FirstOrDefault(i => i.MemberName == "MaximumLength");
-                                    if (minLength != null
-                                        && minLength.TypedValue != null
-                                        && minLength.TypedValue.Value != null
-                                        && !string.IsNullOrWhiteSpace(minLength.TypedValue.Value.ToString()))
-                                    {
-                                        int minValue = 0;
-                                        Int32.TryParse(minLength.TypedValue.Value.ToString(), out minValue);
-
-                                        if (minValue > 0)
-                                        {
-                                            str.Append(string.Format(".extend({{ minLength: {{ params: {0}", minValue));
-
-                                            var parsedMsg = string.Format("O campo {0} deve ter pelo menos {1} caracteres", display, minValue.ToString());
-                                            str.Append(string.Format(", message: '{0}'", parsedMsg));
-
-                                            str.Append(" } })");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    str.Append(";\r\n");
-                }
-
-                // Create toJS Method
-                str.AppendLine("\r\n    toJSON(data): I" + aClass.ClassType.Name + " {\r\n");
-                str.AppendLine("        var _js = ko.mapping.toJSON(data);\r\n");
-                str.AppendLine("        return _js;\r\n");
-                str.AppendLine("    }\r\n\r\n");
-
-                // Create update() Method
-                str.AppendLine("    Update(data: I" + aClass.ClassType.Name + ") {\r\n");
-                foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi2 in aClass.Properties)
-                {
-                    str.AppendLine(string.Format("        this.{0}(data.{0});\r\n", pi2.Key.Name));
-                }
-                str.AppendLine("    }\r\n");
-
-                // Close the Class
-                str.AppendLine("}\r\n\r\n");
-            }
-        }
-
-        private void WriteInterfaces(IEnumerable<ClassDetails> allClasses, IEnumerable<Type> allClassTypes)
-        {
-            foreach (ClassDetails aClass in allClasses)
-            {
-                // str.AppendLine an Interface for Data
-                str.AppendLine("interface I" + aClass.ClassType.Name + " {\r\n");
-
-                foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi in aClass.Properties)
-                {
-                    str.AppendLine(string.Format("    {0}: {1};\r\n", pi.Key.Name, GetTypeScriptType(pi.Key.PropertyType, allClassTypes)));
-                }
-                str.AppendLine("}\r\n\r\n");
-            }
         }
 
         private string GetKOConstructor(string name, Type type, IEnumerable<Type> allClasses)

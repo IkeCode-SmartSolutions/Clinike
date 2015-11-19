@@ -1,6 +1,6 @@
 namespace IkeCode.Clinike.Data.Models
 {
-    using IkeCode.Web.Core.CustomAttributes;
+    using IkeCode.Core.CustomAttributes;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
