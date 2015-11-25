@@ -26,7 +26,7 @@ module PhoneModule {
             if (targetSelector) {
                 this._targetSelector = targetSelector;
 
-                this.PhoneTypeId.extend({ required: { params: true, message: '*' }, min: { params: 1, message: '*' } });
+                this.PhoneTypeId.extend({ required: { params: true, message: '* obrigatório' }, min: { params: -1, message: '* obrigatório' } });
             }
         }
 
@@ -63,6 +63,10 @@ module PhoneModule {
                     , type: 'POST'
                     , dataType: 'json'
                     , success: (data, textStatus, jqXHR) => {
+                        if (common.EnableLogGlobal) {
+                            console.log('data', data);
+                        }
+
                         var oldId = this.Id;
                         var parsedData = $.parseJSON(data);
 
@@ -164,7 +168,7 @@ module PhoneModule {
                         }
                         , error: (err) => {
                             if (common.EnableLogGlobal) {
-                                console.log('Delete Error!', err);
+                                console.log('Phone Delete Error!', err);
                             }
                         }
                     });

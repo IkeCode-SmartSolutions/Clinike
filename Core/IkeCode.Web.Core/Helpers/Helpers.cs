@@ -25,7 +25,7 @@ namespace IkeCode
             return RouteTable.Routes.GetRouteData(httpContext);
         }
 
-        public static Dictionary<string, object> EnumToDictionary(string enumName, string enumNamespace = "", string assemblyName = "")
+        public static Dictionary<object, object> EnumToDictionary(string enumName, string enumNamespace = "", string assemblyName = "")
         {
             var qualifiedName = "";
             var name = enumName;
@@ -48,7 +48,7 @@ namespace IkeCode
             var enumType = Type.GetType(qualifiedName);
             var enumValues = Enum.GetValues(enumType);
 
-            var result = new Dictionary<string, object>();
+            var result = new Dictionary<object, object>();
 
             foreach (var field in enumType.GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public))
             {
@@ -62,7 +62,7 @@ namespace IkeCode
                 {
                     foreach (DisplayAttribute currAttr in attrs)
                     {
-                        result.Add(currAttr.Name, value);
+                        result.Add(value, currAttr.Name);
                         break;
                     }
                 }

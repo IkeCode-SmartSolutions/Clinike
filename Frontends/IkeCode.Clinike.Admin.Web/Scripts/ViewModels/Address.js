@@ -69,7 +69,7 @@ var AddressModule;
             this._saveCallback = saveCallback;
             if (targetSelector) {
                 this._targetSelector = targetSelector;
-                this.AddressTypeId.extend({ required: { params: true, message: '*' }, min: { params: 1, message: '*' } });
+                this.AddressTypeId.extend({ required: { params: true, message: '* obrigatório' }, min: { params: 1, message: '* obrigatório' } });
             }
         }
         return KoViewModel;

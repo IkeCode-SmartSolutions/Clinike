@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace IkeCode.Clinike.Admin.Web.Models
 {
-    internal class EasyUiListModel<T>
+    internal class JsonListModel<T>
     {
         public bool success { get; private set; }
         public string message { get; set; }
         public ICollection<T> rows { get; set; }
         public int total { get; private set; }
 
-        public EasyUiListModel()
+        public JsonListModel()
         {
             rows = new List<T>();
             total = 0;
         }
 
-        public EasyUiListModel(ICollection<T> records)
+        public JsonListModel(ICollection<T> records)
             : this()
         {
             rows = records;
@@ -25,7 +25,7 @@ namespace IkeCode.Clinike.Admin.Web.Models
             message = "OK";
         }
 
-        public EasyUiListModel(string errorMessage)
+        public JsonListModel(string errorMessage)
             : this()
         {
             success = false;

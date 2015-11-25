@@ -45,6 +45,9 @@ var PhoneModule;
                         type: 'POST',
                         dataType: 'json',
                         success: function (data, textStatus, jqXHR) {
+                            if (common.EnableLogGlobal) {
+                                console.log('data', data);
+                            }
                             var oldId = _this.Id;
                             var parsedData = $.parseJSON(data);
                             if (common.EnableLogGlobal) {
@@ -69,7 +72,7 @@ var PhoneModule;
             this._saveCallback = saveCallback;
             if (targetSelector) {
                 this._targetSelector = targetSelector;
-                this.PhoneTypeId.extend({ required: { params: true, message: '*' }, min: { params: 1, message: '*' } });
+                this.PhoneTypeId.extend({ required: { params: true, message: '* obrigatório' }, min: { params: -1, message: '* obrigatório' } });
             }
         }
         return KoViewModel;
@@ -140,7 +143,7 @@ var PhoneModule;
                         },
                         error: function (err) {
                             if (common.EnableLogGlobal) {
-                                console.log('Delete Error!', err);
+                                console.log('Phone Delete Error!', err);
                             }
                         }
                     });

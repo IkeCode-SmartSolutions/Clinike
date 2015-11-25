@@ -29,13 +29,13 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     try
                     {
                         var addresses = Address.FindAll(i => i.Id == id);
-                        var result = new EasyUiListModel<Address>(addresses);
+                        var result = new JsonListModel<Address>(addresses);
 
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
-                        var result = new EasyUiListModel<Address>(ex.Message);
+                        var result = new JsonListModel<Address>(ex.Message);
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                 }, id);
@@ -50,13 +50,13 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     try
                     {
                         var addresses = Address.FindAll(i => i.PersonId == personId);
-                        var result = new EasyUiListModel<Address>(addresses);
+                        var result = new JsonListModel<Address>(addresses);
 
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
-                        var result = new EasyUiListModel<Address>(ex.Message);
+                        var result = new JsonListModel<Address>(ex.Message);
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                 }, personId);
@@ -95,7 +95,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                         Address.Delete(id);
                     }, null);
 
-                    return Json(result, JsonRequestBehavior.AllowGet);
+                    return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                 }, id);
         }
     }

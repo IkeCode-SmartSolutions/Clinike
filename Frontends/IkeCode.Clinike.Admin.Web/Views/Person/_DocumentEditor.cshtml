@@ -21,16 +21,16 @@
                                         data-bind="options: DocumentTypes,
                                                    optionsText: 'DisplayText',
                                                    optionsValue: 'Value',
+                                                   optionsCaption: 'Selecione...',
                                                    value: DocumentTypeId,
                                                    valueUpdate: 'blur'"></select>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">Número</label>&nbsp;<span class="has-error" data-bind="validationMessage: Number"></span>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" data-bind="value: Value,
-                                                                                   valueUpdate: 'blur'">
+                            <div class="col-sm-5">
+                                <label class="control-label">Número</label>&nbsp;<span class="has-error" data-bind="validationMessage: Value"></span>
+                                <input type="text" class="form-control" data-bind="value: Value, valueUpdate: 'blur'">
                             </div>
                         </div>
 

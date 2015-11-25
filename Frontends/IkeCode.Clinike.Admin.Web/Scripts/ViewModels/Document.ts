@@ -27,7 +27,14 @@ module DocumentModule {
             if (targetSelector) {
                 this._targetSelector = targetSelector;
 
-                //this.PhoneTypeId.extend({ required: { params: true, message: '*' }, min: { params: 1, message: '*' } });
+                $.getJSON('/Document/GetDocumentTypes',
+                    (data, textStatus) => {
+                        console.log('GetDocumentTypes data', data);
+                        if (data) {
+                            this.DocumentTypes(data.Options);
+                        }
+                    });
+                this.DocumentTypeId.extend({ required: { params: true, message: '* obrigatório' }, min: { params: -1, message: '* obrigatório' } });
             }
         }
 

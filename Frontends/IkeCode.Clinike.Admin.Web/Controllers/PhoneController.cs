@@ -49,13 +49,13 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     try
                     {
                         var phones = Phone.FindAll(i => i.PersonId == personId);
-                        var result = new EasyUiListModel<Phone>(phones);
+                        var result = new JsonListModel<Phone>(phones);
 
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
-                        var result = new EasyUiListModel<Phone>(ex.Message);
+                        var result = new JsonListModel<Phone>(ex.Message);
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                 }, personId);
@@ -74,7 +74,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                         Phone.AddOrUpdate(i => i.Id, phone);
                     }, phone);
 
-                    return Json(result, JsonRequestBehavior.AllowGet);
+                    return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                 }, phone.Id);
         }
 
@@ -94,7 +94,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                         Phone.Delete(id);
                     }, null);
 
-                    return Json(result, JsonRequestBehavior.AllowGet);
+                    return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                 }, id);
         }
     }

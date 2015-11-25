@@ -21,7 +21,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             return base.Run<JsonResult>("GetJsonFromEnum", () =>
             {
                 var dic = Helpers.EnumToDictionary(enumName, enumNamespace, assemblyName);
-                var options = JTableOptionModel.GetModelList(dic);
+                var options = SelectOptionModel.GetModelList(dic);
 
                 return Json(new { Result = "OK", Options = options }, JsonRequestBehavior.AllowGet);
             }, enumName, enumNamespace, assemblyName);

@@ -72,6 +72,13 @@ var DocumentModule;
             this._saveCallback = saveCallback;
             if (targetSelector) {
                 this._targetSelector = targetSelector;
+                $.getJSON('/Document/GetDocumentTypes', function (data, textStatus) {
+                    console.log('GetDocumentTypes data', data);
+                    if (data) {
+                        _this.DocumentTypes(data.Options);
+                    }
+                });
+                this.DocumentTypeId.extend({ required: { params: true, message: '* obrigatório' }, min: { params: -1, message: '* obrigatório' } });
             }
         }
         return KoViewModel;
@@ -210,52 +217,3 @@ var DocumentModule;
     })(BaseDataGridModel);
     DocumentModule.GridViewModel = GridViewModel;
 })(DocumentModule || (DocumentModule = {}));
-var Documents = (function (_super) {
-    __extends(Documents, _super);
-    function Documents(_parentId) {
-        var _this = this;
-        _super.call(this);
-        this._toolBarSelector = '#documentsToolbar';
-        this._gridSelector = '#documentsGrid';
-        this._modalSelector = '#documentEditorModal';
-        this._parentId = 0;
-        this.LoadDataGrid = function (selector) {
-            if (selector === void 0) { selector = _this._gridSelector; }
-            console.log('Documents parentId', _this._parentId);
-            $(selector).datagrid({
-                idField: 'Id',
-                toolbar: _this._toolBarSelector,
-                rownumbers: true,
-                pagination: true,
-                singleSelect: true,
-                striped: true,
-                loadMsg: dataGridHelper.LoadMessage,
-                columns: [[
-                        { field: 'Id', hidden: true },
-                        { field: 'PersonId', hidden: true },
-                        { field: 'DateIns', hidden: true },
-                        { field: 'LastUpdate', hidden: true },
-                        { field: 'DocumentTypeId', hidden: true },
-                        { field: 'Value', title: 'Valor', width: 200 },
-                        {
-                            field: 'DocumentType',
-                            title: 'Tipo',
-                            width: 200,
-                            formatter: function (value, row, index) {
-                                return value.Name;
-                            }
-                        }
-                    ]],
-                onLoadSuccess: function (items) {
-                    dataGridHelper.CollapseBoxAfterLoad(_this._gridSelector);
-                },
-                loader: function (param, success, error) {
-                    dataGridHelper.Loader('/Document/GetList', { personId: _this._parentId }, success, error);
-                }
-            });
-        };
-        this._parentId = _parentId;
-    }
-    return Documents;
-})(BaseDataGridModel);
-var documents = new Documents(1);

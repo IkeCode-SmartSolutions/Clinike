@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Clinike.Admin.Base;
@@ -19,7 +20,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
             : base()
         {
         }
-        
+
         [Authorize(Roles = "Admin")]
         public JsonResult GetList(int personId)
         {
@@ -29,13 +30,13 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     try
                     {
                         var documents = Document.FindAll(i => i.PersonId == personId, new List<string> { "DocumentType" });
-                        var result = new EasyUiListModel<Document>(documents);
+                        var result = new JsonListModel<Document>(documents);
 
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
-                        var result = new EasyUiListModel<Document>(ex.Message);
+                        var result = new JsonListModel<Document>(ex.Message);
                         return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                     }
                 }, personId);
@@ -54,7 +55,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                         Document.AddOrUpdate(i => i.Id, document);
                     }, document);
 
-                    return Json(result, JsonRequestBehavior.AllowGet);
+                    return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                 }, document.Id);
         }
 
@@ -73,21 +74,15 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                         Document.Delete(id);
                     }, null);
 
-                    return Json(result, JsonRequestBehavior.AllowGet);
+                    return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
                 }, id);
         }
         
-        [Authorize(Roles = "Admin")]
         public JsonResult GetDocumentTypes()
         {
-            var docTypes = DocumentType.GetAll();
+            var docTypes = DocumentType.GetAll().ToDictionary(i => (object)i.Id.ToString(), i => (object)i.Name);
 
-            var result = new List<JTableOptionModel>(docTypes.Count);
-
-            foreach (var doc in docTypes)
-            {
-                result.Add(new JTableOptionModel() { DisplayText = doc.Name, Value = doc.Id });
-            }
+            var result = SelectOptionModel.GetModelList(docTypes);
 
             return Json(new { Result = "OK", Options = result }, JsonRequestBehavior.AllowGet);
         }

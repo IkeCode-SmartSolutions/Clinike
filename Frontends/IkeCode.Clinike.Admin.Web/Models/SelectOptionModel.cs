@@ -2,20 +2,20 @@
 
 namespace IkeCode.Clinike.Admin.Web.Models
 {
-    internal class JTableOptionModel
+    internal class SelectOptionModel
     {
         public object Value { get; set; }
         public string DisplayText { get; set; }
-
-        public static List<JTableOptionModel> GetModelList(Dictionary<string, object> dic)
+        
+        public static List<SelectOptionModel> GetModelList(Dictionary<object, object> dic)
         {
             if (dic != null && dic.Count > 0)
             {
-                var list = new List<JTableOptionModel>(dic.Count);
+                var list = new List<SelectOptionModel>(dic.Count);
 
                 foreach (var item in dic)
                 {
-                    list.Add(new JTableOptionModel() { DisplayText = item.Key, Value = item.Value });
+                    list.Add(new SelectOptionModel() { Value = item.Key, DisplayText = item.Value.ToString() });
                 }
 
                 return list;
