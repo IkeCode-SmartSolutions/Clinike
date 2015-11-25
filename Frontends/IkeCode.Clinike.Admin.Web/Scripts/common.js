@@ -103,6 +103,7 @@ var Common = (function () {
             //    }
             //});
             common.bindAboutEvents();
+            ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
         });
     };
     Common.prototype.bindAboutEvents = function () {

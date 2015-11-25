@@ -3,13 +3,14 @@
         super();
     }
 
-    public init() {
-        phone.LoadDataGrid();
+    public Init() {
+        var phoneGridViewModel = new PhoneModule.GridViewModel(this.Id);
+        phoneGridViewModel.LoadDataGrid();
 
-        documents.LoadDataGrid();
+        var documentGridViewModel = new DocumentModule.GridViewModel(this.Id);
+        documentGridViewModel.LoadDataGrid();
 
-        var addressGridViewModel = new AddressModule.GridViewModel();
+        var addressGridViewModel = new AddressModule.GridViewModel(this.Id);
         addressGridViewModel.LoadDataGrid();
     }
 }
-var person = new Person();

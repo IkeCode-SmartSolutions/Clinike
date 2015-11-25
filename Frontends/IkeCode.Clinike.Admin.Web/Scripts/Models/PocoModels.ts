@@ -85,6 +85,7 @@ interface IPhone {
     LastUpdate: Date;
     Number: string;
     PhoneType: any;
+    PhoneTypeId: number;
     PersonId: number;
     Person: Object;
 }
@@ -213,7 +214,7 @@ class KoDocument {
     Id: number;
     DateIns: Date;
     LastUpdate: Date;
-    Value = ko.observable().extend({ required: { params: true, message: 'O campo Value é obrigatório' } }).extend({ maxLength: { params: 30, message: 'O campo Value deve ter no máximo 30 caracteres' } });
+    Value = ko.observable().extend({ maxLength: { params: 30, message: 'O campo Value deve ter no máximo 30 caracteres' } }).extend({ required: { params: true, message: 'O campo Value é obrigatório' } });
     DocumentTypeId = ko.observable();
     PersonId = ko.observable();
     DocumentType = ko.observable();
@@ -346,8 +347,8 @@ class KoPerson {
     Id: number;
     DateIns: Date;
     LastUpdate: Date;
-    Name = ko.observable().extend({ required: { params: true, message: 'O campo Nome é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Nome deve ter no máximo 250 caracteres' } });
-    Email = ko.observable().extend({ maxLength: { params: 250, message: 'O campo Email deve ter no máximo 250 caracteres' } }).extend({ required: { params: true, message: 'O campo Email é obrigatório' } });
+    Name = ko.observable().extend({ maxLength: { params: 250, message: 'O campo Nome deve ter no máximo 250 caracteres' } }).extend({ required: { params: true, message: 'O campo Nome é obrigatório' } });
+    Email = ko.observable().extend({ required: { params: true, message: 'O campo Email é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Email deve ter no máximo 250 caracteres' } });
     ProfileImage = ko.observable();
     ProfileImageUrl = ko.observable();
     Doctor = ko.observable();
@@ -400,6 +401,7 @@ class PhonePoco implements IPhone {
     LastUpdate: any;
     Number: any;
     PhoneType: any;
+    PhoneTypeId: any;
     PersonId: any;
     Person: any;
 }
@@ -408,8 +410,9 @@ class KoPhone {
     Id: number;
     DateIns: Date;
     LastUpdate: Date;
-    Number = ko.observable().extend({ required: { params: true, message: 'O campo Number é obrigatório' } }).extend({ maxLength: { params: 30, message: 'O campo Number deve ter no máximo 30 caracteres' } });
+    Number = ko.observable().extend({ maxLength: { params: 30, message: 'O campo Number deve ter no máximo 30 caracteres' } }).extend({ required: { params: true, message: 'O campo Number é obrigatório' } });
     PhoneType = ko.observable();
+    PhoneTypeId = ko.observable();
     PersonId = ko.observable();
     Person = ko.observable();
     public Update(data?: IPhone) {
@@ -419,6 +422,7 @@ class KoPhone {
 			this.LastUpdate = data.LastUpdate;
 			this.Number(data.Number);
 			this.PhoneType(data.PhoneType);
+			this.PhoneTypeId(data.PhoneTypeId);
 			this.PersonId(data.PersonId);
 			this.Person(data.Person);
 	   }
@@ -431,6 +435,7 @@ class KoPhone {
 			result.LastUpdate = this.LastUpdate;
 			result.Number = this.Number();
 			result.PhoneType = this.PhoneType();
+			result.PhoneTypeId = this.PhoneTypeId();
 			result.PersonId = this.PersonId();
 			result.Person = this.Person();
 		return result;

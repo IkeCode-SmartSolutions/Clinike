@@ -16,7 +16,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-5">
-                                <label class="control-label">Tipo</label>
+                                <label class="control-label">Tipo</label>&nbsp;<span class="has-error" data-bind="validationMessage: AddressTypeId"></span>
                                 <select class="form-control"
                                         data-bind="options: AddressTypes,
                                                    optionsText: 'DisplayText',
@@ -28,11 +28,11 @@
 
                         <div class="form-group">
                             <div class="col-sm-10">
-                                <label class="control-label">Endereço</label><span class="has-error" data-bind="validationMessage: Street"></span>
+                                <label class="control-label">Endereço</label>&nbsp;<span class="has-error" data-bind="validationMessage: Street"></span>
                                 <input type="text" class="form-control" data-bind="value: Street, valueUpdate: 'blur'">
                             </div>
                             <div class="col-sm-2">
-                                <label class="control-label">Nº</label> <span class="has-error" data-bind="validationMessage: Number"></span>
+                                <label class="control-label">Nº</label>&nbsp;<span class="has-error" data-bind="validationMessage: Number"></span>
                                 <input type="text" class="form-control" data-bind="value: Number, valueUpdate: 'blur'">
                             </div>
                         </div>

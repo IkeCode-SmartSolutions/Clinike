@@ -8,12 +8,13 @@ var Person = (function (_super) {
     function Person() {
         _super.call(this);
     }
-    Person.prototype.init = function () {
-        phone.LoadDataGrid();
-        documents.LoadDataGrid();
-        var addressGridViewModel = new AddressModule.GridViewModel();
+    Person.prototype.Init = function () {
+        var phoneGridViewModel = new PhoneModule.GridViewModel(this.Id);
+        phoneGridViewModel.LoadDataGrid();
+        var documentGridViewModel = new DocumentModule.GridViewModel(this.Id);
+        documentGridViewModel.LoadDataGrid();
+        var addressGridViewModel = new AddressModule.GridViewModel(this.Id);
         addressGridViewModel.LoadDataGrid();
     };
     return Person;
 })(PersonPoco);
-var person = new Person();

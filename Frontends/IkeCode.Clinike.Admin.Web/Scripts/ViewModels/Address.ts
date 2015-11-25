@@ -11,6 +11,8 @@ module AddressModule {
         AddressTypes: KnockoutObservable<any> = ko.observable();
         private _targetSelector: string;
         private _saveCallback: (oldId: any, parsedData: any) => any;
+        private _validationGroup: KnockoutValidationGroup = ko.validatedObservable(this);
+        private _validationErrors: KnockoutValidationErrors = ko.validation.group(this);
 
         constructor(targetSelector: string, saveCallback: (oldId: any, parsedData: any) => any) {
             super();
@@ -24,20 +26,12 @@ module AddressModule {
             if (targetSelector) {
                 this._targetSelector = targetSelector;
 
-                this.ZipCode.subscribe((newValue) => {
-                    console.log('newValue', newValue);
-                });
-
-                if (common.EnableLogGlobal) {
-                    console.log('Address ctor -> this._targetSelector', this._targetSelector);
-                }
+                this.AddressTypeId.extend({ required: { params: true, message: '*' }, min: { params: 1, message: '*' } });
             }
         }
 
         public Init = () => {
             if (this._targetSelector) {
-                ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
-
                 common.GetJsonEnum('AddressType'
                     , null
                     , null
@@ -60,32 +54,36 @@ module AddressModule {
                 console.log('dataJS', dataJS);
             }
 
-            $.ajax({
-                url: '/Address/Post'
-                , data: dataJS
-                , type: 'POST'
-                , dataType: 'json'
-                , success: (data, textStatus, jqXHR) => {
-                    var oldId = this.Id;
-                    var parsedData = $.parseJSON(data);
+            if (!this._validationGroup.isValid()) {
+                this._validationErrors.showAllMessages();
+            } else {
+                $.ajax({
+                    url: '/Address/Post'
+                    , data: dataJS
+                    , type: 'POST'
+                    , dataType: 'json'
+                    , success: (data, textStatus, jqXHR) => {
+                        var oldId = this.Id;
+                        var parsedData = $.parseJSON(data);
 
-                    if (common.EnableLogGlobal) {
-                        console.log('textStatus', textStatus);
-                        console.log('parsedData', parsedData);
+                        if (common.EnableLogGlobal) {
+                            console.log('textStatus', textStatus);
+                            console.log('parsedData', parsedData);
+                        }
+
+                        this.Update(parsedData.Record);
+
+                        if (common.EnableLogGlobal) {
+                            console.log('this.Id', this.Id);
+                        }
+
+                        this._saveCallback(oldId, parsedData);
                     }
-
-                    this.Update(parsedData.Record);
-
-                    if (common.EnableLogGlobal) {
-                        console.log('this.Id', this.Id);
+                    , error: (err) => {
+                        console.log(err);
                     }
-
-                    this._saveCallback(oldId, parsedData);
-                }
-                , error: function (err) {
-                    console.log(err);
-                }
-            });
+                });
+            }
         };
     }
 
@@ -94,9 +92,12 @@ module AddressModule {
         _gridSelector: string = '#addressesGrid';
         _modalSelector: string = '#addressEditorModal';
         addressViewModel: AddressModule.KoViewModel;
+        private _parentId: number = 0;
 
-        constructor() {
+        constructor(_parentId: number) {
             super();
+            console.log('GridViewModel ctor');
+            this._parentId = _parentId;
 
             this.addressViewModel = new AddressModule.KoViewModel('#addressEditorModal div[data-type="kobind"]'
                 , (oldId, parsedData) => {
@@ -113,7 +114,7 @@ module AddressModule {
             $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click',
                 () => {
                     var newPoco = new AddressPoco();
-                    newPoco.PersonId = person.Id;
+                    newPoco.PersonId = this._parentId;
                     this.ShowModal(newPoco);
                 });
 
@@ -130,7 +131,7 @@ module AddressModule {
 
         public Delete() {
             if (common.EnableLogGlobal) {
-                console.log('Delete');
+                console.log('Address Delete');
             }
 
             confirmModal.Show({
@@ -161,7 +162,7 @@ module AddressModule {
                             $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').attr('disabled', 'disabled');
                             $(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
                         }
-                        , error: function (err) {
+                        , error: (err) => {
                             if (common.EnableLogGlobal) {
                                 console.log('Delete Error!', err);
                             }
@@ -171,7 +172,7 @@ module AddressModule {
             });
         }
 
-        public LoadDataGrid(selector: string = this._gridSelector) {
+        public LoadDataGrid = (selector: string = this._gridSelector) => {
             $(selector).datagrid({
                 idField: 'Id'
                 , toolbar: this._toolBarSelector
@@ -215,14 +216,14 @@ module AddressModule {
                     $('input[data-mask="zipCode"]').mask('00000-000');
                 }
                 , loader: (param, success, error) => {
-                    dataGridHelper.Loader('/Address/GetList', { personId: person.Id }, success, error);
+                    dataGridHelper.Loader('/Address/GetList', { personId: this._parentId }, success, error);
                 }
                 , onLoadSuccess: (items) => {
                     if (common.EnableLogGlobal) {
                         console.log('address.LoadDataGrid onLoadSuccess');
                     }
 
-                    dataGridHelper.CollapseBoxAfterLoad(this);
+                    dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
                     $('[name="spanZipCode"]').mask('00000-000');
 
                     this.addressViewModel.Init();
@@ -230,7 +231,7 @@ module AddressModule {
             });
         }
 
-        private OnClickRow(index, row) {
+        private OnClickRow = (index, row) => {
             this.SelectedIndex = index;
             this.SelectedRow = row;
             this.addressViewModel.Update(row);

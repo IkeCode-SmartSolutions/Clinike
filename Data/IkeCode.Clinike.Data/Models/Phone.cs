@@ -5,6 +5,7 @@ namespace IkeCode.Clinike.Data.Models
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Text.RegularExpressions;
 
     [ExportToJavascript]
@@ -29,6 +30,14 @@ namespace IkeCode.Clinike.Data.Models
 
         [JsonConverter(typeof(StringEnumConverter))]
         public PhoneType PhoneType { get; set; }
+
+        [NotMapped]
+        [ExportToJavascript]
+        public int PhoneTypeId
+        {
+            get { return (int)PhoneType; }
+            set { PhoneType = (PhoneType)value; }
+        }
 
         public int PersonId { get; set; }
 

@@ -100,7 +100,7 @@ var DocumentPoco = (function () {
 })();
 var KoDocument = (function () {
     function KoDocument() {
-        this.Value = ko.observable().extend({ required: { params: true, message: 'O campo Value é obrigatório' } }).extend({ maxLength: { params: 30, message: 'O campo Value deve ter no máximo 30 caracteres' } });
+        this.Value = ko.observable().extend({ maxLength: { params: 30, message: 'O campo Value deve ter no máximo 30 caracteres' } }).extend({ required: { params: true, message: 'O campo Value é obrigatório' } });
         this.DocumentTypeId = ko.observable();
         this.PersonId = ko.observable();
         this.DocumentType = ko.observable();
@@ -211,8 +211,8 @@ var PersonPoco = (function () {
 })();
 var KoPerson = (function () {
     function KoPerson() {
-        this.Name = ko.observable().extend({ required: { params: true, message: 'O campo Nome é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Nome deve ter no máximo 250 caracteres' } });
-        this.Email = ko.observable().extend({ maxLength: { params: 250, message: 'O campo Email deve ter no máximo 250 caracteres' } }).extend({ required: { params: true, message: 'O campo Email é obrigatório' } });
+        this.Name = ko.observable().extend({ maxLength: { params: 250, message: 'O campo Nome deve ter no máximo 250 caracteres' } }).extend({ required: { params: true, message: 'O campo Nome é obrigatório' } });
+        this.Email = ko.observable().extend({ required: { params: true, message: 'O campo Email é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Email deve ter no máximo 250 caracteres' } });
         this.ProfileImage = ko.observable();
         this.ProfileImageUrl = ko.observable();
         this.Doctor = ko.observable();
@@ -267,8 +267,9 @@ var PhonePoco = (function () {
 })();
 var KoPhone = (function () {
     function KoPhone() {
-        this.Number = ko.observable().extend({ required: { params: true, message: 'O campo Number é obrigatório' } }).extend({ maxLength: { params: 30, message: 'O campo Number deve ter no máximo 30 caracteres' } });
+        this.Number = ko.observable().extend({ maxLength: { params: 30, message: 'O campo Number deve ter no máximo 30 caracteres' } }).extend({ required: { params: true, message: 'O campo Number é obrigatório' } });
         this.PhoneType = ko.observable();
+        this.PhoneTypeId = ko.observable();
         this.PersonId = ko.observable();
         this.Person = ko.observable();
     }
@@ -279,6 +280,7 @@ var KoPhone = (function () {
             this.LastUpdate = data.LastUpdate;
             this.Number(data.Number);
             this.PhoneType(data.PhoneType);
+            this.PhoneTypeId(data.PhoneTypeId);
             this.PersonId(data.PersonId);
             this.Person(data.Person);
         }
@@ -291,6 +293,7 @@ var KoPhone = (function () {
             result.LastUpdate = this.LastUpdate;
             result.Number = this.Number();
             result.PhoneType = this.PhoneType();
+            result.PhoneTypeId = this.PhoneTypeId();
             result.PersonId = this.PersonId();
             result.Person = this.Person();
             return result;

@@ -356,6 +356,7 @@
     </Content>
     <Content Include="Views\Person\_AddressEditor.cshtml" />
     <Content Include="Views\Shared\_ConfirmModal.cshtml" />
+    <Content Include="Views\Person\_DocumentEditor.cshtml" />
     <TypeScriptCompile Include="Scripts\DataGridHelper.ts" />
     <Content Include="Scripts\common.js">
       <DependentUpon>Common.ts</DependentUpon>
