@@ -1,8 +1,6 @@
-﻿"use strict";
-class Person {
-    Id = 0;
-
-    constructor() {        
+﻿class Person extends PersonPoco {
+    constructor() {
+        super();
     }
 
     public init() {
@@ -10,8 +8,8 @@ class Person {
 
         documents.LoadDataGrid();
 
-        address.LoadDataGrid();
+        var addressGridViewModel = new AddressModule.GridViewModel();
+        addressGridViewModel.LoadDataGrid();
     }
 }
-
 var person = new Person();

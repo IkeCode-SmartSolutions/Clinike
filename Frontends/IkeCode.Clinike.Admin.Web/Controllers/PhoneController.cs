@@ -7,6 +7,7 @@ using Microsoft.Owin.Security;
 using IkeCode.Clinike.Data.Models;
 using IkeCode.Clinike.Admin.Web.ViewModels;
 using IkeCode.Clinike.Admin.Web.Models;
+using IkeCode.Core.Helpers;
 using Newtonsoft.Json;
 
 namespace IkeCode.Clinike.Admin.Web.Controllers

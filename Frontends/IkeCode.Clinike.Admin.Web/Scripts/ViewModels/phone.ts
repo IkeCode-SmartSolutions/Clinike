@@ -17,7 +17,7 @@ class PhoneViewModel extends PhonePoco implements IKoViewModel {
         ko.validation.init({ insertMessages: false });
         ko.mapping.fromJS(initialData, {}, this);
 
-        var target = $(address._modalSelector).find('[data-type="kobind"]').get(0);
+        var target = $(phone._modalSelector).find('[data-type="kobind"]').get(0);
         ko.cleanNode(target);
         ko.applyBindings(this, target);
 
@@ -72,7 +72,7 @@ class Phone extends BaseDataGridModel implements IDataGridModel {
 
         $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click',
             () => {
-                phone.phoneViewModel.SetData(address.SelectedRow);
+                phone.phoneViewModel.SetData(this.SelectedRow);
                 $(phone._modalSelector).modal('show');
             });
 

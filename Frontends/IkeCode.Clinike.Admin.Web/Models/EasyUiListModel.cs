@@ -31,10 +31,5 @@ namespace IkeCode.Clinike.Admin.Web.Models
             success = false;
             message = errorMessage;
         }
-
-        public string ToJsonString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
     }
 }

@@ -48,9 +48,9 @@ namespace IkeCode.Clinike.Admin.Web
 
             jsBundles.Include("~/Scripts/Models/EnumCache.js");
             jsBundles.Include("~/Scripts/Models/PocoModels.js");
+            jsBundles.Include("~/Scripts/Models/ConfirmModalModel.js");
             jsBundles.Include("~/Scripts/common.js");
             jsBundles.Include("~/Scripts/DataGridHelper.js");
-            jsBundles.Include("~/Scripts/Models/BaseViewModel.js");
             jsBundles.Include("~/Scripts/Models/BaseDataGridModel.js");
             bundles.Add(jsBundles);
 

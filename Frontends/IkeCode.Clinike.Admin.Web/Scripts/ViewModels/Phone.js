@@ -21,7 +21,7 @@ var PhoneViewModel = (function (_super) {
         }
         ko.validation.init({ insertMessages: false });
         ko.mapping.fromJS(initialData, {}, this);
-        var target = $(address._modalSelector).find('[data-type="kobind"]').get(0);
+        var target = $(phone._modalSelector).find('[data-type="kobind"]').get(0);
         ko.cleanNode(target);
         ko.applyBindings(this, target);
         this.PhoneTypes(enumCache.Get("PhoneType"));
@@ -54,6 +54,7 @@ var PhoneViewModel = (function (_super) {
 var Phone = (function (_super) {
     __extends(Phone, _super);
     function Phone() {
+        var _this = this;
         _super.call(this);
         this._toolBarSelector = '#phonesToolbar';
         this._gridSelector = '#phonesGrid';
@@ -65,7 +66,7 @@ var Phone = (function (_super) {
             $(phone._modalSelector).modal('show');
         });
         $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click', function () {
-            phone.phoneViewModel.SetData(address.SelectedRow);
+            phone.phoneViewModel.SetData(_this.SelectedRow);
             $(phone._modalSelector).modal('show');
         });
         $(this._toolBarSelector).find('button[data-buttontype="delete"]').bind('click', function () {

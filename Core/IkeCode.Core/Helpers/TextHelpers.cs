@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -66,6 +67,11 @@ namespace IkeCode.Core.Helpers
             text = text.Replace("Û", "&Ucirc;");
 
             return text;
+        }
+
+        public static string ToJsonString(this object obj)
+        {
+            return JsonConvert.SerializeObject(obj);
         }
     }
 }
