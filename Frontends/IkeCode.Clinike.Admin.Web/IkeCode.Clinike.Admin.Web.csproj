@@ -327,8 +327,8 @@
     <Content Include="Scripts\Models\BaseDataGridModel.js">
       <DependentUpon>BaseDataGridModel.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\Models\BaseViewModel.js">
-      <DependentUpon>BaseViewModel.ts</DependentUpon>
+    <Content Include="Scripts\Models\ConfirmModalModel.js">
+      <DependentUpon>ConfirmModalModel.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\Models\EnumCache.js">
       <DependentUpon>EnumCache.ts</DependentUpon>
@@ -355,6 +355,8 @@
       <DependentUpon>Object.ts</DependentUpon>
     </Content>
     <Content Include="Views\Person\_AddressEditor.cshtml" />
+    <Content Include="Views\Shared\_ConfirmModal.cshtml" />
+    <Content Include="Views\Person\_DocumentEditor.cshtml" />
     <TypeScriptCompile Include="Scripts\DataGridHelper.ts" />
     <Content Include="Scripts\common.js">
       <DependentUpon>Common.ts</DependentUpon>
@@ -561,6 +563,7 @@
     <Content Include="Scripts\plugins\jquery.tabs.js" />
     <Content Include="Scripts\plugins\jquery.window.js" />
     <TypeScriptCompile Include="Scripts\Models\BaseDataGridModel.ts" />
+    <TypeScriptCompile Include="Scripts\Models\ConfirmModalModel.ts" />
     <TypeScriptCompile Include="Scripts\Models\EnumCache.ts" />
     <TypeScriptCompile Include="Scripts\Models\IKoViewModel.d.ts" />
     <TypeScriptCompile Include="Scripts\Models\PocoModels.ts">
@@ -673,7 +676,6 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.mapping\knockout.mapping.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
-    <TypeScriptCompile Include="Scripts\Models\BaseViewModel.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Phone.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -694,10 +696,11 @@
     <TypeScriptSourceMap>False</TypeScriptSourceMap>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptJSXEmit>
+    </TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptModuleKind>none</TypeScriptModuleKind>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile />
     <TypeScriptOutDir />

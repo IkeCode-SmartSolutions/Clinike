@@ -103,6 +103,7 @@ var Common = (function () {
             //    }
             //});
             common.bindAboutEvents();
+            ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
         });
     };
     Common.prototype.bindAboutEvents = function () {
@@ -137,16 +138,46 @@ var Common = (function () {
         return value === undefined || value == null ? defaultValue : value;
     };
     ;
-    Common.prototype.GetJsonEnum = function (enumName, modelAssemblyName, enumNamespaceName) {
-        if (modelAssemblyName === void 0) { modelAssemblyName = this._modelAssemblyName; }
-        if (enumNamespaceName === void 0) { enumNamespaceName = this._enumNamespaceName; }
-        $.getJSON('/Helpers/GetJsonFromEnum', {
-            enumNamespace: this._enumNamespaceName,
-            assemblyName: this._modelAssemblyName,
-            enumName: enumName
-        }, function (data, textStatus, jqXHR) {
-            return enumCache.Add(enumName, data.Options);
-        });
+    Common.prototype.GetJsonEnum = function (enumName, modelAssemblyName, enumNamespaceName, callback) {
+        if (!modelAssemblyName)
+            modelAssemblyName = this._modelAssemblyName;
+        if (!enumNamespaceName)
+            enumNamespaceName = this._enumNamespaceName;
+        if (this.EnableLogGlobal) {
+            console.log('Common.GetJsonEnum -> params: enumName[' + enumName + '] | modelAssemblyName[' + modelAssemblyName + '] | enumNamespaceName[' + enumNamespaceName + ']');
+        }
+        if (!enumCache.Get(enumName)) {
+            $.ajax({
+                url: '/Helpers/GetJsonFromEnum',
+                data: {
+                    enumNamespace: this._enumNamespaceName,
+                    assemblyName: this._modelAssemblyName,
+                    enumName: enumName
+                },
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (data, textStatus, jqXHR) {
+                    if (this.EnableLogGlobal) {
+                        console.log('textStatus', textStatus);
+                        console.log('data', data);
+                    }
+                    enumCache.Add(enumName, data.Options);
+                    if (callback) {
+                        callback(data.Options);
+                    }
+                },
+                error: function () {
+                    if (this.EnableLogGlobal) {
+                        console.log('error');
+                    }
+                }
+            });
+        }
+        else {
+            if (callback) {
+                callback(enumCache.Get(enumName));
+            }
+        }
     };
     Common.MergeObjects = function (obj, obj2) {
         var result = $.extend({}, obj, obj2);

@@ -1,6 +1,6 @@
 ﻿@model PersonViewModel
 <div class="box">
-    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Fisica", "fa fa-user", true)))
+    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Fisica", "fa fa-user", false))
     <div class="box-content" data-collapsed="true">
         @using (Html.BeginRouteForm("PersonPost",
                                     new { id = Model.Person.Id },

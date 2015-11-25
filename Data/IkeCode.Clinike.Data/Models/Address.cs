@@ -48,9 +48,11 @@ namespace IkeCode.Clinike.Data.Models
         public AddressType AddressType { get; set; }
 
         [NotMapped]
+        [ExportToJavascript]
         public int AddressTypeId
         {
             get { return (int)AddressType; }
+            set { AddressType = (AddressType)value; }
         }
 
         public int PersonId { get; set; }

@@ -66,10 +66,13 @@
 
         private List<KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>>> GetPropertiesWithAttributes(Type type)
         {
-            var props = type.GetProperties().Where(i => !i.IsDefined(typeof(NotMappedAttribute))
-                                                        && !i.IsDefined(typeof(JsonIgnoreAttribute))
-                                                        && !i.IsDefined(typeof(DatabaseGeneratedAttribute))
-                                                        && !i.IsDefined(typeof(DateTimeDatabaseGeneratedAttribute))).ToList();
+            var props = type.GetProperties().Where(i => i.IsDefined(typeof(ExportToJavascriptAttribute))
+                                                        || 
+														(
+															!i.IsDefined(typeof(JsonIgnoreAttribute))
+															&& !i.IsDefined(typeof(DatabaseGeneratedAttribute))
+															&& !i.IsDefined(typeof(DateTimeDatabaseGeneratedAttribute))
+														)).ToList();
             var result = new List<KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>>>();
 
             foreach (var prop in props)
@@ -86,7 +89,19 @@
         {
             foreach (ClassDetails aClass in allClasses)
             {
-                Write("class " + aClass.ClassType.Name + "Poco {\r\n");
+				Write("class " + aClass.ClassType.Name + "Poco implements I" + aClass.ClassType.Name +" {\r\n");
+				foreach (PropertyInfo dbpipoco in aClass.DatabaseGeneratedProperties)
+                {
+                    Write(string.Format("    {0}: any;\r\n", dbpipoco.Name));
+                }
+				foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pipoco in aClass.Properties)
+				{
+					Write(string.Format("    {0}: any;\r\n", pipoco.Key.Name));
+				}
+
+				Write("}\r\n\r\n");
+
+                Write("class Ko" + aClass.ClassType.Name + " {\r\n");
 
                 foreach (PropertyInfo dbpi in aClass.DatabaseGeneratedProperties)
                 {
@@ -128,24 +143,37 @@
                     Write(";\r\n");
                 }
 
-                // Create toJS Method
-                Write("\r\n    toJSON(data): I" + aClass.ClassType.Name + " {\r\n");
-                Write("        var _js = ko.mapping.toJSON(data);\r\n");
-                Write("        return _js;\r\n");
-                Write("    }\r\n\r\n");
-
-                // Create update() Method
-                Write("    Update(data: I" + aClass.ClassType.Name + ") {\r\n");
+                // Update()
+                Write("    public Update(data?: I" + aClass.ClassType.Name + ") {\r\n");
+				Write("	   if(data) {\r\n");
                 foreach (PropertyInfo piDbGen in aClass.DatabaseGeneratedProperties)
                 {
-                    Write(string.Format("        this.{0} = data.{0};\r\n", piDbGen.Name));
+                    Write(string.Format("			this.{0} = data.{0};\r\n", piDbGen.Name));
                 }
 
                 foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi2 in aClass.Properties)
                 {
-                    Write(string.Format("        this.{0}(data.{0});\r\n", pi2.Key.Name));
+                    Write(string.Format("			this.{0}(data.{0});\r\n", pi2.Key.Name));
                 }
-                Write("    }\r\n");
+				Write("	   }\r\n");
+                Write("	}\r\n");
+
+				//Get()
+				Write("    public toJS() {\r\n");
+				Write("		var result = new " + aClass.ClassType.Name + "Poco();\r\n");
+				Write("	   if(this !== undefined) {\r\n");
+                foreach (PropertyInfo piDbGen in aClass.DatabaseGeneratedProperties)
+                {
+                    Write(string.Format("			result.{0} = this.{0};\r\n", piDbGen.Name));
+                }
+
+                foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi2 in aClass.Properties)
+                {
+                    Write(string.Format("			result.{0} = this.{0}();\r\n", pi2.Key.Name));
+                }
+				Write("		return result;\r\n");
+				Write("	   }\r\n");
+                Write("	}\r\n");
 
                 // Close the Class
                 Write("}\r\n\r\n");
@@ -361,7 +389,7 @@
                 var match = allClasses.Where(c => c == genericType).FirstOrDefault();
                 if (match != null)
                 {
-                    return "Array<" + match.Name + ">";
+                    return "Array<" + match.Name + "Poco>";
                 }
                 return "Array<" + GetTypeScriptType(genericType, allClasses) + ">";
             }

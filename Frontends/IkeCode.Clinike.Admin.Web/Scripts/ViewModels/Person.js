@@ -1,13 +1,20 @@
-"use strict";
-var Person = (function () {
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Person = (function (_super) {
+    __extends(Person, _super);
     function Person() {
-        this.Id = 0;
+        _super.call(this);
     }
-    Person.prototype.init = function () {
-        phone.LoadDataGrid();
-        documents.LoadDataGrid();
-        address.LoadDataGrid();
+    Person.prototype.Init = function () {
+        var phoneGridViewModel = new PhoneModule.GridViewModel(this.Id);
+        phoneGridViewModel.LoadDataGrid();
+        var documentGridViewModel = new DocumentModule.GridViewModel(this.Id);
+        documentGridViewModel.LoadDataGrid();
+        var addressGridViewModel = new AddressModule.GridViewModel(this.Id);
+        addressGridViewModel.LoadDataGrid();
     };
     return Person;
-})();
-var person = new Person();
+})(PersonPoco);

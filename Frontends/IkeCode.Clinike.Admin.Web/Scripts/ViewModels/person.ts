@@ -1,17 +1,16 @@
-﻿"use strict";
-class Person {
-    Id = 0;
-
-    constructor() {        
+﻿class Person extends PersonPoco {
+    constructor() {
+        super();
     }
 
-    public init() {
-        phone.LoadDataGrid();
+    public Init() {
+        var phoneGridViewModel = new PhoneModule.GridViewModel(this.Id);
+        phoneGridViewModel.LoadDataGrid();
 
-        documents.LoadDataGrid();
+        var documentGridViewModel = new DocumentModule.GridViewModel(this.Id);
+        documentGridViewModel.LoadDataGrid();
 
-        address.LoadDataGrid();
+        var addressGridViewModel = new AddressModule.GridViewModel(this.Id);
+        addressGridViewModel.LoadDataGrid();
     }
 }
-
-var person = new Person();

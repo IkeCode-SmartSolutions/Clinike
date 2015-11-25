@@ -1,27 +1,27 @@
-﻿<div class="modal fade" id="phoneEditorModal" tabindex="-1" role="dialog" aria-labelledby="phoneEditorModalLabel">
+﻿<div class="modal fade" id="documentEditorModal" tabindex="-1" role="dialog" aria-labelledby="documentEditorModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="phoneEditorModalLabel">Telefone</h4>
+                <h4 class="modal-title" id="documentEditorModalLabel">Documento</h4>
             </div>
             <div data-type="kobind">
                 <div class="modal-body">
                     <form action="#"
                           class="form-horizontal"
-                          id="_phoneForm"
+                          id="_documentForm"
                           role="form">
 
                         <div class="form-group">
                             <div class="col-sm-5">
-                                <label class="control-label">Tipo</label>&nbsp;<span class="has-error" data-bind="validationMessage: PhoneTypeId"></span>
+                                <label class="control-label">Tipo</label>&nbsp;<span class="has-error" data-bind="validationMessage: DocumentTypeId"></span>
                                 <select class="form-control"
-                                        data-bind="options: PhoneTypes,
+                                        data-bind="options: DocumentTypes,
                                                    optionsText: 'DisplayText',
                                                    optionsValue: 'Value',
-                                                   value: PhoneTypeId,
+                                                   value: DocumentTypeId,
                                                    valueUpdate: 'blur'"></select>
                             </div>
                         </div>
@@ -29,8 +29,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">Número</label>&nbsp;<span class="has-error" data-bind="validationMessage: Number"></span>
                             <div class="col-sm-6">
-                                <input type="text" data-mask="phoneNumber" class="form-control" data-bind="value: Number,
-                                                                                                           valueUpdate: 'blur'">
+                                <input type="text" class="form-control" data-bind="value: Value,
+                                                                                   valueUpdate: 'blur'">
                             </div>
                         </div>
 

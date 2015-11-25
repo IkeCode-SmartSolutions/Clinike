@@ -117,6 +117,8 @@ class Common {
             //});
 
             common.bindAboutEvents();
+
+            ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
         });
     }
 
@@ -156,17 +158,53 @@ class Common {
     };
 
     public GetJsonEnum(enumName: string
-        , modelAssemblyName: string = this._modelAssemblyName
-        , enumNamespaceName: string = this._enumNamespaceName): any {
-        $.getJSON('/Helpers/GetJsonFromEnum'
-            , {
-                enumNamespace: this._enumNamespaceName
-                , assemblyName: this._modelAssemblyName
-                , enumName: enumName
-            }
-            , (data, textStatus, jqXHR) => {
-                return enumCache.Add(enumName, data.Options);
+        , modelAssemblyName?: string
+        , enumNamespaceName?: string
+        , callback?: any) {
+
+        if (!modelAssemblyName)
+            modelAssemblyName = this._modelAssemblyName;
+
+        if (!enumNamespaceName)
+            enumNamespaceName = this._enumNamespaceName;
+
+        if (this.EnableLogGlobal) {
+            console.log('Common.GetJsonEnum -> params: enumName[' + enumName + '] | modelAssemblyName[' + modelAssemblyName + '] | enumNamespaceName[' + enumNamespaceName + ']');
+        }
+
+        if (!enumCache.Get(enumName)) {
+            $.ajax({
+                url: '/Helpers/GetJsonFromEnum'
+                , data: {
+                    enumNamespace: this._enumNamespaceName
+                    , assemblyName: this._modelAssemblyName
+                    , enumName: enumName
+                }
+                , type: 'GET'
+                , contentType: 'application/json'
+                , success: function (data, textStatus, jqXHR) {
+                    if (this.EnableLogGlobal) {
+                        console.log('textStatus', textStatus);
+                        console.log('data', data);
+                    }
+
+                    enumCache.Add(enumName, data.Options);
+
+                    if (callback) {
+                        callback(data.Options);
+                    }
+                }
+                , error: function () {
+                    if (this.EnableLogGlobal) {
+                        console.log('error');
+                    }
+                }
             });
+        } else {
+            if (callback) {
+                callback(enumCache.Get(enumName));
+            }
+        }
     }
 
     public static MergeObjects(obj: Object, obj2: Object): Object {
