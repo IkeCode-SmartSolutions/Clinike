@@ -72,20 +72,19 @@ module DocumentModule {
                     , dataType: 'json'
                     , success: (data, textStatus, jqXHR) => {
                         var oldId = this.Id;
-                        var parsedData = $.parseJSON(data);
-
+                        
                         if (common.EnableLogGlobal) {
                             console.log('textStatus', textStatus);
-                            console.log('parsedData', parsedData);
+                            console.log('data', data);
                         }
 
-                        this.Update(parsedData.Record);
+                        this.Update(data.Record);
 
                         if (common.EnableLogGlobal) {
                             console.log('this.Id', this.Id);
                         }
 
-                        this._saveCallback(oldId, parsedData);
+                        this._saveCallback(oldId, data);
                     }
                     , error: (err) => {
                         console.log(err);
@@ -212,10 +211,10 @@ module DocumentModule {
                     this.OnClickRow(index, row);
                 }
                 , loader: (param, success, error) => {
-                    dataGridHelper.Loader('/Document/GetList', { personId: this._parentId }, success, error);
+                    dataGridHelper.Loader('/Document/GetList', { personId: this._parentId }, success, error, 'GET', true);
                 }
                 , onLoadSuccess: (items) => {
-
+                    console.log('document.LoadDataGrid onLoadSuccess items', items);
                     if (common.EnableLogGlobal) {
                         console.log('document.LoadDataGrid onLoadSuccess');
                     }
@@ -230,6 +229,7 @@ module DocumentModule {
         private OnClickRow(index, row) {
             this.SelectedIndex = index;
             this.SelectedRow = row;
+            console.log('Address row', row);
             this.documentViewModel.Update(row);
 
             $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');

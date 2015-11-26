@@ -49,16 +49,15 @@ var DocumentModule;
                         dataType: 'json',
                         success: function (data, textStatus, jqXHR) {
                             var oldId = _this.Id;
-                            var parsedData = $.parseJSON(data);
                             if (common.EnableLogGlobal) {
                                 console.log('textStatus', textStatus);
-                                console.log('parsedData', parsedData);
+                                console.log('data', data);
                             }
-                            _this.Update(parsedData.Record);
+                            _this.Update(data.Record);
                             if (common.EnableLogGlobal) {
                                 console.log('this.Id', _this.Id);
                             }
-                            _this._saveCallback(oldId, parsedData);
+                            _this._saveCallback(oldId, data);
                         },
                         error: function (err) {
                             console.log(err);
@@ -127,9 +126,10 @@ var DocumentModule;
                         _this.OnClickRow(index, row);
                     },
                     loader: function (param, success, error) {
-                        dataGridHelper.Loader('/Document/GetList', { personId: _this._parentId }, success, error);
+                        dataGridHelper.Loader('/Document/GetList', { personId: _this._parentId }, success, error, 'GET', true);
                     },
                     onLoadSuccess: function (items) {
+                        console.log('document.LoadDataGrid onLoadSuccess items', items);
                         if (common.EnableLogGlobal) {
                             console.log('document.LoadDataGrid onLoadSuccess');
                         }
@@ -203,6 +203,7 @@ var DocumentModule;
         GridViewModel.prototype.OnClickRow = function (index, row) {
             this.SelectedIndex = index;
             this.SelectedRow = row;
+            console.log('Address row', row);
             this.documentViewModel.Update(row);
             $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
         };

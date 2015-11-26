@@ -46,19 +46,15 @@ var PhoneModule;
                         dataType: 'json',
                         success: function (data, textStatus, jqXHR) {
                             if (common.EnableLogGlobal) {
+                                console.log('textStatus', textStatus);
                                 console.log('data', data);
                             }
                             var oldId = _this.Id;
-                            var parsedData = $.parseJSON(data);
-                            if (common.EnableLogGlobal) {
-                                console.log('textStatus', textStatus);
-                                console.log('parsedData', parsedData);
-                            }
-                            _this.Update(parsedData.Record);
+                            _this.Update(data.Record);
                             if (common.EnableLogGlobal) {
                                 console.log('this.Id', _this.Id);
                             }
-                            _this._saveCallback(oldId, parsedData);
+                            _this._saveCallback(oldId, data);
                         },
                         error: function (err) {
                             console.log(err);

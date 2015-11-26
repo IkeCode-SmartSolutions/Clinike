@@ -21,7 +21,6 @@ namespace IkeCode.Clinike.Data.Models
 
         public int PersonId { get; set; }
 
-        [JsonProperty(IsReference = true, ItemReferenceLoopHandling = ReferenceLoopHandling.Ignore)]
         public virtual DocumentType DocumentType { get; set; }
 
         [JsonIgnore]

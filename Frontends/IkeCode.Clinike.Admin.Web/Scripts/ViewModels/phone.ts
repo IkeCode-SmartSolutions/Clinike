@@ -64,24 +64,19 @@ module PhoneModule {
                     , dataType: 'json'
                     , success: (data, textStatus, jqXHR) => {
                         if (common.EnableLogGlobal) {
+                            console.log('textStatus', textStatus);
                             console.log('data', data);
                         }
 
                         var oldId = this.Id;
-                        var parsedData = $.parseJSON(data);
 
-                        if (common.EnableLogGlobal) {
-                            console.log('textStatus', textStatus);
-                            console.log('parsedData', parsedData);
-                        }
-
-                        this.Update(parsedData.Record);
+                        this.Update(data.Record);
 
                         if (common.EnableLogGlobal) {
                             console.log('this.Id', this.Id);
                         }
 
-                        this._saveCallback(oldId, parsedData);
+                        this._saveCallback(oldId, data);
                     }
                     , error: (err) => {
                         console.log(err);

@@ -32,12 +32,12 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                         var documents = Document.FindAll(i => i.PersonId == personId, new List<string> { "DocumentType" });
                         var result = new JsonListModel<Document>(documents);
 
-                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
+                        return Json(result, JsonRequestBehavior.AllowGet);
                     }
                     catch (Exception ex)
                     {
                         var result = new JsonListModel<Document>(ex.Message);
-                        return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
+                        return Json(result, JsonRequestBehavior.AllowGet);
                     }
                 }, personId);
         }
@@ -55,7 +55,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                         Document.AddOrUpdate(i => i.Id, document);
                     }, document);
 
-                    return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
+                    return Json(result, JsonRequestBehavior.AllowGet);
                 }, document.Id);
         }
 
@@ -74,10 +74,10 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                         Document.Delete(id);
                     }, null);
 
-                    return Json(result.ToJsonString(), JsonRequestBehavior.AllowGet);
+                    return Json(result, JsonRequestBehavior.AllowGet);
                 }, id);
         }
-        
+
         public JsonResult GetDocumentTypes()
         {
             var docTypes = DocumentType.GetAll().ToDictionary(i => (object)i.Id.ToString(), i => (object)i.Name);

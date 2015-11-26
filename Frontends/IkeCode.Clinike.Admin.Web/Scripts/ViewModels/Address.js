@@ -16,10 +16,10 @@ var AddressModule;
         function KoViewModel(targetSelector, saveCallback) {
             var _this = this;
             _super.call(this);
-            this.AddressTypes = ko.observable();
             this._validationGroup = ko.validatedObservable(this);
             this._validationErrors = ko.validation.group(this);
-            this.Init = function () {
+            this.AddressTypes = ko.observable();
+            this.Apply = function () {
                 if (_this._targetSelector) {
                     common.GetJsonEnum('AddressType', null, null, function (data) {
                         _this.AddressTypes(data);
@@ -45,17 +45,16 @@ var AddressModule;
                         type: 'POST',
                         dataType: 'json',
                         success: function (data, textStatus, jqXHR) {
-                            var oldId = _this.Id;
-                            var parsedData = $.parseJSON(data);
                             if (common.EnableLogGlobal) {
                                 console.log('textStatus', textStatus);
-                                console.log('parsedData', parsedData);
+                                console.log('data', data);
                             }
-                            _this.Update(parsedData.Record);
+                            var oldId = _this.Id;
+                            _this.Update(data.Record);
                             if (common.EnableLogGlobal) {
                                 console.log('this.Id', _this.Id);
                             }
-                            _this._saveCallback(oldId, parsedData);
+                            _this._saveCallback(data, oldId > 0);
                         },
                         error: function (err) {
                             console.log(err);
@@ -137,7 +136,7 @@ var AddressModule;
                         }
                         dataGridHelper.CollapseBoxAfterLoad(_this._gridSelector);
                         $('[name="spanZipCode"]').mask('00000-000');
-                        _this.addressViewModel.Init();
+                        _this.addressViewModel.Apply();
                     }
                 });
             };
@@ -147,16 +146,19 @@ var AddressModule;
                 _this.addressViewModel.Update(row);
                 $(_this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
             };
+            this.ShowModal = function (objToUpdate) {
+                if (common.EnableLogGlobal) {
+                    console.log('objToUpdate', objToUpdate);
+                }
+                _this.addressViewModel.Update(objToUpdate);
+                $(_this._modalSelector).modal('show');
+                $('input[data-mask="zipCode"]').mask('00000-000');
+            };
             console.log('GridViewModel ctor');
             this._parentId = _parentId;
-            this.addressViewModel = new AddressModule.KoViewModel('#addressEditorModal div[data-type="kobind"]', function (oldId, parsedData) {
+            this.addressViewModel = new AddressModule.KoViewModel('#addressEditorModal div[data-type="kobind"]', function (oldId, data) {
                 $(_this._modalSelector).modal('hide');
-                if (oldId > 0) {
-                    $(_this._gridSelector).datagrid('updateRow', { index: _this.SelectedIndex, row: parsedData.Record });
-                }
-                else {
-                    $(_this._gridSelector).datagrid('appendRow', parsedData.Record);
-                }
+                _this.UpdateGrid(_this._gridSelector, data, oldId > 0);
             });
             common.GetJsonEnum('AddressType');
             $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click', function () {
@@ -209,14 +211,6 @@ var AddressModule;
                     });
                 }
             });
-        };
-        GridViewModel.prototype.ShowModal = function (objToUpdate) {
-            if (common.EnableLogGlobal) {
-                console.log('objToUpdate', objToUpdate);
-            }
-            this.addressViewModel.Update(objToUpdate);
-            $(this._modalSelector).modal('show');
-            $('input[data-mask="zipCode"]').mask('00000-000');
         };
         return GridViewModel;
     })(BaseDataGridModel);

@@ -32,26 +32,21 @@ class DataGridHelper {
             data: params,
             type: requestType,
             success: function (data, textStatus, jqXHR) {
-                var parsedData = $.parseJSON(data);
-
                 if (common.EnableLogGlobal || enableLog) {
                     console.log('requestType', requestType);
-                    console.log('data', data);
-                    console.log('parsedData', parsedData);
-                    console.log('parsedData !== undefined', parsedData !== undefined);
-                    console.log('parsedData != null', parsedData != null);
-                    console.log('parsedData.success', parsedData.success);
-                    console.log('parsedData.message', parsedData.message);
+                    console.log(url + ' data', data);
+                    console.log(url + ' data.success', data.success);
+                    console.log(url + ' data.message', data.message);
+                    console.log(url + ' data.rows', data.rows);
+                    console.log(url + ' data.total', data.total);
                 }
 
-                var parsedDataIsValid = common.GetValueOrDefault(parsedData, false);
-
-                if (parsedDataIsValid && parsedData.success) {
-                    success(parsedData);
+                if (data.success) {
+                    success(data);
                 }
-                else if (parsedDataIsValid && !parsedData.success) {
+                else if (!data.success) {
                     error();
-                    (<any>$).messager.alert('Ooops...', parsedData.message, 'warning');
+                    (<any>$).messager.alert('Ooops...', data.message, 'warning');
                 } else {
                     error();
                     (<any>$).messager.alert('Error!', 'Ocorreu um erro do lado do servidor, se o erro persistir favor contatar o administrador do sistema.', 'error');

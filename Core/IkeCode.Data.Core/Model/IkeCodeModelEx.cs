@@ -80,9 +80,9 @@
                 var parameter = Expression.Parameter(typeof(TObject));
                 var memberExpression = Expression.Property(parameter, memberName);
 
-                Expression<Func<TObject, bool>> result = Expression.Lambda<Func<TObject, bool>>(Expression.Equal(memberExpression, Expression.Constant(memberValue)), parameter);
+                Expression<Func<TObject, bool>> lambdaResult = Expression.Lambda<Func<TObject, bool>>(Expression.Equal(memberExpression, Expression.Constant(memberValue)), parameter);
 
-                var originalObject = Find(result);
+                var originalObject = Find(lambdaResult);
                 if (originalObject != null && entity.Id <= 0)
                     entity.Id = originalObject.Id;
 

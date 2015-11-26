@@ -8,13 +8,14 @@
 module AddressModule {
     export class KoViewModel extends KoAddress {
 
-        AddressTypes: KnockoutObservable<any> = ko.observable();
         private _targetSelector: string;
-        private _saveCallback: (oldId: any, parsedData: any) => any;
+        private _saveCallback: (data: any, isUpdate: boolean) => any;
         private _validationGroup: KnockoutValidationGroup = ko.validatedObservable(this);
         private _validationErrors: KnockoutValidationErrors = ko.validation.group(this);
 
-        constructor(targetSelector: string, saveCallback: (oldId: any, parsedData: any) => any) {
+        AddressTypes: KnockoutObservable<any> = ko.observable();
+
+        constructor(targetSelector: string, saveCallback: (data: any, isUpdate: boolean) => any) {
             super();
 
             if (common.EnableLogGlobal) {
@@ -30,7 +31,7 @@ module AddressModule {
             }
         }
 
-        public Init = () => {
+        public Apply = () => {
             if (this._targetSelector) {
                 common.GetJsonEnum('AddressType'
                     , null
@@ -63,21 +64,20 @@ module AddressModule {
                     , type: 'POST'
                     , dataType: 'json'
                     , success: (data, textStatus, jqXHR) => {
-                        var oldId = this.Id;
-                        var parsedData = $.parseJSON(data);
-
                         if (common.EnableLogGlobal) {
                             console.log('textStatus', textStatus);
-                            console.log('parsedData', parsedData);
+                            console.log('data', data);
                         }
 
-                        this.Update(parsedData.Record);
+                        var oldId = this.Id;
+
+                        this.Update(data.Record);
 
                         if (common.EnableLogGlobal) {
                             console.log('this.Id', this.Id);
                         }
 
-                        this._saveCallback(oldId, parsedData);
+                        this._saveCallback(data, oldId > 0);
                     }
                     , error: (err) => {
                         console.log(err);
@@ -100,13 +100,9 @@ module AddressModule {
             this._parentId = _parentId;
 
             this.addressViewModel = new AddressModule.KoViewModel('#addressEditorModal div[data-type="kobind"]'
-                , (oldId, parsedData) => {
+                , (oldId, data) => {
                     $(this._modalSelector).modal('hide');
-                    if (oldId > 0) {
-                        $(this._gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: parsedData.Record });
-                    } else {
-                        $(this._gridSelector).datagrid('appendRow', parsedData.Record);
-                    }
+                    this.UpdateGrid(this._gridSelector, data, oldId > 0);
                 });
 
             common.GetJsonEnum('AddressType');
@@ -226,7 +222,7 @@ module AddressModule {
                     dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
                     $('[name="spanZipCode"]').mask('00000-000');
 
-                    this.addressViewModel.Init();
+                    this.addressViewModel.Apply();
                 }
             });
         }
@@ -239,7 +235,7 @@ module AddressModule {
             $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
         }
 
-        private ShowModal(objToUpdate: any) {
+        private ShowModal = (objToUpdate: any) => {
             if (common.EnableLogGlobal) {
                 console.log('objToUpdate', objToUpdate);
             }
