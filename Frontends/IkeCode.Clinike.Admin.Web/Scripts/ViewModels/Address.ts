@@ -96,7 +96,6 @@ module AddressModule {
 
         constructor(_parentId: number) {
             super();
-            console.log('GridViewModel ctor');
             this._parentId = _parentId;
 
             this.addressViewModel = new AddressModule.KoViewModel('#addressEditorModal div[data-type="kobind"]'

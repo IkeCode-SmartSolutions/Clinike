@@ -95,7 +95,6 @@ module PhoneModule {
 
         constructor(_parentId: number) {
             super();
-            console.log('GridViewModel ctor');
             this._parentId = _parentId;
 
             this.phoneViewModel = new PhoneModule.KoViewModel('#phoneEditorModal div[data-type="kobind"]'

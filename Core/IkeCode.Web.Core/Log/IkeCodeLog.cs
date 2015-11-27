@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Xml.Linq;
+using IkeCode.Core;
 
 namespace IkeCode.Web.Core.Log
 {

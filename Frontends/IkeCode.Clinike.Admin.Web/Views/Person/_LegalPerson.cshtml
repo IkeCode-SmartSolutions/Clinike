@@ -1,29 +1,28 @@
-﻿@model PersonViewModel
+﻿@model LegalPerson
 
 <div class="box">
     @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Jurídica", "fa fa-user", false))
     <div class="box-content" data-collapsed="false">
-        @using (Html.BeginRouteForm("PersonPost",
-                                    new { id = Model.Person.Id },
+        @using (Html.BeginForm("PostLegalPerson", "Person",
                                     FormMethod.Post,
-                                    new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
+                                    new { enctype = "multipart/form-data", id = "_legalPersonForm", role = "form", @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken();
-            @Html.HiddenFor(m => m.Person.LegalPerson.Id)
+            @Html.HiddenFor(m => m.Id)
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Person.LegalPerson.CompanyName, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(m => m.CompanyName, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-4">
-                    @Html.TextBoxFor(m => m.Person.LegalPerson.CompanyName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Person.LegalPerson.CompanyName)
+                    @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CompanyName)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Person.LegalPerson.SocialName, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(m => m.SocialName, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-4">
-                    @Html.TextBoxFor(m => m.Person.LegalPerson.SocialName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Person.LegalPerson.SocialName)
+                    @Html.TextBoxFor(m => m.SocialName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SocialName)
                 </div>
             </div>
 

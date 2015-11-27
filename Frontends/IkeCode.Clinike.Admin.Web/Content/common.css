@@ -7,3 +7,7 @@ span.has-error {
     color: #a94442;
     font-size: smaller;
 }
+
+#snarl-wrapper {
+    z-index: 9999 !important;
+}

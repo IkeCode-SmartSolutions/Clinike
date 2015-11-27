@@ -29,7 +29,10 @@ module DocumentModule {
 
                 $.getJSON('/Document/GetDocumentTypes',
                     (data, textStatus) => {
-                        console.log('GetDocumentTypes data', data);
+                        if (common.EnableLogGlobal) {
+                            console.log('GetDocumentTypes data', data);
+                        }
+
                         if (data) {
                             this.DocumentTypes(data.Options);
                         }
@@ -40,13 +43,6 @@ module DocumentModule {
 
         public Init = () => {
             if (this._targetSelector) {
-                //common.GetJsonEnum('PhoneType'
-                //    , null
-                //    , null
-                //    , (data) => {
-                //        this.PhoneTypes(data);
-                //    });
-
                 var vm = ko.mapping.fromJS(this);
 
                 var target = $(this._targetSelector).get(0);
@@ -103,7 +99,6 @@ module DocumentModule {
 
         constructor(_parentId: number) {
             super();
-            console.log('GridViewModel ctor');
             this._parentId = _parentId;
 
             this.documentViewModel = new DocumentModule.KoViewModel('#documentEditorModal div[data-type="kobind"]'
@@ -178,8 +173,6 @@ module DocumentModule {
         }
 
         public LoadDataGrid = (selector: string = this._gridSelector) => {
-            console.log('Document parentId', this._parentId);
-
             $(selector).datagrid({
                 idField: 'Id'
                 , toolbar: this._toolBarSelector
@@ -211,12 +204,12 @@ module DocumentModule {
                     this.OnClickRow(index, row);
                 }
                 , loader: (param, success, error) => {
-                    dataGridHelper.Loader('/Document/GetList', { personId: this._parentId }, success, error, 'GET', true);
+                    dataGridHelper.Loader('/Document/GetList', { personId: this._parentId }, success, error);
                 }
                 , onLoadSuccess: (items) => {
-                    console.log('document.LoadDataGrid onLoadSuccess items', items);
                     if (common.EnableLogGlobal) {
                         console.log('document.LoadDataGrid onLoadSuccess');
+                        console.log('document.LoadDataGrid onLoadSuccess items', items);
                     }
 
                     dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);

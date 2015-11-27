@@ -186,6 +186,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BoxHeaderViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\NotificationViewModel.cs" />
     <Compile Include="ViewModels\ValidationSummaryEditorViewModel.cs" />
     <Compile Include="ViewModels\LostPasswordViewModel.cs" />
     <Compile Include="ViewModels\CheckBoxEditorViewModel.cs" />
@@ -291,6 +292,7 @@
     <Content Include="Content\login\css\main.css" />
     <Content Include="Content\login\css\style.css" />
     <Content Include="Content\login\images\bg.jpg" />
+    <Content Include="Content\snarl.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -338,6 +340,10 @@
     <Content Include="Scripts\Models\PocoModels.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PocoModels.ts</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\plugins\snarl.js" />
+    <Content Include="Scripts\plugins\snarl.min.js">
+      <DependentUpon>snarl.js</DependentUpon>
     </Content>
     <Content Include="Scripts\System\Collections\Generic\List.js" />
     <Content Include="Scripts\System\Collections\Generic\List.min.js" />
@@ -575,6 +581,7 @@
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IEqualityComparer.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IGrouping.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Object.ts" />
+    <TypeScriptCompile Include="Scripts\typings\validator\validator.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Address.ts" />
     <TypeScriptCompile Include="Scripts\Models\IDataGridModel.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Document.ts" />

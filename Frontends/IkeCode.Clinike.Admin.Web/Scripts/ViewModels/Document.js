@@ -21,12 +21,6 @@ var DocumentModule;
             this._validationErrors = ko.validation.group(this);
             this.Init = function () {
                 if (_this._targetSelector) {
-                    //common.GetJsonEnum('PhoneType'
-                    //    , null
-                    //    , null
-                    //    , (data) => {
-                    //        this.PhoneTypes(data);
-                    //    });
                     var vm = ko.mapping.fromJS(_this);
                     var target = $(_this._targetSelector).get(0);
                     ko.cleanNode(target);
@@ -72,7 +66,9 @@ var DocumentModule;
             if (targetSelector) {
                 this._targetSelector = targetSelector;
                 $.getJSON('/Document/GetDocumentTypes', function (data, textStatus) {
-                    console.log('GetDocumentTypes data', data);
+                    if (common.EnableLogGlobal) {
+                        console.log('GetDocumentTypes data', data);
+                    }
                     if (data) {
                         _this.DocumentTypes(data.Options);
                     }
@@ -94,7 +90,6 @@ var DocumentModule;
             this._parentId = 0;
             this.LoadDataGrid = function (selector) {
                 if (selector === void 0) { selector = _this._gridSelector; }
-                console.log('Document parentId', _this._parentId);
                 $(selector).datagrid({
                     idField: 'Id',
                     toolbar: _this._toolBarSelector,
@@ -126,19 +121,18 @@ var DocumentModule;
                         _this.OnClickRow(index, row);
                     },
                     loader: function (param, success, error) {
-                        dataGridHelper.Loader('/Document/GetList', { personId: _this._parentId }, success, error, 'GET', true);
+                        dataGridHelper.Loader('/Document/GetList', { personId: _this._parentId }, success, error);
                     },
                     onLoadSuccess: function (items) {
-                        console.log('document.LoadDataGrid onLoadSuccess items', items);
                         if (common.EnableLogGlobal) {
                             console.log('document.LoadDataGrid onLoadSuccess');
+                            console.log('document.LoadDataGrid onLoadSuccess items', items);
                         }
                         dataGridHelper.CollapseBoxAfterLoad(_this._gridSelector);
                         _this.documentViewModel.Init();
                     }
                 });
             };
-            console.log('GridViewModel ctor');
             this._parentId = _parentId;
             this.documentViewModel = new DocumentModule.KoViewModel('#documentEditorModal div[data-type="kobind"]', function (oldId, parsedData) {
                 $(_this._modalSelector).modal('hide');

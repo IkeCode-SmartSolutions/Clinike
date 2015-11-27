@@ -35,7 +35,6 @@
   <ItemGroup>
     <Compile Include="Cache\IkeCodeCache.cs" />
     <Compile Include="Common\FileWatcher.cs" />
-    <Compile Include="Common\Tools.cs" />
     <Compile Include="CustomAttributes\DontParseHtml.cs" />
     <Compile Include="CustomAttributes\EnumRouteNameAttribute.cs" />
     <Compile Include="CustomAttributes\Helpers\EnumDisplayAttributeHelper.cs" />
@@ -149,6 +148,12 @@
       <HintPath>..\..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IkeCode.Core\IkeCode.Core.csproj">
+      <Project>{9bd498ef-5778-405c-b4e5-1a5adb39fa32}</Project>
+      <Name>IkeCode.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

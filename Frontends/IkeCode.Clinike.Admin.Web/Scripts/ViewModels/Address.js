@@ -154,7 +154,6 @@ var AddressModule;
                 $(_this._modalSelector).modal('show');
                 $('input[data-mask="zipCode"]').mask('00000-000');
             };
-            console.log('GridViewModel ctor');
             this._parentId = _parentId;
             this.addressViewModel = new AddressModule.KoViewModel('#addressEditorModal div[data-type="kobind"]', function (oldId, data) {
                 $(_this._modalSelector).modal('hide');

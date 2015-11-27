@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Tools.cs" />
+    <Compile Include="Crypto\IkeCodeCrypto.cs" />
     <Compile Include="CustomAttributes\DateTimeDatabaseGeneratedAttribute.cs" />
     <Compile Include="CustomAttributes\EmailAttribute.cs" />
     <Compile Include="CustomAttributes\ExportToJavascriptAttribute.cs" />

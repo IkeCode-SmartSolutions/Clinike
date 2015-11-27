@@ -32,16 +32,6 @@ namespace IkeCode.Clinike.Admin.Web
                 }
             );
 
-            routes.MapRoute(
-                name: "PersonPost",
-                url: "cadastro/pessoa/{id}/salvar",
-                defaults: new
-                {
-                    controller = "Person",
-                    action = "Post"
-                }
-            );
-
             #endregion Person
 
             #region Account

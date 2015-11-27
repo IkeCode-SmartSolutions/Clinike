@@ -1,4 +1,11 @@
-﻿class Person extends PersonPoco {
+﻿///<reference path="../typings/jquery/jquery.d.ts" />
+///<reference path="../typings/jquery.plugins/jquery.easyui.d.ts" />
+///<reference path="../typings/jquery.plugins/jquery.mask.d.ts" />
+///<reference path="../typings/bootstrap/bootstrap.d.ts" />
+///<reference path="../typings/knockout/knockout.d.ts" />
+///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
+
+class Person extends PersonPoco {
     constructor() {
         super();
     }

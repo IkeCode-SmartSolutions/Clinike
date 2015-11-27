@@ -4,20 +4,42 @@
 ///<reference path="typings/jquery.plugins/jquery.allgeneric.d.ts" />
 ///<reference path="typings/knockout/knockout.d.ts" />
 ///<reference path="typings/knockout.mapping/knockout.mapping.d.ts" />
+///<reference path="typings/validator/validator.d.ts" />
 "use strict";
 var Common = (function () {
     function Common() {
         this._modelAssemblyName = '';
         this._enumNamespaceName = '';
         this.EnableLogGlobal = false;
-    }
-    Common.prototype.init = function () {
-        $(document).ready(function () {
-            //fix to input file validation
-            //$.validator.addMethod('accept', function () { return true; });
-            $('input[type=file]').bootstrapFileInput();
-            common.initTabs();
-            common.initDateTimePickers();
+        this.bindAboutEvents = function () {
+            $('.about').on('click', function () {
+                $('#about').toggleClass('about-h');
+            });
+            $('#about').on('mouseleave', function () {
+                $('#about').removeClass('about-h');
+            });
+        };
+        this.initDateTimePickers = function () {
+            $('input[type=text][data-datetimepicker]').each(function () {
+                var type = $(this).data('datetimepicker');
+                var val = $(this).attr('value');
+                var value = val === undefined || val === '' || val === null ? '' : val;
+                if (type === "" || type === "datetime") {
+                    $(this).datetimepicker({});
+                }
+                else if (type === "date") {
+                    $(this).datepicker().datepicker('setDate', value);
+                }
+                else if (type === 'time') {
+                    //$(this).timepicker($.timepicker.regional['pt-BR']);
+                    $(this).timepicker();
+                }
+            });
+        };
+        this.initTabs = function () {
+            $("div[data-tabs]").tabs();
+        };
+        this.initSideMenu = function () {
             $('body').on('click', '.show-sidebar', function (e) {
                 e.preventDefault();
                 $('div#main').toggleClass('sidebar-show');
@@ -54,6 +76,17 @@ var Common = (function () {
                     e.preventDefault();
                 }
             });
+        };
+    }
+    Common.prototype.init = function () {
+        var _this = this;
+        $(document).ready(function () {
+            //fix to input file validation
+            //$.validator.addMethod('accept', function () { return true; });
+            $('input[type=file]').bootstrapFileInput();
+            _this.initTabs();
+            _this.initDateTimePickers();
+            _this.initSideMenu();
             var height = window.innerHeight - 49;
             $('#main').css('min-height', height)
                 .on('click', '.expand-link', function (e) {
@@ -106,38 +139,6 @@ var Common = (function () {
             ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
         });
     };
-    Common.prototype.bindAboutEvents = function () {
-        $('.about').on('click', function () {
-            $('#about').toggleClass('about-h');
-        });
-        $('#about').on('mouseleave', function () {
-            $('#about').removeClass('about-h');
-        });
-    };
-    Common.prototype.initDateTimePickers = function () {
-        $('input[type=text][data-datetimepicker]').each(function () {
-            var type = $(this).data('datetimepicker');
-            var val = $(this).attr('value');
-            var value = val === undefined || val === '' || val === null ? '' : val;
-            if (type === "" || type === "datetime") {
-                $(this).datetimepicker({});
-            }
-            else if (type === "date") {
-                $(this).datepicker().datepicker('setDate', value);
-            }
-            else if (type === 'time') {
-                //$(this).timepicker($.timepicker.regional['pt-BR']);
-                $(this).timepicker();
-            }
-        });
-    };
-    Common.prototype.initTabs = function () {
-        $("div[data-tabs]").tabs();
-    };
-    Common.prototype.GetValueOrDefault = function (value, defaultValue) {
-        return value === undefined || value == null ? defaultValue : value;
-    };
-    ;
     Common.prototype.GetJsonEnum = function (enumName, modelAssemblyName, enumNamespaceName, callback) {
         if (!modelAssemblyName)
             modelAssemblyName = this._modelAssemblyName;
@@ -178,10 +179,6 @@ var Common = (function () {
                 callback(enumCache.Get(enumName));
             }
         }
-    };
-    Common.MergeObjects = function (obj, obj2) {
-        var result = $.extend({}, obj, obj2);
-        return result;
     };
     return Common;
 })();

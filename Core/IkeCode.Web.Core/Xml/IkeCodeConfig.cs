@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using IkeCode.Core;
 
 namespace IkeCode.Web.Core.Xml
 {
@@ -18,7 +19,6 @@ namespace IkeCode.Web.Core.Xml
         private string File { get; set; }
         private string Section { get; set; }
         private bool IsDictionary { get; set; }
-        private bool IsAdmin { get; set; }
 
         public IkeCodeConfig Current { get; set; }
 
@@ -31,17 +31,11 @@ namespace IkeCode.Web.Core.Xml
             Current = this;
         }
 
-        public IkeCodeConfig(string file, bool isDictionary = true)
+        public IkeCodeConfig(string file, bool isDictionary = false)
             : this()
         {
             File = file;
             IsDictionary = isDictionary;
-        }
-
-        public IkeCodeConfig(string file, bool isDictionary = true, bool isAdmin = false)
-            : this(file, isDictionary)
-        {
-            IsAdmin = isAdmin;
         }
 
         public IkeCodeConfig(string file, string section)
@@ -57,13 +51,13 @@ namespace IkeCode.Web.Core.Xml
             IsDictionary = isDictionary;
         }
 
-        public static XDocument Load(string fileName, bool isDictionary, bool isAdmin, int cacheTime = 0, string cacheKey = "")
+        public static XDocument Load(string fileName, bool isDictionary, int cacheTime = 0, string cacheKey = "")
         {
             var cache = new IkeCodeCache();
             if (string.IsNullOrWhiteSpace(cacheKey))
-                cacheKey = string.Format("IkeCodeConfig_Load_{0}_{1}", fileName, isAdmin);
-            return (XDocument)cache.AutoCache<string, bool, bool, string, XDocument>(cacheKey, cacheTime,
-                (res, res1, res2, res3) => LoadXmlNoCache(fileName, isDictionary, isAdmin, cacheKey), fileName, isDictionary, isAdmin, cacheKey).Value;
+                cacheKey = string.Format("IkeCodeConfig_Load_{0}_{1}", fileName, isDictionary);
+            return (XDocument)cache.AutoCache<string, bool, string, XDocument>(cacheKey, cacheTime,
+                (res, res1, res2) => LoadXmlNoCache(fileName, isDictionary, cacheKey), fileName, isDictionary, cacheKey).Value;
         }
 
         public static string GetConfigFolderPath()
@@ -80,7 +74,7 @@ namespace IkeCode.Web.Core.Xml
         {
             var result = new Dictionary<string, Dictionary<string, string>>();
 
-            var xml = Load(File, IsDictionary, IsAdmin);
+            var xml = Load(File, IsDictionary);
             var doc = XDocument.Parse(xml.ToString());
 
             foreach (XElement element in doc.Elements().Descendants())
@@ -106,7 +100,7 @@ namespace IkeCode.Web.Core.Xml
 
         public string GetJson()
         {
-            var path = GetPath(File, IsDictionary, IsAdmin, true);
+            var path = GetPath(File, IsDictionary, true);
             var doc = new XmlDocument();
             doc.Load(path);
 
@@ -115,7 +109,7 @@ namespace IkeCode.Web.Core.Xml
 
         public object GetAttribute(string name)
         {
-            XDocument xml = Load(File, IsDictionary, IsAdmin, 500);
+            XDocument xml = Load(File, IsDictionary, 500);
             XAttribute attributeValue = null;
 
             if (xml != null)
@@ -135,7 +129,7 @@ namespace IkeCode.Web.Core.Xml
 
         public string GetValue(string section, string key)
         {
-            XDocument xml = Load(File, IsDictionary, IsAdmin, 500);
+            XDocument xml = Load(File, IsDictionary, 500);
 
             var xmlElements = (from item in xml.Root.Descendants(section)
                                select item.Element(key)).FirstOrDefault();
@@ -199,11 +193,11 @@ namespace IkeCode.Web.Core.Xml
 
         #region Private Methods
 
-        private static XDocument LoadXmlNoCache(string fileName, bool isDictionary = false, bool isAdmin = false, string cacheKey = "")
+        private static XDocument LoadXmlNoCache(string fileName, bool isDictionary = false, string cacheKey = "")
         {
             try
             {
-                var path = GetPath(fileName, isDictionary, isAdmin, false);
+                var path = GetPath(fileName, isDictionary, false);
 
                 Watcher.Path = path;
                 Watcher.FileName = fileName;
@@ -227,10 +221,10 @@ namespace IkeCode.Web.Core.Xml
             }
         }
 
-        private static string GetPath(string fileName, bool isDictionary, bool isAdmin, bool includeFileName)
+        private static string GetPath(string fileName, bool isDictionary, bool includeFileName)
         {
             var pathSeparator = Path.DirectorySeparatorChar;
-            var dicPath = (isDictionary ? isAdmin ? "DictionaryAdmin" : "Dictionary" : "");
+            var dicPath = isDictionary ? "Dictionary" : "";
 
             var path = GetConfigFolderPath();
 
@@ -247,7 +241,7 @@ namespace IkeCode.Web.Core.Xml
 
         private object GetValue(string key)
         {
-            XDocument xml = Load(File, IsDictionary, IsAdmin, 500);
+            XDocument xml = Load(File, IsDictionary, 500);
             XElement xmlElements = null;
 
             if (xml != null)

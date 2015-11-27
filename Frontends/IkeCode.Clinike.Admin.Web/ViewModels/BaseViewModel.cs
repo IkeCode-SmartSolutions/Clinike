@@ -10,12 +10,14 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
 {
     public class BaseViewModel
     {
+        public ValidationSummaryEditorViewModel ValidationSummary { get; set; }
+
+        public NotificationViewModel Notification { get; set; }
+
         public BaseViewModel()
         {
             ValidationSummary = new ValidationSummaryEditorViewModel();
         }
-
-        public ValidationSummaryEditorViewModel ValidationSummary { get; set; }
 
         public virtual void CleanModelState(ModelStateDictionary modelState)
         {

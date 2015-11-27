@@ -26,10 +26,6 @@ namespace IkeCode.Clinike.Data.Models
         [StringLength(250)]
         public string Email { get; set; }
 
-        [Display(Name = "Imagem de Perfil")]
-        [NotMapped]
-        public HttpPostedFileWrapper ProfileImage { get; set; }
-
         public string ProfileImageUrl { get; set; }
 
         public virtual Doctor Doctor { get; set; }

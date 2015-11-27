@@ -8,11 +8,11 @@
 
     @if (Model.Person.Id > 0)
     {
-        @Html.Partial("_NaturalPerson", Model)
+        @Html.Partial("_NaturalPerson", Model.Person.NaturalPerson)
 
-        @Html.Partial("_Doctor", Model)
+        @Html.Partial("_Doctor", Model.Person.Doctor)
 
-        @Html.Partial("_LegalPerson", Model)
+        @Html.Partial("_LegalPerson", Model.Person.LegalPerson)
 
 
         @Html.Partial("_PhonesGrid")
@@ -22,22 +22,28 @@
         @Html.Partial("_DocumentsGrid")
     }
 </div>
-@Html.Partial("_PhoneEditor")
-@Html.Partial("_AddressEditor")
-@Html.Partial("_DocumentEditor")
+@if (Model.Person.Id > 0)
+{
+    @Html.Partial("_PhoneEditor")
+    @Html.Partial("_AddressEditor")
+    @Html.Partial("_DocumentEditor")
+}
 
 @section scripts{
     <script type="text/javascript">
         //common.EnableLogGlobal = true;
     </script>
-    
+
     <script type="text/javascript" src="~/Scripts/ViewModels/Person.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Phone.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Address.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Document.js"></script>
     <script type="text/javascript">
-        var person = new Person();
-        person.Id = @Model.Person.Id;
+    var person = new Person();
+    person.Id = @Model.Person.Id;
         person.Init();
+        
+        var notificationObj = @Html.Raw(NotificationViewModel.ExtractStringFromCookie());
+        Snarl.addNotification(notificationObj);
     </script>
 }

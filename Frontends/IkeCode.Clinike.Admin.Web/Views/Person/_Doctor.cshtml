@@ -1,25 +1,45 @@
-﻿@model PersonViewModel
+﻿@model Doctor
 
 <div class="box">
     @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Médico", "fa fa-user-md", false))
     <div class="box-content" data-collapsed="false">
-        @using (Html.BeginRouteForm("PersonPost",
-                                    new { id = Model.Person.Id },
+        @using (Html.BeginForm("PostDoctor", "Person",
                                     FormMethod.Post,
-                                    new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
+                                    new { enctype = "multipart/form-data", id = "_doctorForm", role = "form", @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken();
-            @Html.HiddenFor(m => m.Person.Doctor.Id)
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.DateIns)
+            @Html.HiddenFor(m => m.LastUpdate)
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Person.Doctor.AdmissionDate, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(m => m.AdmissionDate, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-3">
-                    @Html.TextBoxFor(m => m.Person.Doctor.AdmissionDate, new { @class = "form-control", @data_datetimepicker = "date" })
-                    @Html.ValidationMessageFor(m => m.Person.Doctor.AdmissionDate)
+                    @Html.TextBoxFor(m => m.AdmissionDate, new { @class = "form-control", @data_datetimepicker = "date" })
+                    @Html.ValidationMessageFor(m => m.AdmissionDate)
                 </div>
             </div>
 
-            @Html.Partial("Forms/_FormButtons")
+            <div class="form-group">
+                <div class="col-sm-offset-8 col-sm-4">
+                    <button type="reset" class="btn btn-default btn-label-left">
+                        Limpar
+                    </button>
+
+                    @if (Model.Id > 0)
+                    {
+                        <button type="button" class="btn btn-danger btn-label-left">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            Excluir
+                        </button>
+                    }
+
+                    <button type="submit" class="btn btn-primary btn-label-left">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        Salvar
+                    </button>
+                </div>
+            </div>
         }
     </div>
 </div>

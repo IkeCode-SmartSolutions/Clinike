@@ -1,3 +1,9 @@
+///<reference path="../typings/jquery/jquery.d.ts" />
+///<reference path="../typings/jquery.plugins/jquery.easyui.d.ts" />
+///<reference path="../typings/jquery.plugins/jquery.mask.d.ts" />
+///<reference path="../typings/bootstrap/bootstrap.d.ts" />
+///<reference path="../typings/knockout/knockout.d.ts" />
+///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }

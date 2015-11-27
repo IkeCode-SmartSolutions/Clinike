@@ -1,28 +1,27 @@
-﻿@model PersonViewModel
+﻿@model NaturalPerson
 <div class="box">
     @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Fisica", "fa fa-user", false))
     <div class="box-content" data-collapsed="true">
-        @using (Html.BeginRouteForm("PersonPost",
-                                    new { id = Model.Person.Id },
-                                    FormMethod.Post,
-                                    new { enctype = "multipart/form-data", id = "_personForm", role = "form", @class = "form-horizontal" }))
+        @using (Html.BeginForm("PostNaturalPerson", "Person",
+                                FormMethod.Post,
+                                new { enctype = "multipart/form-data", id = "_naturalPersonForm", role = "form", @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken();
-            @Html.HiddenFor(m => m.Person.NaturalPerson.Id)
+            @Html.HiddenFor(m => m.Id)
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Person.NaturalPerson.Birthdate, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(m => m.Birthdate, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-3">
-                    @Html.TextBoxFor(m => m.Person.NaturalPerson.Birthdate, new { @class = "form-control", @data_datetimepicker = "date" })
-                    @Html.ValidationMessageFor(m => m.Person.NaturalPerson.Birthdate)
+                    @Html.TextBoxFor(m => m.Birthdate, new { @class = "form-control", @data_datetimepicker = "date" })
+                    @Html.ValidationMessageFor(m => m.Birthdate)
                 </div>
             </div>
 
             <div class="row form-group">
-                @Html.LabelFor(m => m.Person.NaturalPerson.Gender, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(m => m.Gender, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-8">
-                    @Html.RadioButtonForEnum(m => m.Person.NaturalPerson.Gender, 2)
-                    @Html.ValidationMessageFor(m => m.Person.NaturalPerson.Gender)
+                    @Html.RadioButtonForEnum(m => m.Gender, 2)
+                    @Html.ValidationMessageFor(m => m.Gender)
                 </div>
             </div>
 

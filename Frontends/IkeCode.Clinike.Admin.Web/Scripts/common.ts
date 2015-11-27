@@ -4,6 +4,7 @@
 ///<reference path="typings/jquery.plugins/jquery.allgeneric.d.ts" />
 ///<reference path="typings/knockout/knockout.d.ts" />
 ///<reference path="typings/knockout.mapping/knockout.mapping.d.ts" />
+///<reference path="typings/validator/validator.d.ts" />
 
 "use strict";
 class Common {
@@ -15,56 +16,17 @@ class Common {
     }
 
     public init() {
-        $(document).ready(function () {
+        $(document).ready(() => {
             //fix to input file validation
             //$.validator.addMethod('accept', function () { return true; });
 
             $('input[type=file]').bootstrapFileInput();
 
-            common.initTabs();
+            this.initTabs();
 
-            common.initDateTimePickers();
+            this.initDateTimePickers();
 
-            $('body').on('click', '.show-sidebar', function (e) {
-                e.preventDefault();
-                $('div#main').toggleClass('sidebar-show');
-            });
-
-            $('.main-menu').on('click', 'a', function (e) {
-                var parents = $(this).parents('li');
-                var li = $(this).closest('li.dropdown');
-                var another_items = $('.main-menu li').not(parents);
-                another_items.find('a').removeClass('active');
-                another_items.find('a').removeClass('active-parent');
-
-                if ($(this).hasClass('dropdown-toggle') || $(this).closest('li').find('ul').length == 0) {
-                    $(this).addClass('active-parent');
-                    var current = $(this).next();
-                    if (current.is(':visible')) {
-                        li.find("ul.dropdown-menu").slideUp('fast');
-                        li.find("ul.dropdown-menu a").removeClass('active')
-                    }
-                    else {
-                        another_items.find("ul.dropdown-menu").slideUp('fast');
-                        current.slideDown('fast');
-                    }
-                }
-                else {
-                    if (li.find('a.dropdown-toggle').hasClass('active-parent')) {
-                        var pre = $(this).closest('ul.dropdown-menu');
-                        pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');
-                    }
-                }
-
-                if ($(this).hasClass('active') == false) {
-                    $(this).parents("ul.dropdown-menu").find('a').removeClass('active');
-                    $(this).addClass('active')
-                }
-
-                if ($(this).attr('href') == '#') {
-                    e.preventDefault();
-                }
-            });
+            this.initSideMenu();
 
             var height = window.innerHeight - 49;
             $('#main').css('min-height', height)
@@ -122,7 +84,7 @@ class Common {
         });
     }
 
-    public bindAboutEvents() {
+    private bindAboutEvents = () => {
         $('.about').on('click', function () {
             $('#about').toggleClass('about-h');
         })
@@ -131,7 +93,7 @@ class Common {
         })
     }
 
-    public initDateTimePickers() {
+    private initDateTimePickers = () => {
         $('input[type=text][data-datetimepicker]').each(function () {
             var type = $(this).data('datetimepicker');
             var val = $(this).attr('value');
@@ -149,13 +111,52 @@ class Common {
         });
     }
 
-    public initTabs() {
+    private initTabs = () => {
         $("div[data-tabs]").tabs();
     }
 
-    public GetValueOrDefault(value: any, defaultValue: any) {
-        return value === undefined || value == null ? defaultValue : value;
-    };
+    private initSideMenu = () => {
+        $('body').on('click', '.show-sidebar', function (e) {
+            e.preventDefault();
+            $('div#main').toggleClass('sidebar-show');
+        });
+
+        $('.main-menu').on('click', 'a', function (e) {
+            var parents = $(this).parents('li');
+            var li = $(this).closest('li.dropdown');
+            var another_items = $('.main-menu li').not(parents);
+            another_items.find('a').removeClass('active');
+            another_items.find('a').removeClass('active-parent');
+
+            if ($(this).hasClass('dropdown-toggle') || $(this).closest('li').find('ul').length == 0) {
+                $(this).addClass('active-parent');
+                var current = $(this).next();
+                if (current.is(':visible')) {
+                    li.find("ul.dropdown-menu").slideUp('fast');
+                    li.find("ul.dropdown-menu a").removeClass('active')
+                }
+                else {
+                    another_items.find("ul.dropdown-menu").slideUp('fast');
+                    current.slideDown('fast');
+                }
+            }
+            else {
+                if (li.find('a.dropdown-toggle').hasClass('active-parent')) {
+                    var pre = $(this).closest('ul.dropdown-menu');
+                    pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');
+                }
+            }
+
+            if ($(this).hasClass('active') == false) {
+                $(this).parents("ul.dropdown-menu").find('a').removeClass('active');
+                $(this).addClass('active')
+            }
+
+            if ($(this).attr('href') == '#') {
+                e.preventDefault();
+            }
+        });
+    }
 
     public GetJsonEnum(enumName: string
         , modelAssemblyName?: string
@@ -205,11 +206,6 @@ class Common {
                 callback(enumCache.Get(enumName));
             }
         }
-    }
-
-    public static MergeObjects(obj: Object, obj2: Object): Object {
-        var result = $.extend({}, obj, obj2);
-        return result;
     }
 }
 

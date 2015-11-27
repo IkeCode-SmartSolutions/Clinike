@@ -83,7 +83,6 @@ var PhoneModule;
             this._gridSelector = '#phonesGrid';
             this._modalSelector = '#phoneEditorModal';
             this._parentId = 0;
-            console.log('GridViewModel ctor');
             this._parentId = _parentId;
             this.phoneViewModel = new PhoneModule.KoViewModel('#phoneEditorModal div[data-type="kobind"]', function (oldId, parsedData) {
                 $(_this._modalSelector).modal('hide');

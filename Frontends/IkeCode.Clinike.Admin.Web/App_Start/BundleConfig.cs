@@ -40,6 +40,7 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Include("~/Scripts/plugins/jquery.tabs.js");
             jsBundles.Include("~/Scripts/plugins/jquery.window.js");
             jsBundles.Include("~/Scripts/plugins/jquery.ext.js");
+            jsBundles.Include("~/Scripts/plugins/snarl.js");
 
 
             jsBundles.Include("~/Scripts/knockout-{version}.js");
@@ -61,6 +62,7 @@ namespace IkeCode.Clinike.Admin.Web
             styleBundle.Include("~/Content/bootstrap.theme.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/easyui-theme/*.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/easyui.*", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/snarl.min.css", new CssRewriteUrlTransform());
 
             styleBundle.Include("~/Content/common.css", new CssRewriteUrlTransform());
             bundles.Add(styleBundle);
