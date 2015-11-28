@@ -27,9 +27,6 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
         {
             var vm = new PersonViewModel();
 
-            var obj = new NotificationViewModel("Cadastro realizado com sucesso!", "Titulo 1", 5000, NotificationIconType.Success);
-            obj.AddToCookie();
-            
             if (id > 0)
             {
                 Run("PersonController.Index(id)",
@@ -46,10 +43,6 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                             return null;
 
                         vm = new PersonViewModel(person);
-
-                        //if (!string.IsNullOrWhiteSpace(notificationMessage))
-                        //    vm.Notification = new NotificationViewModel(notificationMessage, notificationTitle, iconType: (NotificationIconType)notificationIconType);
-
                         return vm;
                     }, id);
             }
@@ -67,18 +60,21 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                 Run("PersonController.Post(id)",
                     () =>
                     {
-                        var notificationViewModel = NotificationViewModel.ExtractFromCookie();
-
                         personVm.SaveProfileImage();
 
                         Person.AddOrUpdate(i => i.Id, personVm.Person);
+
+                        NotificationViewModel.AddToCookie("Processo finalizado com sucesso!", "Sucesso!", 10000, NotificationIconType.Success);
                     }, personVm.Person.Id);
+
+                return RedirectToRoute("Person", new { id = personVm.Person.Id });
             }
             else
             {
-                personVm.Notification = new NotificationViewModel("Ocorreu um problema ao salvar o registro!", iconType: NotificationIconType.Error);
+                NotificationViewModel.AddToCookie("Ocorreu um problema ao salvar o registro!", iconType: NotificationIconType.Error);
             }
-            return RedirectToRoute("Person", new { id = personVm.Person.Id });
+
+            return RedirectToRoute("Error", new { RedirectUrl = string.Format("~/cadastro/pessoa") });
         }
 
         [HttpPost]
@@ -92,14 +88,18 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     () =>
                     {
                         NaturalPerson.AddOrUpdate(i => i.Id, person);
+
+                        NotificationViewModel.AddToCookie("Processo finalizado com sucesso!", "Sucesso!", 10000, NotificationIconType.Success);
                     }, person.Id);
 
                 return RedirectToRoute("Person", new { id = person.Id });
             }
             else
             {
-                return RedirectToRoute("Person", new { id = person.Id });
+                NotificationViewModel.AddToCookie("Ocorreu um problema ao salvar o registro!", iconType: NotificationIconType.Error);
             }
+
+            return RedirectToRoute("Error", new { RedirectUrl = string.Format("~/cadastro/pessoa") });
         }
 
         [HttpPost]
@@ -114,14 +114,18 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     () =>
                     {
                         Doctor.AddOrUpdate(i => i.Id, doctor);
+
+                        NotificationViewModel.AddToCookie("Processo finalizado com sucesso!", "Sucesso!", 10000, NotificationIconType.Success);
                     }, doctor.Id);
+
+                return RedirectToRoute("Person", new { id = doctor.Id });
             }
             else
             {
-                //vm.Notify = new NotifyViewModel("Ocorreu um problema ao salvar o registro!", theme: "red");
+                NotificationViewModel.AddToCookie("Ocorreu um problema ao salvar o registro!", iconType: NotificationIconType.Error);
             }
 
-            return RedirectToRoute("Person", new { id = doctor.Id });
+            return RedirectToRoute("Error", new { RedirectUrl = string.Format("~/cadastro/pessoa") });
         }
 
         [HttpPost]
@@ -135,14 +139,18 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                     () =>
                     {
                         LegalPerson.AddOrUpdate(i => i.Id, person);
+
+                        NotificationViewModel.AddToCookie("Processo finalizado com sucesso!", "Sucesso!", 10000, NotificationIconType.Success);
                     }, person.Id);
+
+                return RedirectToRoute("Person", new { id = person.Id });
             }
             else
             {
-                //vm.Notify = new NotifyViewModel("Ocorreu um problema ao salvar o registro!", theme: "red");
+                NotificationViewModel.AddToCookie("Ocorreu um problema ao salvar o registro!", iconType: NotificationIconType.Error);
             }
 
-            return RedirectToRoute("Person", new { id = person.Id });
+            return RedirectToRoute("Error", new { RedirectUrl = string.Format("~/cadastro/pessoa") });
         }
     }
 }

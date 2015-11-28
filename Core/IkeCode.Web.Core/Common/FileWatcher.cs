@@ -8,7 +8,6 @@ namespace IkeCode.Web.Core.Common
     {
         #region Attributes
 
-        private FileSystemWatcher Watcher = new FileSystemWatcher();
         public string Path { get; set; }
         public string FileName { get; set; }
         public string CacheKey { get; set; }
@@ -25,22 +24,23 @@ namespace IkeCode.Web.Core.Common
             FileName = fileName;
             CacheKey = cacheKey;
         }
-
+        private FileSystemWatcher _watcher;
         public void Start()
         {
-            Watcher.Path = Path;
-            Watcher.IncludeSubdirectories = true;
-            Watcher.Filter = "*.xml";
-            Watcher.EnableRaisingEvents = true;
-            Watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.FileName | NotifyFilters.CreationTime;
-
-            Watcher.Renamed += new RenamedEventHandler(watcher_Renamed);
-            Watcher.Changed += new FileSystemEventHandler(watcher_Changed);
+            _watcher = new FileSystemWatcher();
+            _watcher.Path = Path;
+            _watcher.IncludeSubdirectories = true;
+            _watcher.Filter = "*.xml";
+            _watcher.EnableRaisingEvents = true;
+            _watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.FileName | NotifyFilters.CreationTime;
+            _watcher.Renamed += new RenamedEventHandler(watcher_Renamed);
+            _watcher.Changed += new FileSystemEventHandler(watcher_Changed);
         }
 
         public void Stop()
         {
-            Watcher.EnableRaisingEvents = false;
+            _watcher.EnableRaisingEvents = false;
+            _watcher.Dispose();
         }
 
         #endregion

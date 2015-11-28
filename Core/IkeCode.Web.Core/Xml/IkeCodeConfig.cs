@@ -212,12 +212,12 @@ namespace IkeCode.Web.Core.Xml
             catch (FileNotFoundException ex)
             {
                 IkeCodeLog.Default.Warning(string.Format("Configuration file not found on the configuration folders: [{0}]", ex.FileName));
-                throw ex;
+                throw;
             }
             catch (Exception ex)
             {
                 IkeCodeLog.Default.Exception(ex);
-                throw ex;
+                throw;
             }
         }
 
