@@ -309,7 +309,7 @@ namespace Clinike.Admin.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult UserRoles(string id)
         {
-            var user = ClinikeUserEx.Find(u => u.Id == id, new List<string> { "Roles" });
+            var user = ClinikeUserEx.Find(u => u.Id == id, includes: new List<string> { "Roles" });
             var model = new SelectUserRolesViewModel(user);
             return View(model);
         }

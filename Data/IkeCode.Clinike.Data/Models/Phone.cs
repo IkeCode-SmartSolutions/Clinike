@@ -21,6 +21,7 @@ namespace IkeCode.Clinike.Data.Models
         {
             Number = model.Number;
             PhoneType = model.PhoneType;
+            PhoneTypeId = model.PhoneTypeId;
             PersonId = model.PersonId;
         }
 

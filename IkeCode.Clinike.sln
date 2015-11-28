@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Admin.Web", "Frontends\IkeCode.Clinike.Admin.Web\IkeCode.Clinike.Admin.Web.csproj", "{90DAF93E-9059-4FA1-9B4A-737BCB6B775C}"
 EndProject
@@ -25,6 +25,18 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontends", "Frontends", "{037DFD08-CC51-44FA-8F50-7EC399B936A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Core", "Core\IkeCode.Core\IkeCode.Core.csproj", "{9BD498EF-5778-405C-B4E5-1A5ADB39FA32}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIs", "APIs", "{75231FF3-AD76-472F-B211-EB744937FE12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.ScheduleApi", "APIs\IkeCode.Clinike.ScheduleApi\IkeCode.Clinike.ScheduleApi.csproj", "{A99C3DAE-B798-4C4A-9B23-DB5A71CFE8B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.ScheduleApi.Tests", "Tests\IkeCode.Clinike.ScheduleApi.Tests\IkeCode.Clinike.ScheduleApi.Tests.csproj", "{985F0897-C680-43AF-9FE8-E57A7E6EC0AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4C6269E6-356E-4DFE-B45F-4BECC7C4A23F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.PersonApi", "APIs\IkeCode.Clinike.PersonApi\IkeCode.Clinike.PersonApi.csproj", "{A20EDD20-088D-4DBC-AC1F-67DB550B529E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.PersonApi.Tests", "Tests\IkeCode.Clinike.PersonApi.Tests\IkeCode.Clinike.PersonApi.Tests.csproj", "{2AA98659-66D9-47E9-98AD-827B2EBB1FC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +64,22 @@ Global
 		{9BD498EF-5778-405C-B4E5-1A5ADB39FA32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BD498EF-5778-405C-B4E5-1A5ADB39FA32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BD498EF-5778-405C-B4E5-1A5ADB39FA32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A99C3DAE-B798-4C4A-9B23-DB5A71CFE8B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A99C3DAE-B798-4C4A-9B23-DB5A71CFE8B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A99C3DAE-B798-4C4A-9B23-DB5A71CFE8B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A99C3DAE-B798-4C4A-9B23-DB5A71CFE8B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{985F0897-C680-43AF-9FE8-E57A7E6EC0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{985F0897-C680-43AF-9FE8-E57A7E6EC0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{985F0897-C680-43AF-9FE8-E57A7E6EC0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{985F0897-C680-43AF-9FE8-E57A7E6EC0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A20EDD20-088D-4DBC-AC1F-67DB550B529E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A20EDD20-088D-4DBC-AC1F-67DB550B529E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A20EDD20-088D-4DBC-AC1F-67DB550B529E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A20EDD20-088D-4DBC-AC1F-67DB550B529E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AA98659-66D9-47E9-98AD-827B2EBB1FC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AA98659-66D9-47E9-98AD-827B2EBB1FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AA98659-66D9-47E9-98AD-827B2EBB1FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AA98659-66D9-47E9-98AD-827B2EBB1FC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,5 +90,9 @@ Global
 		{EC3ADD94-5E1D-4A5F-BE06-788AC6C0E252} = {4D585591-E310-481D-9514-1FF9CAB9F75C}
 		{2E7DC5E8-7418-4FCC-B85F-DA71DE1FD714} = {4D585591-E310-481D-9514-1FF9CAB9F75C}
 		{9BD498EF-5778-405C-B4E5-1A5ADB39FA32} = {4D585591-E310-481D-9514-1FF9CAB9F75C}
+		{A99C3DAE-B798-4C4A-9B23-DB5A71CFE8B8} = {75231FF3-AD76-472F-B211-EB744937FE12}
+		{985F0897-C680-43AF-9FE8-E57A7E6EC0AB} = {4C6269E6-356E-4DFE-B45F-4BECC7C4A23F}
+		{A20EDD20-088D-4DBC-AC1F-67DB550B529E} = {75231FF3-AD76-472F-B211-EB744937FE12}
+		{2AA98659-66D9-47E9-98AD-827B2EBB1FC9} = {4C6269E6-356E-4DFE-B45F-4BECC7C4A23F}
 	EndGlobalSection
 EndGlobal

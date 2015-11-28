@@ -22,7 +22,6 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Include("~/Scripts/plugins/bootstrapvalidator/bootstrapValidator.min.js");
 
             jsBundles.Include("~/Scripts/plugins/jquery.easyui.min.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.form.js");
             jsBundles.Include("~/Scripts/plugins/jquery.accordion.js");
             jsBundles.Include("~/Scripts/plugins/jquery.calendar.js");
             jsBundles.Include("~/Scripts/plugins/jquery.combobox.js");
@@ -41,7 +40,8 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Include("~/Scripts/plugins/jquery.window.js");
             jsBundles.Include("~/Scripts/plugins/jquery.ext.js");
             jsBundles.Include("~/Scripts/plugins/snarl.js");
-
+            jsBundles.Include("~/Scripts/moment-with-locales.js");
+            jsBundles.Include("~/Scripts/fullcalendar.js");
 
             jsBundles.Include("~/Scripts/knockout-{version}.js");
             jsBundles.Include("~/Scripts/knockout.mapping-latest.js");
@@ -63,6 +63,8 @@ namespace IkeCode.Clinike.Admin.Web
             styleBundle.Include("~/Content/easyui-theme/*.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/easyui.*", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/snarl.min.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/fullcalendar.min.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/fullcalendar.print.css", new CssRewriteUrlTransform());
 
             styleBundle.Include("~/Content/common.css", new CssRewriteUrlTransform());
             bundles.Add(styleBundle);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IkeCode.Data.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
@@ -32,23 +33,24 @@ namespace IkeCode.Web.Core.Model
                 IQueryable<TObject> results = _context.Set<TObject>();
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
-
+                
                 return results.ToList();
             });
         }
 
-        public static ICollection<TObject> GetAll(bool asNoTracking, params Expression<Func<TObject, object>>[] includes)
+        public static ICollection<TObject> GetAll(bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             return RunStatic<ICollection<TObject>>((_context) =>
             {
                 IQueryable<TObject> results = _context.Set<TObject>();
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
+
                 return results.ToList();
             });
         }
 
-        public static async Task<ICollection<TObject>> GetAllAsync(bool asNoTracking, params Expression<Func<TObject, object>>[] includes)
+        private static async Task<PagedList<TObject>> GetAllAsync(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             using (var _context = GetDefaultContext())
             {
@@ -57,11 +59,11 @@ namespace IkeCode.Web.Core.Model
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
 
-                return await results.ToListAsync();
+                return await results.ToPagedListAsync(offset, limit);
             };
         }
 
-        public static TObject Find(Expression<Func<TObject, bool>> match, ICollection<string> includes = null, bool asNoTracking = false)
+        public static TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return RunStatic((_context) =>
             {
@@ -74,7 +76,7 @@ namespace IkeCode.Web.Core.Model
             });
         }
 
-        public static TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking, params Expression<Func<TObject, object>>[] includes)
+        public static TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             return RunStatic((_context) =>
             {
@@ -87,7 +89,7 @@ namespace IkeCode.Web.Core.Model
             });
         }
 
-        public static async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, ICollection<string> includes = null, bool asNoTracking = false)
+        public static async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
         {
             using (var _context = GetDefaultContext())
             {
@@ -100,7 +102,7 @@ namespace IkeCode.Web.Core.Model
             }
         }
 
-        public static async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking, params Expression<Func<TObject, object>>[] includes)
+        public static async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             using (var _context = GetDefaultContext())
             {
@@ -113,33 +115,33 @@ namespace IkeCode.Web.Core.Model
             }
         }
 
-        public static ICollection<TObject> FindAll(Expression<Func<TObject, bool>> match, ICollection<string> includes = null, bool asNoTracking = false)
+        private static PagedList<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
         {
-            return RunStatic<ICollection<TObject>>((_context) =>
+            return RunStatic<PagedList<TObject>>((_context) =>
             {
                 var results = _context.Set<TObject>().Where(match);
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
 
-                return results.ToList();
+                return results.ToPagedList(offset, limit);
             });
         }
 
-        public static ICollection<TObject> FindAll(Expression<Func<TObject, bool>> match, bool asNoTracking, params Expression<Func<TObject, object>>[] includes)
+        private static PagedList<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
-            return RunStatic<ICollection<TObject>>((_context) =>
+            return RunStatic<PagedList<TObject>>((_context) =>
             {
                 var results = _context.Set<TObject>().Where(match);
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
 
-                return results.ToList();
+                return results.ToPagedList(offset, limit);
             });
         }
 
-        public static async Task<ICollection<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, ICollection<string> includes = null, bool asNoTracking = false)
+        private static async Task<PagedList<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
         {
             using (var _context = GetDefaultContext())
             {
@@ -148,11 +150,11 @@ namespace IkeCode.Web.Core.Model
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
 
-                return await results.ToListAsync();
+                return await results.ToPagedListAsync(offset, limit);
             }
         }
 
-        public static async Task<ICollection<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, bool asNoTracking, params Expression<Func<TObject, object>>[] includes)
+        private static async Task<PagedList<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             using (var _context = GetDefaultContext())
             {
@@ -161,7 +163,7 @@ namespace IkeCode.Web.Core.Model
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
 
-                return await results.ToListAsync();
+                return await results.ToPagedListAsync(offset, limit);
             }
         }
 

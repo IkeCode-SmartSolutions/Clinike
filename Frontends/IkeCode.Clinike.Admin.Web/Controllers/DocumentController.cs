@@ -29,7 +29,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                 {
                     try
                     {
-                        var documents = Document.FindAll(i => i.PersonId == personId, new List<string> { "DocumentType" });
+                        var documents = Document.FindAll(i => i.PersonId == personId, 0, 10, includes: new List<string> { "DocumentType" });
                         var result = new JsonListModel<Document>(documents);
 
                         return Json(result, JsonRequestBehavior.AllowGet);

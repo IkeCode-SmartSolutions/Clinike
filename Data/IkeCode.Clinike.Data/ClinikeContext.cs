@@ -32,6 +32,12 @@
             base.OnModelCreating(modelBuilder);
 
             PersonFluentConfigurations(modelBuilder);
+            ScheduleFluentConfigurations(modelBuilder);
+        }
+
+        private void ScheduleFluentConfigurations(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Schedule>().ToTable("schedules");
         }
 
         private void PersonFluentConfigurations(DbModelBuilder modelBuilder)

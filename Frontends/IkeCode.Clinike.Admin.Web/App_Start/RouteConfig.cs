@@ -34,6 +34,21 @@ namespace IkeCode.Clinike.Admin.Web
 
             #endregion Person
 
+            #region Person
+
+            routes.MapRoute(
+                name: "Schedule",
+                url: "agenda/{id}",
+                defaults: new
+                {
+                    controller = "Schedule",
+                    action = "Index",
+                    id = UrlParameter.Optional
+                }
+            );
+
+            #endregion Person
+
             #region Account
 
             routes.MapRoute(

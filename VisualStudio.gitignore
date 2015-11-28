@@ -224,3 +224,9 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+Uploads/ProfileImages/*.jpg
+Uploads/ProfileImages/*.jpeg
+Uploads/ProfileImages/*.png
+Uploads/ProfileImages/*.gif
+Uploads/ProfileImages/*.bmp

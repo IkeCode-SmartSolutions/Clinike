@@ -74,6 +74,9 @@
     <Compile Include="Model\IkeCodeEntityBaseModelEx.cs" />
     <Compile Include="Model\IkeCodeModel.cs" />
     <Compile Include="Model\IkeCodeModelEx.cs" />
+    <Compile Include="Model\Interfaces\IIkeCodePaged.cs" />
+    <Compile Include="Model\PagedList.cs" />
+    <Compile Include="Model\PagedResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

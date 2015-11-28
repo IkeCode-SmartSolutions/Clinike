@@ -23,11 +23,14 @@ namespace IkeCode.Clinike.Data.Migrations
             SeedPerson();
 
             SeedUserAndRoles();
+
+            SeedSchedule();
         }
 
+        private Person _person = null;
         void SeedPerson()
         {
-            var person = new Person()
+            _person = new Person()
             {
                 Name = "Leandro Barral",
                 Email = "ikecode@gmail.com",
@@ -88,7 +91,7 @@ namespace IkeCode.Clinike.Data.Migrations
                 }
             };
 
-            Person.AddOrUpdate(i => i.Email, person);
+            Person.AddOrUpdate(i => i.Email, _person);
         }
 
         void SeedUserAndRoles()
@@ -144,6 +147,22 @@ namespace IkeCode.Clinike.Data.Migrations
             idManager.AddUserToRole(dbUser.Id, "CanDelete");
             idManager.AddUserToRole(dbUser.Id, "CanEdit");
             idManager.AddUserToRole(dbUser.Id, "User");
+        }
+
+        void SeedSchedule()
+        {
+            if(_person != null && _person.Id > 0)
+            {
+                var schedule = new Schedule()
+                {
+                    PersonId = _person.Id,
+                    ScheduleDate = DateTime.UtcNow.AddDays(1),
+                    ScheduleType = ScheduleType.Doctor
+                };
+
+                //Schedule.AddOrUpdate(schedule, i => i.PersonId, i => i.ScheduleType);
+                Schedule.AddOrUpdate(i => i.PersonId, schedule);
+            }
         }
     }
 }
