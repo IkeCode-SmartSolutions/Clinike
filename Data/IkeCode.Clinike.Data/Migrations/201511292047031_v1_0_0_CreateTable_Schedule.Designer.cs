@@ -13,7 +13,7 @@ namespace IkeCode.Clinike.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201511281454175_v1_0_0_CreateTable_Schedule"; }
+            get { return "201511292047031_v1_0_0_CreateTable_Schedule"; }
         }
         
         string IMigrationMetadata.Source

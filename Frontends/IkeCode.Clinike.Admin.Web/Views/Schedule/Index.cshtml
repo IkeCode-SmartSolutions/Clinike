@@ -2,204 +2,121 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<div class="box">
-    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Cadastro de Pessoa", "fa fa-user"))
-    <div class="box-content">
-        <h4 class="page-header">Agenda</h4>
-
-        <div class="row full-calendar">
-            <div class="col-sm-3">
-                <div id="add-new-event">
-                    <h4 class="page-header">Add new event</h4>
-                    <div class="form-group">
-                        <label>Event title</label>
-                        <input type="text" id="new-event-title" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Event description</label>
-                        <textarea class="form-control" id="new-event-desc" rows="3"></textarea>
-                    </div>
-                    <a href="#" id="new-event-add" class="btn btn-primary pull-right">Add event</a>
-                    <div class="clearfix"></div>
-                </div>
-                <div id="external-events">
-                    <h4 class="page-header" id="events-templates-header">Draggable Events</h4>
-                    <div class="external-event">Work time</div>
-                    <div class="external-event">Conference</div>
-                    <div class="external-event">Meeting</div>
-                    <div class="external-event">Restaurant</div>
-                    <div class="external-event">Launch</div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" id="drop-remove"> remove after drop
-                            <i class="fa fa-square-o small"></i>
-                        </label>
-                    </div>
+<div id="ajax-content">
+    <div class="row full-calendar">
+        <div class="col-sm-3">
+            <div id="external-events">
+                <h4 class="page-header" id="events-templates-header">Draggable Events</h4>
+                <div class="external-event ui-draggable" style="position: relative; top: 0px; left: 0px; z-index: auto;">Work time</div>
+                <div class="external-event ui-draggable" style="position: relative; top: 0px; left: 0px; z-index: auto;">Conference</div>
+                <div class="external-event ui-draggable" style="position: relative;">Meeting</div>
+                <div class="external-event ui-draggable" style="position: relative;">Restaurant</div>
+                <div class="external-event ui-draggable" style="position: relative;">Launch</div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="drop-remove"> remove after drop
+                        <i class="fa fa-square-o small"></i>
+                    </label>
                 </div>
             </div>
-            <div class="col-sm-9">
-                <div id="calendar"></div>
+        </div>
+        <div class="col-sm-9">
+            <div id="calendar" class="fc fc-ltr" style="min-height: 385px;">   
             </div>
         </div>
     </div>
 </div>
-
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#external-events div.external-event').each(function () {
-                // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-                var eventObject = {
-                    title: $.trim($(this).text()) // use the element's text as the event title
-                };
-                // store the Event Object in the DOM element so we can get to it later
-                $(this).data('eventObject', eventObject);
-                // make the event draggable using jQuery UI
+            $('div#external-events div').each(function () {
+                // store data so the calendar knows to render an event upon drop
+                $(this).data('event', {
+                    title: $.trim($(this).text()), // use the element's text as the event title
+                    stick: true // maintain when user navigates (see docs on the renderEvent method)
+                });
+
                 $(this).draggable({
-                    zIndex: 999,
+                    zIndex: 999999,
                     revert: true,      // will cause the event to go back to its
                     revertDuration: 0  //  original position after the drag
                 });
             });
-            /* initialize the calendar
-            -----------------------------------------------------------------*/
-            var calendar = $('#calendar').fullCalendar({
+
+            $('#calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'month,agendaWeek,agendaDay'
                 },
-                selectable: true,
-                selectHelper: true,
-                select: function (start, end, allDay) {
-                    var form = $('<form id="event_form">' +
-                        '<div class="form-group has-success has-feedback">' +
-                        '<label">Event name</label>' +
-                        '<div>' +
-                        '<input type="text" id="newevent_name" class="form-control" placeholder="Name of event">' +
-                        '</div>' +
-                        '<label>Description</label>' +
-                        '<div>' +
-                        '<textarea rows="3" id="newevent_desc" class="form-control" placeholder="Description"></textarea>' +
-                        '</div>' +
-                        '</div>' +
-                        '</form>');
-                    var buttons = $('<button id="event_cancel" type="cancel" class="btn btn-default btn-label-left">' +
-                                    '<span><i class="fa fa-clock-o txt-danger"></i></span>' +
-                                    'Cancel' +
-                                    '</button>' +
-                                    '<button type="submit" id="event_submit" class="btn btn-primary btn-label-left pull-right">' +
-                                    '<span><i class="fa fa-clock-o"></i></span>' +
-                                    'Add' +
-                                    '</button>');
-                    OpenModalBox('Add event', form, buttons);
-                    $('#event_cancel').on('click', function () {
-                        CloseModalBox();
-                    });
-                    $('#event_submit').on('click', function () {
-                        var new_event_name = $('#newevent_name').val();
-                        if (new_event_name != '') {
-                            calendar.fullCalendar('renderEvent',
-                                {
-                                    title: new_event_name,
-                                    description: $('#newevent_desc').val(),
-                                    start: start,
-                                    end: end,
-                                    allDay: allDay
-                                },
-                                true // make the event "stick"
-                            );
-                        }
-                        CloseModalBox();
-                    });
-                    calendar.fullCalendar('unselect');
+                defaultView: 'agendaDay',
+                defaultDate: '2014-11-12',
+                eventLimit: true, // allow "more" link when too many events
+                events: [
+                  {
+                      title: 'All Day Event',
+                      start: '2014-11-01'
+                  },
+                  {
+                      title: 'Long Event',
+                      start: '2014-11-07',
+                      end: '2014-11-10'
+                  },
+                  {
+                      id: 999,
+                      title: 'Repeating Event',
+                      start: '2014-11-09T16:00:00'
+                  },
+                  {
+                      id: 999,
+                      title: 'Repeating Event',
+                      start: '2014-11-16T16:00:00'
+                  },
+                  {
+                      title: 'Conference',
+                      start: '2014-11-11',
+                      end: '2014-11-13'
+                  },
+                  {
+                      title: 'Meeting',
+                      start: '2014-11-12T10:30:00',
+                      end: '2014-11-12T12:30:00'
+                  },
+                  {
+                      title: 'Lunch',
+                      start: '2014-11-12T12:00:00'
+                  },
+                  {
+                      title: 'Meeting',
+                      start: '2014-11-12T14:30:00'
+                  },
+                  {
+                      title: 'Happy Hour',
+                      start: '2014-11-12T17:30:00'
+                  },
+                  {
+                      title: 'Dinner',
+                      start: '2014-11-12T20:00:00'
+                  },
+                  {
+                      title: 'Birthday Party',
+                      start: '2014-11-13T07:00:00'
+                  },
+                  {
+                      title: 'Click for Google',
+                      url: 'http://google.com/',
+                      start: '2014-11-28'
+                  }
+                ]
+                , eventAfterAllRender: function (view) {
+                    var calendar = $('#calendar');
+                    calendar.closest('.box').css('height', $('#calendar').height() + 120);
                 },
                 editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar !!!
-                drop: function (date, allDay) { // this function is called when something is dropped
-                    // retrieve the dropped element's stored Event Object
-                    var originalEventObject = $(this).data('eventObject');
-                    // we need to copy it, so that multiple events don't have a reference to the same object
-                    var copiedEventObject = $.extend({}, originalEventObject);
-                    // assign it the date that was reported
-                    copiedEventObject.start = date;
-                    copiedEventObject.allDay = allDay;
-                    // render the event on the calendar
-                    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-                    $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                droppable: true, // this allows things to be dropped onto the calendar
+                drop: function () {
                     // is the "remove after drop" checkbox checked?
-                    if ($('#drop-remove').is(':checked')) {
-                        // if so, remove the element from the "Draggable Events" list
-                        $(this).remove();
-                    }
-                },
-                eventRender: function (event, element, icon) {
-                    if (event.description != "") {
-                        element.attr('title', event.description);
-                    }
-                },
-                eventClick: function (calEvent, jsEvent, view) {
-                    var form = $('<form id="event_form">' +
-                        '<div class="form-group has-success has-feedback">' +
-                        '<label">Event name</label>' +
-                        '<div>' +
-                        '<input type="text" id="newevent_name" value="' + calEvent.title + '" class="form-control" placeholder="Name of event">' +
-                        '</div>' +
-                        '<label>Description</label>' +
-                        '<div>' +
-                        '<textarea rows="3" id="newevent_desc" class="form-control" placeholder="Description">' + calEvent.description + '</textarea>' +
-                        '</div>' +
-                        '</div>' +
-                        '</form>');
-                    var buttons = $('<button id="event_cancel" type="cancel" class="btn btn-default btn-label-left">' +
-                                    '<span><i class="fa fa-clock-o txt-danger"></i></span>' +
-                                    'Cancel' +
-                                    '</button>' +
-                                    '<button id="event_delete" type="cancel" class="btn btn-danger btn-label-left">' +
-                                    '<span><i class="fa fa-clock-o txt-danger"></i></span>' +
-                                    'Delete' +
-                                    '</button>' +
-                                    '<button type="submit" id="event_change" class="btn btn-primary btn-label-left pull-right">' +
-                                    '<span><i class="fa fa-clock-o"></i></span>' +
-                                    'Save changes' +
-                                    '</button>');
-                    OpenModalBox('Change event', form, buttons);
-                    $('#event_cancel').on('click', function () {
-                        CloseModalBox();
-                    });
-                    $('#event_delete').on('click', function () {
-                        calendar.fullCalendar('removeEvents', function (ev) {
-                            return (ev._id == calEvent._id);
-                        });
-                        CloseModalBox();
-                    });
-                    $('#event_change').on('click', function () {
-                        calEvent.title = $('#newevent_name').val();
-                        calEvent.description = $('#newevent_desc').val();
-                        calendar.fullCalendar('updateEvent', calEvent);
-                        CloseModalBox()
-                    });
-                }
-            });
-            $('#new-event-add').on('click', function (event) {
-                event.preventDefault();
-                var event_name = $('#new-event-title').val();
-                var event_description = $('#new-event-desc').val();
-                if (event_name != '') {
-                    var event_template = $('<div class="external-event" data-description="' + event_description + '">' + event_name + '</div>');
-                    $('#events-templates-header').after(event_template);
-                    var eventObject = {
-                        title: event_name,
-                        description: event_description
-                    };
-                    // store the Event Object in the DOM element so we can get to it later
-                    event_template.data('eventObject', eventObject);
-                    event_template.draggable({
-                        zIndex: 999,
-                        revert: true,
-                        revertDuration: 0
-                    });
+                    console.log('drop');
                 }
             });
         });

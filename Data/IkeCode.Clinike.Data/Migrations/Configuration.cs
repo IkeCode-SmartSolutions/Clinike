@@ -155,13 +155,15 @@ namespace IkeCode.Clinike.Data.Migrations
             {
                 var schedule = new Schedule()
                 {
-                    PersonId = _person.Id,
-                    ScheduleDate = DateTime.UtcNow.AddDays(1),
+                    PatientId = _person.Id,
+                    DoctorId = _person.Doctor.Id,
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddHours(2),
                     ScheduleType = ScheduleType.Doctor
                 };
 
                 //Schedule.AddOrUpdate(schedule, i => i.PersonId, i => i.ScheduleType);
-                Schedule.AddOrUpdate(i => i.PersonId, schedule);
+                Schedule.AddOrUpdate(i => i.DoctorId, schedule);
             }
         }
     }

@@ -258,7 +258,9 @@
     <Content Include="Content\easyui.color.css" />
     <Content Include="Content\easyui.icon.css" />
     <Content Include="Content\fullcalendar.css" />
-    <Content Include="Content\fullcalendar.min.css" />
+    <Content Include="Content\fullcalendar.min.css">
+      <DependentUpon>fullcalendar.css</DependentUpon>
+    </Content>
     <Content Include="Content\fullcalendar.print.css" />
     <Content Include="Content\icons\back.png" />
     <Content Include="Content\icons\blank.gif" />
@@ -431,6 +433,7 @@
     <Content Include="Views\Shared\_ConfirmModal.cshtml" />
     <Content Include="Views\Person\_DocumentEditor.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Schedule\Index - Copy.cshtml" />
     <TypeScriptCompile Include="Scripts\DataGridHelper.ts" />
     <Content Include="Scripts\common.js">
       <DependentUpon>Common.ts</DependentUpon>
@@ -646,7 +649,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PocoModels.tt</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\typings\fullCalendar\fullCalendar.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\Generic\List.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IEqualityComparer.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IGrouping.ts" />

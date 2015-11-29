@@ -75,6 +75,8 @@
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\PhoneType.cs" />
     <Compile Include="Enums\ScheduleType.cs" />
+    <Compile Include="Interfaces\IBaseModel.cs" />
+    <Compile Include="Interfaces\ISchedule.cs" />
     <Compile Include="Migrations\201508211757377_v1_0_0_InitialClinikeModels.cs" />
     <Compile Include="Migrations\201508211757377_v1_0_0_InitialClinikeModels.Designer.cs">
       <DependentUpon>201508211757377_v1_0_0_InitialClinikeModels.cs</DependentUpon>
@@ -83,9 +85,9 @@
     <Compile Include="Migrations\201510122350373_V1_0_0_AddColumn_Roles_Title.Designer.cs">
       <DependentUpon>201510122350373_V1_0_0_AddColumn_Roles_Title.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201511281454175_v1_0_0_CreateTable_Schedule.cs" />
-    <Compile Include="Migrations\201511281454175_v1_0_0_CreateTable_Schedule.Designer.cs">
-      <DependentUpon>201511281454175_v1_0_0_CreateTable_Schedule.cs</DependentUpon>
+    <Compile Include="Migrations\201511292047031_v1_0_0_CreateTable_Schedule.cs" />
+    <Compile Include="Migrations\201511292047031_v1_0_0_CreateTable_Schedule.Designer.cs">
+      <DependentUpon>201511292047031_v1_0_0_CreateTable_Schedule.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
@@ -132,8 +134,8 @@
     <EmbeddedResource Include="Migrations\201510122350373_V1_0_0_AddColumn_Roles_Title.resx">
       <DependentUpon>201510122350373_V1_0_0_AddColumn_Roles_Title.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511281454175_v1_0_0_CreateTable_Schedule.resx">
-      <DependentUpon>201511281454175_v1_0_0_CreateTable_Schedule.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201511292047031_v1_0_0_CreateTable_Schedule.resx">
+      <DependentUpon>201511292047031_v1_0_0_CreateTable_Schedule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
