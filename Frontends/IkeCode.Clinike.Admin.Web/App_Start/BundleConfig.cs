@@ -13,35 +13,20 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Include("~/Scripts/modernizr-{version}.js");
             jsBundles.Include("~/Scripts/jquery-{version}.js");
             jsBundles.Include("~/Scripts/linq.js");
-            jsBundles.Include("~/Scripts/bootstrap.min.js");
+            jsBundles.Include("~/Scripts/bootstrap.js");
+            jsBundles.Include("~/Scripts/jquery-ui.js");
 
             //plugins
+            jsBundles.Include("~/Scripts/jquery.bootgrid.js");
+            jsBundles.Include("~/Scripts/jquery.bootgrid.fa.js");
             jsBundles.Include("~/Scripts/bootstrap.file-input.js");
-            jsBundles.Include("~/Scripts/plugins/jquery-ui/jquery-ui.min.js");
-            jsBundles.Include("~/Scripts/plugins/jquery-ui/i18n/jquery.ui.datepicker-pt-BR.min.js");
             jsBundles.Include("~/Scripts/plugins/bootstrapvalidator/bootstrapValidator.min.js");
-
-            jsBundles.Include("~/Scripts/plugins/jquery.easyui.min.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.accordion.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.calendar.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.combobox.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.datebox.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.draggable.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.droppable.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.linkbutton.js");
             jsBundles.Include("~/Scripts/plugins/jquery.mask-1.13.4.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.menu.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.parser.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.progressbar.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.propertygrid.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.resizable.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.slider.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.tabs.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.window.js");
-            jsBundles.Include("~/Scripts/plugins/jquery.ext.js");
+
             jsBundles.Include("~/Scripts/plugins/snarl.js");
             jsBundles.Include("~/Scripts/moment.js");
             jsBundles.Include("~/Scripts/fullcalendar.js");
+            jsBundles.Include("~/Scripts/gcal.js");
             jsBundles.Include("~/Scripts/lang/pt-br.js");
 
             jsBundles.Include("~/Scripts/knockout-{version}.js");
@@ -59,12 +44,11 @@ namespace IkeCode.Clinike.Admin.Web
             var styleBundle = new StyleBundle("~/cssBundles/styles");
             styleBundle.Orderer = new AsDefinedBundleOrderer();
             styleBundle.Include("~/Content/bootstrap.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/Scripts/plugins/jquery-ui/jquery-ui.min.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/jquery-ui.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/bootstrap.theme.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/Content/easyui-theme/*.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/Content/easyui.*", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/snarl.min.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/fullcalendar.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/jquery.bootgrid.css", new CssRewriteUrlTransform());
 
             styleBundle.Include("~/Content/common.css", new CssRewriteUrlTransform());
             bundles.Add(styleBundle);

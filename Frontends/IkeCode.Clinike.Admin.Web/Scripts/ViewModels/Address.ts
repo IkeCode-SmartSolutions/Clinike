@@ -1,5 +1,4 @@
 ﻿///<reference path="../typings/jquery/jquery.d.ts" />
-///<reference path="../typings/jquery.plugins/jquery.easyui.d.ts" />
 ///<reference path="../typings/jquery.plugins/jquery.mask.d.ts" />
 ///<reference path="../typings/bootstrap/bootstrap.d.ts" />
 ///<reference path="../typings/knockout/knockout.d.ts" />
@@ -155,7 +154,7 @@ module AddressModule {
                             }
 
                             $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').attr('disabled', 'disabled');
-                            $(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
+                            //$(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
                         }
                         , error: (err) => {
                             if (common.EnableLogGlobal) {
@@ -168,62 +167,62 @@ module AddressModule {
         }
 
         public LoadDataGrid = (selector: string = this._gridSelector) => {
-            $(selector).datagrid({
-                idField: 'Id'
-                , toolbar: this._toolBarSelector
-                , rownumbers: true
-                , pagination: true
-                , singleSelect: true
-                , striped: true
-                , loadMsg: dataGridHelper.LoadMessage
-                , columns: [[
-                    { field: 'Id', hidden: true }
-                    , { field: 'PersonId', hidden: true }
-                    , { field: 'DateIns', hidden: true }
-                    , { field: 'LastUpdate', hidden: true }
-                    , { field: 'AddressTypeId', hidden: true }
-                    , { field: 'Street', title: 'Endereço', width: 200 }
-                    , { field: 'Number', title: 'Nº', width: 60 }
-                    , { field: 'Neighborhood', title: 'Bairro', width: 110 }
-                    , { field: 'Complement', title: 'Complemento', width: 110 }
-                    , {
-                        field: 'ZipCode'
-                        , title: 'CEP'
-                        , width: 100
-                        , formatter: function (value, row, index) {
-                            return '<span name="spanZipCode">' + value + '</span>';
-                        }
-                    }
-                    , {
-                        field: 'AddressType'
-                        , title: 'Tipo'
-                        , width: 150
-                    }
-                    , { field: 'City', title: 'Cidade', width: 80 }
-                    , { field: 'State', title: 'UF', width: 40 }
-                ]]
-                , onClickRow: (index, row) => {
-                    this.OnClickRow(index, row);
-                }
-                , onDblClickRow: (index, row) => {
-                    this.OnClickRow(index, row);
-                    $(this._modalSelector).modal('show');
-                    $('input[data-mask="zipCode"]').mask('00000-000');
-                }
-                , loader: (param, success, error) => {
-                    dataGridHelper.Loader('/Address/GetList', { personId: this._parentId }, success, error);
-                }
-                , onLoadSuccess: (items) => {
-                    if (common.EnableLogGlobal) {
-                        console.log('address.LoadDataGrid onLoadSuccess');
-                    }
+            //$(selector).datagrid({
+            //    idField: 'Id'
+            //    , toolbar: this._toolBarSelector
+            //    , rownumbers: true
+            //    , pagination: true
+            //    , singleSelect: true
+            //    , striped: true
+            //    , loadMsg: dataGridHelper.LoadMessage
+            //    , columns: [[
+            //        { field: 'Id', hidden: true }
+            //        , { field: 'PersonId', hidden: true }
+            //        , { field: 'DateIns', hidden: true }
+            //        , { field: 'LastUpdate', hidden: true }
+            //        , { field: 'AddressTypeId', hidden: true }
+            //        , { field: 'Street', title: 'Endereço', width: 200 }
+            //        , { field: 'Number', title: 'Nº', width: 60 }
+            //        , { field: 'Neighborhood', title: 'Bairro', width: 110 }
+            //        , { field: 'Complement', title: 'Complemento', width: 110 }
+            //        , {
+            //            field: 'ZipCode'
+            //            , title: 'CEP'
+            //            , width: 100
+            //            , formatter: function (value, row, index) {
+            //                return '<span name="spanZipCode">' + value + '</span>';
+            //            }
+            //        }
+            //        , {
+            //            field: 'AddressType'
+            //            , title: 'Tipo'
+            //            , width: 150
+            //        }
+            //        , { field: 'City', title: 'Cidade', width: 80 }
+            //        , { field: 'State', title: 'UF', width: 40 }
+            //    ]]
+            //    , onClickRow: (index, row) => {
+            //        this.OnClickRow(index, row);
+            //    }
+            //    , onDblClickRow: (index, row) => {
+            //        this.OnClickRow(index, row);
+            //        $(this._modalSelector).modal('show');
+            //        $('input[data-mask="zipCode"]').mask('00000-000');
+            //    }
+            //    , loader: (param, success, error) => {
+            //        dataGridHelper.Loader('/Address/GetList', { personId: this._parentId }, success, error);
+            //    }
+            //    , onLoadSuccess: (items) => {
+            //        if (common.EnableLogGlobal) {
+            //            console.log('address.LoadDataGrid onLoadSuccess');
+            //        }
 
-                    dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
-                    $('[name="spanZipCode"]').mask('00000-000');
+            //        dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
+            //        $('[name="spanZipCode"]').mask('00000-000');
 
-                    this.addressViewModel.Apply();
-                }
-            });
+            //        this.addressViewModel.Apply();
+            //    }
+            //});
         }
 
         private OnClickRow = (index, row) => {

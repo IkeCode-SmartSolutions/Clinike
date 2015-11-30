@@ -1,6 +1,6 @@
 ﻿///<reference path="../typings/jquery/jquery.d.ts" />
-///<reference path="../typings/jquery.plugins/jquery.easyui.d.ts" />
 ///<reference path="../typings/jquery.plugins/jquery.mask.d.ts" />
+///<reference path="../typings/jquery.plugins/jquery.bootgrid.d.ts" />
 ///<reference path="../typings/bootstrap/bootstrap.d.ts" />
 ///<reference path="../typings/knockout/knockout.d.ts" />
 ///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
@@ -100,11 +100,11 @@ module PhoneModule {
             this.phoneViewModel = new PhoneModule.KoViewModel('#phoneEditorModal div[data-type="kobind"]'
                 , (oldId, parsedData) => {
                     $(this._modalSelector).modal('hide');
-                    if (oldId > 0) {
-                        $(this._gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: parsedData.Record });
-                    } else {
-                        $(this._gridSelector).datagrid('appendRow', parsedData.Record);
-                    }
+                    //if (oldId > 0) {
+                    //    $(this._gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: parsedData.Record });
+                    //} else {
+                    //    $(this._gridSelector).datagrid('appendRow', parsedData.Record);
+                    //}
                 });
 
             common.GetJsonEnum('PhoneType');
@@ -158,7 +158,7 @@ module PhoneModule {
                             }
 
                             $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').attr('disabled', 'disabled');
-                            $(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
+                            //$(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
                         }
                         , error: (err) => {
                             if (common.EnableLogGlobal) {
@@ -171,49 +171,92 @@ module PhoneModule {
         }
 
         public LoadDataGrid(selector: string = this._gridSelector) {
-            $(selector).datagrid({
-                idField: 'Id'
-                , toolbar: this._toolBarSelector
-                , rownumbers: true
-                , pagination: true
-                , singleSelect: true
-                , striped: true
-                , loadMsg: dataGridHelper.LoadMessage
-                , columns: [[
-                    { field: 'Id', title: 'Id', hidden: true }
-                    , { field: 'PersonId', title: 'PersonId', hidden: true }
-                    , { field: 'DateIns', title: 'DateIns', hidden: true }
-                    , { field: 'LastUpdate', title: 'LastUpdate', hidden: true }
-                    , {
-                        field: 'Number'
-                        , title: 'Número'
-                        , width: 200
-                        , formatter: function (value, row, index) {
-                            return '<span name="spanNumber">' + value + '</span>';
-                        }
+            //$(selector).datagrid({
+            //    idField: 'Id'
+            //    , toolbar: this._toolBarSelector
+            //    , rownumbers: true
+            //    , pagination: true
+            //    , singleSelect: true
+            //    , striped: true
+            //    , loadMsg: dataGridHelper.LoadMessage
+            //    , columns: [[
+            //        { field: 'Id', title: 'Id', hidden: true }
+            //        , { field: 'PersonId', title: 'PersonId', hidden: true }
+            //        , { field: 'DateIns', title: 'DateIns', hidden: true }
+            //        , { field: 'LastUpdate', title: 'LastUpdate', hidden: true }
+            //        , {
+            //            field: 'Number'
+            //            , title: 'Número'
+            //            , width: 200
+            //            , formatter: function (value, row, index) {
+            //                return '<span name="spanNumber">' + value + '</span>';
+            //            }
+            //        }
+            //        , { field: 'PhoneType', title: 'Tipo', width: 200 }
+            //    ]]
+            //    , onClickRow: (index, row) => {
+            //        this.OnClickRow(index, row);
+            //    }
+            //    , onDblClickRow: (index, row) => {
+            //        this.OnClickRow(index, row);
+            //    }
+            //    , loader: (param, success, error) => {
+            //        dataGridHelper.Loader('/Phone/GetList', { personId: this._parentId }, success, error);
+            //    }
+            //    , onLoadSuccess: (items) => {
+
+            //        if (common.EnableLogGlobal) {
+            //            console.log('phone.LoadDataGrid onLoadSuccess');
+            //        }
+
+            //        dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
+            //        $('[name="spanNumber"]').mask('(00) 00000-0000');
+
+            //        this.phoneViewModel.Init();
+            //    }
+            //});
+            $(this._gridSelector).bootgrid({
+                ajax: true,
+                ajaxSettings: {
+                    method: "GET",
+                    cache: false
+                },
+                url: "/phone/GetList",
+                post: () => {
+                    return {
+                        personId: this._parentId
+                    };
+                },
+                selection: true,
+                multiSelect: false,
+                rowSelect: true,
+                keepSelection: true,
+                formatters: {
+                    "Number": function (column, row) {
+                        console.log('column', column);
+                        console.log('row', row);
+                        return '<span name="spanNumber">' + row.Number + '</span>';
                     }
-                    , { field: 'PhoneType', title: 'Tipo', width: 200 }
-                ]]
-                , onClickRow: (index, row) => {
-                    this.OnClickRow(index, row);
                 }
-                , onDblClickRow: (index, row) => {
-                    this.OnClickRow(index, row);
-                }
-                , loader: (param, success, error) => {
-                    dataGridHelper.Loader('/Phone/GetList', { personId: this._parentId }, success, error);
-                }
-                , onLoadSuccess: (items) => {
+            }).on("selected.rs.jquery.bootgrid", (e, selectedRows) => {
+                console.log('e', e);
+                console.log('selectedRows', selectedRows);
+                console.log('this', this);
 
-                    if (common.EnableLogGlobal) {
-                        console.log('phone.LoadDataGrid onLoadSuccess');
+            }).on("loaded.rs.jquery.bootgrid", (e) => {
+                console.log('e', e);
+                var maskBehavior = function (val) {
+                    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+                };
+                var options = {
+                    onKeyPress: function (val, e, field, options) {
+                        field.mask(maskBehavior.apply({}, arguments), options);
                     }
+                };
 
-                    dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
-                    $('[name="spanNumber"]').mask('(00) 00000-0000');
+                $('[name="spanNumber"]').mask(maskBehavior, options);
 
-                    this.phoneViewModel.Init();
-                }
+                this.phoneViewModel.Init();
             });
         }
 

@@ -90,8 +90,8 @@ var Common = (function () {
             var height = window.innerHeight - 49;
             $('#main').css('min-height', height)
                 .on('click', '.expand-link', function (e) {
-                var body = $('body');
                 e.preventDefault();
+                var body = $('body');
                 var box = $(this).closest('div.box');
                 var button = $(this).find('i');
                 button.toggleClass('fa-expand').toggleClass('fa-compress');

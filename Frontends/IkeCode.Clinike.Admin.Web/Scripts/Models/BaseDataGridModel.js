@@ -4,12 +4,11 @@ var BaseDataGridModel = (function () {
         ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
     }
     BaseDataGridModel.prototype.UpdateGrid = function (gridSelector, data, isUpdate) {
-        if (isUpdate) {
-            $(gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: data });
-        }
-        else {
-            $(gridSelector).datagrid('appendRow', data);
-        }
+        //    if (isUpdate) {
+        //        $(gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: data });
+        //    } else {
+        //        $(gridSelector).datagrid('appendRow', data);
+        //    }
     };
     return BaseDataGridModel;
 })();

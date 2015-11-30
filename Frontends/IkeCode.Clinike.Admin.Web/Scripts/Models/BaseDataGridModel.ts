@@ -7,10 +7,10 @@
     }
 
     protected UpdateGrid(gridSelector: string, data: any, isUpdate: boolean) {
-        if (isUpdate) {
-            $(gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: data });
-        } else {
-            $(gridSelector).datagrid('appendRow', data);
-        }
+    //    if (isUpdate) {
+    //        $(gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: data });
+    //    } else {
+    //        $(gridSelector).datagrid('appendRow', data);
+    //    }
     }
 }

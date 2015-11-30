@@ -1,124 +1,91 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
-<div id="ajax-content">
-    <div class="row full-calendar">
-        <div class="col-sm-3">
-            <div id="external-events">
-                <h4 class="page-header" id="events-templates-header">Draggable Events</h4>
-                <div class="external-event ui-draggable" style="position: relative; top: 0px; left: 0px; z-index: auto;">Work time</div>
-                <div class="external-event ui-draggable" style="position: relative; top: 0px; left: 0px; z-index: auto;">Conference</div>
-                <div class="external-event ui-draggable" style="position: relative;">Meeting</div>
-                <div class="external-event ui-draggable" style="position: relative;">Restaurant</div>
-                <div class="external-event ui-draggable" style="position: relative;">Launch</div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="drop-remove"> remove after drop
-                        <i class="fa fa-square-o small"></i>
-                    </label>
-                </div>
+<style>
+    #external-events {
+        float: left;
+        width: 150px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        background: #eee;
+        text-align: left;
+    }
+
+        #external-events .fc-event {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+</style>
+
+<div class="full-calendar">
+    <div class="col-sm-3">
+        <div id="add-new-event">
+            <h4 class="page-header">Add new event</h4>
+            <div class="form-group">
+                <label>Event title</label>
+                <input type="text" id="new-event-title" class="form-control">
             </div>
+            <div class="form-group">
+                <label>Event description</label>
+                <textarea class="form-control" id="new-event-desc" rows="3"></textarea>
+            </div>
+            <a href="#" id="new-event-add" class="btn btn-primary pull-right">Add event</a>
+            <div class="clearfix"></div>
         </div>
-        <div class="col-sm-9">
-            <div id="calendar" class="fc fc-ltr" style="min-height: 385px;">   
-            </div>
+        <div id="external-events">
+            <h4 class="page-header" id="events-templates-header">Draggable Events</h4>
+            <div class="external-event">Work time</div>
+            <div class="external-event">Conference</div>
+            <div class="external-event">Meeting</div>
+            <div class="external-event">Restaurant</div>
+            <div class="external-event">Launch</div>
         </div>
     </div>
+    <div class="col-sm-9">
+        <div id="calendar"></div>
+    </div>
 </div>
+
 @section Scripts{
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('div#external-events div').each(function () {
-                // store data so the calendar knows to render an event upon drop
-                $(this).data('event', {
-                    title: $.trim($(this).text()), // use the element's text as the event title
-                    stick: true // maintain when user navigates (see docs on the renderEvent method)
-                });
-
-                $(this).draggable({
-                    zIndex: 999999,
-                    revert: true,      // will cause the event to go back to its
-                    revertDuration: 0  //  original position after the drag
-                });
+        $('#external-events .external-event').each(function () {
+            $(this).data('eventObject', {
+                title: $.trim($(this).text()),
+                stick: true
             });
 
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                defaultView: 'agendaDay',
-                defaultDate: '2014-11-12',
-                eventLimit: true, // allow "more" link when too many events
-                events: [
-                  {
-                      title: 'All Day Event',
-                      start: '2014-11-01'
-                  },
-                  {
-                      title: 'Long Event',
-                      start: '2014-11-07',
-                      end: '2014-11-10'
-                  },
-                  {
-                      id: 999,
-                      title: 'Repeating Event',
-                      start: '2014-11-09T16:00:00'
-                  },
-                  {
-                      id: 999,
-                      title: 'Repeating Event',
-                      start: '2014-11-16T16:00:00'
-                  },
-                  {
-                      title: 'Conference',
-                      start: '2014-11-11',
-                      end: '2014-11-13'
-                  },
-                  {
-                      title: 'Meeting',
-                      start: '2014-11-12T10:30:00',
-                      end: '2014-11-12T12:30:00'
-                  },
-                  {
-                      title: 'Lunch',
-                      start: '2014-11-12T12:00:00'
-                  },
-                  {
-                      title: 'Meeting',
-                      start: '2014-11-12T14:30:00'
-                  },
-                  {
-                      title: 'Happy Hour',
-                      start: '2014-11-12T17:30:00'
-                  },
-                  {
-                      title: 'Dinner',
-                      start: '2014-11-12T20:00:00'
-                  },
-                  {
-                      title: 'Birthday Party',
-                      start: '2014-11-13T07:00:00'
-                  },
-                  {
-                      title: 'Click for Google',
-                      url: 'http://google.com/',
-                      start: '2014-11-28'
-                  }
-                ]
-                , eventAfterAllRender: function (view) {
-                    var calendar = $('#calendar');
-                    calendar.closest('.box').css('height', $('#calendar').height() + 120);
-                },
-                editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar
-                drop: function () {
-                    // is the "remove after drop" checkbox checked?
-                    console.log('drop');
-                }
+            $(this).draggable({
+                zIndex: 999999,
+                revert: true,
+                revertDuration: 0
             });
+
+        });
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar
+            drop: function (date, allDay) { // this function is called when something is dropped
+
+                // retrieve the dropped element's stored Event Object
+                var originalEventObject = $(this).data('eventObject');
+
+                // we need to copy it, so that multiple events don't have a reference to the same object
+                var copiedEventObject = $.extend({}, originalEventObject);
+
+                // assign it the date that was reported
+                copiedEventObject.start = date;
+                copiedEventObject.allDay = allDay;
+
+                // render the event on the calendar
+                // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+            }
         });
     </script>
 }

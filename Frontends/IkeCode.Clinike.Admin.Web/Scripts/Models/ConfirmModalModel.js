@@ -1,5 +1,4 @@
 ///<reference path="../typings/jquery/jquery.d.ts" />
-///<reference path="../typings/jquery.plugins/jquery.easyui.d.ts" />
 ///<reference path="../typings/jquery.plugins/jquery.mask.d.ts" />
 ///<reference path="../typings/bootstrap/bootstrap.d.ts" />
 ///<reference path="../typings/knockout/knockout.d.ts" />

@@ -1,5 +1,4 @@
 ﻿///<reference path="../typings/jquery/jquery.d.ts" />
-///<reference path="../typings/jquery.plugins/jquery.easyui.d.ts" />
 ///<reference path="../typings/jquery.plugins/jquery.mask.d.ts" />
 ///<reference path="../typings/bootstrap/bootstrap.d.ts" />
 ///<reference path="../typings/knockout/knockout.d.ts" />
@@ -104,11 +103,11 @@ module DocumentModule {
             this.documentViewModel = new DocumentModule.KoViewModel('#documentEditorModal div[data-type="kobind"]'
                 , (oldId, parsedData) => {
                     $(this._modalSelector).modal('hide');
-                    if (oldId > 0) {
-                        $(this._gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: parsedData.Record });
-                    } else {
-                        $(this._gridSelector).datagrid('appendRow', parsedData.Record);
-                    }
+                    //if (oldId > 0) {
+                    //    $(this._gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: parsedData.Record });
+                    //} else {
+                    //    $(this._gridSelector).datagrid('appendRow', parsedData.Record);
+                    //}
                 });
 
             $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click',
@@ -160,7 +159,7 @@ module DocumentModule {
                             }
 
                             $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').attr('disabled', 'disabled');
-                            $(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
+                            //$(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
                         }
                         , error: (err) => {
                             if (common.EnableLogGlobal) {
@@ -173,50 +172,50 @@ module DocumentModule {
         }
 
         public LoadDataGrid = (selector: string = this._gridSelector) => {
-            $(selector).datagrid({
-                idField: 'Id'
-                , toolbar: this._toolBarSelector
-                , rownumbers: true
-                , pagination: true
-                , singleSelect: true
-                , striped: true
-                , loadMsg: dataGridHelper.LoadMessage
-                , columns: [[
-                    { field: 'Id', hidden: true }
-                    , { field: 'PersonId', hidden: true }
-                    , { field: 'DateIns', hidden: true }
-                    , { field: 'LastUpdate', hidden: true }
-                    , { field: 'DocumentTypeId', hidden: true }
-                    , { field: 'Value', title: 'Valor', width: 200 }
-                    , {
-                        field: 'DocumentType'
-                        , title: 'Tipo'
-                        , width: 200
-                        , formatter: function (value, row, index) {
-                            return value.Name;
-                        }
-                    }
-                ]]
-                , onClickRow: (index, row) => {
-                    this.OnClickRow(index, row);
-                }
-                , onDblClickRow: (index, row) => {
-                    this.OnClickRow(index, row);
-                }
-                , loader: (param, success, error) => {
-                    dataGridHelper.Loader('/Document/GetList', { personId: this._parentId }, success, error);
-                }
-                , onLoadSuccess: (items) => {
-                    if (common.EnableLogGlobal) {
-                        console.log('document.LoadDataGrid onLoadSuccess');
-                        console.log('document.LoadDataGrid onLoadSuccess items', items);
-                    }
+            //$(selector).datagrid({
+            //    idField: 'Id'
+            //    , toolbar: this._toolBarSelector
+            //    , rownumbers: true
+            //    , pagination: true
+            //    , singleSelect: true
+            //    , striped: true
+            //    , loadMsg: dataGridHelper.LoadMessage
+            //    , columns: [[
+            //        { field: 'Id', hidden: true }
+            //        , { field: 'PersonId', hidden: true }
+            //        , { field: 'DateIns', hidden: true }
+            //        , { field: 'LastUpdate', hidden: true }
+            //        , { field: 'DocumentTypeId', hidden: true }
+            //        , { field: 'Value', title: 'Valor', width: 200 }
+            //        , {
+            //            field: 'DocumentType'
+            //            , title: 'Tipo'
+            //            , width: 200
+            //            , formatter: function (value, row, index) {
+            //                return value.Name;
+            //            }
+            //        }
+            //    ]]
+            //    , onClickRow: (index, row) => {
+            //        this.OnClickRow(index, row);
+            //    }
+            //    , onDblClickRow: (index, row) => {
+            //        this.OnClickRow(index, row);
+            //    }
+            //    , loader: (param, success, error) => {
+            //        dataGridHelper.Loader('/Document/GetList', { personId: this._parentId }, success, error);
+            //    }
+            //    , onLoadSuccess: (items) => {
+            //        if (common.EnableLogGlobal) {
+            //            console.log('document.LoadDataGrid onLoadSuccess');
+            //            console.log('document.LoadDataGrid onLoadSuccess items', items);
+            //        }
 
-                    dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
+            //        dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
 
-                    this.documentViewModel.Init();
-                }
-            });
+            //        this.documentViewModel.Init();
+            //    }
+            //});
         }
 
         private OnClickRow(index, row) {
