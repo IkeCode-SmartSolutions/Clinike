@@ -13,10 +13,10 @@ class Person extends PersonPoco {
         var phoneGridViewModel = new PhoneModule.GridViewModel(this.Id);
         phoneGridViewModel.LoadDataGrid();
 
-        //var documentGridViewModel = new DocumentModule.GridViewModel(this.Id);
-        //documentGridViewModel.LoadDataGrid();
+        var documentGridViewModel = new DocumentModule.GridViewModel(this.Id);
+        documentGridViewModel.LoadDataGrid();
 
-        //var addressGridViewModel = new AddressModule.GridViewModel(this.Id);
-        //addressGridViewModel.LoadDataGrid();
+        var addressGridViewModel = new AddressModule.GridViewModel(this.Id);
+        addressGridViewModel.LoadDataGrid();
     }
 }

@@ -78,72 +78,47 @@ var AddressModule;
         function GridViewModel(_parentId) {
             var _this = this;
             _super.call(this);
-            this._toolBarSelector = '#addressesToolbar';
             this._gridSelector = '#addressesGrid';
             this._modalSelector = '#addressEditorModal';
             this._parentId = 0;
             this.LoadDataGrid = function (selector) {
-                //$(selector).datagrid({
-                //    idField: 'Id'
-                //    , toolbar: this._toolBarSelector
-                //    , rownumbers: true
-                //    , pagination: true
-                //    , singleSelect: true
-                //    , striped: true
-                //    , loadMsg: dataGridHelper.LoadMessage
-                //    , columns: [[
-                //        { field: 'Id', hidden: true }
-                //        , { field: 'PersonId', hidden: true }
-                //        , { field: 'DateIns', hidden: true }
-                //        , { field: 'LastUpdate', hidden: true }
-                //        , { field: 'AddressTypeId', hidden: true }
-                //        , { field: 'Street', title: 'Endereço', width: 200 }
-                //        , { field: 'Number', title: 'Nº', width: 60 }
-                //        , { field: 'Neighborhood', title: 'Bairro', width: 110 }
-                //        , { field: 'Complement', title: 'Complemento', width: 110 }
-                //        , {
-                //            field: 'ZipCode'
-                //            , title: 'CEP'
-                //            , width: 100
-                //            , formatter: function (value, row, index) {
-                //                return '<span name="spanZipCode">' + value + '</span>';
-                //            }
-                //        }
-                //        , {
-                //            field: 'AddressType'
-                //            , title: 'Tipo'
-                //            , width: 150
-                //        }
-                //        , { field: 'City', title: 'Cidade', width: 80 }
-                //        , { field: 'State', title: 'UF', width: 40 }
-                //    ]]
-                //    , onClickRow: (index, row) => {
-                //        this.OnClickRow(index, row);
-                //    }
-                //    , onDblClickRow: (index, row) => {
-                //        this.OnClickRow(index, row);
-                //        $(this._modalSelector).modal('show');
-                //        $('input[data-mask="zipCode"]').mask('00000-000');
-                //    }
-                //    , loader: (param, success, error) => {
-                //        dataGridHelper.Loader('/Address/GetList', { personId: this._parentId }, success, error);
-                //    }
-                //    , onLoadSuccess: (items) => {
-                //        if (common.EnableLogGlobal) {
-                //            console.log('address.LoadDataGrid onLoadSuccess');
-                //        }
                 if (selector === void 0) { selector = _this._gridSelector; }
-                //        dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
-                //        $('[name="spanZipCode"]').mask('00000-000');
-                //        this.addressViewModel.Apply();
-                //    }
-                //});
-            };
-            this.OnClickRow = function (index, row) {
-                _this.SelectedIndex = index;
-                _this.SelectedRow = row;
-                _this.addressViewModel.Update(row);
-                $(_this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
+                $(_this._gridSelector).bootgrid(_this.GetBootgridOptions({
+                    url: "/Address/GetList",
+                    post: function () {
+                        return {
+                            personId: _this._parentId
+                        };
+                    },
+                    formatters: {
+                        "ZipCode": function (column, row) {
+                            return '<span name="spanZipCode">' + row.ZipCode + '</span>';
+                        },
+                        "commands": _this.GetDefaultCommands
+                    }
+                }))
+                    .on("loaded.rs.jquery.bootgrid", function (e) {
+                    if (common.EnableLogGlobal) {
+                        console.log('Address (loaded.rs.jquery.bootgrid) -> e', e);
+                    }
+                    _this.addressViewModel.Apply();
+                    $('[name="spanZipCode"]').mask('00000-000');
+                    $(_this._gridSelector).find(".command-edit")
+                        .on("click", function (e) {
+                        var row = _this.GetCurrentRow(_this._gridSelector, e);
+                        _this.ShowModal(_this.SelectedRow);
+                    })
+                        .end().find(".command-delete").on("click", function (e) {
+                        var row = _this.GetCurrentRow(_this._gridSelector, e);
+                        _this.addressViewModel.Update(row);
+                        _this.Delete();
+                    })
+                        .end().parent().find(".bootgrid-header .command-add").on("click", function () {
+                        var newPoco = new PhonePoco();
+                        newPoco.PersonId = _this._parentId;
+                        _this.ShowModal(newPoco);
+                    });
+                });
             };
             this.ShowModal = function (objToUpdate) {
                 if (common.EnableLogGlobal) {
@@ -156,20 +131,9 @@ var AddressModule;
             this._parentId = _parentId;
             this.addressViewModel = new AddressModule.KoViewModel('#addressEditorModal div[data-type="kobind"]', function (oldId, data) {
                 $(_this._modalSelector).modal('hide');
-                _this.UpdateGrid(_this._gridSelector, data, oldId > 0);
+                $(_this._gridSelector).bootgrid('reload');
             });
             common.GetJsonEnum('AddressType');
-            $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click', function () {
-                var newPoco = new AddressPoco();
-                newPoco.PersonId = _this._parentId;
-                _this.ShowModal(newPoco);
-            });
-            $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click', function () {
-                _this.ShowModal(_this.SelectedRow);
-            });
-            $(this._toolBarSelector).find('button[data-buttontype="delete"]').bind('click', function () {
-                _this.Delete();
-            });
         }
         GridViewModel.prototype.Delete = function () {
             var _this = this;
@@ -196,10 +160,8 @@ var AddressModule;
                             _this.addressViewModel.Update(newPoco);
                             if (common.EnableLogGlobal) {
                                 console.log('this.Id', _this.SelectedRow.Id);
-                                console.log('this.SelectedIndex', _this.SelectedIndex);
                             }
-                            $(_this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').attr('disabled', 'disabled');
-                            //$(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
+                            $(_this._gridSelector).bootgrid('reload');
                         },
                         error: function (err) {
                             if (common.EnableLogGlobal) {

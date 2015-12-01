@@ -5,8 +5,11 @@
 ///<reference path="typings/knockout/knockout.d.ts" />
 ///<reference path="typings/knockout.mapping/knockout.mapping.d.ts" />
 ///<reference path="typings/validator/validator.d.ts" />
+///<reference path="typings/jquery.plugins/jquery.allgeneric.d.ts" />
 
 "use strict";
+
+declare var Snarl: any;
 class Common {
     _modelAssemblyName: string = '';
     _enumNamespaceName: string = '';
@@ -207,6 +210,12 @@ class Common {
             if (callback) {
                 callback(enumCache.Get(enumName));
             }
+        }
+    }
+
+    public AddNotification = (notificationObj) => {
+        if (notificationObj !== undefined && ((notificationObj.title != null && notificationObj.title.length > 0) || (notificationObj.text != null && notificationObj.text.length > 0))) {
+            Snarl.addNotification(notificationObj);
         }
     }
 }

@@ -83,74 +83,51 @@ var DocumentModule;
         function GridViewModel(_parentId) {
             var _this = this;
             _super.call(this);
-            this._toolBarSelector = '#documentsToolbar';
             this._gridSelector = '#documentsGrid';
             this._modalSelector = '#documentEditorModal';
             this._parentId = 0;
             this.LoadDataGrid = function (selector) {
-                //$(selector).datagrid({
-                //    idField: 'Id'
-                //    , toolbar: this._toolBarSelector
-                //    , rownumbers: true
-                //    , pagination: true
-                //    , singleSelect: true
-                //    , striped: true
-                //    , loadMsg: dataGridHelper.LoadMessage
-                //    , columns: [[
-                //        { field: 'Id', hidden: true }
-                //        , { field: 'PersonId', hidden: true }
-                //        , { field: 'DateIns', hidden: true }
-                //        , { field: 'LastUpdate', hidden: true }
-                //        , { field: 'DocumentTypeId', hidden: true }
-                //        , { field: 'Value', title: 'Valor', width: 200 }
-                //        , {
-                //            field: 'DocumentType'
-                //            , title: 'Tipo'
-                //            , width: 200
-                //            , formatter: function (value, row, index) {
-                //                return value.Name;
-                //            }
-                //        }
-                //    ]]
-                //    , onClickRow: (index, row) => {
-                //        this.OnClickRow(index, row);
-                //    }
-                //    , onDblClickRow: (index, row) => {
-                //        this.OnClickRow(index, row);
-                //    }
-                //    , loader: (param, success, error) => {
-                //        dataGridHelper.Loader('/Document/GetList', { personId: this._parentId }, success, error);
-                //    }
-                //    , onLoadSuccess: (items) => {
-                //        if (common.EnableLogGlobal) {
-                //            console.log('document.LoadDataGrid onLoadSuccess');
-                //            console.log('document.LoadDataGrid onLoadSuccess items', items);
-                //        }
                 if (selector === void 0) { selector = _this._gridSelector; }
-                //        dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
-                //        this.documentViewModel.Init();
-                //    }
-                //});
+                $(_this._gridSelector).bootgrid(_this.GetBootgridOptions({
+                    url: "/Document/GetList",
+                    post: function () {
+                        return {
+                            personId: _this._parentId
+                        };
+                    },
+                    formatters: {
+                        "DocumentType": function (column, row) {
+                            return row.DocumentType.Name;
+                        },
+                        "commands": _this.GetDefaultCommands
+                    }
+                }))
+                    .on("loaded.rs.jquery.bootgrid", function (e) {
+                    if (common.EnableLogGlobal) {
+                        console.log('Document (loaded.rs.jquery.bootgrid) -> e', e);
+                    }
+                    _this.documentViewModel.Init();
+                    $(_this._gridSelector).find(".command-edit")
+                        .on("click", function (e) {
+                        var row = _this.GetCurrentRow(_this._gridSelector, e);
+                        _this.ShowModal(_this.SelectedRow);
+                    })
+                        .end().find(".command-delete").on("click", function (e) {
+                        var row = _this.GetCurrentRow(_this._gridSelector, e);
+                        _this.documentViewModel.Update(row);
+                        _this.Delete();
+                    })
+                        .end().parent().find(".bootgrid-header .command-add").on("click", function () {
+                        var newPoco = new PhonePoco();
+                        newPoco.PersonId = _this._parentId;
+                        _this.ShowModal(newPoco);
+                    });
+                });
             };
             this._parentId = _parentId;
             this.documentViewModel = new DocumentModule.KoViewModel('#documentEditorModal div[data-type="kobind"]', function (oldId, parsedData) {
                 $(_this._modalSelector).modal('hide');
-                //if (oldId > 0) {
-                //    $(this._gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: parsedData.Record });
-                //} else {
-                //    $(this._gridSelector).datagrid('appendRow', parsedData.Record);
-                //}
-            });
-            $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click', function () {
-                var newPoco = new PhonePoco();
-                newPoco.PersonId = _this._parentId;
-                _this.ShowModal(newPoco);
-            });
-            $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click', function () {
-                _this.ShowModal(_this.SelectedRow);
-            });
-            $(this._toolBarSelector).find('button[data-buttontype="delete"]').bind('click', function () {
-                _this.Delete();
+                $(_this._gridSelector).bootgrid('reload');
             });
         }
         GridViewModel.prototype.Delete = function () {
@@ -178,10 +155,8 @@ var DocumentModule;
                             _this.documentViewModel.Update(newPoco);
                             if (common.EnableLogGlobal) {
                                 console.log('this.Id', _this.SelectedRow.Id);
-                                console.log('this.SelectedIndex', _this.SelectedIndex);
                             }
-                            $(_this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').attr('disabled', 'disabled');
-                            //$(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
+                            $(_this._gridSelector).bootgrid('reload');
                         },
                         error: function (err) {
                             if (common.EnableLogGlobal) {
@@ -191,13 +166,6 @@ var DocumentModule;
                     });
                 }
             });
-        };
-        GridViewModel.prototype.OnClickRow = function (index, row) {
-            this.SelectedIndex = index;
-            this.SelectedRow = row;
-            console.log('Address row', row);
-            this.documentViewModel.Update(row);
-            $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
         };
         GridViewModel.prototype.ShowModal = function (objToUpdate) {
             if (common.EnableLogGlobal) {

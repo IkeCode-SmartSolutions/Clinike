@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace IkeCode.Clinike.Admin.Web.Controllers
 {
-    public class ScheduleController : Controller
+    public class AgendaController : Controller
     {
-        // GET: Schedule
+        // GET: Agenda
         public ActionResult Index()
         {
             return View();

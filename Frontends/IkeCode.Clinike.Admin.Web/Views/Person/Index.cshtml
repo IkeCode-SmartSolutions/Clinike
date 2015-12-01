@@ -40,11 +40,10 @@
     <script type="text/javascript" src="~/Scripts/ViewModels/Address.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Document.js"></script>
     <script type="text/javascript">
-    var person = new Person();
-    person.Id = @Model.Person.Id;
+        var person = new Person();
+        person.Id = @Model.Person.Id;
         person.Init();
-        
-        var notificationObj = @Html.Raw(NotificationViewModel.ExtractStringFromCookie());
-        Snarl.addNotification(notificationObj);
+
+        common.AddNotification(@Html.Raw(NotificationViewModel.ExtractStringFromCookie()));
     </script>
 }

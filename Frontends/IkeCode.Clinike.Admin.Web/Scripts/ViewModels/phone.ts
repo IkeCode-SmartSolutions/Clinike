@@ -87,7 +87,6 @@ module PhoneModule {
     }
 
     export class GridViewModel extends BaseDataGridModel implements IDataGridModel {
-        _toolBarSelector: string = '#phonesToolbar';
         _gridSelector: string = '#phonesGrid';
         _modalSelector: string = '#phoneEditorModal';
         phoneViewModel: PhoneModule.KoViewModel;
@@ -100,31 +99,10 @@ module PhoneModule {
             this.phoneViewModel = new PhoneModule.KoViewModel('#phoneEditorModal div[data-type="kobind"]'
                 , (oldId, parsedData) => {
                     $(this._modalSelector).modal('hide');
-                    //if (oldId > 0) {
-                    //    $(this._gridSelector).datagrid('updateRow', { index: this.SelectedIndex, row: parsedData.Record });
-                    //} else {
-                    //    $(this._gridSelector).datagrid('appendRow', parsedData.Record);
-                    //}
+                    $(this._gridSelector).bootgrid('reload');
                 });
 
             common.GetJsonEnum('PhoneType');
-
-            $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click',
-                () => {
-                    var newPoco = new PhonePoco();
-                    newPoco.PersonId = this._parentId;
-                    this.ShowModal(newPoco);
-                });
-
-            $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click',
-                () => {
-                    this.ShowModal(this.SelectedRow);
-                });
-
-            $(this._toolBarSelector).find('button[data-buttontype="delete"]').bind('click',
-                () => {
-                    this.Delete();
-                });
         }
 
         public Delete() {
@@ -154,11 +132,9 @@ module PhoneModule {
 
                             if (common.EnableLogGlobal) {
                                 console.log('this.Id', this.SelectedRow.Id);
-                                console.log('this.SelectedIndex', this.SelectedIndex);
                             }
 
-                            $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').attr('disabled', 'disabled');
-                            //$(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
+                            $(this._gridSelector).bootgrid('reload');
                         }
                         , error: (err) => {
                             if (common.EnableLogGlobal) {
@@ -171,101 +147,52 @@ module PhoneModule {
         }
 
         public LoadDataGrid(selector: string = this._gridSelector) {
-            //$(selector).datagrid({
-            //    idField: 'Id'
-            //    , toolbar: this._toolBarSelector
-            //    , rownumbers: true
-            //    , pagination: true
-            //    , singleSelect: true
-            //    , striped: true
-            //    , loadMsg: dataGridHelper.LoadMessage
-            //    , columns: [[
-            //        { field: 'Id', title: 'Id', hidden: true }
-            //        , { field: 'PersonId', title: 'PersonId', hidden: true }
-            //        , { field: 'DateIns', title: 'DateIns', hidden: true }
-            //        , { field: 'LastUpdate', title: 'LastUpdate', hidden: true }
-            //        , {
-            //            field: 'Number'
-            //            , title: 'Número'
-            //            , width: 200
-            //            , formatter: function (value, row, index) {
-            //                return '<span name="spanNumber">' + value + '</span>';
-            //            }
-            //        }
-            //        , { field: 'PhoneType', title: 'Tipo', width: 200 }
-            //    ]]
-            //    , onClickRow: (index, row) => {
-            //        this.OnClickRow(index, row);
-            //    }
-            //    , onDblClickRow: (index, row) => {
-            //        this.OnClickRow(index, row);
-            //    }
-            //    , loader: (param, success, error) => {
-            //        dataGridHelper.Loader('/Phone/GetList', { personId: this._parentId }, success, error);
-            //    }
-            //    , onLoadSuccess: (items) => {
-
-            //        if (common.EnableLogGlobal) {
-            //            console.log('phone.LoadDataGrid onLoadSuccess');
-            //        }
-
-            //        dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
-            //        $('[name="spanNumber"]').mask('(00) 00000-0000');
-
-            //        this.phoneViewModel.Init();
-            //    }
-            //});
-            $(this._gridSelector).bootgrid({
-                ajax: true,
-                ajaxSettings: {
-                    method: "GET",
-                    cache: false
-                },
+            $(this._gridSelector).bootgrid(this.GetBootgridOptions({
                 url: "/phone/GetList",
                 post: () => {
                     return {
                         personId: this._parentId
                     };
                 },
-                selection: true,
-                multiSelect: false,
-                rowSelect: true,
-                keepSelection: true,
                 formatters: {
                     "Number": function (column, row) {
-                        console.log('column', column);
-                        console.log('row', row);
                         return '<span name="spanNumber">' + row.Number + '</span>';
-                    }
+                    },
+                    "commands": this.GetDefaultCommands
                 }
-            }).on("selected.rs.jquery.bootgrid", (e, selectedRows) => {
-                console.log('e', e);
-                console.log('selectedRows', selectedRows);
-                console.log('this', this);
-
-            }).on("loaded.rs.jquery.bootgrid", (e) => {
-                console.log('e', e);
-                var maskBehavior = function (val) {
-                    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-                };
-                var options = {
-                    onKeyPress: function (val, e, field, options) {
-                        field.mask(maskBehavior.apply({}, arguments), options);
+            }))
+                .on("loaded.rs.jquery.bootgrid", (e) => {
+                    if (common.EnableLogGlobal) {
+                        console.log('Phone (loaded.rs.jquery.bootgrid) -> e', e);
                     }
-                };
 
-                $('[name="spanNumber"]').mask(maskBehavior, options);
+                    $('[name="spanNumber"]').each(function () {
+                        var val = $(this).text();
+                        var result = val.length == 10 || val.length == 14 ? '(00) 0000-0000' : '(00) 00000-0000';
 
-                this.phoneViewModel.Init();
-            });
-        }
+                        $(this).mask(result)
+                    });
 
-        private OnClickRow(index, row) {
-            this.SelectedIndex = index;
-            this.SelectedRow = row;
-            this.phoneViewModel.Update(row);
+                    this.phoneViewModel.Init();
 
-            $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
+                    $(this._gridSelector).find(".command-edit")
+                        .on("click", (e) => {
+                            var row = this.GetCurrentRow(this._gridSelector, e);
+
+                            this.ShowModal(this.SelectedRow);
+                        })
+                        .end().find(".command-delete").on("click", (e) => {
+                            var row = this.GetCurrentRow(this._gridSelector, e);
+
+                            this.phoneViewModel.Update(row);
+                            this.Delete();
+                        })
+                        .end().parent().find(".bootgrid-header .command-add").on("click", () => {
+                            var newPoco = new PhonePoco();
+                            newPoco.PersonId = this._parentId;
+                            this.ShowModal(newPoco);
+                        });
+                });
         }
 
         private ShowModal(objToUpdate: any) {
@@ -275,7 +202,23 @@ module PhoneModule {
 
             this.phoneViewModel.Update(objToUpdate);
             $(this._modalSelector).modal('show');
-            $('input[data-mask="phoneNumber"]').mask('(00) 00000-0000');
+
+            $('input[data-mask="phoneNumber"]').each(function () {
+                var val = $(this).text();
+                var result = val.length == 10 || val.length == 14 ? '(00) 0000-0000' : '(00) 00000-0000';
+
+                $(this).mask(result)
+            });
+
+            var maskBehavior = function (val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+            },
+                options = {
+                    onKeyPress: function (val, e, field, options) {
+                        field.mask(maskBehavior.apply({}, arguments), options);
+                    }
+                };
+            $('input[data-mask="phoneNumber"]').mask(maskBehavior, options);
         }
     }
 }

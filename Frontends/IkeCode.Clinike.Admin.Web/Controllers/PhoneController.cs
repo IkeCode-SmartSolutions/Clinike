@@ -7,6 +7,7 @@ using Microsoft.Owin.Security;
 using IkeCode.Clinike.Data.Models;
 using IkeCode.Clinike.Admin.Web.ViewModels;
 using IkeCode.Clinike.Admin.Web.Models;
+using IkeCode.Data.Core.Model;
 using IkeCode.Core.Helpers;
 using Newtonsoft.Json;
 
@@ -41,14 +42,14 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public JsonResult GetList(int personId)
+        public JsonResult GetList(int personId, int offset = 0, int limit = 10)
         {
             return base.Run<JsonResult>("PhoneController.GetList(personId)",
                 () =>
                 {
                     try
                     {
-                        var phones = Phone.FindAll(i => i.PersonId == personId);
+                        var phones = Phone.FindAll(i => i.PersonId == personId, offset, limit);
                         var result = new JsonListModel<Phone>(phones);
 
                         return Json(result, JsonRequestBehavior.AllowGet);

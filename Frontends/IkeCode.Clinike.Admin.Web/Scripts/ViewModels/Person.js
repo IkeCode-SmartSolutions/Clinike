@@ -16,10 +16,10 @@ var Person = (function (_super) {
     Person.prototype.Init = function () {
         var phoneGridViewModel = new PhoneModule.GridViewModel(this.Id);
         phoneGridViewModel.LoadDataGrid();
-        //var documentGridViewModel = new DocumentModule.GridViewModel(this.Id);
-        //documentGridViewModel.LoadDataGrid();
-        //var addressGridViewModel = new AddressModule.GridViewModel(this.Id);
-        //addressGridViewModel.LoadDataGrid();
+        var documentGridViewModel = new DocumentModule.GridViewModel(this.Id);
+        documentGridViewModel.LoadDataGrid();
+        var addressGridViewModel = new AddressModule.GridViewModel(this.Id);
+        addressGridViewModel.LoadDataGrid();
     };
     return Person;
 })(PersonPoco);

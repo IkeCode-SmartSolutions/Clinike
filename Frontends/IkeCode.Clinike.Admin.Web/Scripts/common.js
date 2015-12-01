@@ -5,6 +5,7 @@
 ///<reference path="typings/knockout/knockout.d.ts" />
 ///<reference path="typings/knockout.mapping/knockout.mapping.d.ts" />
 ///<reference path="typings/validator/validator.d.ts" />
+///<reference path="typings/jquery.plugins/jquery.allgeneric.d.ts" />
 "use strict";
 var Common = (function () {
     function Common() {
@@ -76,6 +77,11 @@ var Common = (function () {
                     e.preventDefault();
                 }
             });
+        };
+        this.AddNotification = function (notificationObj) {
+            if (notificationObj !== undefined && ((notificationObj.title != null && notificationObj.title.length > 0) || (notificationObj.text != null && notificationObj.text.length > 0))) {
+                Snarl.addNotification(notificationObj);
+            }
         };
     }
     Common.prototype.init = function () {

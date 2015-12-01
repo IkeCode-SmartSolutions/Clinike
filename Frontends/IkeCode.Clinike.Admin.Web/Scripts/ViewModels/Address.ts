@@ -87,7 +87,6 @@ module AddressModule {
     }
 
     export class GridViewModel extends BaseDataGridModel implements IDataGridModel {
-        _toolBarSelector: string = '#addressesToolbar';
         _gridSelector: string = '#addressesGrid';
         _modalSelector: string = '#addressEditorModal';
         addressViewModel: AddressModule.KoViewModel;
@@ -100,27 +99,10 @@ module AddressModule {
             this.addressViewModel = new AddressModule.KoViewModel('#addressEditorModal div[data-type="kobind"]'
                 , (oldId, data) => {
                     $(this._modalSelector).modal('hide');
-                    this.UpdateGrid(this._gridSelector, data, oldId > 0);
+                    $(this._gridSelector).bootgrid('reload');
                 });
 
             common.GetJsonEnum('AddressType');
-
-            $(this._toolBarSelector).find('button[data-buttontype="add"]').bind('click',
-                () => {
-                    var newPoco = new AddressPoco();
-                    newPoco.PersonId = this._parentId;
-                    this.ShowModal(newPoco);
-                });
-
-            $(this._toolBarSelector).find('button[data-buttontype="edit"]').bind('click',
-                () => {
-                    this.ShowModal(this.SelectedRow);
-                });
-
-            $(this._toolBarSelector).find('button[data-buttontype="delete"]').bind('click',
-                () => {
-                    this.Delete();
-                });
         }
 
         public Delete() {
@@ -150,11 +132,9 @@ module AddressModule {
 
                             if (common.EnableLogGlobal) {
                                 console.log('this.Id', this.SelectedRow.Id);
-                                console.log('this.SelectedIndex', this.SelectedIndex);
                             }
 
-                            $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').attr('disabled', 'disabled');
-                            //$(this._gridSelector).datagrid('deleteRow', this.SelectedIndex);
+                            $(this._gridSelector).bootgrid('reload');
                         }
                         , error: (err) => {
                             if (common.EnableLogGlobal) {
@@ -167,70 +147,46 @@ module AddressModule {
         }
 
         public LoadDataGrid = (selector: string = this._gridSelector) => {
-            //$(selector).datagrid({
-            //    idField: 'Id'
-            //    , toolbar: this._toolBarSelector
-            //    , rownumbers: true
-            //    , pagination: true
-            //    , singleSelect: true
-            //    , striped: true
-            //    , loadMsg: dataGridHelper.LoadMessage
-            //    , columns: [[
-            //        { field: 'Id', hidden: true }
-            //        , { field: 'PersonId', hidden: true }
-            //        , { field: 'DateIns', hidden: true }
-            //        , { field: 'LastUpdate', hidden: true }
-            //        , { field: 'AddressTypeId', hidden: true }
-            //        , { field: 'Street', title: 'Endereço', width: 200 }
-            //        , { field: 'Number', title: 'Nº', width: 60 }
-            //        , { field: 'Neighborhood', title: 'Bairro', width: 110 }
-            //        , { field: 'Complement', title: 'Complemento', width: 110 }
-            //        , {
-            //            field: 'ZipCode'
-            //            , title: 'CEP'
-            //            , width: 100
-            //            , formatter: function (value, row, index) {
-            //                return '<span name="spanZipCode">' + value + '</span>';
-            //            }
-            //        }
-            //        , {
-            //            field: 'AddressType'
-            //            , title: 'Tipo'
-            //            , width: 150
-            //        }
-            //        , { field: 'City', title: 'Cidade', width: 80 }
-            //        , { field: 'State', title: 'UF', width: 40 }
-            //    ]]
-            //    , onClickRow: (index, row) => {
-            //        this.OnClickRow(index, row);
-            //    }
-            //    , onDblClickRow: (index, row) => {
-            //        this.OnClickRow(index, row);
-            //        $(this._modalSelector).modal('show');
-            //        $('input[data-mask="zipCode"]').mask('00000-000');
-            //    }
-            //    , loader: (param, success, error) => {
-            //        dataGridHelper.Loader('/Address/GetList', { personId: this._parentId }, success, error);
-            //    }
-            //    , onLoadSuccess: (items) => {
-            //        if (common.EnableLogGlobal) {
-            //            console.log('address.LoadDataGrid onLoadSuccess');
-            //        }
+            $(this._gridSelector).bootgrid(this.GetBootgridOptions({
+                url: "/Address/GetList",
+                post: () => {
+                    return {
+                        personId: this._parentId
+                    };
+                },
+                formatters: {
+                    "ZipCode": function (column, row) {
+                        return '<span name="spanZipCode">' + row.ZipCode + '</span>';
+                    },
+                    "commands": this.GetDefaultCommands
+                }
+            }))
+                .on("loaded.rs.jquery.bootgrid", (e) => {
+                    if (common.EnableLogGlobal) {
+                        console.log('Address (loaded.rs.jquery.bootgrid) -> e', e);
+                    }
 
-            //        dataGridHelper.CollapseBoxAfterLoad(this._gridSelector);
-            //        $('[name="spanZipCode"]').mask('00000-000');
+                    this.addressViewModel.Apply();
 
-            //        this.addressViewModel.Apply();
-            //    }
-            //});
-        }
+                    $('[name="spanZipCode"]').mask('00000-000');
+                    $(this._gridSelector).find(".command-edit")
+                        .on("click", (e) => {
+                            var row = this.GetCurrentRow(this._gridSelector, e);
 
-        private OnClickRow = (index, row) => {
-            this.SelectedIndex = index;
-            this.SelectedRow = row;
-            this.addressViewModel.Update(row);
+                            this.ShowModal(this.SelectedRow);
+                        })
+                        .end().find(".command-delete").on("click", (e) => {
+                            var row = this.GetCurrentRow(this._gridSelector, e);
 
-            $(this._toolBarSelector).find('button[data-buttontype="edit"], button[data-buttontype="delete"]').removeAttr('disabled');
+                            this.addressViewModel.Update(row);
+                            this.Delete();
+                        })
+                        .end().parent().find(".bootgrid-header .command-add").on("click", () => {
+                            var newPoco = new PhonePoco();
+                            newPoco.PersonId = this._parentId;
+                            this.ShowModal(newPoco);
+                        });
+                });
         }
 
         private ShowModal = (objToUpdate: any) => {
