@@ -25,7 +25,8 @@ namespace IkeCode.Clinike.PersonApi
                 var settings = new JsonSerializerSettings();
 
                 settings.Formatting = Formatting.Indented;
-                settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+                settings.PreserveReferencesHandling = PreserveReferencesHandling.Arrays;
                 settings.NullValueHandling = NullValueHandling.Ignore;
 
                 settings.Converters.Add(new StringEnumConverter());

@@ -173,6 +173,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
+    <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\PhoneController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\AgendaController.cs" />
@@ -262,6 +263,9 @@
     <Content Include="Content\img\ui-accordion-right.png" />
     <Content Include="Content\img\ui-left.png" />
     <Content Include="Content\img\ui-right.png" />
+    <Content Include="Scripts\ApiConfigs.js">
+      <DependentUpon>ApiConfigs.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\gcal.js" />
     <Content Include="Scripts\jquery-ui.js" />
@@ -370,10 +374,14 @@
     <Content Include="Scripts\typings\System\Object.js">
       <DependentUpon>Object.ts</DependentUpon>
     </Content>
+    <Content Include="Scripts\ViewModels\Agenda.js">
+      <DependentUpon>Agenda.ts</DependentUpon>
+    </Content>
     <Content Include="Views\Person\_AddressEditor.cshtml" />
     <Content Include="Views\Shared\_ConfirmModal.cshtml" />
     <Content Include="Views\Person\_DocumentEditor.cshtml" />
-    <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Agenda\Index.cshtml" />
+    <TypeScriptCompile Include="Scripts\ApiConfigs.ts" />
     <TypeScriptCompile Include="Scripts\DataGridHelper.ts" />
     <Content Include="Scripts\common.js">
       <DependentUpon>Common.ts</DependentUpon>
@@ -476,6 +484,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\fullCalendar\fullCalendar.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.bootgrid.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jqueryui\jqueryui.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
@@ -486,6 +495,7 @@
     <TypeScriptCompile Include="Scripts\typings\validator\validator.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Address.ts" />
     <TypeScriptCompile Include="Scripts\Models\IDataGridModel.d.ts" />
+    <TypeScriptCompile Include="Scripts\ViewModels\Agenda.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Document.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.allgeneric.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Person.ts" />
@@ -577,7 +587,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\typings\bootstrap.timepicker\bootstrap.timepicker.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.tabs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.datebox.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.mask.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />

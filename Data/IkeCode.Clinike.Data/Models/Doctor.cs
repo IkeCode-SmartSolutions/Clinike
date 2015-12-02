@@ -1,5 +1,6 @@
 namespace IkeCode.Clinike.Data.Models
 {
+    using Interfaces;
     using IkeCode.Core.CustomAttributes;
     using Newtonsoft.Json;
     using System;
@@ -7,10 +8,14 @@ namespace IkeCode.Clinike.Data.Models
     using System.ComponentModel.DataAnnotations.Schema;
 
     [ExportToJavascript]
-    public partial class Doctor : BaseModel<Doctor>
+    [JsonObject(IsReference = true)]
+    public partial class Doctor : BaseModel<Doctor, IDoctor>, IDoctor
     {
         public Doctor()
-            : base()
+        {
+        }
+
+        public Doctor(IDoctor doctor)
         {
         }
 
@@ -18,10 +23,9 @@ namespace IkeCode.Clinike.Data.Models
         public override int Id { get; set; }
 
         [Column(TypeName = "date")]
-        [Display(Name="Data de Admissão")]
+        [Display(Name = "Data de Admissão")]
         public DateTime AdmissionDate { get; set; }
 
-        [JsonIgnore]
         public virtual Person Person { get; set; }
     }
 }

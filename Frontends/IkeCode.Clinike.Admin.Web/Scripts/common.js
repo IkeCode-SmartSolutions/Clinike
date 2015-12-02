@@ -1,12 +1,11 @@
 ///<reference path="typings/jquery/jquery.d.ts" />
+///<reference path="typings/jqueryui/jqueryui.d.ts" />
 ///<reference path="typings/jquery.plugins/jquery.datebox.d.ts" />
-///<reference path="typings/jquery.plugins/jquery.tabs.d.ts" />
 ///<reference path="typings/jquery.plugins/jquery.allgeneric.d.ts" />
 ///<reference path="typings/knockout/knockout.d.ts" />
 ///<reference path="typings/knockout.mapping/knockout.mapping.d.ts" />
 ///<reference path="typings/validator/validator.d.ts" />
 ///<reference path="typings/jquery.plugins/jquery.allgeneric.d.ts" />
-"use strict";
 var Common = (function () {
     function Common() {
         this._modelAssemblyName = '';

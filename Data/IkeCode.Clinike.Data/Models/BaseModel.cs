@@ -1,4 +1,5 @@
-﻿using IkeCode.Web.Core.Model;
+﻿using IkeCode.Clinike.Data.Interfaces;
+using IkeCode.Web.Core.Model;
 
 namespace IkeCode.Clinike.Data.Models
 {
@@ -11,6 +12,32 @@ namespace IkeCode.Clinike.Data.Models
         }
 
         protected BaseModel(T model)
+            : this()
+        {
+            Id = model.Id;
+            DateIns = model.DateIns;
+            LastUpdate = model.LastUpdate;
+        }
+    }
+
+    public class BaseModel<T, TInterface> : IkeCodeModelEx<T, ClinikeContext>
+        where T : IkeCodeModel<T, ClinikeContext>, TInterface, new()
+        where TInterface : IBaseModel
+    {
+        protected BaseModel()
+            : base()
+        {
+        }
+
+        public BaseModel(T model)
+            : this()
+        {
+            Id = model.Id;
+            DateIns = model.DateIns;
+            LastUpdate = model.LastUpdate;
+        }
+
+        public BaseModel(TInterface model)
             : this()
         {
             Id = model.Id;

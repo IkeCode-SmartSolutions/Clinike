@@ -101,33 +101,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
 
             return RedirectToRoute("Error", new { RedirectUrl = string.Format("~/cadastro/pessoa") });
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public ActionResult PostDoctor(Doctor doctor)
-        {
-            var vm = new PersonViewModel();
-            if (doctor != null)
-            {
-                Run("PersonController.PostDoctor(id)",
-                    () =>
-                    {
-                        Doctor.AddOrUpdate(i => i.Id, doctor);
-
-                        NotificationViewModel.AddToCookie("Processo finalizado com sucesso!", "Sucesso!", 10000, NotificationIconType.Success);
-                    }, doctor.Id);
-
-                return RedirectToRoute("Person", new { id = doctor.Id });
-            }
-            else
-            {
-                NotificationViewModel.AddToCookie("Ocorreu um problema ao salvar o registro!", iconType: NotificationIconType.Error);
-            }
-
-            return RedirectToRoute("Error", new { RedirectUrl = string.Format("~/cadastro/pessoa") });
-        }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]

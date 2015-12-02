@@ -2,5 +2,4 @@
 
 interface JQuery {
     datetimepicker: any;
-    datepicker: any;
 }

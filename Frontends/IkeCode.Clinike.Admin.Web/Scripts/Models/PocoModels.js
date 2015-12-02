@@ -10,9 +10,9 @@ var AddressPoco = (function () {
 var KoAddress = (function () {
     function KoAddress() {
         this.Street = ko.observable().extend({ required: { params: true, message: 'Campo Endereço é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Endereço deve ter no máximo 250 caracteres' } });
-        this.Number = ko.observable().extend({ maxLength: { params: 10, message: 'O campo Number deve ter no máximo 10 caracteres' } }).extend({ required: { params: true, message: 'O campo Number é obrigatório' } });
+        this.Number = ko.observable().extend({ required: { params: true, message: 'O campo Number é obrigatório' } }).extend({ maxLength: { params: 10, message: 'O campo Number deve ter no máximo 10 caracteres' } });
         this.Complement = ko.observable().extend({ maxLength: { params: 50, message: 'O campo Complement deve ter no máximo 50 caracteres' } });
-        this.Neighborhood = ko.observable().extend({ maxLength: { params: 100, message: 'O campo Neighborhood deve ter no máximo 100 caracteres' } }).extend({ required: { params: true, message: 'O campo Neighborhood é obrigatório' } });
+        this.Neighborhood = ko.observable().extend({ required: { params: true, message: 'O campo Neighborhood é obrigatório' } }).extend({ maxLength: { params: 100, message: 'O campo Neighborhood deve ter no máximo 100 caracteres' } });
         this.ZipCode = ko.observable().extend({ required: { params: true, message: 'O campo ZipCode é obrigatório' } }).extend({ maxLength: { params: 20, message: 'O campo ZipCode deve ter no máximo 20 caracteres' } });
         this.City = ko.observable().extend({ required: { params: true, message: 'O campo City é obrigatório' } }).extend({ maxLength: { params: 150, message: 'O campo City deve ter no máximo 150 caracteres' } });
         this.State = ko.observable().extend({ required: { params: true, message: 'O campo State é obrigatório' } }).extend({ maxLength: { params: 2, message: 'O campo State deve ter no máximo 2 caracteres' } });
@@ -100,7 +100,7 @@ var DocumentPoco = (function () {
 })();
 var KoDocument = (function () {
     function KoDocument() {
-        this.Value = ko.observable().extend({ maxLength: { params: 30, message: 'O campo Value deve ter no máximo 30 caracteres' } }).extend({ required: { params: true, message: 'O campo Value é obrigatório' } });
+        this.Value = ko.observable().extend({ required: { params: true, message: 'O campo Value é obrigatório' } }).extend({ maxLength: { params: 30, message: 'O campo Value deve ter no máximo 30 caracteres' } });
         this.DocumentTypeId = ko.observable();
         this.PersonId = ko.observable();
         this.DocumentType = ko.observable();
@@ -211,9 +211,8 @@ var PersonPoco = (function () {
 })();
 var KoPerson = (function () {
     function KoPerson() {
-        this.Name = ko.observable().extend({ maxLength: { params: 250, message: 'O campo Nome deve ter no máximo 250 caracteres' } }).extend({ required: { params: true, message: 'O campo Nome é obrigatório' } });
+        this.Name = ko.observable().extend({ required: { params: true, message: 'O campo Nome é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Nome deve ter no máximo 250 caracteres' } });
         this.Email = ko.observable().extend({ required: { params: true, message: 'O campo Email é obrigatório' } }).extend({ maxLength: { params: 250, message: 'O campo Email deve ter no máximo 250 caracteres' } });
-        this.ProfileImage = ko.observable();
         this.ProfileImageUrl = ko.observable();
         this.Doctor = ko.observable();
         this.LegalPerson = ko.observable();
@@ -229,7 +228,6 @@ var KoPerson = (function () {
             this.LastUpdate = data.LastUpdate;
             this.Name(data.Name);
             this.Email(data.Email);
-            this.ProfileImage(data.ProfileImage);
             this.ProfileImageUrl(data.ProfileImageUrl);
             this.Doctor(data.Doctor);
             this.LegalPerson(data.LegalPerson);
@@ -247,7 +245,6 @@ var KoPerson = (function () {
             result.LastUpdate = this.LastUpdate;
             result.Name = this.Name();
             result.Email = this.Email();
-            result.ProfileImage = this.ProfileImage();
             result.ProfileImageUrl = this.ProfileImageUrl();
             result.Doctor = this.Doctor();
             result.LegalPerson = this.LegalPerson();
@@ -267,7 +264,7 @@ var PhonePoco = (function () {
 })();
 var KoPhone = (function () {
     function KoPhone() {
-        this.Number = ko.observable().extend({ maxLength: { params: 30, message: 'O campo Number deve ter no máximo 30 caracteres' } }).extend({ required: { params: true, message: 'O campo Number é obrigatório' } });
+        this.Number = ko.observable().extend({ required: { params: true, message: 'O campo Number é obrigatório' } }).extend({ maxLength: { params: 30, message: 'O campo Number deve ter no máximo 30 caracteres' } });
         this.PhoneType = ko.observable();
         this.PhoneTypeId = ko.observable();
         this.PersonId = ko.observable();
@@ -300,4 +297,57 @@ var KoPhone = (function () {
         }
     };
     return KoPhone;
+})();
+var SchedulePoco = (function () {
+    function SchedulePoco() {
+    }
+    return SchedulePoco;
+})();
+var KoSchedule = (function () {
+    function KoSchedule() {
+        this.StartDate = ko.observable().extend({ required: { params: true, message: 'O campo StartDate é obrigatório' } });
+        this.EndDate = ko.observable().extend({ required: { params: true, message: 'O campo EndDate é obrigatório' } });
+        this.AllDay = ko.observable();
+        this.ScheduleType = ko.observable().extend({ required: { params: true, message: 'O campo ScheduleType é obrigatório' } });
+        this.ScheduleTypeId = ko.observable();
+        this.PatientId = ko.observable().extend({ required: { params: true, message: 'O campo PatientId é obrigatório' } });
+        this.DoctorId = ko.observable().extend({ required: { params: true, message: 'O campo DoctorId é obrigatório' } });
+        this.Patient = ko.observable();
+        this.Doctor = ko.observable();
+    }
+    KoSchedule.prototype.Update = function (data) {
+        if (data) {
+            this.Id = data.Id;
+            this.DateIns = data.DateIns;
+            this.LastUpdate = data.LastUpdate;
+            this.StartDate(data.StartDate);
+            this.EndDate(data.EndDate);
+            this.AllDay(data.AllDay);
+            this.ScheduleType(data.ScheduleType);
+            this.ScheduleTypeId(data.ScheduleTypeId);
+            this.PatientId(data.PatientId);
+            this.DoctorId(data.DoctorId);
+            this.Patient(data.Patient);
+            this.Doctor(data.Doctor);
+        }
+    };
+    KoSchedule.prototype.toJS = function () {
+        var result = new SchedulePoco();
+        if (this !== undefined) {
+            result.Id = this.Id;
+            result.DateIns = this.DateIns;
+            result.LastUpdate = this.LastUpdate;
+            result.StartDate = this.StartDate();
+            result.EndDate = this.EndDate();
+            result.AllDay = this.AllDay();
+            result.ScheduleType = this.ScheduleType();
+            result.ScheduleTypeId = this.ScheduleTypeId();
+            result.PatientId = this.PatientId();
+            result.DoctorId = this.DoctorId();
+            result.Patient = this.Patient();
+            result.Doctor = this.Doctor();
+            return result;
+        }
+    };
+    return KoSchedule;
 })();

@@ -38,12 +38,13 @@ namespace IkeCode.Clinike.Admin.Web
 
             routes.MapRoute(
                 name: "Agenda",
-                url: "agenda/{id}",
+                url: "agenda",
                 defaults: new
                 {
                     controller = "Agenda",
                     action = "Index",
-                    id = UrlParameter.Optional
+                    doctorId = UrlParameter.Optional,
+                    patientId = UrlParameter.Optional
                 }
             );
 
