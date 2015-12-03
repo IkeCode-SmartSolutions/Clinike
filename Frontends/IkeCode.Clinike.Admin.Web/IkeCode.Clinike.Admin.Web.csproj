@@ -277,6 +277,7 @@
     <Content Include="Scripts\jquery.bootgrid.min.js">
       <DependentUpon>jquery.bootgrid.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\knockout-3.4.0.debug.js">
       <DependentUpon>knockout-3.4.0.js</DependentUpon>
     </Content>
@@ -487,6 +488,7 @@
       <DependentUpon>PocoModels.tt</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\fullCalendar\fullCalendar.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery.cookie\jquery.cookie.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.bootgrid.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jqueryui\jqueryui.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />

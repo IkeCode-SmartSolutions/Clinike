@@ -29,7 +29,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                 {
                     try
                     {
-                        var phone = Phone.Get(id);
+                        var phone = Phone.Find(i => i.Id == id);
                         
                         return Json(phone, JsonRequestBehavior.AllowGet);
                     }

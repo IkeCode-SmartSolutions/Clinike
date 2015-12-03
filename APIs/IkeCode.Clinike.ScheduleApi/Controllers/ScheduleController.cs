@@ -32,7 +32,7 @@ namespace IkeCode.Clinike.ScheduleApi.Controllers
         /// <returns>Schedule</returns>
         public Schedule Get(int id)
         {
-            return Schedule.Get(id);
+            return Schedule.Find(i => i.Id == id);
         }
 
         /// <summary>

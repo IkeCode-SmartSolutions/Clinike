@@ -1,8 +1,8 @@
 ﻿@model LegalPerson
 
 <div class="box">
-    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Jurídica", "fa fa-user", false))
-    <div class="box-content" data-collapsed="false">
+    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Jurídica", "fa fa-user", true))
+    <div class="box-content" data-collapsed="true" style="display: none;">
         @using (Html.BeginForm("PostLegalPerson", "Person",
                                     FormMethod.Post,
                                     new { enctype = "multipart/form-data", id = "_legalPersonForm", role = "form", @class = "form-horizontal" }))

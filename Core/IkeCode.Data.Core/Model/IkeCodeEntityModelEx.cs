@@ -1,4 +1,5 @@
 ﻿using IkeCode.Data.Core.Model;
+using IkeCode.Web.Core.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace IkeCode.Web.Core.Model
 {
-    public class IkeCodeEntityBaseModelEx<TObject, TContext, TKey>
+    public class IkeCodeEntityModelEx<TObject, TContext, TKey>
         where TObject : class, new()
         where TContext : DbContext, new()
     {
         protected string connectionStringName { get; set; }
 
-        public IkeCodeEntityBaseModelEx()
+        public IkeCodeEntityModelEx()
         {
 
         }
 
-        public IkeCodeEntityBaseModelEx(string connectionStringName)
+        public IkeCodeEntityModelEx(string connectionStringName)
             : this()
         {
             this.connectionStringName = connectionStringName;
@@ -239,6 +240,27 @@ namespace IkeCode.Web.Core.Model
             }
         }
 
+        public static void Delete(TKey key)
+        {
+            RunStatic((_context) =>
+            {
+                var entry = _context.Set<TObject>().Find(key);
+                _context.Entry(entry).State = EntityState.Deleted;
+                _context.SaveChanges();
+            });
+        }
+
+        public static async Task<int> DeleteAsync(TKey key)
+        {
+            using (var _context = GetDefaultContext())
+            {
+                var entry = _context.Set<TObject>().Find(key);
+                _context.Entry(entry).State = EntityState.Deleted;
+
+                return await _context.SaveChangesAsync();
+            }
+        }
+
         public static void Delete(TObject t)
         {
             RunStatic((_context) =>
@@ -256,27 +278,6 @@ namespace IkeCode.Web.Core.Model
             {
                 _context.Set<TObject>().Attach(t);
                 _context.Set<TObject>().Remove(t);
-
-                return await _context.SaveChangesAsync();
-            }
-        }
-
-        public static void Delete(TKey id)
-        {
-            RunStatic((_context) =>
-            {
-                var entry = _context.Set<TObject>().Find(id);
-                _context.Entry(entry).State = EntityState.Deleted;
-                _context.SaveChanges();
-            });
-        }
-
-        public static async Task<int> DeleteAsync(TKey id)
-        {
-            using (var _context = GetDefaultContext())
-            {
-                var entry = _context.Set<TObject>().Find(id);
-                _context.Entry(entry).State = EntityState.Deleted;
 
                 return await _context.SaveChangesAsync();
             }

@@ -17,6 +17,7 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Include("~/Scripts/jquery-ui.js");
 
             //plugins
+            jsBundles.Include("~/Scripts/jquery.cookie.js");
             jsBundles.Include("~/Scripts/jquery.bootgrid.js");
             jsBundles.Include("~/Scripts/jquery.bootgrid.fa.js");
             jsBundles.Include("~/Scripts/bootstrap.file-input.js");

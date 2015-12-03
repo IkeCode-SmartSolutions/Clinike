@@ -75,6 +75,12 @@
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\PhoneType.cs" />
     <Compile Include="Enums\ScheduleType.cs" />
+    <Compile Include="Interfaces\INaturalPerson.cs" />
+    <Compile Include="Interfaces\ILegalPerson.cs" />
+    <Compile Include="Interfaces\IPhone.cs" />
+    <Compile Include="Interfaces\IDocument.cs" />
+    <Compile Include="Interfaces\IDocumentType.cs" />
+    <Compile Include="Interfaces\IAddress.cs" />
     <Compile Include="Interfaces\IBaseModel.cs" />
     <Compile Include="Interfaces\IDoctor.cs" />
     <Compile Include="Interfaces\IPerson.cs" />

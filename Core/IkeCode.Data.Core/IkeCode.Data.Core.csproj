@@ -70,8 +70,9 @@
     <Compile Include="Entity\IkeCodeDbContext.cs" />
     <Compile Include="Identity\IkeCodeIdentityManager.cs" />
     <Compile Include="Model\Enums\DatabaseType.cs" />
+    <Compile Include="Model\Interfaces\IIkeCodeBaseModel.cs" />
     <Compile Include="Model\Interfaces\IIkeCodeModel.cs" />
-    <Compile Include="Model\IkeCodeEntityBaseModelEx.cs" />
+    <Compile Include="Model\IkeCodeEntityModelEx.cs" />
     <Compile Include="Model\IkeCodeModel.cs" />
     <Compile Include="Model\IkeCodeModelEx.cs" />
     <Compile Include="Model\Interfaces\IIkeCodePaged.cs" />

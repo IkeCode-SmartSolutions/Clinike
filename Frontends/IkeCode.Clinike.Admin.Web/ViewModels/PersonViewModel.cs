@@ -13,6 +13,27 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
     {
         public Person Person { get; set; }
 
+        private Doctor doctor;
+        public Doctor Doctor
+        {
+            get { return doctor; }
+            set { if (value == null) return; doctor = value; }
+        }
+
+        private LegalPerson legalPerson;
+        public LegalPerson LegalPerson
+        {
+            get { return legalPerson; }
+            set { if (value == null) return; legalPerson = value; }
+        }
+
+        private NaturalPerson naturalPerson;
+        public NaturalPerson NaturalPerson
+        {
+            get { return naturalPerson; }
+            set { if (value == null) return; naturalPerson = value; }
+        }
+
         [Display(Name = "Imagem de Perfil")]
         public HttpPostedFileWrapper ProfileImage { get; set; }
 
@@ -31,9 +52,9 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
                     if (!uploadPath.EndsWith("/"))
                     {
                         uploadPath = uploadPath + "/";
-                    }                    
+                    }
                     uri = string.Format("{0}{1}", uploadPath, this.ProfileImage.FileName);
-                    
+
                     this.Person.ProfileImageUrl = uri;
                 }
             }
@@ -47,12 +68,18 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
             : base()
         {
             Person = new Person();
+            Doctor = new Doctor();
+            LegalPerson = new LegalPerson();
+            NaturalPerson = new NaturalPerson();
         }
 
         public PersonViewModel(Person person)
             : this()
         {
             Person = person;
+            Doctor = person.Doctor;
+            LegalPerson = person.LegalPerson;
+            NaturalPerson = person.NaturalPerson;
         }
     }
 }

@@ -7,7 +7,7 @@
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
-    public class ClinikeIdentityRoleEx : IkeCodeEntityBaseModelEx<ClinikeIdentityRole, ClinikeContext, string>
+    public class ClinikeIdentityRoleEx : IkeCodeEntityModelEx<ClinikeIdentityRole, ClinikeContext, string>
     {
     }
 

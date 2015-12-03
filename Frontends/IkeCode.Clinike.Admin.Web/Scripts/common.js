@@ -1,5 +1,6 @@
 ///<reference path="typings/jquery/jquery.d.ts" />
 ///<reference path="typings/jqueryui/jqueryui.d.ts" />
+///<reference path="typings/jquery.cookie/jquery.cookie.d.ts" />
 ///<reference path="typings/jquery.plugins/jquery.datebox.d.ts" />
 ///<reference path="typings/jquery.plugins/jquery.allgeneric.d.ts" />
 ///<reference path="typings/knockout/knockout.d.ts" />
@@ -80,6 +81,10 @@ var Common = (function () {
         this.AddNotification = function (notificationObj) {
             if (notificationObj !== undefined && ((notificationObj.title != null && notificationObj.title.length > 0) || (notificationObj.text != null && notificationObj.text.length > 0))) {
                 Snarl.addNotification(notificationObj);
+                console.log('notificationObj.Expired', notificationObj.Expired);
+                if (notificationObj.Expired) {
+                    $.removeCookie('ikecodeNotification', { path: '/' });
+                }
             }
         };
     }

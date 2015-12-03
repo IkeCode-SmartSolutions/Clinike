@@ -1,9 +1,10 @@
 namespace IkeCode.Clinike.Data.Models
 {
+    using IkeCode.Clinike.Data.Interfaces;
     using Newtonsoft.Json;
     using System.ComponentModel.DataAnnotations;
 
-    public partial class DocumentType : BaseModel<DocumentType>
+    public partial class DocumentType : BaseModel<DocumentType, IDocumentType>, IDocumentType
     {
         public DocumentType()
             : base()

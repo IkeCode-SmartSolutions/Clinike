@@ -1,4 +1,5 @@
 ﻿using IkeCode.Core.Crypto;
+using IkeCode.Core.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,8 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
 
         [JsonIgnore]
         private string CustomIconTypeClass { get; set; }
+
+        public bool Expired { get; set; }
         
         public NotificationViewModel()
         {
@@ -54,35 +57,42 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
                 this.AddToCookie();
             }
         }
-
+        
         public static void AddToCookie(string text, string title = null, int timeout = 5000, NotificationIconType iconType = NotificationIconType.None, string customIconTypeClass = "")
         {
             new NotificationViewModel(text, title, timeout, iconType, customIconTypeClass);
         }
 
-        public static NotificationViewModel ExtractFromCookie()
+        public static NotificationViewModel ExtractFromCookie(bool expireAfterGet = true)
         {
             NotificationViewModel result = null;
 
-            var cookie = HttpContext.Current.Request.Cookies.Get("ikecodeNotification");
+            var context = HttpContext.Current;
+
+            var cookie = context.Request.Cookies.Get("ikecodeNotification");
             if (cookie != null && !string.IsNullOrWhiteSpace(cookie.Value))
             {
                 var decrypted = IkeCodeCrypto.DecryptAES(cookie.Value, "ikecodeNotificationKey");
                 var obj = JsonConvert.DeserializeObject<NotificationViewModel>(decrypted);
+                if (obj.Expired)
+                {
+                    return result;
+                }
+
+                obj.Expired = expireAfterGet;
+
+                result = obj;
             }
 
             return result;
         }
 
-        public static string ExtractStringFromCookie()
+        public static string ExtractStringFromCookie(bool expireAfterGet = true)
         {
             string result = "{}";
 
-            var cookie = HttpContext.Current.Request.Cookies.Get("ikecodeNotification");
-            if (cookie != null && !string.IsNullOrWhiteSpace(cookie.Value))
-            {
-                result = IkeCodeCrypto.DecryptAES(cookie.Value, "ikecodeNotificationKey");
-            }
+            var vm = ExtractFromCookie(expireAfterGet);
+            result = vm != null ? vm.ToJsonString() : result;
 
             return result;
         }

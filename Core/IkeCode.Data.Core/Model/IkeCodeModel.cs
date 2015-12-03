@@ -9,8 +9,8 @@ using System.Linq;
 
 namespace IkeCode.Web.Core.Model
 {
-    public class IkeCodeModel<TObject, TContext> : IkeCodeEntityBaseModelEx<TObject, TContext, int>, IIkeCodeModel
-        where TObject : class, new()
+    public class IkeCodeModel<TObject, TContext, TKey> : IkeCodeModelEx<TObject, TContext, TKey>, IIkeCodeModel<TKey>
+        where TObject : class, IIkeCodeModel<TKey>, new()
         where TContext : DbContext, new()
     {
         public IkeCodeModel()
@@ -21,24 +21,23 @@ namespace IkeCode.Web.Core.Model
         public IkeCodeModel(string connectionStringName)
             : base(connectionStringName)
         {
-            base.connectionStringName = connectionStringName;
         }
 
-        public IkeCodeModel(int id)
+        public IkeCodeModel(TKey id)
             : this()
         {
             Id = id;
             //TODO codigo para pegar dateins e lastupdate do banco para preencher o objeto
         }
 
-        public IkeCodeModel(string connectionStringName, int id)
+        public IkeCodeModel(string connectionStringName, TKey id)
             : this(id)
         {
             base.connectionStringName = connectionStringName;
         }
-
+        
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual int Id { get; set; }
+        public virtual TKey Id { get; set; }
 
         [Column(TypeName = "datetime")]
         [DateTimeDatabaseGenerated]
@@ -52,11 +51,11 @@ namespace IkeCode.Web.Core.Model
         {
             LastUpdate = DateTime.UtcNow;
 
-            if (Id == 0 || DateIns <= (DateTime)SqlDateTime.MinValue)
+            if (DateIns <= (DateTime)SqlDateTime.MinValue)
                 DateIns = DateTime.UtcNow;
         }
 
-        public void PrepareListToDatabase(IEnumerable<IIkeCodeModel> items)
+        public void PrepareListToDatabase(IEnumerable<IIkeCodeModel<TKey>> items)
         {
             if (items != null && items.Count() > 0)
             {

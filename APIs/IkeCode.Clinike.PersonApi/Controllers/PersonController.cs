@@ -36,7 +36,7 @@ namespace IkeCode.Clinike.PersonApi.Controllers
                 childrenArray = children.Split(',');
             }
 
-            var person = Person.Get(id, childrenArray);
+            var person = Person.Find(i => i.Id == id, includes: childrenArray);
 
             return person;
         }

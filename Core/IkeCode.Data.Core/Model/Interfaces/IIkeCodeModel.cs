@@ -2,9 +2,8 @@
 
 namespace IkeCode.Web.Core.Model.Interfaces
 {
-    public interface IIkeCodeModel
+    public interface IIkeCodeModel<TKey> : IIkeCodeBaseModel<TKey>
     {
-        int Id { get; set; }
         DateTime DateIns { get; set; }
         DateTime LastUpdate { get; set; }
 
