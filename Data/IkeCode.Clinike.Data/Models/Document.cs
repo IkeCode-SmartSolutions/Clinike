@@ -1,11 +1,12 @@
 namespace IkeCode.Clinike.Data.Models
 {
+    using IkeCode.Clinike.Data.Interfaces;
     using IkeCode.Core.CustomAttributes;
     using Newtonsoft.Json;
     using System.ComponentModel.DataAnnotations;
 
     [ExportToJavascript]
-    public partial class Document : BaseModel<Document>
+    public partial class Document : BaseModel<Document, IDocument>, IDocument
     {
         public Document()
             : base()

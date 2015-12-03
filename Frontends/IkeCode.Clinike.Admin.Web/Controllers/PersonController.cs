@@ -32,7 +32,7 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                 Run("PersonController.Index(id)",
                     () =>
                     {
-                        var person = Person.Get(id, new string[]
+                        var person = Person.Find(i => i.Id == id, includes: new string[]
                                                     {
                                                         "NaturalPerson",
                                                         "LegalPerson",

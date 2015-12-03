@@ -7,7 +7,7 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    public class ClinikeUserEx : IkeCodeEntityBaseModelEx<ClinikeUser, ClinikeContext, string>
+    public class ClinikeUserEx : IkeCodeEntityModelEx<ClinikeUser, ClinikeContext, string>
     {
     }
 

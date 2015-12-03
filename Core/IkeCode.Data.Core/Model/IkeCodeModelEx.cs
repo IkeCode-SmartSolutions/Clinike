@@ -7,57 +7,21 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using System.Data.Entity.Migrations;
+    using IkeCode.Web.Core.Model.Interfaces;
 
-    public class IkeCodeModelEx<TObject, TContext> : IkeCodeModel<TObject, TContext>
-        where TObject : IkeCodeModel<TObject, TContext>, new()
+    public class IkeCodeModelEx<TObject, TContext, TKey> : IkeCodeEntityModelEx<TObject, TContext, TKey>
+        where TObject : class, IIkeCodeModel<TKey>, new()
         where TContext : DbContext, new()
     {
-        public static TObject Get(int id, ICollection<string> includes = null, bool asNoTracking = false)
+        public IkeCodeModelEx()
         {
-            return RunStatic((_context) =>
-            {
-                var results = _context.Set<TObject>().Where(i => i.Id == id);
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-                return results.FirstOrDefault();
-            });
+
         }
 
-        public static TObject Get(int id, bool asNoTracking, params Expression<Func<TObject, object>>[] includes)
+        public IkeCodeModelEx(string connectionStringName)
+            : base(connectionStringName)
         {
-            return RunStatic((_context) =>
-            {
-                var results = _context.Set<TObject>().Where(i => i.Id == id);
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-                return results.FirstOrDefault();
-            });
-        }
-
-        public static async Task<TObject> GetAsync(int id, ICollection<string> includes = null, bool asNoTracking = false)
-        {
-            using (var _context = GetDefaultContext())
-            {
-                var results = _context.Set<TObject>().Where(i => i.Id == id);
-
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-
-                return await results.FirstOrDefaultAsync();
-            };
-        }
-
-        public static async Task<TObject> GetAsync(int id, bool asNoTracking, params Expression<Func<TObject, object>>[] includes)
-        {
-            using (var _context = GetDefaultContext())
-            {
-                var results = _context.Set<TObject>().Where(i => i.Id == id);
-
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-
-                return await results.FirstOrDefaultAsync();
-            };
         }
 
         public static PagedList<TObject> GetAll(int offset = 0, int limit = 10, ICollection<string> includes = null, bool asNoTracking = false)
@@ -153,97 +117,32 @@
         {
             return RunStatic((_context) =>
             {
-                var memberName = "";
-                var body = identifier.Body;
-                if (body.NodeType == ExpressionType.Convert)
-                    body = ((UnaryExpression)body).Operand;
-
-                if ((body as MemberExpression) != null)
-                {
-                    memberName = (body as MemberExpression).Member.Name;
-                }
-
-                var memberValue = entity.GetType().GetProperty(memberName).GetValue(entity);
-                if (memberValue == null)
-                    throw new InvalidOperationException("Unable to perform AddOrUpdate method because your Identifier does not have value on the Entity passed");
-
-                var parameter = Expression.Parameter(typeof(TObject));
-                var memberExpression = Expression.Property(parameter, memberName);
-
-                Expression<Func<TObject, bool>> lambdaResult = Expression.Lambda<Func<TObject, bool>>(Expression.Equal(memberExpression, Expression.Constant(memberValue)), parameter);
-
-                var originalObject = Find(lambdaResult);
-                if (originalObject != null && entity.Id <= 0)
-                    entity.Id = originalObject.Id;
-
-                entity.PrepareToDatabase();
-
-                if (entity.Id == 0)
-                {
-                    _context.Set<TObject>().Add(entity);
-                }
-                else
-                {
-                    _context.Set<TObject>().Attach(originalObject);
-                    _context.Entry<TObject>(originalObject).CurrentValues.SetValues(entity);
-                    _context.Entry<TObject>(originalObject).State = EntityState.Modified;
-                }
-
-                _context.SaveChanges();
-
-                return entity;
-            });
-        }
-
-        //TODO: terminar implementação
-        private static TObject AddOrUpdate(TObject entity, params Expression<Func<TObject, object>>[] identifiers)
-        {
-            return RunStatic((_context) =>
-            {
-                var count = identifiers.Count();
-                if (count == 1)
-                {
-
-                }
-                else
-                {
-                    BinaryExpression lastExpression = null;
-                    var index = 0;
-                    foreach (var identifier in identifiers)
-                    {
-                        if(index == 0)
-                        {
-
-                        } else
-                        {
-                            lastExpression = Expression.And(lastExpression, identifier);
-                        }
-                    }
-                }
                 //var memberName = "";
                 //var body = identifier.Body;
                 //if (body.NodeType == ExpressionType.Convert)
                 //    body = ((UnaryExpression)body).Operand;
-
+                //
                 //if ((body as MemberExpression) != null)
                 //{
                 //    memberName = (body as MemberExpression).Member.Name;
                 //}
-
+                //
                 //var memberValue = entity.GetType().GetProperty(memberName).GetValue(entity);
                 //if (memberValue == null)
                 //    throw new InvalidOperationException("Unable to perform AddOrUpdate method because your Identifier does not have value on the Entity passed");
-
+                //
                 //var parameter = Expression.Parameter(typeof(TObject));
                 //var memberExpression = Expression.Property(parameter, memberName);
-
+                //
                 //Expression<Func<TObject, bool>> lambdaResult = Expression.Lambda<Func<TObject, bool>>(Expression.Equal(memberExpression, Expression.Constant(memberValue)), parameter);
 
                 //var originalObject = Find(lambdaResult);
                 //if (originalObject != null && entity.Id <= 0)
                 //    entity.Id = originalObject.Id;
 
-                //entity.PrepareToDatabase();
+                entity.PrepareToDatabase();
+
+                _context.Set<TObject>().AddOrUpdate(identifier, entity);
 
                 //if (entity.Id == 0)
                 //{
@@ -256,7 +155,7 @@
                 //    _context.Entry<TObject>(originalObject).State = EntityState.Modified;
                 //}
 
-                //_context.SaveChanges();
+                _context.SaveChanges();
 
                 return entity;
             });

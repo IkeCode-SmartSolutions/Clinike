@@ -8,11 +8,11 @@
 
     @if (Model.Person.Id > 0)
     {
-        @Html.Partial("_NaturalPerson", Model.Person.NaturalPerson)
+        @Html.Partial("_NaturalPerson", Model.NaturalPerson)
 
-        @Html.Partial("_Doctor", Model.Person.Doctor)
+        @Html.Partial("_Doctor", Model.Doctor)
 
-        @Html.Partial("_LegalPerson", Model.Person.LegalPerson)
+        @Html.Partial("_LegalPerson", Model.LegalPerson)
 
 
         @Html.Partial("_PhonesGrid")

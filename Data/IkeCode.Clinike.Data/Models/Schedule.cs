@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace IkeCode.Clinike.Data.Models
 {
     [ExportToJavascript]
-    public class Schedule : BaseModel<Schedule>, ISchedule
+    public class Schedule : BaseModel<Schedule, ISchedule>, ISchedule
     {
         public Schedule()
             : base()

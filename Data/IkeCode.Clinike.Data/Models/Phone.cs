@@ -1,6 +1,7 @@
 namespace IkeCode.Clinike.Data.Models
 {
     using IkeCode.Clinike.Data.Enums;
+    using IkeCode.Clinike.Data.Interfaces;
     using IkeCode.Core.CustomAttributes;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
@@ -9,7 +10,7 @@ namespace IkeCode.Clinike.Data.Models
     using System.Text.RegularExpressions;
 
     [ExportToJavascript]
-    public partial class Phone : BaseModel<Phone>
+    public partial class Phone : BaseModel<Phone, IPhone>, IPhone
     {
         public Phone()
             : base()

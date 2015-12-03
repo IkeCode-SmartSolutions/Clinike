@@ -1,7 +1,7 @@
 ﻿@model NaturalPerson
 <div class="box">
-    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Fisica", "fa fa-user", false))
-    <div class="box-content" data-collapsed="true">
+    @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Pessoa Fisica", "fa fa-user", true))
+    <div class="box-content" data-collapsed="true" style="display: none;">
         @using (Html.BeginForm("PostNaturalPerson", "Person",
                                 FormMethod.Post,
                                 new { enctype = "multipart/form-data", id = "_naturalPersonForm", role = "form", @class = "form-horizontal" }))

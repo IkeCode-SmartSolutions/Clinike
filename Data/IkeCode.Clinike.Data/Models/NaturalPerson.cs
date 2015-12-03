@@ -1,6 +1,7 @@
 namespace IkeCode.Clinike.Data.Models
 {
     using IkeCode.Clinike.Data.Enums;
+    using IkeCode.Clinike.Data.Interfaces;
     using IkeCode.Core.CustomAttributes;
     using Newtonsoft.Json;
     using System;
@@ -8,7 +9,7 @@ namespace IkeCode.Clinike.Data.Models
     using System.ComponentModel.DataAnnotations.Schema;
 
     [ExportToJavascript]
-    public partial class NaturalPerson : BaseModel<NaturalPerson>
+    public partial class NaturalPerson : BaseModel<NaturalPerson, INaturalPerson>, INaturalPerson
     {
         public NaturalPerson()
             : base()
