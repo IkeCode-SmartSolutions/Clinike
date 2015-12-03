@@ -18,7 +18,7 @@ namespace IkeCode.Clinike.PersonApi.Controllers
         /// <param name="offset"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public PagedResult<Doctor> Get(string children, int offset = 0, int limit = 10)
+        public PagedResult<Doctor> Get(string children = "", int offset = 0, int limit = 10)
         {
             string[] childrenArray = null;
 
@@ -28,7 +28,7 @@ namespace IkeCode.Clinike.PersonApi.Controllers
             }
 
             var doctors = Doctor.GetAll(offset, limit, childrenArray);
-            
+
             return doctors.ToPagedResult();
         }
 
@@ -38,19 +38,19 @@ namespace IkeCode.Clinike.PersonApi.Controllers
         /// <param name="id"></param>
         /// <param name="children"></param>
         /// <returns></returns>
-        //public Person Get(int id, string children)
-        //{
-        //    string[] childrenArray = null;
+        public Doctor Get(int id, string children = "")
+        {
+            string[] childrenArray = null;
 
-        //    if (!string.IsNullOrWhiteSpace(children))
-        //    {
-        //        childrenArray = children.Split(',');
-        //    }
+            if (!string.IsNullOrWhiteSpace(children))
+            {
+                childrenArray = children.Split(',');
+            }
 
-        //    var person = Person.Get(id, childrenArray);
+            var person = Doctor.Find(i => i.Id == id, includes: childrenArray);
 
-        //    return person;
-        //}
+            return person;
+        }
 
         /// <summary>
         /// POST api/doctor

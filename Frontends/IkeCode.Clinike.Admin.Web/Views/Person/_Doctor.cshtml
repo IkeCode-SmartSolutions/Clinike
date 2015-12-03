@@ -3,9 +3,15 @@
 <div class="box">
     @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Médico", "fa fa-user-md", true))
     <div class="box-content" data-collapsed="true" style="display: none;">
-        @using (Html.BeginForm("Post", "Doctor",
+        @using (Html.BeginForm("", "",
                                     FormMethod.Post,
-                                    new { enctype = "multipart/form-data", id = "_doctorForm", role = "form", @class = "form-horizontal" }))
+                                    new
+                                    {
+                                        action = "http://local.personapi.clinike.com.br/api/doctor",
+                                        id = "_doctorForm",
+                                        role = "form",
+                                        @class = "form-horizontal"
+                                    }))
         {
             @Html.AntiForgeryToken();
             @Html.HiddenFor(m => m.Id)
