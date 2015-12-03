@@ -36,7 +36,6 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
         [JsonIgnore]
         private string CustomIconTypeClass { get; set; }
 
-        [JsonIgnore]
         public bool Expired { get; set; }
         
         public NotificationViewModel()
