@@ -77,6 +77,7 @@
     <Compile Include="Enums\ScheduleType.cs" />
     <Compile Include="Interfaces\IBaseModel.cs" />
     <Compile Include="Interfaces\IDoctor.cs" />
+    <Compile Include="Interfaces\IPerson.cs" />
     <Compile Include="Interfaces\ISchedule.cs" />
     <Compile Include="Migrations\201508211757377_v1_0_0_InitialClinikeModels.cs" />
     <Compile Include="Migrations\201508211757377_v1_0_0_InitialClinikeModels.Designer.cs">

@@ -47,9 +47,6 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
             : base()
         {
             Person = new Person();
-            Person.Doctor = Person.Doctor ?? new Doctor();
-            Person.NaturalPerson = Person.NaturalPerson ?? new NaturalPerson();
-            Person.LegalPerson = Person.LegalPerson ?? new LegalPerson();
         }
 
         public PersonViewModel(Person person)

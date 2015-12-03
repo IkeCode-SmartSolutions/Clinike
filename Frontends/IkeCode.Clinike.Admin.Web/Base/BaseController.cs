@@ -58,6 +58,24 @@ namespace Clinike.Admin.Base
 
                 timeElapsed.Stop();
             }
+            catch (DbEntityValidationException dbex)
+            {
+                var index = 0;
+                var errorMessage = new StringBuilder();
+                foreach (var eve in dbex.EntityValidationErrors)
+                {
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        var pattern = "{0}";
+                        if (index > 0)
+                            pattern = "<br/> {0}";
+
+                        errorMessage.AppendLine(string.Format(pattern, ve.ErrorMessage));
+
+                        index++;
+                    }
+                }
+            }
             catch (Exception ex)
             {
                 IkeCodeLog.Default.Exception(methodName, ex, parameters);
@@ -172,7 +190,7 @@ namespace Clinike.Admin.Base
                 return new { Result = "ERROR", Message = e.Message };
             }
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && UserManager != null)

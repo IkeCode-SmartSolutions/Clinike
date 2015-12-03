@@ -270,9 +270,13 @@
     <Content Include="Scripts\gcal.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.bootgrid.fa.js" />
-    <Content Include="Scripts\jquery.bootgrid.fa.min.js" />
+    <Content Include="Scripts\jquery.bootgrid.fa.min.js">
+      <DependentUpon>jquery.bootgrid.fa.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\jquery.bootgrid.js" />
-    <Content Include="Scripts\jquery.bootgrid.min.js" />
+    <Content Include="Scripts\jquery.bootgrid.min.js">
+      <DependentUpon>jquery.bootgrid.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\knockout-3.4.0.debug.js">
       <DependentUpon>knockout-3.4.0.js</DependentUpon>
     </Content>

@@ -1,5 +1,6 @@
 namespace IkeCode.Clinike.Data.Models
 {
+    using IkeCode.Clinike.Data.Interfaces;
     using IkeCode.Core.CustomAttributes;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ namespace IkeCode.Clinike.Data.Models
     using System.Web;
 
     [ExportToJavascript]
-    public partial class Person : BaseModel<Person>
+    public partial class Person : BaseModel<Person, IPerson>, IPerson
     {
         public Person()
             : base()
@@ -44,9 +45,18 @@ namespace IkeCode.Clinike.Data.Models
         {
             base.PrepareToDatabase();
 
-            Doctor.PrepareToDatabase();
-            LegalPerson.PrepareToDatabase();
-            NaturalPerson.PrepareToDatabase();
+            if (Doctor != null)
+            {
+                Doctor.PrepareToDatabase();
+            }
+            if (LegalPerson != null)
+            {
+                LegalPerson.PrepareToDatabase();
+            }
+            if (NaturalPerson != null)
+            {
+                NaturalPerson.PrepareToDatabase();
+            }
 
             PrepareListToDatabase(Phones);
             PrepareListToDatabase(Addresses);
