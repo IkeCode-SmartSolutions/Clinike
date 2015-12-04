@@ -245,8 +245,11 @@ namespace IkeCode.Web.Core.Model
             RunStatic((_context) =>
             {
                 var entry = _context.Set<TObject>().Find(key);
-                _context.Entry(entry).State = EntityState.Deleted;
-                _context.SaveChanges();
+                if (entry != null)
+                {
+                    _context.Entry(entry).State = EntityState.Deleted;
+                    _context.SaveChanges();
+                }
             });
         }
 
@@ -255,9 +258,15 @@ namespace IkeCode.Web.Core.Model
             using (var _context = GetDefaultContext())
             {
                 var entry = _context.Set<TObject>().Find(key);
-                _context.Entry(entry).State = EntityState.Deleted;
 
-                return await _context.SaveChangesAsync();
+                if (entry != null)
+                {
+                    _context.Entry(entry).State = EntityState.Deleted;
+
+                    return await _context.SaveChangesAsync();
+                }
+
+                return 0;
             }
         }
 

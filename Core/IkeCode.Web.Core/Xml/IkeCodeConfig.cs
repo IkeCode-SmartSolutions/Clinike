@@ -236,7 +236,7 @@ namespace IkeCode.Web.Core.Xml
 
         private static string NormalizeFileName(string fileName)
         {
-            return fileName.EndsWith(".xml") ? fileName : fileName + ".xml";
+            return fileName.EndsWith(".xml") || fileName.EndsWith(".config") ? fileName : fileName + ".xml";
         }
 
         private object GetValue(string key)

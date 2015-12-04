@@ -168,6 +168,7 @@
     <Compile Include="Base\BaseAuthController.cs" />
     <Compile Include="Base\BaseController.cs" />
     <Compile Include="Base\BaseViewModel.cs" />
+    <Compile Include="Base\IkeCodeApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HelpersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="ViewModels\BoxHeaderViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\NotificationViewModel.cs" />
+    <Compile Include="ViewModels\DoctorViewModel.cs" />
     <Compile Include="ViewModels\ValidationSummaryEditorViewModel.cs" />
     <Compile Include="ViewModels\LostPasswordViewModel.cs" />
     <Compile Include="ViewModels\CheckBoxEditorViewModel.cs" />
@@ -382,6 +384,9 @@
     <Content Include="Scripts\ViewModels\Agenda.js">
       <DependentUpon>Agenda.ts</DependentUpon>
     </Content>
+    <Content Include="Scripts\ViewModels\Doctor.js">
+      <DependentUpon>Doctor.ts</DependentUpon>
+    </Content>
     <Content Include="Views\Person\_AddressEditor.cshtml" />
     <Content Include="Views\Shared\_ConfirmModal.cshtml" />
     <Content Include="Views\Person\_DocumentEditor.cshtml" />
@@ -438,6 +443,13 @@
     <Content Include="Scripts\plugins\bootstrapvalidator\language\zh_TW.js" />
     <Content Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
     <Content Include="Config\IkeCodeLog.config" />
+    <Content Include="Config\IkeCodeApi.config" />
+    <Content Include="Config\IkeCodeApi.Debug.config">
+      <DependentUpon>IkeCodeApi.config</DependentUpon>
+    </Content>
+    <Content Include="Config\IkeCodeApi.Release.config">
+      <DependentUpon>IkeCodeApi.config</DependentUpon>
+    </Content>
     <None Include="Config\IkeCodeLog.Debug.config">
       <DependentUpon>IkeCodeLog.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
@@ -504,6 +516,7 @@
     <TypeScriptCompile Include="Scripts\ViewModels\Agenda.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Document.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.allgeneric.d.ts" />
+    <TypeScriptCompile Include="Scripts\ViewModels\Doctor.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Person.ts" />
     <Content Include="Scripts\ViewModels\Address.js">
       <DependentUpon>Address.ts</DependentUpon>

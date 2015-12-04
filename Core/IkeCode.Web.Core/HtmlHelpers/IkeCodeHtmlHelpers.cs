@@ -138,5 +138,34 @@
 
             return new HtmlString(sb.ToString());
         }
+
+        public static MvcForm IkeCodeBeginForm(this HtmlHelper htmlHelper, string formAction, FormMethod method, object htmlAttributes)
+        {
+            TagBuilder tagBuilder = new TagBuilder("form");
+            tagBuilder.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+            // action is implicitly generated, so htmlAttributes take precedence.
+            tagBuilder.MergeAttribute("action", formAction);
+            // method is an explicit parameter, so it takes precedence over the htmlAttributes.
+            tagBuilder.MergeAttribute("method", HtmlHelper.GetFormMethodString(method), true);
+
+            bool traditionalJavascriptEnabled = htmlHelper.ViewContext.ClientValidationEnabled
+                                                && !htmlHelper.ViewContext.UnobtrusiveJavaScriptEnabled;
+
+            if (traditionalJavascriptEnabled)
+            {
+                // forms must have an ID for client validation
+                tagBuilder.GenerateId(new Random().Next(99999).ToString());
+            }
+
+            htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.StartTag));
+            MvcForm theForm = new MvcForm(htmlHelper.ViewContext);
+
+            if (traditionalJavascriptEnabled)
+            {
+                htmlHelper.ViewContext.FormContext.FormId = tagBuilder.Attributes["id"];
+            }
+
+            return theForm;
+        }
     }
 }

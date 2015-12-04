@@ -32,6 +32,8 @@ namespace IkeCode.Clinike.ScheduleApi
 
                 return settings;
             };
+
+            MvcHandler.DisableMvcResponseHeader = true; 
         }
     }
 }

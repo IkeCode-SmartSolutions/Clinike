@@ -17,6 +17,8 @@
             <script src="//getbootstrap.com/docs-assets/js/html5shiv.js"></script>
             <script src="//getbootstrap.com/docs-assets/js/respond.min.js"></script>
     <![endif]-->
+
+    @Scripts.Render("~/jsBundles/jquery")
 </head>
 <body>
     @Html.Partial("_Header")
@@ -51,9 +53,7 @@
     </div>
     <!--End Container-->
     @*@Html.Partial("_Footer")*@
-
-    @Scripts.Render("~/jsBundles/jquery")
-
+    
     <script type="text/javascript">
         common._modelAssemblyName = 'IkeCode.Clinike.Data';
         common._enumNamespaceName = 'Enums';

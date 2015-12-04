@@ -24,20 +24,19 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Post(Doctor doctor)
+        public ActionResult Post(DoctorViewModel doctor)
         {
-            var vm = new PersonViewModel();
-            if (doctor != null)
+            if (doctor != null && doctor.Doctor != null && doctor.PersonId > 0)
             {
                 Run("DoctorController.Post(id)",
                     () =>
                     {
-                        Doctor.AddOrUpdate(i => i.Id, doctor);
+                        Doctor.AddOrUpdate(i => i.Id, doctor.Doctor);
 
                         NotificationViewModel.AddToCookie("Processo finalizado com sucesso!", "Sucesso!", 10000, NotificationIconType.Success);
-                    }, doctor.Id);
+                    }, doctor.Doctor.Id);
 
-                return RedirectToRoute("Person", new { id = doctor.Id });
+                return RedirectToRoute("Person", new { id = doctor.PersonId });
             }
             else
             {

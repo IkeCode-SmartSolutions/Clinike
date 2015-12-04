@@ -10,7 +10,7 @@
     {
         @Html.Partial("_NaturalPerson", Model.NaturalPerson)
 
-        @Html.Partial("_Doctor", Model.Doctor)
+        @Html.Partial("_Doctor", Model.DoctorViewModel)
 
         @Html.Partial("_LegalPerson", Model.LegalPerson)
 
@@ -30,11 +30,6 @@
 }
 
 @section scripts{
-
-    <script type="text/javascript">
-        //common.EnableLogGlobal = true;
-    </script>
-
     <script type="text/javascript" src="~/Scripts/ViewModels/Person.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Phone.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Address.js"></script>

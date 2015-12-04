@@ -11,6 +11,10 @@ namespace IkeCode.Clinike.PersonApi.Controllers
 {
     public class DoctorController : ApiController
     {
+        public DoctorController()
+        {
+
+        }
         /// <summary>
         /// GET api/doctor?children=foo,bar&offset=0&limit=10
         /// </summary>
@@ -62,19 +66,20 @@ namespace IkeCode.Clinike.PersonApi.Controllers
         }
 
         /// <summary>
-        /// PUT api/doctor/5
+        /// POST api/doctor/1
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="doctor"></param>
+        [AcceptVerbs("PUT", "POST")]
         public void Put(int id, [FromBody]Doctor doctor)
         {
-            Doctor.Update(doctor, id);
+            Doctor.AddOrUpdate(i => i.Id, doctor);
         }
 
         /// <summary>
         /// DELETE api/doctor/5
         /// </summary>
         /// <param name="id"></param>
+        [AcceptVerbs("DELETE", "OPTIONS")]
         public void Delete(int id)
         {
             Doctor.Delete(id);

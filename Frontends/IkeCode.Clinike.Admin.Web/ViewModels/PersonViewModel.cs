@@ -13,11 +13,11 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
     {
         public Person Person { get; set; }
 
-        private Doctor doctor;
-        public Doctor Doctor
+        private DoctorViewModel doctorViewModel;
+        public DoctorViewModel DoctorViewModel
         {
-            get { return doctor; }
-            set { if (value == null) return; doctor = value; }
+            get { return doctorViewModel; }
+            set { if (value == null) return; doctorViewModel = value; }
         }
 
         private LegalPerson legalPerson;
@@ -68,7 +68,6 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
             : base()
         {
             Person = new Person();
-            Doctor = new Doctor();
             LegalPerson = new LegalPerson();
             NaturalPerson = new NaturalPerson();
         }
@@ -77,7 +76,7 @@ namespace IkeCode.Clinike.Admin.Web.ViewModels
             : this()
         {
             Person = person;
-            Doctor = person.Doctor;
+            DoctorViewModel = new DoctorViewModel(person.Doctor, person.Id);
             LegalPerson = person.LegalPerson;
             NaturalPerson = person.NaturalPerson;
         }

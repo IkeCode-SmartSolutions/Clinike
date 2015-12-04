@@ -10,6 +10,7 @@ using IkeCode.Clinike.Admin.Web.Models;
 using Newtonsoft.Json;
 using System.IO;
 using IkeCode.Core.Crypto;
+using IkeCode.Clinike.Admin.Web.Base;
 
 namespace IkeCode.Clinike.Admin.Web.Controllers
 {
@@ -39,10 +40,9 @@ namespace IkeCode.Clinike.Admin.Web.Controllers
                                                         "Doctor"
                                                     });
 
-                        if (person == null)
-                            return null;
+                        if (person != null)
+                            vm = new PersonViewModel(person);
 
-                        vm = new PersonViewModel(person);
                         return vm;
                     }, id);
             }
