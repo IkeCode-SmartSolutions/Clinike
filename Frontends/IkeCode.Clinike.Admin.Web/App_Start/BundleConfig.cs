@@ -15,6 +15,7 @@ namespace IkeCode.Clinike.Admin.Web
             jsBundles.Include("~/Scripts/linq.js");
             jsBundles.Include("~/Scripts/bootstrap.js");
             jsBundles.Include("~/Scripts/jquery-ui.js");
+            jsBundles.Include("~/Scripts/jquery.ikecode.extenders.js");
 
             //plugins
             jsBundles.Include("~/Scripts/jquery.cookie.js");

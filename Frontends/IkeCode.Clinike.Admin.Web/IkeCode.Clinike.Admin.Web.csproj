@@ -279,6 +279,7 @@
       <DependentUpon>jquery.bootgrid.js</DependentUpon>
     </Content>
     <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\jquery.ikecode.extenders.js" />
     <Content Include="Scripts\knockout-3.4.0.debug.js">
       <DependentUpon>knockout-3.4.0.js</DependentUpon>
     </Content>
