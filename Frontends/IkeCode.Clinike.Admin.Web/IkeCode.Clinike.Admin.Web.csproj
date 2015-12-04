@@ -190,7 +190,6 @@
     <Compile Include="ViewModels\BoxHeaderViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\NotificationViewModel.cs" />
-    <Compile Include="ViewModels\DoctorViewModel.cs" />
     <Compile Include="ViewModels\ValidationSummaryEditorViewModel.cs" />
     <Compile Include="ViewModels\LostPasswordViewModel.cs" />
     <Compile Include="ViewModels\CheckBoxEditorViewModel.cs" />

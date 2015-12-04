@@ -1,9 +1,9 @@
-﻿@model DoctorViewModel
+﻿@model Doctor
 
 <div class="box">
     @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Médico", "fa fa-user-md", true))
     <div class="box-content" data-collapsed="true" style="display: none;">
-        @using (Html.IkeCodeBeginForm(string.Format("{0}doctor/{1}", IkeCodeApiConfig.Person.BaseUrl, Model.Doctor.Id > 0 ? Model.Doctor.Id.ToString() : ""),
+        @using (Html.IkeCodeBeginForm(string.Format("{0}doctor", IkeCodeApiConfig.Person.BaseUrl),
                                     FormMethod.Post,
                                     new
                                     {
@@ -13,16 +13,15 @@
                                     }))
         {
             @Html.AntiForgeryToken();
-            @Html.HiddenFor(m => m.PersonId)
-            @Html.HiddenFor(m => m.Doctor.Id)
-            @Html.HiddenFor(m => m.Doctor.DateIns)
-            @Html.HiddenFor(m => m.Doctor.LastUpdate)
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.DateIns)
+            @Html.HiddenFor(m => m.LastUpdate)
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Doctor.AdmissionDate, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(m => m.AdmissionDate, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-3">
-                    @Html.TextBoxFor(m => m.Doctor.AdmissionDate, new { @class = "form-control", @data_datetimepicker = "date" })
-                    @Html.ValidationMessageFor(m => m.Doctor.AdmissionDate)
+                    @Html.TextBoxFor(m => m.AdmissionDate, new { @class = "form-control", @data_datetimepicker = "date" })
+                    @Html.ValidationMessageFor(m => m.AdmissionDate)
                 </div>
             </div>
 
@@ -32,7 +31,7 @@
                         Limpar
                     </button>
 
-                    @if (Model.Doctor.Id > 0)
+                    @if (Model.Id > 0)
                     {
                         <button type="button" class="btn btn-danger btn-label-left">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -52,5 +51,5 @@
 <script type="text/javascript" src="~/Scripts/ViewModels/Doctor.js"></script>
 <script type="text/javascript">
     var doctor = new Doctor('#_doctorForm button.btn-danger');
-    doctor.Id = @Model.Doctor.Id;
+    doctor.Id = @Model.Id;
 </script>
