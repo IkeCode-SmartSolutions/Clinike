@@ -3,6 +3,10 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -34,7 +38,7 @@ namespace IkeCode.Clinike.PersonApi
                 return settings;
             };
 
-            MvcHandler.DisableMvcResponseHeader = true; 
+            MvcHandler.DisableMvcResponseHeader = true;
         }
 
         protected void Application_PreSendRequestHeaders(object sender, EventArgs e)
@@ -43,6 +47,7 @@ namespace IkeCode.Clinike.PersonApi
             HttpContext.Current.Response.Headers.Remove("X-AspNet-Version");
             HttpContext.Current.Response.Headers.Remove("X-AspNetMvc-Version");
             HttpContext.Current.Response.Headers.Remove("Server");
+            HttpContext.Current.Response.Headers.Add("Powered-By", "IkeCode {Smart Solutions}");
         }
     }
 }

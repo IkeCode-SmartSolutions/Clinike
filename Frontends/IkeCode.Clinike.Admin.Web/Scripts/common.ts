@@ -7,8 +7,8 @@
 ///<reference path="typings/knockout.mapping/knockout.mapping.d.ts" />
 ///<reference path="typings/validator/validator.d.ts" />
 ///<reference path="typings/jquery.plugins/jquery.allgeneric.d.ts" />
+///<reference path="typings/snarl/snarl.d.ts" />
 
-declare var Snarl: any;
 class Common {
     _modelAssemblyName: string = '';
     _enumNamespaceName: string = '';
@@ -83,8 +83,6 @@ class Common {
             //});
 
             common.bindAboutEvents();
-
-            ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
         });
     }
 
@@ -99,16 +97,16 @@ class Common {
 
     private initDateTimePickers = () => {
         $('input[type=text][data-datetimepicker]').each(function () {
-            var type = $(this).data('datetimepicker');
-            var val = $(this).attr('value');
-            var value = val === undefined || val === '' || val === null ? '' : val;
-
-            if (type === "" || type === "datetime") {
+            var myType = $(this).data('datetimepicker');
+            var value = $(this).attr('value');
+            
+            if (myType === "" || myType === "datetime") {
                 $(this).datetimepicker({});
-            } else if (type === "date") {
+            }
+            else if (myType === "date") {
                 $(this).datepicker().datepicker('setDate', value);
             }
-            else if (type === 'time') {
+            else if (myType === 'time') {
                 //$(this).timepicker($.timepicker.regional['pt-BR']);
                 $(this).timepicker();
             }
@@ -220,6 +218,46 @@ class Common {
                 $.removeCookie('ikecodeNotification', { path: '/' });
             }
         }
+    }
+
+    public ApplyKnockoutCustoms = () => {
+        ko.validation.init({ decorateInputElement: true, errorClass: 'has-error', insertMessages: false });
+
+        ko.bindingHandlers.datepicker = {
+            init: function (element, valueAccessor, allBindingsAccessor) {
+                var options = allBindingsAccessor().datepickerOptions || {},
+                    $el = $(element);
+
+                //console.log('element', element);
+                //initialize datepicker with some optional options
+                $el.datepicker(options);
+
+                //handle the field changing
+                ko.utils.registerEventHandler(element, "change", function () {
+                    var observable = valueAccessor();
+
+                    //console.log('change -> $el.datepicker("getDate")', $el.datepicker("getDate"));
+
+                    observable($el.datepicker("getDate"));
+                });
+
+                //handle disposal (if KO removes by the template binding)
+                ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+                    $el.datepicker("destroy");
+                });
+
+            },
+            update: function (element, valueAccessor) {
+                var $el = $(element),
+                    el = $(element).val();
+
+                //console.log('update -> el', el);
+                //console.log('update -> $el', $el);
+                //console.log('update -> new Date(el).toLocaleDateString()', new Date(el).toLocaleDateString());
+
+                $el.datepicker("setDate", new Date(el).toLocaleDateString());
+            }
+        };
     }
 }
 

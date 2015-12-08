@@ -20,6 +20,9 @@ var Person = (function (_super) {
         documentGridViewModel.LoadDataGrid();
         var addressGridViewModel = new AddressModule.GridViewModel(this.Id);
         addressGridViewModel.LoadDataGrid();
+        //var doctorViewModel = new DoctorModule.KoViewModel('form#_doctorForm', this.Id);
+        //doctorViewModel.Init();
+        //doctorViewModel.FetchDoctor();
     };
     return Person;
 })(PersonPoco);

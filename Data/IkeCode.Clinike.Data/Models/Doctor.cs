@@ -27,5 +27,19 @@ namespace IkeCode.Clinike.Data.Models
         public DateTime AdmissionDate { get; set; }
 
         public virtual Person Person { get; set; }
+
+        public override void PrepareToDatabase()
+        {
+            base.PrepareToDatabase();
+
+            if (Person == null || (Person != null && Person.Id == 0)){
+                throw new ArgumentException("Person must to be present in order to make the relashionship");
+            }
+
+            if (Id == 0 && Person != null && Person.Id > 0)
+            {
+                Id = Person.Id;
+            }
+        }
     }
 }

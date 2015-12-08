@@ -3,24 +3,28 @@
 <div class="box">
     @Html.Partial("Forms/_BoxHeader", new BoxHeaderViewModel("Médico", "fa fa-user-md", true))
     <div class="box-content" data-collapsed="true" style="display: none;">
-        @using (Html.IkeCodeBeginForm(string.Format("{0}doctor", IkeCodeApiConfig.Person.BaseUrl),
-                                    FormMethod.Post,
-                                    new
-                                    {
-                                        id = "_doctorForm",
-                                        role = "form",
-                                        @class = "form-horizontal"
-                                    }))
+        @using (Html.BeginForm("", "",
+                                FormMethod.Post,
+                                new
+                                {
+                                    action = "#",
+                                    id = "_doctorForm",
+                                    role = "form",
+                                    @class = "form-horizontal"
+                                }))
         {
-            @Html.AntiForgeryToken();
-            @Html.HiddenFor(m => m.Id)
-            @Html.HiddenFor(m => m.DateIns)
-            @Html.HiddenFor(m => m.LastUpdate)
+            @Html.HiddenFor(m => m.Id, new { @data_bind = "value: Id" })
+            @Html.HiddenFor(m => m.DateIns, new { @data_bind = "value: DateIns" })
+            @Html.HiddenFor(m => m.LastUpdate, new { @data_bind = "value: LastUpdate" })
 
             <div class="form-group">
                 @Html.LabelFor(m => m.AdmissionDate, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-3">
-                    @Html.TextBoxFor(m => m.AdmissionDate, new { @class = "form-control", @data_datetimepicker = "date" })
+                    @Html.TextBoxFor(m => m.AdmissionDate, new
+                                                           {
+                                                               @class = "form-control",
+                                                               @data_bind = "datepicker: AdmissionDate, datepickerOptions: { minDate: new Date(1900,1,1) }"
+                                                           })
                     @Html.ValidationMessageFor(m => m.AdmissionDate)
                 </div>
             </div>
@@ -31,15 +35,12 @@
                         Limpar
                     </button>
 
-                    @if (Model.Id > 0)
-                    {
-                        <button type="button" class="btn btn-danger btn-label-left">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            Excluir
-                        </button>
-                    }
+                    <button type="button" class="btn btn-danger btn-label-left" data-bind="click: Delete, visible: Id > 0">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        Excluir
+                    </button>
 
-                    <button type="submit" class="btn btn-primary btn-label-left">
+                    <button type="button" class="btn btn-primary btn-label-left" data-bind="click: Save">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                         Salvar
                     </button>
@@ -48,8 +49,3 @@
         }
     </div>
 </div>
-<script type="text/javascript" src="~/Scripts/ViewModels/Doctor.js"></script>
-<script type="text/javascript">
-    var doctor = new Doctor('#_doctorForm button.btn-danger');
-    doctor.Id = @Model.Id;
-</script>

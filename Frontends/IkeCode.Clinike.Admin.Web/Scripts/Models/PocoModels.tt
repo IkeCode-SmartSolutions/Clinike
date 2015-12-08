@@ -105,7 +105,8 @@
 
                 foreach (PropertyInfo dbpi in aClass.DatabaseGeneratedProperties)
                 {
-                    Write(string.Format("    {0}: {1};\r\n", dbpi.Name, GetTypeScriptType(dbpi.PropertyType, allClassTypes)));
+                    //Write(string.Format("    {0}: {1};\r\n", dbpi.Name, GetTypeScriptType(dbpi.PropertyType, allClassTypes)));
+					Write(string.Format("    {0} = {1};\r\n", dbpi.Name, GetKOType(dbpi.PropertyType, allClassTypes)));
                 }
 
                 foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi in aClass.Properties)
@@ -148,7 +149,8 @@
 				Write("	   if(data) {\r\n");
                 foreach (PropertyInfo piDbGen in aClass.DatabaseGeneratedProperties)
                 {
-                    Write(string.Format("			this.{0} = data.{0};\r\n", piDbGen.Name));
+                    //Write(string.Format("			this.{0} = data.{0};\r\n", piDbGen.Name));
+					Write(string.Format("			this.{0}(data.{0});\r\n", piDbGen.Name));
                 }
 
                 foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi2 in aClass.Properties)
@@ -164,7 +166,8 @@
 				Write("	   if(this !== undefined) {\r\n");
                 foreach (PropertyInfo piDbGen in aClass.DatabaseGeneratedProperties)
                 {
-                    Write(string.Format("			result.{0} = this.{0};\r\n", piDbGen.Name));
+                    //Write(string.Format("			result.{0} = this.{0};\r\n", piDbGen.Name));
+					Write(string.Format("			result.{0} = this.{0}();\r\n", piDbGen.Name));
                 }
 
                 foreach (KeyValuePair<PropertyInfo, IEnumerable<CustomAttributeData>> pi2 in aClass.Properties)

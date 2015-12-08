@@ -247,6 +247,10 @@
       <Project>{ec3add94-5e1d-4a5f-be06-788ac6c0e252}</Project>
       <Name>IkeCode.Data.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\IkeCode.Web.Core\IkeCode.Web.Core.csproj">
+      <Project>{2e7dc5e8-7418-4fcc-b85f-da71de1fd714}</Project>
+      <Name>IkeCode.Web.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Data\IkeCode.Clinike.Data\IkeCode.Clinike.Data.csproj">
       <Project>{55dfbebe-f384-426d-b8a8-45190a37fa8e}</Project>
       <Name>IkeCode.Clinike.Data</Name>

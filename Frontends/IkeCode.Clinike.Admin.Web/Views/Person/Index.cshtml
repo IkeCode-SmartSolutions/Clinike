@@ -31,13 +31,18 @@
 
 @section scripts{
     <script type="text/javascript" src="~/Scripts/ViewModels/Person.js"></script>
+    <script type="text/javascript" src="~/Scripts/ViewModels/Doctor.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Phone.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Address.js"></script>
     <script type="text/javascript" src="~/Scripts/ViewModels/Document.js"></script>
     <script type="text/javascript">
-        var person = new Person();
-        person.Id = @Model.Person.Id;
+    var person = new Person();
+    person.Id = @Model.Person.Id;
         person.Init();
+
+        var doctorViewModel = new DoctorModule.KoViewModel('form#_doctorForm', @Model.Person.Id);
+        doctorViewModel.Init();
+        doctorViewModel.FetchDoctor();
 
         common.AddNotification(@Html.Raw(NotificationViewModel.ExtractStringFromCookie()));
     </script>

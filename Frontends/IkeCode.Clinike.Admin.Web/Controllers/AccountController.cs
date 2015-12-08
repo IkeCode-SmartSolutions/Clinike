@@ -277,7 +277,7 @@ namespace Clinike.Admin.Controllers
             {
                 var user = ClinikeUserEx.Find(u => u.Id == model.Id);
                 user.Email = model.Email;
-                await ClinikeUserEx.UpdateAsync(user, user.Id);
+                await ClinikeUserEx.UpdateAsync(user.Id, user);
                 return RedirectToRoute("AccountIndex");
             }
 

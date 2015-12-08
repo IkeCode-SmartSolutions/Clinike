@@ -68,7 +68,7 @@ module AddressModule {
                             console.log('data', data);
                         }
 
-                        var oldId = this.Id;
+                        var oldId = this.Id();
 
                         this.Update(data.Record);
 

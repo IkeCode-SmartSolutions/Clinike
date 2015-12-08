@@ -4,6 +4,7 @@
     using IkeCode.Clinike.Data.Models;
     using IkeCode.Data.Core.Entity;
     using IkeCode.Data.Core.Model.Enums;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class ClinikeContext : IkeCodeIdentityDbContext<ClinikeUser>
     {
@@ -113,6 +114,11 @@
             modelBuilder.Entity<Address>()
                 .Property(e => e.State)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Doctor>()
+                .Property(i => i.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None)
+                .HasColumnName("Id");
 
             modelBuilder.Entity<Doctor>()
                 .Property(e => e.DateIns)

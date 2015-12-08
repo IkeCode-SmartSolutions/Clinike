@@ -48,7 +48,7 @@ var AddressModule;
                                 console.log('textStatus', textStatus);
                                 console.log('data', data);
                             }
-                            var oldId = _this.Id;
+                            var oldId = _this.Id();
                             _this.Update(data.Record);
                             if (common.EnableLogGlobal) {
                                 console.log('this.Id', _this.Id);

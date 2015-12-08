@@ -5,14 +5,15 @@
 ///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
 
 module DocumentModule {
-    export class KoViewModel extends KoDocument {
+    export class KoViewModel extends KoDocument implements IKoViewModel {
 
         DocumentTypes: KnockoutObservable<any> = ko.observable();
 
-        private _targetSelector: string;
+        _targetSelector: string;
+        _validationGroup: KnockoutValidationGroup = ko.validatedObservable(this);
+        _validationErrors: KnockoutValidationErrors = ko.validation.group(this);
+
         private _saveCallback: (oldId: any, parsedData: any) => any;
-        private _validationGroup: KnockoutValidationGroup = ko.validatedObservable(this);
-        private _validationErrors: KnockoutValidationErrors = ko.validation.group(this);
 
         constructor(targetSelector: string, saveCallback: (oldId: any, parsedData: any) => any) {
             super();

@@ -11,16 +11,12 @@ namespace IkeCode.Clinike.PersonApi.Controllers
 {
     public class DoctorController : ApiController
     {
-        public DoctorController()
-        {
-
-        }
         /// <summary>
         /// GET api/doctor?children=foo,bar&offset=0&limit=10
         /// </summary>
-        /// <param name="children"></param>
-        /// <param name="offset"></param>
-        /// <param name="limit"></param>
+        /// <param name="children">Children relations to be included</param>
+        /// <param name="offset">Pagination Offset</param>
+        /// <param name="limit">Pagination Limit</param>
         /// <returns></returns>
         public PagedResult<Doctor> Get(string children = "", int offset = 0, int limit = 10)
         {
@@ -39,7 +35,7 @@ namespace IkeCode.Clinike.PersonApi.Controllers
         /// <summary>
         /// GET api/doctor/5?includeChildren=true
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Doctor ID</param>
         /// <param name="children"></param>
         /// <returns></returns>
         public Doctor Get(int id, string children = "")
@@ -51,35 +47,40 @@ namespace IkeCode.Clinike.PersonApi.Controllers
                 childrenArray = children.Split(',');
             }
 
-            var person = Doctor.Find(i => i.Id == id, includes: childrenArray);
+            var doctor = Doctor.Find(i => i.Id == id, includes: childrenArray);
+            if (doctor == null || doctor.Id == 0)
+            {
+                doctor = new Doctor();
+                var person = Person.Find(i => i.Id == id);
+                doctor.Person = person;
+            }
 
-            return person;
+            return doctor;
         }
 
         /// <summary>
         /// POST api/doctor
         /// </summary>
-        /// <param name="doctor"></param>
+        /// <param name="doctor">Doctor Object to be updated</param>
         public void Post([FromBody]Doctor doctor)
         {
             Doctor.AddOrUpdate(i => i.Id, doctor);
         }
 
         /// <summary>
-        /// POST api/doctor/1
+        /// PUT api/doctor/1
         /// </summary>
-        /// <param name="doctor"></param>
-        [AcceptVerbs("PUT", "POST")]
+        /// <param name="id">Doctor ID</param>
+        /// <param name="doctor">Doctor Object to be updated</param>
         public void Put(int id, [FromBody]Doctor doctor)
         {
-            Doctor.AddOrUpdate(i => i.Id, doctor);
+            Doctor.Update(id, doctor);
         }
 
         /// <summary>
         /// DELETE api/doctor/5
         /// </summary>
-        /// <param name="id"></param>
-        [AcceptVerbs("DELETE", "OPTIONS")]
+        /// <param name="id">Doctor ID to be deleted</param>
         public void Delete(int id)
         {
             Doctor.Delete(id);

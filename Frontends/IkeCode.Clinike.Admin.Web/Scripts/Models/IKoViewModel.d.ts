@@ -1,3 +1,6 @@
 ﻿interface IKoViewModel {
-    SetData(initialData: any): void;
+    Init(): void;
+    _targetSelector: string;
+    _validationGroup: KnockoutValidationGroup;
+    _validationErrors: KnockoutValidationErrors;
 }

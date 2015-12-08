@@ -500,12 +500,14 @@
       <DependentUpon>PocoModels.tt</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\fullCalendar\fullCalendar.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\ikecode\ko.customBindingHandlers.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.cookie\jquery.cookie.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.plugins\jquery.bootgrid.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jqueryui\jqueryui.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\snarl\snarl.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\Generic\List.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IEqualityComparer.ts" />
     <TypeScriptCompile Include="Scripts\typings\System\Collections\IGrouping.ts" />

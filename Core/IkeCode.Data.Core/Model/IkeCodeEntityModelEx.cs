@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace IkeCode.Web.Core.Model
@@ -34,7 +36,7 @@ namespace IkeCode.Web.Core.Model
                 IQueryable<TObject> results = _context.Set<TObject>();
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
-                
+
                 return results.ToList();
             });
         }
@@ -183,6 +185,12 @@ namespace IkeCode.Web.Core.Model
         {
             return RunStatic((_context) =>
             {
+                var logs = new StringBuilder();
+                _context.Database.Log = (log) =>
+                {
+                    logs.AppendLine(log);
+                };
+
                 _context.Set<TObject>().Add(entity);
                 _context.SaveChanges();
 
@@ -201,7 +209,7 @@ namespace IkeCode.Web.Core.Model
             }
         }
 
-        public static TObject Update(TObject updated, TKey key)
+        public static TObject Update(TKey key, TObject updated)
         {
             return RunStatic((_context) =>
             {
@@ -220,7 +228,7 @@ namespace IkeCode.Web.Core.Model
             });
         }
 
-        public static async Task<TObject> UpdateAsync(TObject updated, TKey key)
+        public static async Task<TObject> UpdateAsync(TKey key, TObject updated)
         {
             using (var _context = GetDefaultContext())
             {
@@ -338,11 +346,34 @@ namespace IkeCode.Web.Core.Model
 
         protected static T RunStatic<T>(Func<TContext, T> func)
         {
-            using (var _context = GetDefaultContext())
+            try
             {
-                _context.Configuration.ProxyCreationEnabled = false;
+                using (var _context = GetDefaultContext())
+                {
+                    _context.Configuration.ProxyCreationEnabled = false;
 
-                return func(_context);
+                    return func(_context);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                // Retrieve the error messages as a list of strings.
+                var errorMessages = ex.EntityValidationErrors
+                        .SelectMany(x => x.ValidationErrors)
+                        .Select(x => x.ErrorMessage);
+
+                // Join the list to a single string.
+                var fullErrorMessage = string.Join("; ", errorMessages);
+
+                // Combine the original exception message with the new one.
+                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+                // Throw a new DbEntityValidationException with the improved exception message.
+                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+            }
+            catch(Exception)
+            {
+                throw;
             }
         }
 

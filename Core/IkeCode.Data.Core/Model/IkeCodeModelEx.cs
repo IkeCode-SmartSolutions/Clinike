@@ -9,6 +9,7 @@
     using System.Threading.Tasks;
     using System.Data.Entity.Migrations;
     using IkeCode.Web.Core.Model.Interfaces;
+    using System.Text;
 
     public class IkeCodeModelEx<TObject, TContext, TKey> : IkeCodeEntityModelEx<TObject, TContext, TKey>
         where TObject : class, IIkeCodeModel<TKey>, new()
@@ -112,28 +113,34 @@
                 return await results.OrderBy(i => i.Id).ToPagedListAsync(offset, limit);
             }
         }
-        
+
         new public static TObject AddOrUpdate(Expression<Func<TObject, object>> identifier, TObject entity)
         {
             return RunStatic((_context) =>
             {
+                var logs = new StringBuilder();
+                _context.Database.Log = (log) =>
+                {
+                    logs.AppendLine(log);
+                };
+
                 //var memberName = "";
                 //var body = identifier.Body;
                 //if (body.NodeType == ExpressionType.Convert)
                 //    body = ((UnaryExpression)body).Operand;
-                //
+                
                 //if ((body as MemberExpression) != null)
                 //{
                 //    memberName = (body as MemberExpression).Member.Name;
                 //}
-                //
+                
                 //var memberValue = entity.GetType().GetProperty(memberName).GetValue(entity);
                 //if (memberValue == null)
                 //    throw new InvalidOperationException("Unable to perform AddOrUpdate method because your Identifier does not have value on the Entity passed");
-                //
+                
                 //var parameter = Expression.Parameter(typeof(TObject));
                 //var memberExpression = Expression.Property(parameter, memberName);
-                //
+                
                 //Expression<Func<TObject, bool>> lambdaResult = Expression.Lambda<Func<TObject, bool>>(Expression.Equal(memberExpression, Expression.Constant(memberValue)), parameter);
 
                 //var originalObject = Find(lambdaResult);
