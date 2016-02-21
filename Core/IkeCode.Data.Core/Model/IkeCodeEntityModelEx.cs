@@ -28,44 +28,7 @@ namespace IkeCode.Web.Core.Model
         {
             this.connectionStringName = connectionStringName;
         }
-
-        public static ICollection<TObject> GetAll(ICollection<string> includes = null, bool asNoTracking = false)
-        {
-            return RunStatic<ICollection<TObject>>((_context) =>
-            {
-                IQueryable<TObject> results = _context.Set<TObject>();
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-
-                return results.ToList();
-            });
-        }
-
-        public static ICollection<TObject> GetAll(bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
-        {
-            return RunStatic<ICollection<TObject>>((_context) =>
-            {
-                IQueryable<TObject> results = _context.Set<TObject>();
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-
-                return results.ToList();
-            });
-        }
-
-        private static async Task<PagedList<TObject>> GetAllAsync(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
-        {
-            using (var _context = GetDefaultContext())
-            {
-                IQueryable<TObject> results = _context.Set<TObject>();
-
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-
-                return await results.ToPagedListAsync(offset, limit);
-            };
-        }
-
+        
         public static TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return RunStatic((_context) =>

@@ -25,7 +25,7 @@
         {
         }
 
-        public static PagedList<TObject> GetAll(int offset = 0, int limit = 10, ICollection<string> includes = null, bool asNoTracking = false)
+        public static PagedList<TObject> GetPaged(int offset = 0, int limit = 10, ICollection<string> includes = null, bool asNoTracking = false)
         {
             return RunStatic<PagedList<TObject>>((_context) =>
             {
@@ -37,7 +37,7 @@
             });
         }
 
-        public static PagedList<TObject> GetAll(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public static PagedList<TObject> GetPaged(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             return RunStatic<PagedList<TObject>>((_context) =>
             {
@@ -49,7 +49,7 @@
             });
         }
 
-        public static async Task<PagedList<TObject>> GetAllAsync(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public static async Task<PagedList<TObject>> GetPagedAsync(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             using (var _context = GetDefaultContext())
             {
