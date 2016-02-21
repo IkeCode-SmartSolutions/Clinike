@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{354176EA-93FB-4A0A-B7B8-D497F3A71B5C}</ProjectGuid>
+    <ProjectGuid>{42E58B85-3CC5-41A5-B016-C96A2D295D26}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IkeCode.Clinike.Person.Repository.MySql</RootNamespace>
-    <AssemblyName>IkeCode.Clinike.Person.Repository.MySql</AssemblyName>
+    <RootNamespace>IkeCode.Clinike.Person.Domain</RootNamespace>
+    <AssemblyName>IkeCode.Clinike.Person.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,7 +32,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,15 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IkeCode.Clinike.Person.Model\IkeCode.Clinike.Person.Domain.csproj">
-      <Project>{42e58b85-3cc5-41a5-b016-c96a2d295d26}</Project>
-      <Name>IkeCode.Clinike.Person.Domain</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
