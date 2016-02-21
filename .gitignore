@@ -1,15 +1,14 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-*.obj
-*.exe
-*.exp
-*.pdb
-*.dll
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#Visual Studio files
+*.[Oo]bj
 *.user
 *.aps
 *.pch
 *.vspscc
+*.vssscc
 *_i.c
 *_p.c
 *.ncb
@@ -17,23 +16,17 @@
 *.tlb
 *.tlh
 *.bak
-*.cache
+*.[Cc]ache
 *.ilk
 *.log
-*.zip
-[Dd]ebug*/
 *.lib
 *.sbr
-Thumbs.db
-[Ll]ib/
+*.sdf
+*.pyc
+*.xml
+ipch/
+obj/
+[Bb]in
+[Dd]ebug*/
 [Rr]elease*/
-[Tt]est[Rr]esults/
-_UpgradeReport_Files/
-_ReSharper.*/
-[Bb]in*/
 [Pp]ackages*/
-Uploads/ProfileImages/*.jpg
-Uploads/ProfileImages/*.jpeg
-Uploads/ProfileImages/*.png
-Uploads/ProfileImages/*.gif
-Uploads/ProfileImages/*.bmp

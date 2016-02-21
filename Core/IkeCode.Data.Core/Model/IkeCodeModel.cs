@@ -2,6 +2,7 @@
 using IkeCode.Web.Core.Model.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.SqlTypes;
@@ -36,7 +37,7 @@ namespace IkeCode.Web.Core.Model
             base.connectionStringName = connectionStringName;
         }
         
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual TKey Id { get; set; }
 
         [Column(TypeName = "datetime")]

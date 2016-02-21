@@ -19,9 +19,11 @@ namespace IkeCode.Core.Crypto
             if (phrase == null)
                 return null;
             var encoder = new UTF8Encoding();
-            var md5Hasher = new MD5CryptoServiceProvider();
-            var hashedDataBytes = md5Hasher.ComputeHash(encoder.GetBytes(phrase));
-            return ByteArrayToHexString(hashedDataBytes);
+            using (var md5Hasher = new MD5CryptoServiceProvider())
+            {
+                var hashedDataBytes = md5Hasher.ComputeHash(encoder.GetBytes(phrase));
+                return ByteArrayToHexString(hashedDataBytes);
+            }
         }
 
         #endregion
@@ -33,9 +35,11 @@ namespace IkeCode.Core.Crypto
             if (phrase == null)
                 return null;
             var encoder = new UTF8Encoding();
-            var sha1Hasher = new SHA1CryptoServiceProvider();
-            var hashedDataBytes = sha1Hasher.ComputeHash(encoder.GetBytes(phrase));
-            return ByteArrayToHexString(hashedDataBytes);
+            using (var sha1Hasher = new SHA1CryptoServiceProvider())
+            {
+                var hashedDataBytes = sha1Hasher.ComputeHash(encoder.GetBytes(phrase));
+                return ByteArrayToHexString(hashedDataBytes);
+            }
         }
 
         public static string HashSHA256(string phrase)
@@ -43,9 +47,11 @@ namespace IkeCode.Core.Crypto
             if (phrase == null)
                 return null;
             var encoder = new UTF8Encoding();
-            var sha256Hasher = new SHA256CryptoServiceProvider();
-            var hashedDataBytes = sha256Hasher.ComputeHash(encoder.GetBytes(phrase));
-            return ByteArrayToHexString(hashedDataBytes);
+            using (var sha256Hasher = new SHA256CryptoServiceProvider())
+            {
+                var hashedDataBytes = sha256Hasher.ComputeHash(encoder.GetBytes(phrase));
+                return ByteArrayToHexString(hashedDataBytes);
+            }
         }
 
         public static string HashSHA384(string phrase)
@@ -53,9 +59,11 @@ namespace IkeCode.Core.Crypto
             if (phrase == null)
                 return null;
             var encoder = new UTF8Encoding();
-            var sha384Hasher = new SHA384CryptoServiceProvider();
-            var hashedDataBytes = sha384Hasher.ComputeHash(encoder.GetBytes(phrase));
-            return ByteArrayToHexString(hashedDataBytes);
+            using (var sha384Hasher = new SHA384CryptoServiceProvider())
+            {
+                var hashedDataBytes = sha384Hasher.ComputeHash(encoder.GetBytes(phrase));
+                return ByteArrayToHexString(hashedDataBytes);
+            }
         }
 
         public static string HashSHA512(string phrase)
@@ -63,9 +71,11 @@ namespace IkeCode.Core.Crypto
             if (phrase == null)
                 return null;
             var encoder = new UTF8Encoding();
-            var sha512Hasher = new SHA512CryptoServiceProvider();
-            var hashedDataBytes = sha512Hasher.ComputeHash(encoder.GetBytes(phrase));
-            return ByteArrayToHexString(hashedDataBytes);
+            using (var sha512Hasher = new SHA512CryptoServiceProvider())
+            {
+                var hashedDataBytes = sha512Hasher.ComputeHash(encoder.GetBytes(phrase));
+                return ByteArrayToHexString(hashedDataBytes);
+            }
         }
 
         #endregion
@@ -103,18 +113,19 @@ namespace IkeCode.Core.Crypto
             var keyArray = HexStringToByteArray(hashKey ? HashMD5(key) : key);
             var toEncryptArray = HexStringToByteArray(hash);
 
-            var aes = new AesCryptoServiceProvider
+            using (var aes = new AesCryptoServiceProvider
             {
                 Key = keyArray,
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.PKCS7
-            };
+            })
+            {
+                var cTransform = aes.CreateDecryptor();
+                var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
-            var cTransform = aes.CreateDecryptor();
-            var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
-            aes.Clear();
-            return Encoding.UTF8.GetString(resultArray);
+                aes.Clear();
+                return Encoding.UTF8.GetString(resultArray);
+            }
         }
 
         #endregion
@@ -126,18 +137,19 @@ namespace IkeCode.Core.Crypto
             var keyArray = HexStringToByteArray(hashKey ? HashMD5(key) : key);
             var toEncryptArray = Encoding.UTF8.GetBytes(phrase);
 
-            var tdes = new TripleDESCryptoServiceProvider
+            using (var tdes = new TripleDESCryptoServiceProvider
             {
                 Key = keyArray,
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.PKCS7
-            };
+            })
+            {
+                var cTransform = tdes.CreateEncryptor();
+                var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
-            var cTransform = tdes.CreateEncryptor();
-            var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
-            tdes.Clear();
-            return ByteArrayToHexString(resultArray);
+                tdes.Clear();
+                return ByteArrayToHexString(resultArray);
+            }
         }
 
         public static string DecryptTripleDES(string hash, string key, bool hashKey = true)
@@ -145,18 +157,19 @@ namespace IkeCode.Core.Crypto
             var keyArray = HexStringToByteArray(hashKey ? HashMD5(key) : key);
             var toEncryptArray = HexStringToByteArray(hash);
 
-            var tdes = new TripleDESCryptoServiceProvider
+            using (var tdes = new TripleDESCryptoServiceProvider
             {
                 Key = keyArray,
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.PKCS7
-            };
+            })
+            {
+                var cTransform = tdes.CreateDecryptor();
+                var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
-            var cTransform = tdes.CreateDecryptor();
-            var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
-            tdes.Clear();
-            return Encoding.UTF8.GetString(resultArray);
+                tdes.Clear();
+                return Encoding.UTF8.GetString(resultArray);
+            }
         }
 
         #endregion

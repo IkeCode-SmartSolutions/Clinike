@@ -4,8 +4,8 @@ namespace IkeCode.Web.Core.Model.Interfaces
 {
     public interface IIkeCodeModel<TKey> : IIkeCodeBaseModel<TKey>
     {
-        DateTime DateIns { get; set; }
-        DateTime LastUpdate { get; set; }
+        DateTime DateIns { get; }
+        DateTime LastUpdate { get; }
 
         void PrepareToDatabase();
     }

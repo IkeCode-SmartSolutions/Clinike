@@ -38,43 +38,53 @@ namespace IkeCode.Data.Core.Identity
 
         public bool RoleExists(string name)
         {
-            var rm = new RoleManager<TIdentityRole>(new RoleStore<TIdentityRole>(GetContext()));
-            return rm.RoleExists(name);
+            using (var rm = new RoleManager<TIdentityRole>(new RoleStore<TIdentityRole>(GetContext())))
+            {
+                return rm.RoleExists(name);
+            }
         }
 
         public bool CreateRole(TIdentityRole role)
         {
-            var rm = new RoleManager<TIdentityRole>(new RoleStore<TIdentityRole>(GetContext()));
-            var idResult = rm.Create(role);
-            return idResult.Succeeded;
+            using (var rm = new RoleManager<TIdentityRole>(new RoleStore<TIdentityRole>(GetContext())))
+            {
+                var idResult = rm.Create(role);
+                return idResult.Succeeded;
+            }
         }
 
         public bool CreateUser(TUser user, string password)
         {
-            var um = new UserManager<TUser>(new UserStore<TUser>(GetContext()));
-            try
+            using (var um = new UserManager<TUser>(new UserStore<TUser>(GetContext())))
             {
-                var idResult = um.Create(user, password);
-                return idResult.Succeeded;
-            }
-            catch (Exception)
-            {
-                throw;
+                try
+                {
+                    var idResult = um.Create(user, password);
+                    return idResult.Succeeded;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
 
         public bool AddUserToRole(string userId, string roleName)
         {
-            var um = new UserManager<TUser>(new UserStore<TUser>(GetContext()));
-            var idResult = um.AddToRole(userId, roleName);
-            return idResult.Succeeded;
+            using (var um = new UserManager<TUser>(new UserStore<TUser>(GetContext())))
+            {
+                var idResult = um.AddToRole(userId, roleName);
+                return idResult.Succeeded;
+            }
         }
 
         public void ClearUserRoles(string userId)
         {
-            var um = new UserManager<TUser>(new UserStore<TUser>(GetContext()));
-            var user = um.FindById(userId);
-            um.RemoveFromRoles(userId, user.Roles.Select(i => i.RoleId).ToArray());
+            using (var um = new UserManager<TUser>(new UserStore<TUser>(GetContext())))
+            {
+                var user = um.FindById(userId);
+                um.RemoveFromRoles(userId, user.Roles.Select(i => i.RoleId).ToArray());
+            }
         }
     }
 }

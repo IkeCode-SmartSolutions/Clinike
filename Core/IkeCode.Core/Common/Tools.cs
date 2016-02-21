@@ -35,7 +35,7 @@ namespace IkeCode.Core
             {
                 result = value.ToString();
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -58,7 +58,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToByte(value);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -81,7 +81,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToInt16(value);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -104,7 +104,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToInt32(value);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -127,7 +127,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToInt64(value);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -150,7 +150,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToDecimal(value);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -173,7 +173,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToDecimal(value, new CultureInfo(cultureName));
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -196,7 +196,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToDecimal(value, cultureInfo);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -219,7 +219,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToSingle(value);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -242,7 +242,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToSingle(value, cultureInfo);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -265,7 +265,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToSingle(value, new CultureInfo(cultureName));
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -288,7 +288,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToDouble(value);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -311,7 +311,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToDouble(value, new CultureInfo(cultureName));
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -334,7 +334,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToDouble(value, cultureInfo);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -361,7 +361,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToBoolean(value);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -384,7 +384,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToDateTime(value);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -407,7 +407,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToDateTime(value, new CultureInfo(cultureName));
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -430,7 +430,7 @@ namespace IkeCode.Core
             {
                 result = Convert.ToDateTime(value, cultureInfo);
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }
@@ -460,7 +460,7 @@ namespace IkeCode.Core
                     result = TimeSpan.FromSeconds(value.ToDouble());
                 }
             }
-            catch
+            catch (Exception)
             {
                 result = defaultValue;
             }

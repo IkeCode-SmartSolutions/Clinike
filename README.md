@@ -1,2 +1,0 @@
-# Clinike.IkeCode
-Clinike Manager
