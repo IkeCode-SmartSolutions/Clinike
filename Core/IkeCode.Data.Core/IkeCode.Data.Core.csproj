@@ -83,6 +83,7 @@
     <Compile Include="Entity\IkeCodeDbContext.cs" />
     <Compile Include="Identity\IkeCodeIdentityManager.cs" />
     <Compile Include="Model\DatabaseType.cs" />
+    <Compile Include="Model\IkeCodeEntityBaseModelEx.cs" />
     <Compile Include="Model\Interfaces\IIkeCodeBaseModel.cs" />
     <Compile Include="Model\Interfaces\IIkeCodeModel.cs" />
     <Compile Include="Model\IkeCodeEntityModelEx.cs" />

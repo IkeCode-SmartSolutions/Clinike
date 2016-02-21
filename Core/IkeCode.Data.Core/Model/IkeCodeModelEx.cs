@@ -15,16 +15,6 @@
         where TObject : class, IIkeCodeModel<TKey>, new()
         where TContext : DbContext, new()
     {
-        public IkeCodeModelEx()
-        {
-
-        }
-
-        public IkeCodeModelEx(string connectionStringName)
-            : base(connectionStringName)
-        {
-        }
-
         public static PagedList<TObject> GetPaged(int offset = 0, int limit = 10, ICollection<string> includes = null, bool asNoTracking = false)
         {
             return RunStatic<PagedList<TObject>>((_context) =>
