@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IkeCode.Web.Core.Model.Interfaces
+namespace IkeCode.Data.Core.Model.Interfaces
 {
     public interface IIkeCodeModel<TKey> : IIkeCodeBaseModel<TKey>
     {

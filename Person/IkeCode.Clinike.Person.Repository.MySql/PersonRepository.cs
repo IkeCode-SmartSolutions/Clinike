@@ -1,4 +1,5 @@
-﻿using IkeCode.Clinike.Person.Domain.Repository;
+﻿using IkeCode.Clinike.DataContext;
+using IkeCode.Clinike.Person.Domain.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,18 @@ namespace IkeCode.Clinike.Person.Repository.MySql
 {
     public class PersonRepository : IPersonRepository
     {
-        public int Add(int id, string email, string name)
+        public int Save(int id, string email, string name)
         {
-            var person = new Person();
-            person.Id = id;
-            person.Email = email;
-            person.Name = name;
+            using (var context = new ClinikeContext())
+            {
+                var person = new Person(context);
+                person.Id = id;
+                person.Email = email;
+                person.Name = name;
 
-            var result = Person.AddOrUpdate(i => i.Id == id, person);
-            return result.Id;
+                person.Save(i => i.Id == id);
+                return person.Id;
+            }
         }
     }
 }
