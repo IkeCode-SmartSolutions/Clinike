@@ -9,13 +9,12 @@ namespace IkeCode.Clinike.Person.Repository.MySql
 {
     public class PersonRepository : IPersonRepository
     {
-        public int Add(int id, string email, string firstName, string lastName = "")
+        public int Add(int id, string email, string name)
         {
             var person = new Person();
             person.Id = id;
             person.Email = email;
-            person.FirstName = firstName;
-            person.LastName = lastName;
+            person.Name = name;
 
             var result = Person.AddOrUpdate(i => i.Id == id, person);
             return result.Id;

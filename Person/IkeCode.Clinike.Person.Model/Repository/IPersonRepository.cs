@@ -8,6 +8,6 @@ namespace IkeCode.Clinike.Person.Domain.Repository
 {
     public interface IPersonRepository
     {
-        int Add(int id, string email, string firstName, string lastName = "");
+        int Add(int id, string email, string name);
     }
 }
