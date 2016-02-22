@@ -1,27 +1,15 @@
-﻿using IkeCode.Clinike.DataContext;
-using IkeCode.Clinike.Person.Domain.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IkeCode.Clinike.Person.Domain.Repository;
+using IkeCode.Data.Core.Repository;
+using System.Data.Entity;
 
 namespace IkeCode.Clinike.Person.Repository.MySql
 {
-    public class PersonRepository : IPersonRepository
+    public class PersonRepository : IkeCodeRepositoryBase<Domain.Entities.Person, int>, IPersonRepository
     {
-        public int Save(int id, string email, string name)
+        public PersonRepository(DbContext context)
+            : base(context)
         {
-            using (var context = new ClinikeContext())
-            {
-                var person = new Person(context);
-                person.Id = id;
-                person.Email = email;
-                person.Name = name;
 
-                person.Save(i => i.Id == id);
-                return person.Id;
-            }
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿namespace IkeCode.Clinike.Person.Domain.Repository
+﻿using IkeCode.Data.Core.Repository;
+
+namespace IkeCode.Clinike.Person.Domain.Repository
 {
-    public interface IPersonRepository
+    public interface IPersonRepository : IIkeCodeRepositoryBase<Entities.Person, int>
     {
-        int Save(int id, string email, string name);
     }
 }

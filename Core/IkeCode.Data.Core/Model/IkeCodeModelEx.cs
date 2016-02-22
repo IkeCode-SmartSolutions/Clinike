@@ -1,28 +1,33 @@
-﻿using IkeCode.Data.Core.Model;
-using IkeCode.Data.Core.Model.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-namespace IkeCode.Web.Core.Model
+﻿namespace IkeCode.Web.Core.Model
 {
-    public class IkeCodeModelEx<TObject, TKey> : IIkeCodeBasicRepository<TObject, TKey>
-        where TObject : IkeCodeModel<TObject, TKey>
+    using Data.Core.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+    using System.Data.Entity.Migrations;
+    using IkeCode.Web.Core.Model.Interfaces;
+    using System.Text;
+
+    public class IkeCodeModelEx<TObject, TContext, TKey> : IkeCodeEntityModelEx<TObject, TContext, TKey>
+        where TObject : class, IIkeCodeModel<TKey>, new()
+        where TContext : DbContext, new()
     {
-        public DbContext _context { get; private set; }
+        public IkeCodeModelEx()
+        {
 
-        public IkeCodeModelEx(DbContext context)
-        {
-            this._context = context;
         }
-        
-        public PagedList<TObject> GetPaged(int offset = 0, int limit = 10, ICollection<string> includes = null, bool asNoTracking = false)
+
+        public IkeCodeModelEx(string connectionStringName)
+            : base(connectionStringName)
         {
-            return Run((_context) =>
+        }
+
+        public static PagedList<TObject> GetAll(int offset = 0, int limit = 10, ICollection<string> includes = null, bool asNoTracking = false)
+        {
+            return RunStatic<PagedList<TObject>>((_context) =>
             {
                 IQueryable<TObject> results = _context.Set<TObject>();
                 results = ApplyAsNoTracking(results, asNoTracking);
@@ -32,9 +37,9 @@ namespace IkeCode.Web.Core.Model
             });
         }
 
-        public PagedList<TObject> GetPaged(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public static PagedList<TObject> GetAll(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
-            return Run((_context) =>
+            return RunStatic<PagedList<TObject>>((_context) =>
             {
                 IQueryable<TObject> results = _context.Set<TObject>();
                 results = ApplyAsNoTracking(results, asNoTracking);
@@ -44,22 +49,22 @@ namespace IkeCode.Web.Core.Model
             });
         }
 
-        public async Task<PagedList<TObject>> GetPagedAsync(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public static async Task<PagedList<TObject>> GetAllAsync(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
-            return await RunAsync((_context) =>
+            using (var _context = GetDefaultContext())
             {
                 IQueryable<TObject> results = _context.Set<TObject>();
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
 
-                return results.OrderBy(i => i.Id).ToPagedListAsync(offset, limit);
-            });
+                return await results.OrderBy(i => i.Id).ToPagedListAsync(offset, limit);
+            };
         }
 
-        public PagedList<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
+        public static PagedList<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
         {
-            return Run((_context) =>
+            return RunStatic<PagedList<TObject>>((_context) =>
             {
                 var results = _context.Set<TObject>().Where(match);
 
@@ -70,9 +75,9 @@ namespace IkeCode.Web.Core.Model
             });
         }
 
-        public PagedList<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public static PagedList<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
-            return Run((_context) =>
+            return RunStatic<PagedList<TObject>>((_context) =>
             {
                 var results = _context.Set<TObject>().Where(match);
 
@@ -83,191 +88,84 @@ namespace IkeCode.Web.Core.Model
             });
         }
 
-        public async Task<PagedList<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
+        public static async Task<PagedList<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
         {
-            return await RunAsync((_context) =>
+            using (var _context = GetDefaultContext())
             {
                 var results = _context.Set<TObject>().Where(match);
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
 
-                return results.OrderBy(i => i.Id).ToPagedListAsync(offset, limit);
-            });
+                return await results.OrderBy(i => i.Id).ToPagedListAsync(offset, limit);
+            }
         }
 
-        public async Task<PagedList<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public static async Task<PagedList<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
-            return await RunAsync((_context) =>
+            using (var _context = GetDefaultContext())
             {
                 var results = _context.Set<TObject>().Where(match);
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
 
-                return results.OrderBy(i => i.Id).ToPagedListAsync(offset, limit);
-            });
+                return await results.OrderBy(i => i.Id).ToPagedListAsync(offset, limit);
+            }
         }
 
-        public TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
+        new public static TObject AddOrUpdate(Expression<Func<TObject, object>> identifier, TObject entity)
         {
-            return Run((_context) =>
+            return RunStatic((_context) =>
             {
-                var results = _context.Set<TObject>().Where(match);
-
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-
-                return results.FirstOrDefault();
-            });
-        }
-
-        public TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
-        {
-            return Run((_context) =>
-            {
-                var results = _context.Set<TObject>().Where(match);
-
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-
-                return results.FirstOrDefault();
-            });
-        }
-
-        public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
-        {
-            return await RunAsync((_context) =>
-            {
-                var results = _context.Set<TObject>().Where(match);
-
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-
-                return results.FirstOrDefaultAsync();
-            });
-        }
-
-        public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
-        {
-            return await RunAsync((_context) =>
-            {
-                var results = _context.Set<TObject>().Where(match);
-
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-
-                return results.FirstOrDefaultAsync();
-            });
-        }
-
-        #region Protected Methods
-
-        protected void Run(Action<DbContext> func)
-        {
-            Run(func);
-        }
-
-        protected T Run<T>(Func<DbContext, T> func)
-        {
-            try
-            {
-                using (_context)
+                var logs = new StringBuilder();
+                _context.Database.Log = (log) =>
                 {
-                    _context.Configuration.ProxyCreationEnabled = false;
+                    logs.AppendLine(log);
+                };
 
-                    return func(_context);
-                }
-            }
-            catch (DbEntityValidationException ex)
-            {
-                // Retrieve the error messages as a list of strings.
-                var errorMessages = ex.EntityValidationErrors
-                        .SelectMany(x => x.ValidationErrors)
-                        .Select(x => x.ErrorMessage);
+                //var memberName = "";
+                //var body = identifier.Body;
+                //if (body.NodeType == ExpressionType.Convert)
+                //    body = ((UnaryExpression)body).Operand;
+                
+                //if ((body as MemberExpression) != null)
+                //{
+                //    memberName = (body as MemberExpression).Member.Name;
+                //}
+                
+                //var memberValue = entity.GetType().GetProperty(memberName).GetValue(entity);
+                //if (memberValue == null)
+                //    throw new InvalidOperationException("Unable to perform AddOrUpdate method because your Identifier does not have value on the Entity passed");
+                
+                //var parameter = Expression.Parameter(typeof(TObject));
+                //var memberExpression = Expression.Property(parameter, memberName);
+                
+                //Expression<Func<TObject, bool>> lambdaResult = Expression.Lambda<Func<TObject, bool>>(Expression.Equal(memberExpression, Expression.Constant(memberValue)), parameter);
 
-                // Join the list to a single string.
-                var fullErrorMessage = string.Join("; ", errorMessages);
+                //var originalObject = Find(lambdaResult);
+                //if (originalObject != null && entity.Id <= 0)
+                //    entity.Id = originalObject.Id;
 
-                // Combine the original exception message with the new one.
-                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+                entity.PrepareToDatabase();
 
-                // Throw a new DbEntityValidationException with the improved exception message.
-                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+                _context.Set<TObject>().AddOrUpdate(identifier, entity);
+
+                //if (entity.Id == 0)
+                //{
+                //    _context.Set<TObject>().Add(entity);
+                //}
+                //else
+                //{
+                //    _context.Set<TObject>().Attach(originalObject);
+                //    _context.Entry<TObject>(originalObject).CurrentValues.SetValues(entity);
+                //    _context.Entry<TObject>(originalObject).State = EntityState.Modified;
+                //}
+
+                _context.SaveChanges();
+
+                return entity;
+            });
         }
-
-        protected async Task RunAsync(Action<DbContext, Task> func)
-        {
-            await RunAsync(func);
-        }
-
-        protected async Task<T> RunAsync<T>(Func<DbContext, Task<T>> func)
-        {
-            try
-            {
-                using (_context)
-                {
-                    _context.Configuration.ProxyCreationEnabled = false;
-
-                    return await func(_context);
-                }
-            }
-            catch (DbEntityValidationException ex)
-            {
-                // Retrieve the error messages as a list of strings.
-                var errorMessages = ex.EntityValidationErrors
-                        .SelectMany(x => x.ValidationErrors)
-                        .Select(x => x.ErrorMessage);
-
-                // Join the list to a single string.
-                var fullErrorMessage = string.Join("; ", errorMessages);
-
-                // Combine the original exception message with the new one.
-                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-
-                // Throw a new DbEntityValidationException with the improved exception message.
-                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        protected static IQueryable<TObject> ApplyIncludes(IQueryable<TObject> query, params Expression<Func<TObject, object>>[] includes)
-        {
-            if (includes != null && includes.Length > 0)
-            {
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
-            }
-
-            return query;
-        }
-
-        protected static IQueryable<TObject> ApplyIncludes(IQueryable<TObject> query, IEnumerable<string> includes)
-        {
-            if (includes != null && includes.Count() > 0)
-            {
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
-            }
-
-            return query;
-        }
-
-        protected static IQueryable<TObject> ApplyAsNoTracking(IQueryable<TObject> query, bool asNoTracking)
-        {
-            if (asNoTracking)
-            {
-                query.AsNoTracking();
-            }
-            return query;
-        }
-
-        #endregion
     }
 }

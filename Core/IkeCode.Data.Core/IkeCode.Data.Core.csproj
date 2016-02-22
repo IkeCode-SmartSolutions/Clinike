@@ -79,17 +79,18 @@
     <Compile Include="Entity\IkeCodeConnectionFactory.cs" />
     <Compile Include="Entity\IkeCodeDatabaseConfig.cs" />
     <Compile Include="Entity\IkeCodeDbConfiguration.cs" />
+    <Compile Include="Entity\IkeCodeDbMigrationsConfiguration.cs" />
     <Compile Include="Entity\IkeCodeIdentityDbContext.cs" />
     <Compile Include="Entity\IkeCodeDbContext.cs" />
+    <Compile Include="Entity\IkeCodeMySqlHistoryContext.cs" />
     <Compile Include="Identity\IkeCodeIdentityManager.cs" />
-    <Compile Include="Model\DatabaseType.cs" />
-    <Compile Include="Model\IkeCodeModelEx.cs" />
-    <Compile Include="Model\Interfaces\IIkeCodeBaseModel.cs" />
-    <Compile Include="Model\Interfaces\IIkeCodeBasicRepository.cs" />
-    <Compile Include="Model\Interfaces\IIkeCodeModel.cs" />
+    <Compile Include="DatabaseType.cs" />
+    <Compile Include="Repository\IkeCodeRepositoryBase.cs" />
+    <Compile Include="Model\IIkeCodeBaseModel.cs" />
+    <Compile Include="Repository\IIkeCodeRepositoryBase.cs" />
+    <Compile Include="Model\IIkeCodeModel.cs" />
     <Compile Include="Model\IkeCodeModel.cs" />
-    <Compile Include="Model\Interfaces\IIkeCodePaged.cs" />
-    <Compile Include="Model\PagedList.cs" />
+    <Compile Include="Model\IPagedResult.cs" />
     <Compile Include="Model\PagedResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

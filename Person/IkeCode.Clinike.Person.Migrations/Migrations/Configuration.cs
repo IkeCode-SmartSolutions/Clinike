@@ -1,17 +1,21 @@
 namespace IkeCode.Clinike.Person.Migrations.Migrations
 {
-    using System.Data.Entity.Migrations;
+    using Data.Core;
+    using Data.Core.Entity;
+    using MySql.Data.Entity;
+    using System.Data.Entity;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<IkeCode.Clinike.DataContext.ClinikeContext>
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
+    internal sealed class Configuration : IkeCodeDbMigrationsConfiguration<DataContext.PersonContext>
     {
         public Configuration()
+            : base(DatabaseType.MySQL)
         {
-            AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(IkeCode.Clinike.DataContext.ClinikeContext context)
+        protected override void Seed(DataContext.PersonContext context)
         {
-            
+
         }
     }
 }

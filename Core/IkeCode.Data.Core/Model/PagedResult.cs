@@ -1,9 +1,5 @@
-﻿using IkeCode.Data.Core.Model.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IkeCode.Data.Core.Model
 {
@@ -11,7 +7,7 @@ namespace IkeCode.Data.Core.Model
     /// Encapsulate result list into a normalized, ready for pagination
     /// </summary>
     /// <typeparam name="TResult">Type of Items List</typeparam>
-    public class PagedResult<TResult> : IIkeCodePaged
+    public class PagedResult<TResult> : IPagedResult<TResult>
     {
         /// <summary>
         /// Items to be skipped
@@ -40,24 +36,29 @@ namespace IkeCode.Data.Core.Model
         /// <param name="limit"></param>
         /// <param name="totalCount"></param>
         /// <param name="items"></param>
-        public PagedResult(int offset, int limit, int totalCount, ICollection<TResult> items)
+        public PagedResult(ICollection<TResult> items, int offset, int limit, int totalCount)
         {
             Offset = offset;
             Limit = limit;
             TotalCount = totalCount;
             Items = items;
         }
-
+        
         /// <summary>
-        /// Helper constructor to PagedList
+        /// Paginate IQueryable objects
         /// </summary>
-        /// <param name="paged"></param>
-        public PagedResult(PagedList<TResult> paged)
+        /// <param name="source">Must to .OrderBy(...) before call PagedList</param>
+        /// <param name="offset">Items to be skipped</param>
+        /// <param name="limit">Max number of items to be returned</param>
+        public PagedResult(IQueryable<TResult> source, int offset, int limit)
         {
-            Offset = paged.Offset;
-            Limit = paged.Limit;
-            TotalCount = paged.TotalCount;
-            Items = paged;
+            TotalCount = source.Count();
+            Offset = offset < 1 ? 0 : offset;
+            Limit = limit;
+
+            var items = source.OrderBy(i => i).Skip(Offset).Take(Limit).ToList();
+
+            Items = items;
         }
     }
 }

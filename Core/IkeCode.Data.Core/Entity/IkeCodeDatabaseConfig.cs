@@ -1,5 +1,4 @@
 ﻿using IkeCode.Core.Xml;
-using IkeCode.Data.Core.Model;
 using System;
 
 namespace IkeCode.Data.Core.Entity
