@@ -5,5 +5,5 @@ hosts entries: <br />
 127.0.0.1 local.scheduleapi.clinike.com.br <br />
 127.0.0.1 local.personapi.clinike.com.br <br />
 
-Example of command to enable migration on domain projects:
+Example of command to enable migration on domain projects: <br />
 Enable-Migrations -ContextProjectName IkeCode.Clinike.DataContext -StartUpProjectName IkeCode.Clinike.Person.Api -ContextTypeName IkeCode.Clinike.DataContext.ClinikeContext -ProjectName IkeCode.Clinike.Person.Migrations
