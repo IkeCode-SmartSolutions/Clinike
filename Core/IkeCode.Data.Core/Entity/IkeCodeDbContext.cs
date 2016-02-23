@@ -3,32 +3,32 @@ using System;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Diagnostics;
 using System.Linq;
 
 namespace IkeCode.Data.Core.Entity
 {
     public class IkeCodeDbContext : DbContext
     {
-        string schemaName { get; set; }
         DatabaseType DatabaseType { get; set; }
 
-        public IkeCodeDbContext(DatabaseType databaseType, string connectionStringName = "DefaultConnection", string schemaName = "dbo")
+        public IkeCodeDbContext(DatabaseType databaseType, string connectionStringName = "DefaultConnection")
             : base(connectionStringName)
         {
-            this.schemaName = schemaName;
+            DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             DatabaseType = databaseType;
         }
 
-        public IkeCodeDbContext(DatabaseType databaseType, DbConnection connection, string schemaName = "dbo")
+        public IkeCodeDbContext(DatabaseType databaseType, DbConnection connection)
             : base(connection, true)
         {
-            this.schemaName = schemaName;
+            DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             DatabaseType = databaseType;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
@@ -36,12 +36,8 @@ namespace IkeCode.Data.Core.Entity
             {
                 modelBuilder.Types().Configure((cv) => cv.ToTable(cv.ClrType.Name.ToLower()));
 
-                modelBuilder.Properties<string>()
-                    .Configure(p => p.HasColumnType("longtext").IsUnicode(false));
+                modelBuilder.Properties<string>().Configure(p => p.HasColumnType("varchar").HasMaxLength(250).IsUnicode(false));
             }
-            
-            modelBuilder.Properties<string>()
-                .Configure(p => p.HasMaxLength(100));
         }
 
         public override int SaveChanges()

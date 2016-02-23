@@ -39,12 +39,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomExternalDlls\MySql.Data.dll</HintPath>
+      <HintPath>..\..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MySql.Data.Entity.EF6, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomExternalDlls\MySql.Data.Entity.EF6.dll</HintPath>
+      <HintPath>..\..\packages\MySql.Data.Entity.6.9.8\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -57,9 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201602221947356_V100_PersonInitialMigration.cs" />
-    <Compile Include="Migrations\201602221947356_V100_PersonInitialMigration.Designer.cs">
-      <DependentUpon>201602221947356_V100_PersonInitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201602231514546_V100_PersonInitialMigration.cs" />
+    <Compile Include="Migrations\201602231514546_V100_PersonInitialMigration.Designer.cs">
+      <DependentUpon>201602231514546_V100_PersonInitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,8 +79,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602221947356_V100_PersonInitialMigration.resx">
-      <DependentUpon>201602221947356_V100_PersonInitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602231514546_V100_PersonInitialMigration.resx">
+      <DependentUpon>201602231514546_V100_PersonInitialMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

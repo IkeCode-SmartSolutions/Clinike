@@ -15,22 +15,13 @@ namespace IkeCode.Data.Core.Entity
             DatabaseType = databaseType;
 
             AutomaticMigrationsEnabled = false;
-
-            DbConfiguration.Loaded += DbConfiguration_Loaded;
-
+            
             if (databaseType == DatabaseType.MySQL)
             {
-                SetSqlGenerator("MySql.Data.MySqlClient", new MySqlMigrationSqlGenerator());
-                SetHistoryContextFactory("MySql.Data.MySqlClient", (conn, schema) => new MySqlHistoryContext(conn, schema));
                 DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
-            }
-        }
-
-        private void DbConfiguration_Loaded(object sender, System.Data.Entity.Infrastructure.DependencyResolution.DbConfigurationLoadedEventArgs e)
-        {
-            if (DatabaseType == DatabaseType.MySQL)
-            {
-                e.AddDependencyResolver(new MySqlDependencyResolver(), true);
+                SetSqlGenerator("MySql.Data.MySqlClient", new MySqlMigrationSqlGenerator());
+                SetHistoryContextFactory("MySql.Data.MySqlClient", (conn, schema) => new IkeCodeMySqlHistoryContext(conn, schema));
+                CodeGenerator = new MySqlMigrationCodeGenerator();
             }
         }
     }

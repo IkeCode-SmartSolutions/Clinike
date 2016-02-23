@@ -13,7 +13,7 @@ namespace IkeCode.Clinike.Person.Migrations.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201602221947356_V100_PersonInitialMigration"; }
+            get { return "201602231514546_V100_PersonInitialMigration"; }
         }
         
         string IMigrationMetadata.Source
