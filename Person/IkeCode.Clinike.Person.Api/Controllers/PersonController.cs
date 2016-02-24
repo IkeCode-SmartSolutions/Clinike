@@ -12,9 +12,9 @@ namespace IkeCode.Clinike.Person.Api.Controllers
     {
         IPersonRepository _personRepository;
 
-        public PersonController()
+        public PersonController(IPersonRepository personRepository)
         {
-            
+            _personRepository = personRepository;
         }
 
         public IEnumerable<Domain.Entities.Person> Get()
@@ -24,7 +24,7 @@ namespace IkeCode.Clinike.Person.Api.Controllers
 
         public Domain.Entities.Person Get(int id)
         {
-            var person = _personRepository.Find(i => i.Id == 1);
+            //var person = _personRepository.Find(i => i.Id == 1);
             return new Domain.Entities.Person();
         }
     }
