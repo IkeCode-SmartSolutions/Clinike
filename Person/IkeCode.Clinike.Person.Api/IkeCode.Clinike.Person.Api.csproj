@@ -124,7 +124,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServicesInstallers\DomainServicesInstaller.cs" />
+    <Compile Include="ServiceInstallers\PersonDomainInstaller.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

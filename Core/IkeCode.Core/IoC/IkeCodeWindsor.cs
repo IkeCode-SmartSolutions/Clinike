@@ -1,0 +1,25 @@
+﻿namespace IkeCode.Core.IoC
+{
+    using Castle.MicroKernel.Registration;
+    using Castle.Windsor;
+    using Installers;
+    using System.Reflection;
+    using System.Web.Http;
+    using System.Linq;
+    using System.Web.Http.Dispatcher;
+
+    public class IkeCodeWindsor
+    {
+        public static WindsorContainer Initialize(HttpConfiguration httpConfiguration, Assembly assembly, params IWindsorInstaller[] installers)
+        {
+            var container = new WindsorContainer();
+            installers.ToList().Add(new IkeCodeWindsorControllerInstaller(assembly));
+            container.Install(installers);
+
+            httpConfiguration.DependencyResolver = new IkeCodeWindsorHttpDependencyResolver(container.Kernel);
+            httpConfiguration.Services.Replace(typeof(IHttpControllerActivator), new IkeCodeWindsorHttpControllerActivator(container));
+
+            return container;
+        }
+    }
+}
