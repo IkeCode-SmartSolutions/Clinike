@@ -1,4 +1,5 @@
 ﻿using IkeCode.Clinike.Person.Domain.Repository;
+using IkeCode.Data.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,16 @@ namespace IkeCode.Clinike.Person.Api.Controllers
             _personRepository = personRepository;
         }
 
-        public IEnumerable<Domain.Entities.Person> Get()
+        public IPagedResult<Domain.Entities.Person> Get(int offset = 0, int limit = 10)
         {
-            return new List<Domain.Entities.Person>();
+            var personList = _personRepository.Get(offset, limit);
+            return personList;
         }
 
         public Domain.Entities.Person Get(int id)
         {
-            var person = _personRepository.Find(i => i.Id == 1);
-            return new Domain.Entities.Person();
+            var person = _personRepository.Find(i => i.Id == id);
+            return person;
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace IkeCode.Data.Core.Model
 {
@@ -55,8 +57,8 @@ namespace IkeCode.Data.Core.Model
             TotalCount = source.Count();
             Offset = offset < 1 ? 0 : offset;
             Limit = limit;
-
-            var items = source.OrderBy(i => i).Skip(Offset).Take(Limit).ToList();
+            
+            var items = source.Skip(Offset).Take(Limit).ToList();
 
             Items = items;
         }

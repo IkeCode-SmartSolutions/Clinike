@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace IkeCode.Data.Core.Repository
 {
     public class IkeCodeRepositoryBase<TObject, TKey> : IIkeCodeRepositoryBase<TObject, TKey>
-        where TObject : class
+        where TObject : IkeCodeModel<TKey>
     {
         public DbContext _context { get; private set; }
 
@@ -20,14 +20,15 @@ namespace IkeCode.Data.Core.Repository
         {
             this._context = context;
         }
-        
-        public IPagedResult<TObject> Get(int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
+
+        public IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return Run((_context) =>
             {
                 IQueryable<TObject> results = _context.Set<TObject>();
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TObject>(results, offset, limit);
 
@@ -35,13 +36,14 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public IPagedResult<TObject> Get(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             return Run((_context) =>
             {
                 IQueryable<TObject> results = _context.Set<TObject>();
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TObject>(results, offset, limit);
 
@@ -49,7 +51,7 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public async Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
+        public async Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return await RunAsync(async (_context) =>
             {
@@ -57,6 +59,7 @@ namespace IkeCode.Data.Core.Repository
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TObject>(results, offset, limit);
 
@@ -64,7 +67,7 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public async Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public async Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             return await RunAsync(async (_context) =>
             {
@@ -72,6 +75,7 @@ namespace IkeCode.Data.Core.Repository
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TObject>(results, offset, limit);
 
@@ -79,7 +83,7 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
+        public IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return Run((_context) =>
             {
@@ -87,6 +91,7 @@ namespace IkeCode.Data.Core.Repository
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TObject>(results, offset, limit);
 
@@ -94,7 +99,7 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             return Run((_context) =>
             {
@@ -102,6 +107,7 @@ namespace IkeCode.Data.Core.Repository
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TObject>(results, offset, limit);
 
@@ -109,7 +115,7 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public async Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, ICollection<string> includes = null)
+        public async Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return await RunAsync(async (_context) =>
             {
@@ -117,6 +123,7 @@ namespace IkeCode.Data.Core.Repository
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TObject>(results, offset, limit);
 
@@ -124,7 +131,7 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public async Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public async Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
         {
             return await RunAsync(async (_context) =>
             {
@@ -132,6 +139,7 @@ namespace IkeCode.Data.Core.Repository
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TObject>(results, offset, limit);
 
@@ -200,7 +208,7 @@ namespace IkeCode.Data.Core.Repository
                 {
                     logs.AppendLine(log);
                 };
-                
+
                 _context.Set<TObject>().AddOrUpdate(identifier, entity);
 
                 _context.SaveChanges();
@@ -216,7 +224,7 @@ namespace IkeCode.Data.Core.Repository
                 {
                     logs.AppendLine(log);
                 };
-                
+
                 _context.Set<TObject>().AddOrUpdate(identifier, entity);
 
                 return await _context.SaveChangesAsync();
@@ -396,6 +404,12 @@ namespace IkeCode.Data.Core.Repository
                 query.AsNoTracking();
             }
             return query;
+        }
+
+        private static IQueryable<TObject> ApplyOrderBy(IQueryable<TObject> results, Expression<Func<TObject, TKey>> orderBy)
+        {
+            results = orderBy == null ? results.OrderBy(i => i.Id) : results.OrderBy(orderBy);
+            return results;
         }
 
         #endregion

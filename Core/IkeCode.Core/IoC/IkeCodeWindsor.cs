@@ -13,8 +13,10 @@
         public static WindsorContainer ApiInitializer(HttpConfiguration httpConfiguration, Assembly assembly, params IWindsorInstaller[] installers)
         {
             var container = new WindsorContainer();
-            installers.ToList().Add(new IkeCodeWindsorApiControllerInstaller(assembly));
-            container.Install(installers);
+            var parsedInstallers = installers.ToList();
+            parsedInstallers.Add(new IkeCodeWindsorApiControllerInstaller(assembly));
+
+            container.Install(parsedInstallers.ToArray());
 
             httpConfiguration.DependencyResolver = new IkeCodeWindsorHttpDependencyResolver(container.Kernel);
             httpConfiguration.Services.Replace(typeof(IHttpControllerActivator), new IkeCodeWindsorHttpControllerActivator(container));
