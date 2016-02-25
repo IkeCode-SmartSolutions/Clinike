@@ -24,7 +24,7 @@ namespace IkeCode.Clinike.Person.Api.Controllers
 
         public Domain.Entities.Person Get(int id)
         {
-            //var person = _personRepository.Find(i => i.Id == 1);
+            var person = _personRepository.Find(i => i.Id == 1);
             return new Domain.Entities.Person();
         }
     }

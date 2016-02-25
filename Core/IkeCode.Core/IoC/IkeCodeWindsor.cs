@@ -10,10 +10,10 @@
 
     public class IkeCodeWindsor
     {
-        public static WindsorContainer Initialize(HttpConfiguration httpConfiguration, Assembly assembly, params IWindsorInstaller[] installers)
+        public static WindsorContainer ApiInitializer(HttpConfiguration httpConfiguration, Assembly assembly, params IWindsorInstaller[] installers)
         {
             var container = new WindsorContainer();
-            installers.ToList().Add(new IkeCodeWindsorControllerInstaller(assembly));
+            installers.ToList().Add(new IkeCodeWindsorApiControllerInstaller(assembly));
             container.Install(installers);
 
             httpConfiguration.DependencyResolver = new IkeCodeWindsorHttpDependencyResolver(container.Kernel);

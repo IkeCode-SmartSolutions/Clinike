@@ -80,8 +80,7 @@
     <Compile Include="IoC\IkeCodeWindsorHttpDependencyResolver .cs" />
     <Compile Include="IoC\IkeCodeWindsorDependencyScope.cs" />
     <Compile Include="IoC\IkeCodeWindsor.cs" />
-    <Compile Include="IoC\Installers\IkeCodeWindsorControllerInstaller.cs" />
-    <Compile Include="IoC\Installers\IkeCodeWindsorDefaultInstaller.cs" />
+    <Compile Include="IoC\Installers\IkeCodeWindsorApiControllerInstaller.cs" />
     <Compile Include="Log\IkeCodeLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\IkeCodeConfig.cs" />

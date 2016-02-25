@@ -5,11 +5,11 @@
     using Castle.Windsor;
     using System.Reflection;
     using System.Web.Http.Controllers;
-    public class IkeCodeWindsorControllerInstaller : IWindsorInstaller
+    public class IkeCodeWindsorApiControllerInstaller : IWindsorInstaller
     {
         Assembly _assembly;
 
-        public IkeCodeWindsorControllerInstaller(Assembly assembly)
+        public IkeCodeWindsorApiControllerInstaller(Assembly assembly)
         {
             _assembly = assembly;
         }

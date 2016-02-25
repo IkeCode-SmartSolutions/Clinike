@@ -21,13 +21,8 @@
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            //var container = new WindsorContainer();
-            //container.Install(new PersonDomainInstaller(), new IkeCodeWindsorControllerInstaller(Assembly.GetExecutingAssembly()));
-
-            //GlobalConfiguration.Configuration.DependencyResolver = new IkeCodeWindsorHttpDependencyResolver(container.Kernel);
-            //GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), new IkeCodeWindsorHttpControllerActivator(container));
-
-            IkeCodeWindsor.Initialize(GlobalConfiguration.Configuration, Assembly.GetExecutingAssembly(), new PersonDomainInstaller());
+            
+            IkeCodeWindsor.ApiInitializer(GlobalConfiguration.Configuration, Assembly.GetExecutingAssembly(), new PersonDomainInstaller());
 
             JsonConvert.DefaultSettings = () =>
             {
