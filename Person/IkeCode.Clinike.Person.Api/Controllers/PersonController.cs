@@ -18,6 +18,12 @@ namespace IkeCode.Clinike.Person.Api.Controllers
             _personRepository = personRepository;
         }
 
+        public Domain.Entities.Person GetByName(string name)
+        {
+            var person = _personRepository.Find(i => i.Name == name);
+            return person;
+        }
+
         public IPagedResult<Domain.Entities.Person> Get(int offset = 0, int limit = 10)
         {
             var personList = _personRepository.Get(offset, limit);

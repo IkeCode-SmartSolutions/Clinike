@@ -12,8 +12,8 @@
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(Component.For<DbContext>().ImplementedBy<PersonContext>());
-            container.Register(Component.For<IPersonRepository>().ImplementedBy<PersonRepository>());
+            container.Register(Component.For<DbContext>().ImplementedBy<PersonContext>().LifestylePerWebRequest());
+            container.Register(Component.For<IPersonRepository>().ImplementedBy<PersonRepository>().LifestylePerWebRequest());
         }
     }
 }
