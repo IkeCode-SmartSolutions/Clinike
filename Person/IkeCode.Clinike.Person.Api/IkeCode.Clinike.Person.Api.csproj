@@ -81,6 +81,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -90,6 +94,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -135,10 +143,12 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\Core\IkeCode.Api.Core\IkeCode.Api.Core.csproj">
+      <Project>{f2afe699-9dc3-4358-8140-50f419aefd41}</Project>
+      <Name>IkeCode.Api.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\IkeCode.Core\IkeCode.Core.csproj">
       <Project>{9bd498ef-5778-405c-b4e5-1a5adb39fa32}</Project>
       <Name>IkeCode.Core</Name>
@@ -155,9 +165,9 @@
       <Project>{42e58b85-3cc5-41a5-b016-c96a2d295d26}</Project>
       <Name>IkeCode.Clinike.Person.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IkeCode.Clinike.Person.Repository.MySql\IkeCode.Clinike.Person.Repository.MySql.csproj">
+    <ProjectReference Include="..\IkeCode.Clinike.Person.Repository.MySql\IkeCode.Clinike.Person.Repository.csproj">
       <Project>{354176ea-93fb-4a0a-b7b8-d497f3a71b5c}</Project>
-      <Name>IkeCode.Clinike.Person.Repository.MySql</Name>
+      <Name>IkeCode.Clinike.Person.Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

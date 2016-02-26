@@ -5,7 +5,7 @@
     using Castle.Windsor;
     using DataContext;
     using Domain.Repository;
-    using Repository.MySql;
+    using Repository;
     using System.Data.Entity;
 
     public class PersonDomainInstaller : IWindsorInstaller

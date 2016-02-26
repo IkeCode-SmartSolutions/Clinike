@@ -2,7 +2,7 @@
 using IkeCode.Data.Core.Repository;
 using System.Data.Entity;
 
-namespace IkeCode.Clinike.Person.Repository.MySql
+namespace IkeCode.Clinike.Person.Repository
 {
     public class PersonRepository : IkeCodeRepositoryBase<Domain.Entities.Person, int>, IPersonRepository
     {

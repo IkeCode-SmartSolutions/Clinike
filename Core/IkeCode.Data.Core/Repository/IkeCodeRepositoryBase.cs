@@ -21,6 +21,12 @@ namespace IkeCode.Data.Core.Repository
             this._context = context;
         }
 
+        public IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null)
+        {
+            var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
+            return Get(offset, limit, orderBy, asNoTracking, parsedIncludes);
+        }
+
         public IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return Run((_context) =>
@@ -49,6 +55,12 @@ namespace IkeCode.Data.Core.Repository
 
                 return result;
             });
+        }
+
+        public async Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null)
+        {
+            var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
+            return await GetAsync(offset, limit, orderBy, asNoTracking, parsedIncludes);
         }
 
         public async Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
@@ -83,6 +95,12 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
+        public IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null)
+        {
+            var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
+            return FindAll(match, offset, limit, orderBy, asNoTracking, parsedIncludes);
+        }
+
         public IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return Run((_context) =>
@@ -113,6 +131,12 @@ namespace IkeCode.Data.Core.Repository
 
                 return result;
             });
+        }
+
+        public async Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null)
+        {
+            var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
+            return await FindAllAsync(match, offset, limit, orderBy, asNoTracking, parsedIncludes);
         }
 
         public async Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
@@ -147,6 +171,12 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
+        public TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, string includes = null)
+        {
+            var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
+            return Find(match, asNoTracking, parsedIncludes);
+        }
+
         public TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return Run((_context) =>
@@ -171,6 +201,12 @@ namespace IkeCode.Data.Core.Repository
 
                 return results.FirstOrDefault();
             });
+        }
+
+        public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, string includes = null)
+        {
+            var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
+            return await FindAsync(match, asNoTracking, parsedIncludes);
         }
 
         public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
@@ -227,6 +263,26 @@ namespace IkeCode.Data.Core.Repository
 
                 _context.Set<TObject>().AddOrUpdate(identifier, entity);
 
+                return await _context.SaveChangesAsync();
+            });
+        }
+
+        public void Update(TKey key, TObject entity)
+        {
+            Run((_context) =>
+            {
+                var oldEntity = _context.Set<TObject>().Find(key);
+                _context.Entry(oldEntity).CurrentValues.SetValues(entity);
+                return _context.SaveChanges();
+            });
+        }
+
+        public async Task UpdateAsync(TKey key, TObject entity)
+        {
+            await RunAsync(async (_context) =>
+            {
+                var oldEntity = _context.Set<TObject>().Find(key);
+                _context.Entry(oldEntity).CurrentValues.SetValues(entity);
                 return await _context.SaveChangesAsync();
             });
         }
@@ -392,6 +448,16 @@ namespace IkeCode.Data.Core.Repository
             if (includes != null && includes.Count() > 0)
             {
                 query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+            return query;
+        }
+
+        protected static IQueryable<TObject> ApplyIncludes(IQueryable<TObject> query, string includes)
+        {
+            if (!string.IsNullOrWhiteSpace(includes))
+            {
+                query = ApplyIncludes(query, includes.Split(','));
             }
 
             return query;

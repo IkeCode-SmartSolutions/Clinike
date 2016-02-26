@@ -16,7 +16,7 @@
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(Classes.FromAssembly(_assembly).BasedOn<IHttpController>().LifestylePerThread());
+            container.Register(Classes.FromAssembly(_assembly).BasedOn<IHttpController>().LifestylePerWebRequest());
         }
     }
 }

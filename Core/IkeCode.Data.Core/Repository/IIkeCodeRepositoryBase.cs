@@ -12,23 +12,32 @@ namespace IkeCode.Data.Core.Repository
     {
         DbContext _context { get; }
 
+        IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null);
         IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
         IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
+        Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null);
         Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
         Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
 
+        IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null);
         IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
         IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
+        Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null);
         Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
         Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
 
+        TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, string includes = null);
         TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null);
         TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
+        Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, string includes = null);
         Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null);
         Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
 
         void Save(Expression<Func<TObject, object>> identifier, TObject entity);
         Task SaveAsync(Expression<Func<TObject, object>> identifier, TObject entity);
+
+        void Update(TKey key, TObject entity);
+        Task UpdateAsync(TKey key, TObject entity);
 
         void Delete(TKey key);
         void Delete(TObject t);
