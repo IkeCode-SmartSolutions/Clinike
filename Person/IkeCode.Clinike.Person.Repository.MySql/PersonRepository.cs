@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace IkeCode.Clinike.Person.Repository
 {
-    public class PersonRepository : IkeCodeRepositoryBase<Domain.Entities.Person, Domain.Entities.IPerson, int>, IPersonRepository
+    public class PersonRepository : IkeCodeRepositoryBase<Person, Domain.Entities.IPerson, int>, IPersonRepository
     {
         public PersonRepository(DbContext context)
             : base(context)

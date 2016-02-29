@@ -1,14 +1,8 @@
-﻿using IkeCode.Data.Core.Model;
-using MySql.Data.Entity;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IkeCode.Data.Core.Entity
+﻿namespace IkeCode.Data.Core.Entity
 {
+    using MySql.Data.Entity;
+    using System.Data.Entity;
+
     public class IkeCodeDbConfiguration : DbConfiguration
     {
         public IkeCodeDbConfiguration()

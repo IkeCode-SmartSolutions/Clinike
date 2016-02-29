@@ -1,16 +1,10 @@
-﻿using IkeCode.Core.Xml;
-using IkeCode.Data.Core.Model;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IkeCode.Data.Core.Entity
+﻿namespace IkeCode.Data.Core.Entity
 {
+    using MySql.Data.MySqlClient;
+    using System;
+    using System.Data.Common;
+    using System.Data.SqlClient;
+
     public static class IkeCodeConnectionFactory
     {
         /// <summary>

@@ -2,10 +2,7 @@ namespace IkeCode.Clinike.Person.Migrations.Migrations
 {
     using Data.Core;
     using Data.Core.Entity;
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class Configuration : IkeCodeDbMigrationsConfiguration<DataContext.PersonContext>
     {
@@ -18,7 +15,7 @@ namespace IkeCode.Clinike.Person.Migrations.Migrations
         {
             context.People.AddOrUpdate(
               p => p.Email,
-              new Domain.Entities.Person { Name = "Leandro Barral", Email = "leandrobarral@outlook.com" }
+              new Repository.Person { Name = "Leandro Barral", Email = "leandrobarral@outlook.com" }
             );
         }
     }
