@@ -2,7 +2,7 @@
 
 namespace IkeCode.Clinike.Person.Domain.Entities
 {
-    public class Person : IkeCodeModel<int>
+    public class Person : IkeCodeModel<int>, IPerson
     {
         public Person()
         {

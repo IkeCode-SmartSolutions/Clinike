@@ -21,24 +21,24 @@ namespace IkeCode.Clinike.Person.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IIkeCodeApiResponse<Domain.Entities.Person>> Get(string name, string include = "")
+        public async Task<IIkeCodeApiResponse<Domain.Entities.IPerson>> Get(string name, string include = "")
         {
             var person = await _personRepository.FindAsync(i => i.Name == name, includes: include);
-            return new IkeCodeApiResponse<Domain.Entities.Person>(IkeCodeResponseStatus.Success, person);
+            return new IkeCodeApiResponse<Domain.Entities.IPerson>(IkeCodeResponseStatus.Success, person);
         }
 
         [HttpGet]
-        public async Task<IIkeCodeApiResponse<IPagedResult<Domain.Entities.Person>>> Get(int offset = 0, int limit = 10, string include = "")
+        public async Task<IIkeCodeApiResponse<IPagedResult<Domain.Entities.IPerson>>> Get(int offset = 0, int limit = 10, string include = "")
         {
-            var personList = await _personRepository.GetAsync(offset, limit, includes: include);
-            return new IkeCodeApiResponse<IPagedResult<Domain.Entities.Person>>(IkeCodeResponseStatus.Success, personList);
+            var personList = await _personRepository.GetAsync(offset, limit, includes: include, orderBy: i => i.Name);
+            return new IkeCodeApiResponse<IPagedResult<Domain.Entities.IPerson>>(IkeCodeResponseStatus.Success, personList);
         }
 
         [HttpGet]
-        public async Task<IIkeCodeApiResponse<Domain.Entities.Person>> Get(int id, string include = "")
+        public async Task<IIkeCodeApiResponse<Domain.Entities.IPerson>> Get(int id, string include = "")
         {
             var person = await _personRepository.FindAsync(i => i.Id == id, includes: include);
-            return new IkeCodeApiResponse<Domain.Entities.Person>(IkeCodeResponseStatus.Success, person);
+            return new IkeCodeApiResponse<Domain.Entities.IPerson>(IkeCodeResponseStatus.Success, person);
         }
 
         [HttpPost]

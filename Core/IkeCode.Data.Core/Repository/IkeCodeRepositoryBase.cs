@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace IkeCode.Data.Core.Repository
 {
-    public class IkeCodeRepositoryBase<TObject, TKey> : IIkeCodeRepositoryBase<TObject, TKey>
-        where TObject : IkeCodeModel<TKey>
+    public class IkeCodeRepositoryBase<TEntity, TEntityInterface, TKey> : IIkeCodeRepositoryBase<TEntityInterface, TKey>
+        where TEntity : IkeCodeModel<TKey>, TEntityInterface
+        where TEntityInterface : IIkeCodeBaseModel<TKey>
     {
         public DbContext _context { get; private set; }
 
@@ -21,267 +22,255 @@ namespace IkeCode.Data.Core.Repository
             this._context = context;
         }
 
-        public IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null)
+        public IPagedResult<TEntityInterface> Get(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null)
         {
             var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
             return Get(offset, limit, orderBy, asNoTracking, parsedIncludes);
         }
 
-        public IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
+        public IPagedResult<TEntityInterface> Get(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return Run((_context) =>
             {
-                IQueryable<TObject> results = _context.Set<TObject>();
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-                results = ApplyOrderBy(results, orderBy);
+                IQueryable<TEntityInterface> results = _context.Set<TEntity>();
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
+                results = ApplyOrderBy2(results, orderBy);
 
-                var result = new PagedResult<TObject>(results, offset, limit);
+                var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return result;
             });
         }
 
-        public IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public IPagedResult<TEntityInterface> Get(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes)
         {
             return Run((_context) =>
             {
-                IQueryable<TObject> results = _context.Set<TObject>();
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-                results = ApplyOrderBy(results, orderBy);
+                IQueryable<TEntityInterface> results = _context.Set<TEntity>();
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
+                results = ApplyOrderBy2(results, orderBy);
 
-                var result = new PagedResult<TObject>(results, offset, limit);
+                var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return result;
             });
         }
 
-        public async Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null)
+        public async Task<IPagedResult<TEntityInterface>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null)
         {
             var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
             return await GetAsync(offset, limit, orderBy, asNoTracking, parsedIncludes);
         }
 
-        public async Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
+        public async Task<IPagedResult<TEntityInterface>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return await RunAsync(async (_context) =>
             {
-                IQueryable<TObject> results = _context.Set<TObject>();
-
+                IQueryable<TEntity> results = _context.Set<TEntity>();
+                
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
-                results = ApplyOrderBy(results, orderBy);
+                results = ApplyOrderBy3(results, orderBy);
 
-                var result = new PagedResult<TObject>(results, offset, limit);
+                var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return await Task.Run(() => { return result; });
             });
         }
 
-        public async Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public async Task<IPagedResult<TEntityInterface>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes)
         {
             return await RunAsync(async (_context) =>
             {
-                IQueryable<TObject> results = _context.Set<TObject>();
+                IQueryable<TEntityInterface> results = _context.Set<TEntity>();
 
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-                results = ApplyOrderBy(results, orderBy);
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
+                results = ApplyOrderBy2(results, orderBy);
 
-                var result = new PagedResult<TObject>(results, offset, limit);
+                var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return await Task.Run(() => { return result; });
             });
         }
 
-        public IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null)
+        public IPagedResult<TEntityInterface> FindAll(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null)
         {
             var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
             return FindAll(match, offset, limit, orderBy, asNoTracking, parsedIncludes);
         }
 
-        public IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
+        public IPagedResult<TEntityInterface> FindAll(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return Run((_context) =>
             {
-                var results = _context.Set<TObject>().Where(match);
+                var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-                results = ApplyOrderBy(results, orderBy);
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
+                results = ApplyOrderBy2(results, orderBy);
 
-                var result = new PagedResult<TObject>(results, offset, limit);
+                var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return result;
             });
         }
 
-        public IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public IPagedResult<TEntityInterface> FindAll(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes)
         {
             return Run((_context) =>
             {
-                var results = _context.Set<TObject>().Where(match);
+                var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-                results = ApplyOrderBy(results, orderBy);
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
+                results = ApplyOrderBy2(results, orderBy);
 
-                var result = new PagedResult<TObject>(results, offset, limit);
+                var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return result;
             });
         }
 
-        public async Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null)
+        public async Task<IPagedResult<TEntityInterface>> FindAllAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null)
         {
             var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
             return await FindAllAsync(match, offset, limit, orderBy, asNoTracking, parsedIncludes);
         }
 
-        public async Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
+        public async Task<IPagedResult<TEntityInterface>> FindAllAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return await RunAsync(async (_context) =>
             {
-                var results = _context.Set<TObject>().Where(match);
+                var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-                results = ApplyOrderBy(results, orderBy);
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
+                results = ApplyOrderBy2(results, orderBy);
 
-                var result = new PagedResult<TObject>(results, offset, limit);
+                var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return await Task.Run(() => { return result; });
             });
         }
 
-        public async Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public async Task<IPagedResult<TEntityInterface>> FindAllAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes)
         {
             return await RunAsync(async (_context) =>
             {
-                var results = _context.Set<TObject>().Where(match);
+                var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
-                results = ApplyOrderBy(results, orderBy);
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
+                results = ApplyOrderBy2(results, orderBy);
 
-                var result = new PagedResult<TObject>(results, offset, limit);
+                var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return await Task.Run(() => { return result; });
             });
         }
 
-        public TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, string includes = null)
+        public TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, string includes = null)
         {
             var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
             return Find(match, asNoTracking, parsedIncludes);
         }
 
-        public TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
+        public TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return Run((_context) =>
             {
-                var results = _context.Set<TObject>().Where(match);
+                var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
 
                 return results.FirstOrDefault();
             });
         }
 
-        public TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes)
         {
             return Run((_context) =>
             {
-                var results = _context.Set<TObject>().Where(match);
+                var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
 
                 return results.FirstOrDefault();
             });
         }
 
-        public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, string includes = null)
+        public async Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, string includes = null)
         {
             var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
             return await FindAsync(match, asNoTracking, parsedIncludes);
         }
 
-        public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
+        public async Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, ICollection<string> includes = null)
         {
             return await RunAsync((_context) =>
             {
-                var results = _context.Set<TObject>().Where(match);
+                var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
 
                 return results.FirstOrDefaultAsync();
             });
         }
 
-        public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes)
+        public async Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes)
         {
             return await RunAsync((_context) =>
             {
-                var results = _context.Set<TObject>().Where(match);
+                var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking(results, asNoTracking);
-                results = ApplyIncludes(results, includes);
+                results = ApplyAsNoTracking2(results, asNoTracking);
+                results = ApplyIncludes2(results, includes);
 
                 return results.FirstOrDefaultAsync();
             });
         }
 
-        public void Save(Expression<Func<TObject, object>> identifier, TObject entity)
+        public void Save(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity)
         {
             Run((_context) =>
             {
-                var logs = new StringBuilder();
-                _context.Database.Log = (log) =>
-                {
-                    logs.AppendLine(log);
-                };
-
-                _context.Set<TObject>().AddOrUpdate(identifier, entity);
+                _context.Set<TEntity>().AddOrUpdate(Cast(identifier), (TEntity)entity);
 
                 _context.SaveChanges();
             });
         }
 
-        public async Task SaveAsync(Expression<Func<TObject, object>> identifier, TObject entity)
+        public async Task SaveAsync(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity)
         {
             await RunAsync(async (_context) =>
             {
-                var logs = new StringBuilder();
-                _context.Database.Log = (log) =>
-                {
-                    logs.AppendLine(log);
-                };
-
-                _context.Set<TObject>().AddOrUpdate(identifier, entity);
+                _context.Set<TEntity>().AddOrUpdate(Cast(identifier), (TEntity)entity);
 
                 return await _context.SaveChangesAsync();
             });
         }
 
-        public void Update(TKey key, TObject entity)
+        public void Update(TKey key, TEntityInterface entity)
         {
             Run((_context) =>
             {
-                var oldEntity = _context.Set<TObject>().Find(key);
+                var oldEntity = _context.Set<TEntity>().Find(key);
                 _context.Entry(oldEntity).CurrentValues.SetValues(entity);
                 return _context.SaveChanges();
             });
         }
 
-        public async Task UpdateAsync(TKey key, TObject entity)
+        public async Task UpdateAsync(TKey key, TEntityInterface entity)
         {
             await RunAsync(async (_context) =>
             {
-                var oldEntity = _context.Set<TObject>().Find(key);
+                var oldEntity = _context.Set<TEntity>().Find(key);
                 _context.Entry(oldEntity).CurrentValues.SetValues(entity);
                 return await _context.SaveChangesAsync();
             });
@@ -291,7 +280,7 @@ namespace IkeCode.Data.Core.Repository
         {
             Run((_context) =>
             {
-                var entry = _context.Set<TObject>().Find(key);
+                var entry = _context.Set<TEntity>().Find(key);
                 if (entry != null)
                 {
                     _context.Entry(entry).State = EntityState.Deleted;
@@ -304,7 +293,7 @@ namespace IkeCode.Data.Core.Repository
         {
             await RunAsync(async (_context) =>
             {
-                var entry = _context.Set<TObject>().Find(key);
+                var entry = _context.Set<TEntity>().Find(key);
 
                 if (entry != null)
                 {
@@ -317,23 +306,23 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public void Delete(TObject t)
+        public void Delete(TEntityInterface t)
         {
             Run((_context) =>
             {
-                _context.Set<TObject>().Attach(t);
-                _context.Set<TObject>().Remove(t);
+                _context.Set<TEntity>().Attach((TEntity)t);
+                _context.Set<TEntity>().Remove((TEntity)t);
 
                 _context.SaveChanges();
             });
         }
 
-        public async Task DeleteAsync(TObject t)
+        public async Task DeleteAsync(TEntityInterface t)
         {
             await RunAsync(async (_context) =>
             {
-                _context.Set<TObject>().Attach(t);
-                _context.Set<TObject>().Remove(t);
+                _context.Set<TEntity>().Attach((TEntity)t);
+                _context.Set<TEntity>().Remove((TEntity)t);
 
                 return await _context.SaveChangesAsync();
             });
@@ -343,7 +332,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return Run<int>((_context) =>
             {
-                return _context.Set<TObject>().Count();
+                return _context.Set<TEntity>().Count();
             });
         }
 
@@ -351,7 +340,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return await RunAsync(async (_context) =>
             {
-                return await _context.Set<TObject>().CountAsync();
+                return await _context.Set<TEntity>().CountAsync();
             });
         }
 
@@ -433,7 +422,7 @@ namespace IkeCode.Data.Core.Repository
             }
         }
 
-        protected static IQueryable<TObject> ApplyIncludes(IQueryable<TObject> query, params Expression<Func<TObject, object>>[] includes)
+        protected static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, params Expression<Func<TEntity, object>>[] includes)
         {
             if (includes != null && includes.Length > 0)
             {
@@ -443,7 +432,17 @@ namespace IkeCode.Data.Core.Repository
             return query;
         }
 
-        protected static IQueryable<TObject> ApplyIncludes(IQueryable<TObject> query, IEnumerable<string> includes)
+        protected static IQueryable<TEntityInterface> ApplyIncludes2(IQueryable<TEntityInterface> query, params Expression<Func<TEntityInterface, object>>[] includes)
+        {
+            if (includes != null && includes.Length > 0)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+            return query;
+        }
+
+        protected static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
         {
             if (includes != null && includes.Count() > 0)
             {
@@ -453,7 +452,17 @@ namespace IkeCode.Data.Core.Repository
             return query;
         }
 
-        protected static IQueryable<TObject> ApplyIncludes(IQueryable<TObject> query, string includes)
+        protected static IQueryable<TEntityInterface> ApplyIncludes2(IQueryable<TEntityInterface> query, IEnumerable<string> includes)
+        {
+            if (includes != null && includes.Count() > 0)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+            return query;
+        }
+
+        protected static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, string includes)
         {
             if (!string.IsNullOrWhiteSpace(includes))
             {
@@ -463,7 +472,7 @@ namespace IkeCode.Data.Core.Repository
             return query;
         }
 
-        protected static IQueryable<TObject> ApplyAsNoTracking(IQueryable<TObject> query, bool asNoTracking)
+        protected static IQueryable<TEntity> ApplyAsNoTracking(IQueryable<TEntity> query, bool asNoTracking)
         {
             if (asNoTracking)
             {
@@ -472,10 +481,39 @@ namespace IkeCode.Data.Core.Repository
             return query;
         }
 
-        private static IQueryable<TObject> ApplyOrderBy(IQueryable<TObject> results, Expression<Func<TObject, TKey>> orderBy)
+        protected static IQueryable<TEntityInterface> ApplyAsNoTracking2(IQueryable<TEntityInterface> query, bool asNoTracking)
+        {
+            if (asNoTracking)
+            {
+                (query as IQueryable).AsNoTracking();
+            }
+            return query;
+        }
+
+        private static IQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> results, Expression<Func<TEntity, TKey>> orderBy)
         {
             results = orderBy == null ? results.OrderBy(i => i.Id) : results.OrderBy(orderBy);
             return results;
+        }
+
+        private static IQueryable<TEntityInterface> ApplyOrderBy2(IQueryable<TEntityInterface> results, Expression<Func<TEntityInterface, object>> orderBy)
+        {
+            results = orderBy == null ? results.OrderBy(i => i.Id) : results.OrderBy(orderBy);
+            return results;
+        }
+
+        private static IQueryable<TEntity> ApplyOrderBy3(IQueryable<TEntity> results, Expression<Func<TEntityInterface, object>> orderBy)
+        {
+            results = orderBy == null ? results.OrderBy(i => i.Id) : results.OrderBy(orderBy).Cast<TEntity>();
+            return results;
+        }
+
+        static Expression<Func<TEntity, object>> Cast(Expression<Func<TEntityInterface, object>> expression)
+        {
+            // Add the boxing operation, but get a weakly typed expression
+            Expression converted = Expression.Convert(expression.Body, typeof(object));
+            // Use Expression.Lambda to get back to strong typing
+            return Expression.Lambda<Func<TEntity, object>>(converted, expression.Parameters);
         }
 
         #endregion

@@ -14,5 +14,7 @@ namespace IkeCode.Clinike.Person.DataContext
         }
 
         public DbSet<Domain.Entities.Person> People { get; set; }
+
+        
     }
 }

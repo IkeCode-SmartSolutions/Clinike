@@ -7,42 +7,42 @@ using System.Threading.Tasks;
 
 namespace IkeCode.Data.Core.Repository
 {
-    public interface IIkeCodeRepositoryBase<TObject, TKey>
-        where TObject : IkeCodeModel<TKey>
+    public interface IIkeCodeRepositoryBase<TEntityInterface, TKey>
+        where TEntityInterface : IIkeCodeBaseModel<TKey>
     {
         DbContext _context { get; }
 
-        IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null);
-        IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
-        IPagedResult<TObject> Get(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
-        Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null);
-        Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
-        Task<IPagedResult<TObject>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
+        IPagedResult<TEntityInterface> Get(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null);
+        IPagedResult<TEntityInterface> Get(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
+        IPagedResult<TEntityInterface> Get(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);
+        Task<IPagedResult<TEntityInterface>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null);
+        Task<IPagedResult<TEntityInterface>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
+        Task<IPagedResult<TEntityInterface>> GetAsync(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);
 
-        IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null);
-        IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
-        IPagedResult<TObject> FindAll(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
-        Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, string includes = null);
-        Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
-        Task<IPagedResult<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, Expression<Func<TObject, TKey>> orderBy = null, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
+        IPagedResult<TEntityInterface> FindAll(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null);
+        IPagedResult<TEntityInterface> FindAll(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
+        IPagedResult<TEntityInterface> FindAll(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);
+        Task<IPagedResult<TEntityInterface>> FindAllAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null);
+        Task<IPagedResult<TEntityInterface>> FindAllAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
+        Task<IPagedResult<TEntityInterface>> FindAllAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);
 
-        TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, string includes = null);
-        TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null);
-        TObject Find(Expression<Func<TObject, bool>> match, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
-        Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, string includes = null);
-        Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, bool asNoTracking = false, ICollection<string> includes = null);
-        Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TObject, object>>[] includes);
+        TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, string includes = null);
+        TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, ICollection<string> includes = null);
+        TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);
+        Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, string includes = null);
+        Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, ICollection<string> includes = null);
+        Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);
 
-        void Save(Expression<Func<TObject, object>> identifier, TObject entity);
-        Task SaveAsync(Expression<Func<TObject, object>> identifier, TObject entity);
+        void Save(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity);
+        Task SaveAsync(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity);
 
-        void Update(TKey key, TObject entity);
-        Task UpdateAsync(TKey key, TObject entity);
+        void Update(TKey key, TEntityInterface entity);
+        Task UpdateAsync(TKey key, TEntityInterface entity);
 
         void Delete(TKey key);
-        void Delete(TObject t);
+        void Delete(TEntityInterface t);
         Task DeleteAsync(TKey key);
-        Task DeleteAsync(TObject t);
+        Task DeleteAsync(TEntityInterface t);
 
         int Count();
         Task<int> CountAsync();

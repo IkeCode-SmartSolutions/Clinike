@@ -2,7 +2,7 @@
 
 namespace IkeCode.Clinike.Person.Domain.Repository
 {
-    public interface IPersonRepository : IIkeCodeRepositoryBase<Entities.Person, int>
+    public interface IPersonRepository : IIkeCodeRepositoryBase<Entities.IPerson, int>
     {
     }
 }
