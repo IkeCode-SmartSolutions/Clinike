@@ -77,7 +77,7 @@
       <Project>{416a63c1-ee34-4f81-a34e-6cd98dce03f2}</Project>
       <Name>IkeCode.Clinike.Person.DataContext</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IkeCode.Clinike.Person.Repository.MySql\IkeCode.Clinike.Person.Repository.csproj">
+    <ProjectReference Include="..\IkeCode.Clinike.Person.Repository\IkeCode.Clinike.Person.Repository.csproj">
       <Project>{354176ea-93fb-4a0a-b7b8-d497f3a71b5c}</Project>
       <Name>IkeCode.Clinike.Person.Repository</Name>
     </ProjectReference>

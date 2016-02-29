@@ -70,7 +70,7 @@
       <Project>{ec3add94-5e1d-4a5f-be06-788ac6c0e252}</Project>
       <Name>IkeCode.Data.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IkeCode.Clinike.Person.Repository.MySql\IkeCode.Clinike.Person.Repository.csproj">
+    <ProjectReference Include="..\IkeCode.Clinike.Person.Repository\IkeCode.Clinike.Person.Repository.csproj">
       <Project>{354176ea-93fb-4a0a-b7b8-d497f3a71b5c}</Project>
       <Name>IkeCode.Clinike.Person.Repository</Name>
     </ProjectReference>

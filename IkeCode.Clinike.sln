@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Data.Core", "Core\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Person.Domain", "Person\IkeCode.Clinike.Person.Model\IkeCode.Clinike.Person.Domain.csproj", "{42E58B85-3CC5-41A5-B016-C96A2D295D26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Person.Repository", "Person\IkeCode.Clinike.Person.Repository.MySql\IkeCode.Clinike.Person.Repository.csproj", "{354176EA-93FB-4A0A-B7B8-D497F3A71B5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Person.Repository", "Person\IkeCode.Clinike.Person.Repository\IkeCode.Clinike.Person.Repository.csproj", "{354176EA-93FB-4A0A-B7B8-D497F3A71B5C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Person.Tests", "Person\IkeCode.Clinike.Person.Tests\IkeCode.Clinike.Person.Tests.csproj", "{77EE0462-BBCB-4F4F-BC46-75B8620AA1E3}"
 EndProject
