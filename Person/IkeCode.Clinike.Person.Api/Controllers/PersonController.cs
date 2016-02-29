@@ -42,13 +42,13 @@ namespace IkeCode.Clinike.Person.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IIkeCodeApiResponse<int>> Post([FromBody]Domain.Entities.Person person)
+        public async Task<IIkeCodeApiResponse<int>> Post([FromBody]Domain.Entities.IPerson person)
         {
             return await Task.Run(() => { return new IkeCodeApiResponse<int>(IkeCodeResponseStatus.Success, 1); });
         }
 
         [HttpPut]
-        public async Task Put(int id, [FromBody]Domain.Entities.Person person)
+        public async Task Put(int id, [FromBody]Domain.Entities.IPerson person)
         {
             await Task.Run(() => { _personRepository.Update(id, person); });
         }

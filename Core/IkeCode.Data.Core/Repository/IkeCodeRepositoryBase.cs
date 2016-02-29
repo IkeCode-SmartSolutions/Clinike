@@ -22,6 +22,8 @@ namespace IkeCode.Data.Core.Repository
             this._context = context;
         }
 
+        #region Get
+
         public IPagedResult<TEntityInterface> Get(int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null)
         {
             var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
@@ -33,9 +35,9 @@ namespace IkeCode.Data.Core.Repository
             return Run((_context) =>
             {
                 IQueryable<TEntityInterface> results = _context.Set<TEntity>();
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
-                results = ApplyOrderBy2(results, orderBy);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
@@ -48,9 +50,9 @@ namespace IkeCode.Data.Core.Repository
             return Run((_context) =>
             {
                 IQueryable<TEntityInterface> results = _context.Set<TEntity>();
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
-                results = ApplyOrderBy2(results, orderBy);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
@@ -68,11 +70,11 @@ namespace IkeCode.Data.Core.Repository
         {
             return await RunAsync(async (_context) =>
             {
-                IQueryable<TEntity> results = _context.Set<TEntity>();
+                IQueryable<TEntityInterface> results = _context.Set<TEntity>();
                 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
-                results = ApplyOrderBy3(results, orderBy);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
@@ -86,15 +88,19 @@ namespace IkeCode.Data.Core.Repository
             {
                 IQueryable<TEntityInterface> results = _context.Set<TEntity>();
 
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
-                results = ApplyOrderBy2(results, orderBy);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return await Task.Run(() => { return result; });
             });
         }
+
+        #endregion Get
+
+        #region FindAll
 
         public IPagedResult<TEntityInterface> FindAll(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, string includes = null)
         {
@@ -108,9 +114,9 @@ namespace IkeCode.Data.Core.Repository
             {
                 var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
-                results = ApplyOrderBy2(results, orderBy);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
@@ -124,9 +130,9 @@ namespace IkeCode.Data.Core.Repository
             {
                 var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
-                results = ApplyOrderBy2(results, orderBy);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
@@ -146,9 +152,9 @@ namespace IkeCode.Data.Core.Repository
             {
                 var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
-                results = ApplyOrderBy2(results, orderBy);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
@@ -162,15 +168,19 @@ namespace IkeCode.Data.Core.Repository
             {
                 var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
-                results = ApplyOrderBy2(results, orderBy);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
+                results = ApplyOrderBy(results, orderBy);
 
                 var result = new PagedResult<TEntityInterface>(results, offset, limit);
 
                 return await Task.Run(() => { return result; });
             });
         }
+
+        #endregion FindAll
+
+        #region Find
 
         public TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, string includes = null)
         {
@@ -184,8 +194,8 @@ namespace IkeCode.Data.Core.Repository
             {
                 var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
 
                 return results.FirstOrDefault();
             });
@@ -197,8 +207,8 @@ namespace IkeCode.Data.Core.Repository
             {
                 var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
 
                 return results.FirstOrDefault();
             });
@@ -216,8 +226,8 @@ namespace IkeCode.Data.Core.Repository
             {
                 var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
 
                 return results.FirstOrDefaultAsync();
             });
@@ -229,12 +239,16 @@ namespace IkeCode.Data.Core.Repository
             {
                 var results = _context.Set<TEntity>().Where(match);
 
-                results = ApplyAsNoTracking2(results, asNoTracking);
-                results = ApplyIncludes2(results, includes);
+                results = ApplyAsNoTracking(results, asNoTracking);
+                results = ApplyIncludes(results, includes);
 
                 return results.FirstOrDefaultAsync();
             });
         }
+
+        #endregion Find
+
+        #region CRUD
 
         public void Save(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity)
         {
@@ -344,14 +358,16 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        #region Protected Methods
+        #endregion CRUD
 
-        protected void Run(Action<DbContext> func)
+        #region Private Methods
+
+        void Run(Action<DbContext> func)
         {
             Run(func);
         }
 
-        protected T Run<T>(Func<DbContext, T> func)
+        T Run<T>(Func<DbContext, T> func)
         {
             try
             {
@@ -384,12 +400,12 @@ namespace IkeCode.Data.Core.Repository
             }
         }
 
-        protected async Task RunAsync(Action<DbContext, Task> func)
+        async Task RunAsync(Action<DbContext, Task> func)
         {
             await RunAsync(func);
         }
 
-        protected async Task<T> RunAsync<T>(Func<DbContext, Task<T>> func)
+        async Task<T> RunAsync<T>(Func<DbContext, Task<T>> func)
         {
             try
             {
@@ -421,8 +437,8 @@ namespace IkeCode.Data.Core.Repository
                 throw;
             }
         }
-
-        protected static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, params Expression<Func<TEntity, object>>[] includes)
+        
+        static IQueryable<TEntityInterface> ApplyIncludes(IQueryable<TEntityInterface> query, params Expression<Func<TEntityInterface, object>>[] includes)
         {
             if (includes != null && includes.Length > 0)
             {
@@ -431,18 +447,8 @@ namespace IkeCode.Data.Core.Repository
 
             return query;
         }
-
-        protected static IQueryable<TEntityInterface> ApplyIncludes2(IQueryable<TEntityInterface> query, params Expression<Func<TEntityInterface, object>>[] includes)
-        {
-            if (includes != null && includes.Length > 0)
-            {
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
-            }
-
-            return query;
-        }
-
-        protected static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
+        
+        static IQueryable<TEntityInterface> ApplyIncludes(IQueryable<TEntityInterface> query, IEnumerable<string> includes)
         {
             if (includes != null && includes.Count() > 0)
             {
@@ -451,37 +457,8 @@ namespace IkeCode.Data.Core.Repository
 
             return query;
         }
-
-        protected static IQueryable<TEntityInterface> ApplyIncludes2(IQueryable<TEntityInterface> query, IEnumerable<string> includes)
-        {
-            if (includes != null && includes.Count() > 0)
-            {
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
-            }
-
-            return query;
-        }
-
-        protected static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, string includes)
-        {
-            if (!string.IsNullOrWhiteSpace(includes))
-            {
-                query = ApplyIncludes(query, includes.Split(','));
-            }
-
-            return query;
-        }
-
-        protected static IQueryable<TEntity> ApplyAsNoTracking(IQueryable<TEntity> query, bool asNoTracking)
-        {
-            if (asNoTracking)
-            {
-                query.AsNoTracking();
-            }
-            return query;
-        }
-
-        protected static IQueryable<TEntityInterface> ApplyAsNoTracking2(IQueryable<TEntityInterface> query, bool asNoTracking)
+        
+        static IQueryable<TEntityInterface> ApplyAsNoTracking(IQueryable<TEntityInterface> query, bool asNoTracking)
         {
             if (asNoTracking)
             {
@@ -489,25 +466,13 @@ namespace IkeCode.Data.Core.Repository
             }
             return query;
         }
-
-        private static IQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> results, Expression<Func<TEntity, TKey>> orderBy)
+        
+        static IQueryable<TEntityInterface> ApplyOrderBy(IQueryable<TEntityInterface> results, Expression<Func<TEntityInterface, object>> orderBy)
         {
             results = orderBy == null ? results.OrderBy(i => i.Id) : results.OrderBy(orderBy);
             return results;
         }
-
-        private static IQueryable<TEntityInterface> ApplyOrderBy2(IQueryable<TEntityInterface> results, Expression<Func<TEntityInterface, object>> orderBy)
-        {
-            results = orderBy == null ? results.OrderBy(i => i.Id) : results.OrderBy(orderBy);
-            return results;
-        }
-
-        private static IQueryable<TEntity> ApplyOrderBy3(IQueryable<TEntity> results, Expression<Func<TEntityInterface, object>> orderBy)
-        {
-            results = orderBy == null ? results.OrderBy(i => i.Id) : results.OrderBy(orderBy).Cast<TEntity>();
-            return results;
-        }
-
+        
         static Expression<Func<TEntity, object>> Cast(Expression<Func<TEntityInterface, object>> expression)
         {
             // Add the boxing operation, but get a weakly typed expression
@@ -516,6 +481,6 @@ namespace IkeCode.Data.Core.Repository
             return Expression.Lambda<Func<TEntity, object>>(converted, expression.Parameters);
         }
 
-        #endregion
+        #endregion Private Methods
     }
 }
