@@ -17,11 +17,11 @@
         }
 
         [HttpGet]
-        public async Task<IIkeCodeApiResponse<IPerson>> Get(string name, string include = "")
+        public async Task<IIkeCodeApiResponse<IPagedResult<IPerson>>> Get(string name, string include = "")
         {
             return await RunAsync(async () =>
             {
-                return await _personRepository.FindAsync(i => i.Name == name, includes: include);
+                return await _personRepository.FindAllAsync(i => i.Name == name, includes: include);
             });
         }
 
@@ -53,15 +53,21 @@
         }
 
         [HttpPut]
-        public async Task Put(int id, [FromBody]IPerson person)
+        public async Task<IIkeCodeApiResponse<int>> Put(int id, [FromBody]IPerson person)
         {
-            await Task.Run(() => { _personRepository.Update(id, person); });
+            return await RunAsync(async () =>
+            {
+                return await _personRepository.UpdateAsync(id, person);
+            });
         }
 
         [HttpDelete]
-        public async Task Delete(int id)
+        public async Task<IIkeCodeApiResponse<int>> Delete(int id)
         {
-            await Task.Run(() => { _personRepository.Delete(id); });
+            return await RunAsync(async () =>
+            {
+                return await _personRepository.DeleteAsync(id);
+            });
         }
     }
 }

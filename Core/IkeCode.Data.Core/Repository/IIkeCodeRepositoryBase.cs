@@ -33,16 +33,16 @@ namespace IkeCode.Data.Core.Repository
         Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, ICollection<string> includes = null);
         Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);
 
-        void Save(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity);
-        Task SaveAsync(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity);
+        int Save(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity);
+        Task<int> SaveAsync(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity);
 
-        void Update(TKey key, TEntityInterface entity);
-        Task UpdateAsync(TKey key, TEntityInterface entity);
+        int Update(TKey key, TEntityInterface entity);
+        Task<int> UpdateAsync(TKey key, TEntityInterface entity);
 
-        void Delete(TKey key);
-        void Delete(TEntityInterface t);
-        Task DeleteAsync(TKey key);
-        Task DeleteAsync(TEntityInterface t);
+        int Delete(TKey key);
+        int Delete(TEntityInterface t);
+        Task<int> DeleteAsync(TKey key);
+        Task<int> DeleteAsync(TEntityInterface t);
 
         int Count();
         Task<int> CountAsync();

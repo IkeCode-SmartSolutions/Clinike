@@ -34,7 +34,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return Run((_context) =>
             {
-                IQueryable<TEntityInterface> results = _context.Set<TEntity>();
+                IQueryable<TEntity> results = _context.Set<TEntity>();
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
                 results = ApplyOrderBy(results, orderBy);
@@ -49,7 +49,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return Run((_context) =>
             {
-                IQueryable<TEntityInterface> results = _context.Set<TEntity>();
+                IQueryable<TEntity> results = _context.Set<TEntity>();
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
                 results = ApplyOrderBy(results, orderBy);
@@ -70,7 +70,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return await RunAsync(async (_context) =>
             {
-                IQueryable<TEntityInterface> results = _context.Set<TEntity>();
+                IQueryable<TEntity> results = _context.Set<TEntity>();
                 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -86,7 +86,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return await RunAsync(async (_context) =>
             {
-                IQueryable<TEntityInterface> results = _context.Set<TEntity>();
+                IQueryable<TEntity> results = _context.Set<TEntity>();
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -112,7 +112,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return Run((_context) =>
             {
-                var results = _context.Set<TEntity>().Where(match);
+                IQueryable<TEntity> results = _context.Set<TEntity>().Where(Cast(match));
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -128,7 +128,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return Run((_context) =>
             {
-                var results = _context.Set<TEntity>().Where(match);
+                IQueryable<TEntity> results = _context.Set<TEntity>().Where(Cast(match));
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -150,7 +150,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return await RunAsync(async (_context) =>
             {
-                var results = _context.Set<TEntity>().Where(match);
+                IQueryable<TEntity> results = _context.Set<TEntity>().Where(Cast(match));
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -166,7 +166,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return await RunAsync(async (_context) =>
             {
-                var results = _context.Set<TEntity>().Where(match);
+                IQueryable<TEntity> results = _context.Set<TEntity>().Where(Cast(match));
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -192,7 +192,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return Run((_context) =>
             {
-                var results = _context.Set<TEntity>().Where(match);
+                IQueryable<TEntity> results = _context.Set<TEntity>().Where(Cast(match));
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -205,7 +205,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return Run((_context) =>
             {
-                var results = _context.Set<TEntity>().Where(match);
+                IQueryable<TEntity> results = _context.Set<TEntity>().Where(Cast(match));
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -224,7 +224,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return await RunAsync((_context) =>
             {
-                var results = _context.Set<TEntity>().Where(match);
+                IQueryable<TEntity> results = _context.Set<TEntity>().Where(Cast(match));
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -237,7 +237,7 @@ namespace IkeCode.Data.Core.Repository
         {
             return await RunAsync((_context) =>
             {
-                var results = _context.Set<TEntity>().Where(match);
+                IQueryable<TEntity> results = _context.Set<TEntity>().Where(Cast(match));
 
                 results = ApplyAsNoTracking(results, asNoTracking);
                 results = ApplyIncludes(results, includes);
@@ -250,19 +250,19 @@ namespace IkeCode.Data.Core.Repository
 
         #region CRUD
 
-        public void Save(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity)
+        public int Save(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity)
         {
-            Run((_context) =>
+            return Run((_context) =>
             {
                 _context.Set<TEntity>().AddOrUpdate(Cast(identifier), (TEntity)entity);
 
-                _context.SaveChanges();
+                return _context.SaveChanges();
             });
         }
 
-        public async Task SaveAsync(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity)
+        public async Task<int> SaveAsync(Expression<Func<TEntityInterface, object>> identifier, TEntityInterface entity)
         {
-            await RunAsync(async (_context) =>
+            return await RunAsync(async (_context) =>
             {
                 _context.Set<TEntity>().AddOrUpdate(Cast(identifier), (TEntity)entity);
 
@@ -270,9 +270,9 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public void Update(TKey key, TEntityInterface entity)
+        public int Update(TKey key, TEntityInterface entity)
         {
-            Run((_context) =>
+            return Run((_context) =>
             {
                 var oldEntity = _context.Set<TEntity>().Find(key);
                 _context.Entry(oldEntity).CurrentValues.SetValues(entity);
@@ -280,9 +280,9 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public async Task UpdateAsync(TKey key, TEntityInterface entity)
+        public async Task<int> UpdateAsync(TKey key, TEntityInterface entity)
         {
-            await RunAsync(async (_context) =>
+            return await RunAsync(async (_context) =>
             {
                 var oldEntity = _context.Set<TEntity>().Find(key);
                 _context.Entry(oldEntity).CurrentValues.SetValues(entity);
@@ -290,22 +290,24 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public void Delete(TKey key)
+        public int Delete(TKey key)
         {
-            Run((_context) =>
+            return Run((_context) =>
             {
                 var entry = _context.Set<TEntity>().Find(key);
                 if (entry != null)
                 {
                     _context.Entry(entry).State = EntityState.Deleted;
-                    _context.SaveChanges();
+                    return _context.SaveChanges();
                 }
+
+                return 0;
             });
         }
 
-        public async Task DeleteAsync(TKey key)
+        public async Task<int> DeleteAsync(TKey key)
         {
-            await RunAsync(async (_context) =>
+            return await RunAsync(async (_context) =>
             {
                 var entry = _context.Set<TEntity>().Find(key);
 
@@ -320,20 +322,20 @@ namespace IkeCode.Data.Core.Repository
             });
         }
 
-        public void Delete(TEntityInterface t)
+        public int Delete(TEntityInterface t)
         {
-            Run((_context) =>
+            return Run((_context) =>
             {
                 _context.Set<TEntity>().Attach((TEntity)t);
                 _context.Set<TEntity>().Remove((TEntity)t);
 
-                _context.SaveChanges();
+                return _context.SaveChanges();
             });
         }
 
-        public async Task DeleteAsync(TEntityInterface t)
+        public async Task<int> DeleteAsync(TEntityInterface t)
         {
-            await RunAsync(async (_context) =>
+            return await RunAsync(async (_context) =>
             {
                 _context.Set<TEntity>().Attach((TEntity)t);
                 _context.Set<TEntity>().Remove((TEntity)t);
@@ -438,17 +440,17 @@ namespace IkeCode.Data.Core.Repository
             }
         }
         
-        static IQueryable<TEntityInterface> ApplyIncludes(IQueryable<TEntityInterface> query, params Expression<Func<TEntityInterface, object>>[] includes)
+        static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, params Expression<Func<TEntityInterface, object>>[] includes)
         {
             if (includes != null && includes.Length > 0)
             {
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
+                query = includes.Aggregate(query, (current, include) => current.Include(Cast(include)));
             }
 
             return query;
         }
         
-        static IQueryable<TEntityInterface> ApplyIncludes(IQueryable<TEntityInterface> query, IEnumerable<string> includes)
+        static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
         {
             if (includes != null && includes.Count() > 0)
             {
@@ -457,28 +459,31 @@ namespace IkeCode.Data.Core.Repository
 
             return query;
         }
-        
-        static IQueryable<TEntityInterface> ApplyAsNoTracking(IQueryable<TEntityInterface> query, bool asNoTracking)
+
+        static IQueryable<TEntity> ApplyAsNoTracking(IQueryable<TEntity> query, bool asNoTracking)
         {
             if (asNoTracking)
             {
-                (query as IQueryable).AsNoTracking();
+                query.AsNoTracking();
             }
             return query;
         }
         
-        static IQueryable<TEntityInterface> ApplyOrderBy(IQueryable<TEntityInterface> results, Expression<Func<TEntityInterface, object>> orderBy)
+        static IQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> results, Expression<Func<TEntityInterface, object>> orderBy)
         {
-            results = orderBy == null ? results.OrderBy(i => i.Id) : results.OrderBy(orderBy);
+            results = orderBy == null ? results.OrderBy(i => i.Id) : results.OrderBy(CastOrderBy(orderBy));
             return results;
         }
-        
-        static Expression<Func<TEntity, object>> Cast(Expression<Func<TEntityInterface, object>> expression)
+
+        static Expression<Func<TEntity, TOut>> CastOrderBy<TOut>(Expression<Func<TEntityInterface, TOut>> expression)
         {
-            // Add the boxing operation, but get a weakly typed expression
-            Expression converted = Expression.Convert(expression.Body, typeof(object));
-            // Use Expression.Lambda to get back to strong typing
-            return Expression.Lambda<Func<TEntity, object>>(converted, expression.Parameters);
+            return Expression.Lambda<Func<TEntity, TOut>>(expression.Body, expression.Parameters);
+        }
+
+        static Expression<Func<TEntity, TOut>> Cast<TOut>(Expression<Func<TEntityInterface, TOut>> expression)
+        {
+            Expression converted = Expression.Convert(expression.Body, typeof(TOut));
+            return Expression.Lambda<Func<TEntity, TOut>>(converted, expression.Parameters);
         }
 
         #endregion Private Methods
