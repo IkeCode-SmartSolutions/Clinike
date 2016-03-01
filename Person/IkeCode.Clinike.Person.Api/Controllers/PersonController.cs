@@ -21,7 +21,7 @@
         {
             return await RunAsync(async () =>
             {
-                return await _personRepository.FindAllAsync(i => i.Name == name, includes: include);
+                return await _personRepository.FindAllAsync(i => i.Name.Contains(name), includes: include);
             });
         }
 
