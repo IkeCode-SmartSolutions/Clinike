@@ -1,16 +1,16 @@
-﻿using IkeCode.Data.Core.Model;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Data.Entity.Validation;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IkeCode.Data.Core.Repository
+﻿namespace IkeCode.Data.Core.Repository
 {
+    using IkeCode.Core;
+    using IkeCode.Data.Core.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Data.Entity.Migrations;
+    using System.Data.Entity.Validation;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+
     public class IkeCodeRepositoryBase<TEntity, TEntityInterface, TKey> : IIkeCodeRepositoryBase<TEntityInterface, TKey>
         where TEntity : IkeCodeModel<TKey>, TEntityInterface
         where TEntityInterface : IIkeCodeBaseModel<TKey>
@@ -182,6 +182,15 @@ namespace IkeCode.Data.Core.Repository
 
         #region Find
 
+        public TEntityInterface Find(TKey key)
+        {
+            return Run((_context) =>
+            {
+                var result = _context.Set<TEntity>().Find(key);
+                return result;
+            });
+        }
+
         public TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, string includes = null)
         {
             var parsedIncludes = !string.IsNullOrWhiteSpace(includes) ? includes.Split(',') : null;
@@ -211,6 +220,15 @@ namespace IkeCode.Data.Core.Repository
                 results = ApplyIncludes(results, includes);
 
                 return results.FirstOrDefault();
+            });
+        }
+
+        public async Task<TEntityInterface> FindAsync(TKey key)
+        {
+            return await RunAsync(async (_context) =>
+            {
+                var result = await _context.Set<TEntity>().FindAsync(key);
+                return result;
             });
         }
 

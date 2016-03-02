@@ -1,12 +1,13 @@
-﻿using IkeCode.Data.Core.Model;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-namespace IkeCode.Data.Core.Repository
+﻿namespace IkeCode.Data.Core.Repository
 {
+    using IkeCode.Core;
+    using IkeCode.Data.Core.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+
     public interface IIkeCodeRepositoryBase<TEntityInterface, TKey>
         where TEntityInterface : IIkeCodeBaseModel<TKey>
     {
@@ -26,9 +27,11 @@ namespace IkeCode.Data.Core.Repository
         Task<IPagedResult<TEntityInterface>> FindAllAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, ICollection<string> includes = null);
         Task<IPagedResult<TEntityInterface>> FindAllAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, Expression<Func<TEntityInterface, object>> orderBy = null, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);
 
+        TEntityInterface Find(TKey key);
         TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, string includes = null);
         TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, ICollection<string> includes = null);
         TEntityInterface Find(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);
+        Task<TEntityInterface> FindAsync(TKey key);
         Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, string includes = null);
         Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, bool asNoTracking = false, ICollection<string> includes = null);
         Task<TEntityInterface> FindAsync(Expression<Func<TEntityInterface, bool>> match, int offset = 0, int limit = 10, bool asNoTracking = false, params Expression<Func<TEntityInterface, object>>[] includes);

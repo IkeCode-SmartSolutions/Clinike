@@ -82,6 +82,8 @@
     <Compile Include="IoC\IkeCodeWindsor.cs" />
     <Compile Include="IoC\Installers\IkeCodeWindsorApiControllerInstaller.cs" />
     <Compile Include="Log\IkeCodeLog.cs" />
+    <Compile Include="Model\IPagedResult.cs" />
+    <Compile Include="Model\PagedResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\IkeCodeConfig.cs" />
   </ItemGroup>

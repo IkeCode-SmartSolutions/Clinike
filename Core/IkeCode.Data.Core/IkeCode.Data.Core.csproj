@@ -90,8 +90,6 @@
     <Compile Include="Repository\IIkeCodeRepositoryBase.cs" />
     <Compile Include="Model\IIkeCodeModel.cs" />
     <Compile Include="Model\IkeCodeModel.cs" />
-    <Compile Include="Model\IPagedResult.cs" />
-    <Compile Include="Model\PagedResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

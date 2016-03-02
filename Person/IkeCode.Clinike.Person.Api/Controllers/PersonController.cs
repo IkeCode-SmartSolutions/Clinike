@@ -3,9 +3,9 @@
     using IkeCode.Api.Core;
     using Domain.Entities;
     using Domain.Repository;
-    using Data.Core.Model;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using Core;
 
     public class PersonController : IkeCodeApiController
     {
@@ -17,11 +17,11 @@
         }
 
         [HttpGet]
-        public async Task<IIkeCodeApiResponse<IPagedResult<IPerson>>> Get(string name, string include = "")
+        public async Task<IIkeCodeApiResponse<IPagedResult<IPerson>>> Get(string name, int offset = 0, int limit = 10, string include = "")
         {
             return await RunAsync(async () =>
             {
-                return await _personRepository.FindAllAsync(i => i.Name.Contains(name), includes: include);
+                return await _personRepository.FindAllAsync(i => i.Name.Contains(name), offset, limit, includes: include);
             });
         }
 
