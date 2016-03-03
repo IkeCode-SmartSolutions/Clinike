@@ -4,9 +4,9 @@ using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace IkeCode.Data.Core.Entity
 {
@@ -17,14 +17,12 @@ namespace IkeCode.Data.Core.Entity
         public IkeCodeDbContext(DatabaseType databaseType, string connectionStringName = "DefaultConnection")
             : base(connectionStringName)
         {
-            DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             DatabaseType = databaseType;
         }
 
         public IkeCodeDbContext(DatabaseType databaseType, DbConnection connection)
             : base(connection, true)
         {
-            DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             DatabaseType = databaseType;
         }
 
@@ -32,7 +30,7 @@ namespace IkeCode.Data.Core.Entity
         {
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
                                     .Where(type => !string.IsNullOrEmpty(type.Namespace))
-                                    .Where(type => type.BaseType != null 
+                                    .Where(type => type.BaseType != null
                                             && type.BaseType.IsGenericType
                                             && type.BaseType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>));
 
@@ -54,7 +52,21 @@ namespace IkeCode.Data.Core.Entity
             base.OnModelCreating(modelBuilder);
         }
 
+        public override Task<int> SaveChangesAsync()
+        {
+            InternalSaveChanges();
+
+            return base.SaveChangesAsync();
+        }
+
         public override int SaveChanges()
+        {
+            InternalSaveChanges();
+
+            return base.SaveChanges();
+        }
+
+        private void InternalSaveChanges()
         {
             foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("DateIns") != null))
             {
@@ -62,8 +74,7 @@ namespace IkeCode.Data.Core.Entity
                 {
                     entry.Property("DateIns").CurrentValue = DateTime.UtcNow;
                 }
-
-                if (entry.State == EntityState.Modified)
+                else if (entry.State == EntityState.Modified)
                 {
                     entry.Property("DateIns").IsModified = false;
                 }
@@ -71,10 +82,11 @@ namespace IkeCode.Data.Core.Entity
 
             foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("LastUpdate") != null))
             {
-                entry.Property("LastUpdate").CurrentValue = DateTime.UtcNow;
+                if (entry.State != EntityState.Deleted)
+                {
+                    entry.Property("LastUpdate").CurrentValue = DateTime.UtcNow;
+                }
             }
-
-            return base.SaveChanges();
         }
     }
 }
