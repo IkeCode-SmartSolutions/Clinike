@@ -38,3 +38,11 @@ Add-Migration V100_Nome -ProjectName IkeCode.Clinike.[Domain].Migrations -StartU
 
 Example Update-Database:<br/>
 Update-Database -ProjectName IkeCode.Clinike.[Domain].Migrations -StartUpProjectName IkeCode.Clinike.[Domain].Api
+
+<br/>
+<br/>
+
+<b>NuGet</b>
+<br/>
+Extension: https://visualstudiogallery.msdn.microsoft.com/daf5c6db-386b-4994-bdd7-b6cd52f11b72 <br/>
+Tutorial: http://idevexplorer.com/2015/06/publishing-nuget-package-using-nuget-packager-extension/
