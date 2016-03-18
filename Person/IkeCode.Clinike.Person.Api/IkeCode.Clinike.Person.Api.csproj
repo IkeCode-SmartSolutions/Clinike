@@ -71,8 +71,20 @@
       <HintPath>..\..\packages\IkeCode.Core.1.0.0.1\lib\IkeCode.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="IkeCode.Data.Core, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\IkeCode.Data.Core.1.0.0.2\lib\IkeCode.Data.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="IkeCode.Web.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\IkeCode.Web.Core.1.0.0.2\lib\IkeCode.Web.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -193,10 +205,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\IkeCode.Data.Core\IkeCode.Data.Core.csproj">
-      <Project>{ec3add94-5e1d-4a5f-be06-788ac6c0e252}</Project>
-      <Name>IkeCode.Data.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\IkeCode.Clinike.Person.DataContext\IkeCode.Clinike.Person.DataContext.csproj">
       <Project>{416a63c1-ee34-4f81-a34e-6cd98dce03f2}</Project>
       <Name>IkeCode.Clinike.Person.DataContext</Name>
