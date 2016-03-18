@@ -1,7 +1,7 @@
 <b>Softwares</b>
 <ul>
 	<li><a target="_blank" href="https://dev.mysql.com/downloads/mysql/">MySql 5x</a> (This project use MySql 5x  as default database, please install it on your local machine.)</li>
-	<li><a target="_blank" href="http://nodejs.com">Node.js</a> (in the future -> AspNetIdentity)</li>
+	<li><a target="_blank" href="http://mongodb.com">MongoDB</a> (in the future -> AspNetIdentity)</li>
 </ul>
 
 <hr/>
