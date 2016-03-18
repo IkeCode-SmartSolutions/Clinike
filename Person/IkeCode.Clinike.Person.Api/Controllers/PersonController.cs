@@ -44,22 +44,20 @@
         }
 
         [HttpPost]
-        public async Task<IIkeCodeApiResponse<int>> Post([FromBody]Repository.Person person)
+        public async Task<IIkeCodeApiResponse<int>> Post([FromBody]IPerson person)
         {
             return await RunAsync(async () =>
             {
-                await _personRepository.SaveAsync(i => i.Id, person);
-                return person.Id;
+                return await Task.Run(() => { return 1; });
             });
         }
 
         [HttpPut]
-        public async Task<IIkeCodeApiResponse<int>> Put(int id, [FromBody]Repository.Person person)
+        public async Task<IIkeCodeApiResponse<int>> Put(int id, [FromBody]IPerson person)
         {
             return await RunAsync(async () =>
             {
-                await _personRepository.UpdateAsync(id, person);
-                return person.Id;
+                return await _personRepository.UpdateAsync(id, person);
             });
         }
 
