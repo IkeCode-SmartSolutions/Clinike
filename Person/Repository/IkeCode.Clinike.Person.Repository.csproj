@@ -81,8 +81,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PersonConfiguration.cs" />
+    <Compile Include="Phone.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonRepository.cs" />
+    <Compile Include="PhoneConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

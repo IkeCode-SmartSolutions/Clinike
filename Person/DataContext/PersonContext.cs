@@ -14,5 +14,12 @@ namespace IkeCode.Clinike.Person.DataContext
         }
 
         public DbSet<Repository.Person> People { get; set; }
+        public DbSet<Repository.Phone> Phones { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Configurations.AddFromAssembly(typeof(Repository.PersonRepository).Assembly);
+        }
     }
 }

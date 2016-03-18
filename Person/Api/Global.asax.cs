@@ -21,20 +21,22 @@
             
             IkeCodeWindsor.ApiInitializer(GlobalConfiguration.Configuration, Assembly.GetExecutingAssembly(), new PersonDomainInstaller());
 
+            var settings = new JsonSerializerSettings();
+
+            settings.Converters.Add(new StringEnumConverter());
+
+            settings.Formatting = Formatting.Indented;
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            settings.PreserveReferencesHandling = PreserveReferencesHandling.Arrays;
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+
             JsonConvert.DefaultSettings = () =>
             {
-                var settings = new JsonSerializerSettings();
-
-                settings.Formatting = Formatting.Indented;
-                settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-                settings.PreserveReferencesHandling = PreserveReferencesHandling.Arrays;
-                settings.NullValueHandling = NullValueHandling.Ignore;
-                settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-
-                settings.Converters.Add(new StringEnumConverter());
-
                 return settings;
             };
+
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = settings;
         }
 
         protected void Application_PreSendRequestHeaders(object sender, EventArgs e)

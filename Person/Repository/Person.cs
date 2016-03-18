@@ -1,7 +1,9 @@
 ﻿namespace IkeCode.Clinike.Person.Repository
 {
+    using System.Collections.Generic;
     using IkeCode.Clinike.Person.Domain.Entities;
     using IkeCode.Data.Core.Model;
+    using System.Linq;
 
     public class Person : IkeCodeModel<int>, IPerson
     {
@@ -12,5 +14,9 @@
         public string Name { get; set; }
 
         public string Email { get; set; }
+
+        public virtual ICollection<Phone> Phones { get; set; }
+
+        ICollection<IPhone> IPerson.Phones { get { return Phones.Select(i => (IPhone)i).ToList(); } }
     }
 }

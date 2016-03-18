@@ -84,6 +84,10 @@
     <Compile Include="Migrations\201602231514546_V100_PersonInitialMigration.Designer.cs">
       <DependentUpon>201602231514546_V100_PersonInitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603181928337_V100_AddPhonesToPerson.cs" />
+    <Compile Include="Migrations\201603181928337_V100_AddPhonesToPerson.Designer.cs">
+      <DependentUpon>201603181928337_V100_AddPhonesToPerson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -104,6 +108,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201602231514546_V100_PersonInitialMigration.resx">
       <DependentUpon>201602231514546_V100_PersonInitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603181928337_V100_AddPhonesToPerson.resx">
+      <DependentUpon>201603181928337_V100_AddPhonesToPerson.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
