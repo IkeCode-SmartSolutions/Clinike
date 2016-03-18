@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PersonConfiguration.cs" />
+    <Compile Include="PhoneRepository.cs" />
     <Compile Include="Phone.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonRepository.cs" />

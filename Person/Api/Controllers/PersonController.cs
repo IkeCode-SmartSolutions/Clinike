@@ -48,7 +48,7 @@
         {
             return await RunAsync(async () =>
             {
-                return await Task.Run(() => { return 1; });
+                return await _personRepository.SaveAsync(i => i.Id, person);
             });
         }
 

@@ -84,6 +84,7 @@
     <Compile Include="Entities\IPhone.cs" />
     <Compile Include="Entities\IPerson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\IPhoneRepository.cs" />
     <Compile Include="Repository\IPersonRepository.cs" />
   </ItemGroup>
   <ItemGroup>
