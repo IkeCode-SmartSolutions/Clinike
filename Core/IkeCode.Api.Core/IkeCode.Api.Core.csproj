@@ -47,12 +47,6 @@
     <Compile Include="IkeCodeResponseStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IkeCode.Core\IkeCode.Core.csproj">
-      <Project>{9bd498ef-5778-405c-b4e5-1a5adb39fa32}</Project>
-      <Name>IkeCode.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

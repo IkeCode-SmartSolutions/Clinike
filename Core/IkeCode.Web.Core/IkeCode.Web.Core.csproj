@@ -144,12 +144,6 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IkeCode.Core\IkeCode.Core.csproj">
-      <Project>{9bd498ef-5778-405c-b4e5-1a5adb39fa32}</Project>
-      <Name>IkeCode.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

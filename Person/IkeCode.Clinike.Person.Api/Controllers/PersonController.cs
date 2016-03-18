@@ -44,7 +44,7 @@
         }
 
         [HttpPost]
-        public async Task<IIkeCodeApiResponse<int>> Post([FromBody]IPerson person)
+        public async Task<IIkeCodeApiResponse<int>> Post([FromBody]Repository.Person person)
         {
             return await RunAsync(async () =>
             {
@@ -53,7 +53,7 @@
         }
 
         [HttpPut]
-        public async Task<IIkeCodeApiResponse<int>> Put(int id, [FromBody]IPerson person)
+        public async Task<IIkeCodeApiResponse<int>> Put(int id, [FromBody]Repository.Person person)
         {
             return await RunAsync(async () =>
             {

@@ -1,17 +1,14 @@
 ﻿namespace IkeCode.Clinike.Person.Api
 {
-    using Castle.Windsor;
-    using Core.IoC.Installers;
     using IkeCode.Clinike.Person.Api.ServiceInstallers;
-    using IkeCode.Core.IoC;
+    using IkeCode.Web.Core.IoC;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using System;
     using System.Reflection;
     using System.Web;
     using System.Web.Http;
-    using System.Web.Http.Dispatcher;
-
+ 
     public class WebApiApplication : HttpApplication
     {
         public WebApiApplication()
