@@ -8,5 +8,6 @@ namespace IkeCode.Clinike.Person.Domain.Entities
         string Name { get; }
         string Email { get; }
         ICollection<IPhone> Phones { get; }
+        ICollection<IAddress> Addresses { get; }
     }
 }

@@ -6,9 +6,7 @@
     using System.Threading.Tasks;
     using System.Web.Http;
     using Core;
-    using System.Collections.Generic;
     using System.Linq;
-    using DataContext;
     using System;
     public class PhoneController : IkeCodeApiController
     {

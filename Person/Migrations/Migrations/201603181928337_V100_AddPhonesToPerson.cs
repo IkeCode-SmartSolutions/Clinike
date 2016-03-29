@@ -1,8 +1,7 @@
 namespace IkeCode.Clinike.Person.Migrations.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class V100_AddPhonesToPerson : DbMigration
     {
         public override void Up()

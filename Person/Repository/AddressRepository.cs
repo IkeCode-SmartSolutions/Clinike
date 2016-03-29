@@ -5,9 +5,9 @@ using System.Data.Entity;
 
 namespace IkeCode.Clinike.Person.Repository
 {
-    public class PhoneRepository : IkeCodeRepositoryBase<Phone, IPhone, int>, IPhoneRepository
+    public class AddressRepository : IkeCodeRepositoryBase<Address, IAddress, int>, IAddressRepository
     {
-        public PhoneRepository(DbContext context)
+        public AddressRepository(DbContext context)
             : base(context)
         {
 

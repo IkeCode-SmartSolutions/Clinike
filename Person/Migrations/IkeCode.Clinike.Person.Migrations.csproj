@@ -88,6 +88,14 @@
     <Compile Include="Migrations\201603181928337_V100_AddPhonesToPerson.Designer.cs">
       <DependentUpon>201603181928337_V100_AddPhonesToPerson.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603291503571_V100_AddPhoneTypeToPhone.cs" />
+    <Compile Include="Migrations\201603291503571_V100_AddPhoneTypeToPhone.Designer.cs">
+      <DependentUpon>201603291503571_V100_AddPhoneTypeToPhone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603291521124_V100_AddAddressesToPerson.cs" />
+    <Compile Include="Migrations\201603291521124_V100_AddAddressesToPerson.Designer.cs">
+      <DependentUpon>201603291521124_V100_AddAddressesToPerson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -100,6 +108,10 @@
       <Project>{416a63c1-ee34-4f81-a34e-6cd98dce03f2}</Project>
       <Name>IkeCode.Clinike.Person.DataContext</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Model\IkeCode.Clinike.Person.Domain.csproj">
+      <Project>{42e58b85-3cc5-41a5-b016-c96a2d295d26}</Project>
+      <Name>IkeCode.Clinike.Person.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Repository\IkeCode.Clinike.Person.Repository.csproj">
       <Project>{354176ea-93fb-4a0a-b7b8-d497f3a71b5c}</Project>
       <Name>IkeCode.Clinike.Person.Repository</Name>
@@ -111,6 +123,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603181928337_V100_AddPhonesToPerson.resx">
       <DependentUpon>201603181928337_V100_AddPhonesToPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603291503571_V100_AddPhoneTypeToPhone.resx">
+      <DependentUpon>201603291503571_V100_AddPhoneTypeToPhone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603291521124_V100_AddAddressesToPerson.resx">
+      <DependentUpon>201603291521124_V100_AddAddressesToPerson.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

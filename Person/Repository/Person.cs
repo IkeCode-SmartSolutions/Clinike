@@ -18,5 +18,9 @@
         public virtual ICollection<Phone> Phones { get; set; }
 
         ICollection<IPhone> IPerson.Phones { get { return Phones.Select(i => (IPhone)i).ToList(); } }
+
+        public virtual ICollection<Address> Addresses { get; set; }
+
+        ICollection<IAddress> IPerson.Addresses { get { return Addresses.Select(i => (IAddress)i).ToList(); } }
     }
 }
