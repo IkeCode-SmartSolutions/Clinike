@@ -16,6 +16,8 @@
             container.Register(Component.For<IPersonRepository>().ImplementedBy<PersonRepository>().LifestylePerWebRequest());
             container.Register(Component.For<IPhoneRepository>().ImplementedBy<PhoneRepository>().LifestylePerWebRequest());
             container.Register(Component.For<IAddressRepository>().ImplementedBy<AddressRepository>().LifestylePerWebRequest());
+            container.Register(Component.For<IDocumentRepository>().ImplementedBy<DocumentRepository>().LifestylePerWebRequest());
+            container.Register(Component.For<IDocumentTypeRepository>().ImplementedBy<DocumentTypeRepository>().LifestylePerWebRequest());
         }
     }
 }

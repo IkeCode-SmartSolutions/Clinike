@@ -96,6 +96,10 @@
     <Compile Include="Migrations\201603291521124_V100_AddAddressesToPerson.Designer.cs">
       <DependentUpon>201603291521124_V100_AddAddressesToPerson.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603291612186_V100_AddDocumentsToPerson.cs" />
+    <Compile Include="Migrations\201603291612186_V100_AddDocumentsToPerson.Designer.cs">
+      <DependentUpon>201603291612186_V100_AddDocumentsToPerson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -129,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603291521124_V100_AddAddressesToPerson.resx">
       <DependentUpon>201603291521124_V100_AddAddressesToPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603291612186_V100_AddDocumentsToPerson.resx">
+      <DependentUpon>201603291612186_V100_AddDocumentsToPerson.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

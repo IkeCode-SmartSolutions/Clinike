@@ -16,6 +16,8 @@ namespace IkeCode.Clinike.Person.DataContext
         public DbSet<Repository.Person> People { get; set; }
         public DbSet<Repository.Phone> Phones { get; set; }
         public DbSet<Repository.Address> Addresses { get; set; }
+        public DbSet<Repository.Document> Documents { get; set; }
+        public DbSet<Repository.DocumentType> DocumentTypes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

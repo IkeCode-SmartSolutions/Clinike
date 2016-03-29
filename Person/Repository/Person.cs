@@ -22,5 +22,9 @@
         public virtual ICollection<Address> Addresses { get; set; }
 
         ICollection<IAddress> IPerson.Addresses { get { return Addresses.Select(i => (IAddress)i).ToList(); } }
+
+        public virtual ICollection<Document> Documents { get; set; }
+
+        ICollection<IDocument> IPerson.Documents { get { return Documents.Select(i => (IDocument)i).ToList(); } }
     }
 }

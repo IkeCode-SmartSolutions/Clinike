@@ -19,6 +19,10 @@ namespace IkeCode.Clinike.Person.Repository
             HasMany(i => i.Addresses)
                 .WithRequired(i => i.Person)
                 .HasForeignKey(i => i.PersonId);
+
+            HasMany(i => i.Documents)
+                .WithRequired(i => i.Person)
+                .HasForeignKey(i => i.PersonId);
         }
     }
 }

@@ -81,6 +81,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\IDocument.cs" />
+    <Compile Include="Entities\IDocumentType.cs" />
     <Compile Include="Entities\IAddress.cs" />
     <Compile Include="Entities\IPhone.cs" />
     <Compile Include="Entities\IPerson.cs" />
@@ -88,6 +90,8 @@
     <Compile Include="Enums\PhoneType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IAddressRepository.cs" />
+    <Compile Include="Repository\IDocumentTypeRepository.cs" />
+    <Compile Include="Repository\IDocumentRepository.cs" />
     <Compile Include="Repository\IPhoneRepository.cs" />
     <Compile Include="Repository\IPersonRepository.cs" />
   </ItemGroup>

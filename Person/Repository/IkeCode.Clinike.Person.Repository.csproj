@@ -81,10 +81,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentTypeRepository.cs" />
+    <Compile Include="DocumentTypeConfiguration.cs" />
+    <Compile Include="DocumentType.cs" />
     <Compile Include="PersonConfiguration.cs" />
     <Compile Include="Address.cs" />
     <Compile Include="AddressConfiguration.cs" />
     <Compile Include="AddressRepository.cs" />
+    <Compile Include="DocumentRepository.cs" />
+    <Compile Include="Document.cs" />
+    <Compile Include="DocumentConfiguration.cs" />
     <Compile Include="PhoneRepository.cs" />
     <Compile Include="Phone.cs" />
     <Compile Include="Person.cs" />

@@ -29,10 +29,23 @@ namespace IkeCode.Clinike.Person.Migrations.Migrations
                   },
                   Addresses = new List<Repository.Address>
                   {
-                      new Repository.Address() { Street = "Rua Residential 1", Number = "123", Complement = "Complemento 1", Neighborhood = "Bairro 1", City = "São Paulo", State = "SP", ZipCode = "12345678", AddressType = AddressType.Residential },
-                      new Repository.Address() { Street = "Rua Commercial 1", Number = "456", Complement = "Complemento 2", Neighborhood = "Bairro 2", City = "Caçapava", State = "SP", ZipCode = "12345678", AddressType = AddressType.Commercial },
-                      new Repository.Address() { Street = "Rua Delivery 1", Number = "789", Complement = "Complemento 3", Neighborhood = "Bairro 3", City = "Osasco", State = "SP", ZipCode = "12345678", AddressType = AddressType.Delivery },
-                      new Repository.Address() { Street = "Rua Mail 1", Number = "666", Complement = "Complemento 4", Neighborhood = "Bairro 4", City = "Alphaville", State = "SP", ZipCode = "12345678", AddressType = AddressType.Mail },
+                      new Repository.Address { Street = "Rua Residential 1", Number = "123", Complement = "Complemento 1", Neighborhood = "Bairro 1", City = "São Paulo", State = "SP", ZipCode = "12345678", AddressType = AddressType.Residential },
+                      new Repository.Address { Street = "Rua Commercial 1", Number = "456", Complement = "Complemento 2", Neighborhood = "Bairro 2", City = "Caçapava", State = "SP", ZipCode = "12345678", AddressType = AddressType.Commercial },
+                      new Repository.Address { Street = "Rua Delivery 1", Number = "789", Complement = "Complemento 3", Neighborhood = "Bairro 3", City = "Osasco", State = "SP", ZipCode = "12345678", AddressType = AddressType.Delivery },
+                      new Repository.Address { Street = "Rua Mail 1", Number = "666", Complement = "Complemento 4", Neighborhood = "Bairro 4", City = "Alphaville", State = "SP", ZipCode = "12345678", AddressType = AddressType.Mail },
+                  },
+                  Documents = new List<Repository.Document>
+                  {
+                      new Repository.Document
+                      {
+                          Value = "123456789",
+                          DocumentType = new Repository.DocumentType { Name = "RG" }
+                      },
+                      new Repository.Document
+                      {
+                          Value = "0123456789",
+                          DocumentType = new Repository.DocumentType { Name = "CPF" }
+                      }
                   }
               }
             );
