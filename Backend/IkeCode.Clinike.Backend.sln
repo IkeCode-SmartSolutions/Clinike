@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Backend", "IkeCode.Clinike.Backend\IkeCode.Clinike.Backend.csproj", "{5A2EFBEF-0766-4EA2-A2AD-DE9376413B77}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domains", "Domains", "{0ABD91AF-3EFE-4B10-82F2-523F7995B70C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Person.Domain", "..\Person\Domain\IkeCode.Clinike.Person.Domain.csproj", "{42E58B85-3CC5-41A5-B016-C96A2D295D26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +19,15 @@ Global
 		{5A2EFBEF-0766-4EA2-A2AD-DE9376413B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A2EFBEF-0766-4EA2-A2AD-DE9376413B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A2EFBEF-0766-4EA2-A2AD-DE9376413B77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42E58B85-3CC5-41A5-B016-C96A2D295D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42E58B85-3CC5-41A5-B016-C96A2D295D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42E58B85-3CC5-41A5-B016-C96A2D295D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42E58B85-3CC5-41A5-B016-C96A2D295D26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{42E58B85-3CC5-41A5-B016-C96A2D295D26} = {0ABD91AF-3EFE-4B10-82F2-523F7995B70C}
 	EndGlobalSection
 EndGlobal

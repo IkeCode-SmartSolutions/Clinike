@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Person.Domain", "Person\Model\IkeCode.Clinike.Person.Domain.csproj", "{42E58B85-3CC5-41A5-B016-C96A2D295D26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Person.Domain", "Person\Domain\IkeCode.Clinike.Person.Domain.csproj", "{42E58B85-3CC5-41A5-B016-C96A2D295D26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IkeCode.Clinike.Person.Repository", "Person\Repository\IkeCode.Clinike.Person.Repository.csproj", "{354176EA-93FB-4A0A-B7B8-D497F3A71B5C}"
 EndProject
