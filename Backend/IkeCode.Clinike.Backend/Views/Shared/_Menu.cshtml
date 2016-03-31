@@ -4,18 +4,42 @@
         @Html.Partial("_MenuProfile")
         <ul class="navigation">
             <li>
-                <a href="/"><i class="menu-icon fa fa-dashboard"></i><span class="mm-text">Página Inicial</span></a>
+                <a href="/">
+                    <i class="menu-icon fa fa-dashboard"></i>
+                    <span class="mm-text">Página Inicial</span>
+                </a>
             </li>
             <li class="mm-dropdown">
-                <a href="#"><i class="menu-icon fa fa-th"></i><span class="mm-text">Menu Levels</span><span class="label label-warning">stick</span></a>
+                <a href="#person">
+                    <i class="menu-icon fa fa-user"></i>
+                    <span class="mm-text">Pessoa</span>
+                </a>
                 <ul>
                     <li>
-                        <a tabindex="-1" href="#"><span class="mm-text">Menu</span></a>
+                        <a tabindex="-1" href="#">
+                            <i class="menu-icon fa fa-plus"></i>
+                            <span class="mm-text">Novo</span>
+                        </a>
                     </li>
                     <li>
-                        <a tabindex="-1" href="#"><i class="menu-icon fa fa-th-list"></i><span class="mm-text">Icon Menu</span></a>
+                        <a tabindex="-1" href="#">
+                            <i class="menu-icon fa fa-users"></i>
+                            <span class="mm-text">Gerenciar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a tabindex="-1" href="#">
+                            <i class="menu-icon fa fa-lock"></i>
+                            <span class="mm-text">Logins</span>
+                        </a>
                     </li>
                 </ul>
+            </li>
+            <li>
+                <a href="#schedule">
+                    <i class="menu-icon fa fa-calendar"></i>
+                    <span class="mm-text">Agenda</span>
+                </a>
             </li>
         </ul>
     </div>

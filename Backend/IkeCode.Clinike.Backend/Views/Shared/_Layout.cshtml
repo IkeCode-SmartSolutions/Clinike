@@ -15,11 +15,7 @@
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin" rel="stylesheet" type="text/css">
 
-    <link href="~/Content/Css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="~/Content/Css/pixel-admin.css" rel="stylesheet" type="text/css">
-    <link href="~/Content/Css/widgets.min.css" rel="stylesheet" type="text/css">
-    <link href="~/Content/Css/rtl.css" rel="stylesheet" type="text/css">
-    <link href="~/Content/Css/themes.css" rel="stylesheet" type="text/css">
+    @Styles.Render("~/cssBundles/styles")
 
     <!--[if lt IE 9]>
         <script src="~/Scripts/ie.min.js"></script>
@@ -55,9 +51,7 @@
         <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">'+"<"+"/script>"); </script>
     <![endif]-->
 
-
-    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/pixel-admin.js"></script>
+    @Scripts.Render("~/jsBundles/js")
 
     <script type="text/javascript">
         window.PixelAdmin.start(init);
