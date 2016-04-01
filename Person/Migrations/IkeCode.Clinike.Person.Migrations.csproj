@@ -112,7 +112,7 @@
       <Project>{416a63c1-ee34-4f81-a34e-6cd98dce03f2}</Project>
       <Name>IkeCode.Clinike.Person.DataContext</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Model\IkeCode.Clinike.Person.Domain.csproj">
+    <ProjectReference Include="..\Domain\IkeCode.Clinike.Person.Domain.csproj">
       <Project>{42e58b85-3cc5-41a5-b016-c96a2d295d26}</Project>
       <Name>IkeCode.Clinike.Person.Domain</Name>
     </ProjectReference>

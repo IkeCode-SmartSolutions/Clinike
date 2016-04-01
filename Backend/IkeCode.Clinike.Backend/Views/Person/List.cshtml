@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "List";
+}
+<table id="dtPeople" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable no-footer">
+    <thead>
+        <tr role="row">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>DateIns</th>
+        </tr>
+    </thead>
+</table>
+@section scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#dtPeople').dataTable({
+                columns: [
+                    { data: "Id", width: "25" },
+                    { data: "Name" },
+                    { data: "Email" },
+                    {
+                        data: "DateIns"
+                        //render: function (data) {
+                        //    var date = new Date(data);
+                        //    var month = date.getMonth() + 1;
+                        //    return date.getDate() + "/" + (month.length > 1 ? month : "0" + month) + "/" + date.getFullYear();
+                        //}
+                    }
+                ],
+                ajax: {
+                    url: 'http://localhost:11666/api/Person',
+                    dataSrc: 'Content.Items'
+                }
+            });
+            $('.dataTables_filter input').attr('placeholder', 'Pesquisar...');
+        });
+    </script>
+
+}

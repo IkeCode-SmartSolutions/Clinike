@@ -36268,7 +36268,6 @@ jQuery.validator.addMethod("extension", function(value, element, param) {
 		var oData = $.extend( true, {}, DataTable.models.oRow, {
 			src: nTr ? 'dom' : 'data'
 		} );
-	
 		oData._aData = aDataIn;
 		oSettings.aoData.push( oData );
 	
@@ -36461,7 +36460,7 @@ jQuery.validator.addMethod("extension", function(value, element, param) {
 	 */
 	function _fnGetObjectDataFn( mSource )
 	{
-		if ( $.isPlainObject( mSource ) )
+        if ( $.isPlainObject( mSource ) )
 		{
 			/* Build an object of get functions, and wrap them in a single call */
 			var o = {};
@@ -37904,8 +37903,7 @@ jQuery.validator.addMethod("extension", function(value, element, param) {
 		var dataSrc = $.isPlainObject( oSettings.ajax ) && oSettings.ajax.dataSrc !== undefined ?
 			oSettings.ajax.dataSrc :
 			oSettings.sAjaxDataProp; // Compatibility with 1.9-.
-	
-		// Compatibility with 1.9-. In order to read from aaData, check if the
+	    // Compatibility with 1.9-. In order to read from aaData, check if the
 		// default has been changed, if not, check for aaData
 		if ( dataSrc === 'data' ) {
 			return json.aaData || json[dataSrc];
@@ -38412,9 +38410,8 @@ jQuery.validator.addMethod("extension", function(value, element, param) {
 			// if there is an ajax source load the data
 			if ( dataSrc == 'ajax' ) {
 				_fnBuildAjax( settings, [], function(json) {
-					var aData = _fnAjaxDataSrc( settings, json );
-	
-					// Got the data - add it to the table
+				    var aData = _fnAjaxDataSrc(settings, json);
+                    // Got the data - add it to the table
 					for ( i=0 ; i<aData.length ; i++ ) {
 						_fnAddData( settings, aData[i] );
 					}

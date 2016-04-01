@@ -149,7 +149,9 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Base\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -171,6 +173,8 @@
     <Content Include="Views\Shared\_MenuProfile.cshtml" />
     <Content Include="Views\Shared\_Breadcrumb.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Person\List.cshtml" />
+    <Content Include="Views\Person\Detail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -179,7 +183,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Person\" />
+    <Folder Include="Content\Plugins\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Person\Domain\IkeCode.Clinike.Person.Domain.csproj">
