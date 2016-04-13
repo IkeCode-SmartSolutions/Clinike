@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Css\bootstrap.css" />
+    <Content Include="Content\Css\clinike.css" />
     <Content Include="Content\Css\pixel-admin.css" />
     <Content Include="Content\Css\rtl.css" />
     <Content Include="Content\Css\themes.css" />
@@ -142,6 +143,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\ie.min.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\pixel-admin.js" />
     <Content Include="Scripts\pixel-admin.min.js" />
     <Content Include="Web.config" />
@@ -175,6 +177,9 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Person\List.cshtml" />
     <Content Include="Views\Person\Detail.cshtml" />
+    <Content Include="Scripts\datatable.i18n\pt-br.json" />
+    <Content Include="Scripts\datatable.i18n\es-es.json" />
+    <Content Include="Scripts\clinike.utils.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

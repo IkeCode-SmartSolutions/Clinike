@@ -13,7 +13,8 @@ namespace IkeCode.Clinike.Backend
             //jsBundles.Include("~/Scripts");
             jsBundles.Include("~/Scripts/bootstrap.min.js");
             jsBundles.Include("~/Scripts/pixel-admin.js");
-            //jsBundles.Include("~/Content/Plugins/fancygrid/fancygrid.min.js");
+            jsBundles.Include("~/Scripts/moment-with-locales.js");
+            jsBundles.Include("~/Scripts/clinike.utils.js");
             bundles.Add(jsBundles);
 
             var styleBundle = new IkeCodeStyleBundle("~/cssBundles/styles");
@@ -24,8 +25,7 @@ namespace IkeCode.Clinike.Backend
             styleBundle.Include("~/Content/Css/widgets.min.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/Css/rtl.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/Css/themes.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/Content/Css/themes.css", new CssRewriteUrlTransform());
-            //styleBundle.Include("~/Content/Plugins/fancygrid/fancygrid.min.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/Css/clinike.css", new CssRewriteUrlTransform());
             bundles.Add(styleBundle);
         }
     }

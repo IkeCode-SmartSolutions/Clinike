@@ -13113,10 +13113,10 @@ a.editable-click.editable-disabled:hover {
   line-height: 30px;
   margin-right: 10px;
 }
-.DT-search,
+/*.DT-search,
 .DT-search input {
   width: 130px !important;
-}
+}*/
 .DT-search label,
 .DT-search input {
   margin-bottom: 0 !important;

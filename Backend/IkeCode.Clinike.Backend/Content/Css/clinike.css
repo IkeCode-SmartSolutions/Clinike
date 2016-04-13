@@ -1,0 +1,4 @@
+﻿.dataTable tr.selected td {
+    background-color: #1d89cf !important;
+    color: white;
+}
