@@ -16,64 +16,142 @@ function ClinikeUtils() {
 		calendar: 'http://localhost:11666/api/Calendar'
 	};
 
-	self.dataTable = function (selector, dataTableOptions, language, selectCallback) {
-		language = language === undefined || language == null || language.length <= 0 ? 'pt-br' : language;
-		var languageUrl = ('/Scripts/datatable.i18n/{0}.json').format(language);
+	self.bootstrapTable = {
+		load: function (options) {
+			var parsedOpt = {};
 
-		var options = $.extend({}, { language: { url: languageUrl } }, dataTableOptions);
+			var isValid = false;
 
-		/*
-		{
-            language: {
-                url: "/Scripts/datatable.i18n/pt-br.json"
-            },
-            columns: [
-                { data: "Id", title: "Id", width: "30" },
-                {
-                    data: "DateIns",
-                    title: "Data de Criação",
-                    render: function (data) {
-                        var date = new moment(data);
-                        return date.format("DD/MM/YYYY HH:mm:ss");
-                    }
-                },
-                { data: "Name", title: "Nome" }
-            ],
-            ajax: {
-                url: 'http://localhost:11666/api/Person',
-                dataSrc: 'Content.Items'
-            }
-        }
-		*/
+			if ($.isPlainObject(options) && !$.isEmptyObject(options)) {
+				parsedOpt = options;
+				if (parsedOpt.selector !== undefined && parsedOpt.selector.length > 0) {
+					isValid = true;
+				}
+			}
+			else if ($.type(options) == 'string') {
+				parsedOpt = { selector: options, defaultParser: true }
+				isValid = true;
+			}
 
-		var dataTable = $(selector)
-            .on('init.dt', function () {
-            	//console.log('init this', this);
-            	var tableHeader = $(this).siblings('div.table-header');
-            	var width = $(tableHeader).outerWidth();
-            	//console.log('init width', width);
-            	//console.log('init this width', $(this).width());
-            	$(this).css({ width: width });
-            	//console.log('init this width after', $(this).width());
-            	$(tableHeader).find('.dataTables_filter input').attr('placeholder', 'Pesquisar...');
-            })
-			.DataTable(options);
+			if (!isValid) {
+				$utils.log.error('BootstrapTable :: Options parameter is invalid, the \'selector\' (string or object property) must to be setted. [Sent Options] >', parsedOpt);
+			} else {
+				var defaultParser = $.type(parsedOpt.defaultParser) == 'boolean' ? parsedOpt.defaultParser : false;
 
-		if (selectCallback !== undefined && selectCallback != null) {
-			$(selector + ' tbody').on('click', 'tr', function () {
-				var hasClass = $(this).hasClass('selected');
-				
-				if (hasClass) {
-					$(this).removeClass('selected');
-				} else {
-					$(this).addClass('selected');
+				//$utils.log.info('BootstrapTable :: parsedOpt', parsedOpt);
+
+				var parsedResponseHandler = function (result) {
+					$utils.log.verbose('BootstrapTable :: ResponseHandler > Ajax Result', result);
+					if ($.isFunction(parsedOpt.responseHandler)) {
+						var parsed = parsedOpt.responseHandler(result);
+						$utils.log.verbose('BootstrapTable :: ResponseHandler > [Using Custom Handler] -> responseHandler(result)', parsed);
+						return parsed;
+					} else if (defaultParser) {
+						var data = {
+							total: result.Content.TotalCount,
+							rows: result.Content.Items
+						};
+
+						$utils.log.verbose('BootstrapTable :: ResponseHandler > [Using Default Parser Handler]', data);
+
+						return data;
+					} else {
+						$utils.log.verbose('BootstrapTable :: ResponseHandler > [bypass result]', result);
+						return result;
+					}
+				};
+
+				var parsedSelectCallback = function (data, e) {
+					$utils.log.verbose('BootstrapTable :: onClickRow > data', data);
+					//$utils.log.verbose('BootstrapTable :: onClickRow > e', e);
+					var selected = $(e).hasClass('selected');
+					$(e).siblings('tr').removeClass('selected');
+					if (!selected) {
+						$(e).addClass('selected');
+					}
+
+					if ($.isFunction(parsedOpt.selectCallback)) {
+						parsedOpt.selectCallback(data, e);
+					}
+				};
+
+				var parsedQueryParams = function (params) {
+					var parsedParams = {
+						name: params.search
+						, sort: params.sort
+						, order: params.order
+						, limit: params.limit
+						, offset: params.offset
+					}
+					return parsedParams;
 				}
 
-				var table = $(selector).DataTable();
-				selectCallback({ Data: table.row().data(), Selected: !hasClass });
-			});
+				var defaultOptions = {
+					locale: 'pt-BR'
+					, striped: true
+					, pagination: true
+					, sidePagination: 'server'
+					, pageSize: 10
+					, showRefresh: true
+					, showToggle: true
+					, showColumns: true
+					, showHeader: true
+					, trimOnSearch: true
+					, searchOnEnterKey: true
+					, search: true
+					, idField: 'Id'
+					, clickToSelect: true
+					, checkboxHeader: true
+					, singleSelect: true
+				};
+
+				var handlerOptions = {
+					responseHandler: parsedResponseHandler
+					, onClickRow: parsedSelectCallback
+					, queryParams: parsedQueryParams
+				}
+
+				var mergedOptions = $.extend(true, {}, defaultOptions, parsedOpt, handlerOptions);
+				$utils.log.verbose('BootstrapTable :: Plugin Sent Options', mergedOptions);
+				//$utils.log.verbose('BootstrapTable :: responseHandler', mergedOptions.responseHandler);
+				$(parsedOpt.selector).bootstrapTable(mergedOptions);
+			}
 		}
-	}
+	};
+
+	self.log = {
+		globalEnabled: true,
+		write: function (type, message, data) {
+			try {
+				if (self.log.globalEnabled && console !== undefined && console != null
+					&& console.log !== undefined && console.log != null) {
+					var parsedData = data !== undefined && data != null ? data : '';
+					console.log('[{0}] {1}'.format(type, message), parsedData);
+				}
+			}
+			catch (ex) { }
+		},
+		checkpointEnabled: true,
+		checkpoint: function (message, data) {
+			self.log.write('CHECKPOINT', message, data);
+		},
+		verboseEnabled: true,
+		verbose: function (message, data) {
+			self.log.write('VERBOSE', message, data);
+		},
+		infoEnabled: false,
+		info: function (message, data) {
+			self.log.write('INFO', message, data);
+		},
+		warningEnabled: true,
+		warning: function (message, data) {
+			self.log.write('WARNING', message, data);
+		},
+		errorEnabled: true,
+		error: function (message, data) {
+			self.log.write('ERROR', message, data);
+		}
+	};
 }
 
-var clinikeUtils = new ClinikeUtils();
+var clinikeUtils = $utils = new ClinikeUtils();

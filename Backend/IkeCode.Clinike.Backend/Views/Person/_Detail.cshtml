@@ -1,0 +1,33 @@
+﻿@{ 
+    Layout = null;
+}
+<div class="col-sm-12">
+    <form id="formPersonDetail">
+        <input type="hidden" data-bind="textInput: Id" name="Id" placeholder="Nome" />
+        <input type="hidden" data-bind="textInput: DateIns" name="DateIns" placeholder="Nome" />
+        <input type="hidden" data-bind="textInput: LastUpdate" name="LastUpdate" placeholder="Nome" />
+        <div class="form-group">
+            <label for="inputName" class="col-sm-2 control-label">Nome</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" data-bind="textInput: Name" name="Name" id="inputName" placeholder="Nome" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" data-bind="textInput: Email" name="Email" id="inputEmail" placeholder="Email" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col-sm-12">
+    <div class="col-sm-4">
+        <button class="btn btn-default btn-xs" data-bind="click: $root.loadAddresses" type="button">Carregar Endereços</button>
+    </div>
+    <div class="col-sm-4">
+        <button class="btn btn-default btn-xs" data-bind="click: $root.loadPhones" type="button">Carregar Telefones</button>
+    </div>
+    <div class="col-sm-4">
+        <button class="btn btn-default btn-xs" data-bind="click: $root.loadDocuments" type="button">Carregar Documentos</button>
+    </div>
+</div>

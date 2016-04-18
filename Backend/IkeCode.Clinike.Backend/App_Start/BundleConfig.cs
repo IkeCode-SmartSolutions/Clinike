@@ -13,7 +13,15 @@ namespace IkeCode.Clinike.Backend
             //jsBundles.Include("~/Scripts");
             jsBundles.Include("~/Scripts/bootstrap.min.js");
             jsBundles.Include("~/Scripts/pixel-admin.js");
+            jsBundles.Include("~/Scripts/datatable.js");
             jsBundles.Include("~/Scripts/moment-with-locales.js");
+            jsBundles.Include("~/Scripts/datatable.js");
+            jsBundles.Include("~/Scripts/bootstrap-table.js");
+            jsBundles.IncludeDirectory("~/Scripts/bootstrap-table.i18n", "*.js", true);
+            jsBundles.Include("~/Scripts/sweetalert.js");
+            jsBundles.Include("~/Scripts/knockout-3.4.0.js");
+            jsBundles.Include("~/Scripts/knockout.mapping-latest.js");
+            jsBundles.Include("~/Scripts/knockout.reactor.js");
             jsBundles.Include("~/Scripts/clinike.utils.js");
             bundles.Add(jsBundles);
 
@@ -25,6 +33,8 @@ namespace IkeCode.Clinike.Backend
             styleBundle.Include("~/Content/Css/widgets.min.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/Css/rtl.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/Css/themes.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/Css/bootstrap-table.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/Css/sweetalert.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/Css/clinike.css", new CssRewriteUrlTransform());
             bundles.Add(styleBundle);
         }

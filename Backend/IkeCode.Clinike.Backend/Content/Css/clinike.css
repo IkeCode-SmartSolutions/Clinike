@@ -1,4 +1,7 @@
-﻿.dataTable tr.selected td {
-    background-color: #1d89cf !important;
+﻿tr.selected td {
+    background-color: #5bc0de !important;
+    color: white;
+}
+tr.selected td  a {
     color: white;
 }

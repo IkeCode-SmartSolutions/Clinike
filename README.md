@@ -13,7 +13,8 @@
 	<li><a target="_blank" href="http://getbootstrap.com">Bootstrap CSS</a></li>
 	<li><a target="_blank" href="http://jquery.com">jQuery</a></li>
 	<li><a target="_blank" href="http://knockoutjs.com">KnockoutJs</a></li>
-	<li><a target="_blank" href="http://datatables.net/">DataTables</a></li>
+	<li><a target="_blank" href="http://bootstrap-table.wenzhixin.net.cn/documentation/">Bootstrap Table</a></li>
+	<li><a target="_blank" href="http://t4t5.github.io/sweetalert/">SweetAlert</a></li>
 </ul>
 
 <hr/>
