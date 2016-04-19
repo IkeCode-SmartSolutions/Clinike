@@ -66,6 +66,7 @@
         {
             return await RunAsync(async () =>
             {
+                throw new System.Exception("mensagem da exception");
                 return await _personRepository.DeleteAsync(id);
             });
         }

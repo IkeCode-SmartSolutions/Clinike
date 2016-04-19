@@ -1,8 +1,5 @@
-﻿@{
-    ViewBag.Title = "Lista de Pessoas";
-}
-<div id="peopleRowActions" style="display: none">
-    <a class="personEdit" href="javascript:void(0)" title="Editar">
+﻿<div id="peopleRowActions" style="display: none">
+    <a class="personEdit" href="javascript:void(0)" title="Editação Compacta">
         <i class="fa fa-pencil"></i>
     </a>
     <a class="personDelete" href="javascript:void(0)" title="Apagar">
@@ -12,6 +9,11 @@
 <div id="peopleToolbar">
     <button class="btn btn-success" type="button" name="newPerson" title="Novo">
         <i class="fa fa-plus"></i>
+        Novo
+    </button>
+    <button class="btn btn-primary" disabled="disabled" name="fullEditPerson" title="Editar">
+        <i class="fa fa-pencil"></i>
+        Edição completa
     </button>
 </div>
 <table id="dtPeople" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered"></table>
@@ -21,7 +23,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Editando Pessoa</h4>
+                <h4 class="modal-title">Editando Pessoa (modo: compacto)</h4>
             </div>
             <div class="modal-body">
                 <div class="row" data-bind="with: $root.person">
@@ -48,38 +50,48 @@
             self.saved = false;
             self.vmContainer = '#divPersonEditForm';
 
-            self.loadAddresses = function (data) {
-                $utils.log.verbose('Ko :: loadMessages data', data);
-            };
-
-            self.loadPhones = function (data) {
-                $utils.log.verbose('Ko :: loadPhones data', data);
-            };
-
-            self.loadDocuments = function (data) {
-                $utils.log.verbose('Ko :: loadDocuments data', data);
-            };
+            self.getDetailPageUrl = function (id) {
+                return (window.location.toString() + "/detalhe/{0}").format(id);
+            }
 
             self.save = function () {
                 $utils.log.verbose('Person Edit :: save button fired');
                 self.saved = true;
+                var personJs = ko.toJS(self.person());
+                var type = 'POST';
+                var url = $utils.baseApiUrls.person;
+
+                if (personJs.Id > 0) {
+                    type = 'PUT';
+                    url += '/' + personJs.Id;
+                }
+
                 $.ajax({
-                    url: $utils.baseApiUrls.person,
+                    url: url,
                     contentType: "application/json",
                     async: true,
                     dataType: "json",
-                    type: 'POST',
-                    data: JSON.stringify(ko.toJS(self.person())),
+                    type: type,
+                    data: JSON.stringify(personJs),
                     success: function (data) {
                         swal({
                             title: "Sucesso!"
                             , text: "Alterações realizadas com sucesso!"
                             , type: "success"
-                        }, function () {
+                            , showCancelButton: true
+                            , cancelButtonColor: "#4cb64c"
+                            , cancelButtonText: "Ir para a edição completa"
+                        }, function (isConfirm) {
+                            if (!isConfirm) {
+                                window.open(self.getDetailPageUrl(personJs.Id), '_blank');
+                            }
+
                             var index = $(self.tableSelector + ' tr.selected').data('index');
                             if (index !== undefined) {
-                                $(self.tableSelector).bootstrapTable('updateRow', { index: index, row: ko.toJS(self.person()) });
+                                $(self.tableSelector).bootstrapTable('updateRow', { index: index, row: personJs });
                                 $(self.vmContainer).modal('hide');
+                            } else {
+                                $(self.tableSelector).bootstrapTable('append', personJs);
                             }
                         });
                     },
@@ -178,31 +190,45 @@
                                 type: 'DELETE',
                                 success: function (data) {
                                     console.log('delete data', data);
-                                    if (data > 0) {
+                                    if (data.Status == 'Success') {
                                         $(self.tableSelector).bootstrapTable('remove', {
                                             field: 'Id',
                                             values: [row.Id]
                                         });
 
-                                        swal({
-                                            title: "Excluido!"
-                                            , text: "Registro excluido com sucesso!"
-                                            , type: "success"
-                                        });
+                                        if (data.Content > 0) {
+                                            swal({
+                                                title: "Excluido!"
+                                                , text: "Registro excluido com sucesso!"
+                                                , type: "success"
+                                            });
+                                        } else {
+                                            swal({
+                                                title: "Ooops..."
+                                                , text: "Esse registro parece já ter sido excluido, mas tudo bem, atualizamos seu grid."
+                                                , type: "info"
+                                            });
+                                        }
                                     } else {
                                         swal({
                                             title: "Ooops..."
-                                            , text: "Ocorreu um problema na requisição, tente novamente !"
-                                            , type: "success"
+                                            , text: "Ocorreu um problema nem sua requisição, tente novamente!"
+                                            , type: "error"
                                         });
                                     }
                                 },
                                 error: function (data) {
-                                    $utils.log.error('Person :: save error', data);
+                                    swal({
+                                        title: "Ooops..."
+                                        , text: "Ocorreu um erro em sua requisição! (código: {0})".format(data.Statu)
+                                        , type: "error"
+                                    });
                                 }
                             });
                         } else {
-                            swal("Cancelado", "Tudo como estava! =)", "info");
+                            setTimeout(function () {
+                                swal("Cancelado", "Tudo como estava! =)", "info");
+                            }, 150);
                         }
                     });
                 }
@@ -219,12 +245,17 @@
                         $(self.vmContainer).modal('show');
                     });
 
+                    $('#peopleToolbar button[name="fullEditPerson"]').on('click', function (e) {
+                        window.open(self.getDetailPageUrl(self.person().Id()), '_blank');
+                    });
+
                     var table = new $utils.bootstrapTable.load({
                         selector: self.tableSelector
                         , defaultParser: true
                         , selectCallback: function (data, e) {
                             $utils.log.verbose('Setting ko person object');
                             self.bindViewModel(data, false);
+                            $('#peopleToolbar button[name="fullEditPerson"]').removeAttr('disabled');
                         }
                         , toolbar: '#peopleToolbar'
                         , columns: [

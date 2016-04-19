@@ -12,13 +12,15 @@ namespace IkeCode.Clinike.Backend.Controllers
         // GET: Person
         public ActionResult List()
         {
+            ViewBag.Title = "Lista de Pessoas";
             SetPageTitle("Pessoas", "fa-users");
             return View();
         }
 
         public ActionResult Detail(int id = 0)
         {
-            SetPageTitle("Detalhe", "fa-user");
+            ViewBag.Title = "Detalhe de Pessoa";
+            SetPageTitle(string.Format("Detalhe de Pessoa [Id: {0}]", id), "fa-user");
             return View();
         }
     }

@@ -97,7 +97,7 @@ function ClinikeUtils() {
 					, showColumns: true
 					, showHeader: true
 					, trimOnSearch: true
-					, searchOnEnterKey: true
+					//, searchOnEnterKey: true
 					, search: true
 					, idField: 'Id'
 					, clickToSelect: true
