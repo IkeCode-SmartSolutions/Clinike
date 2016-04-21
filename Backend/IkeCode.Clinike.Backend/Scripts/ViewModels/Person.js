@@ -58,8 +58,8 @@ var Person;
             function List(targetElement, _tableSelector) {
                 var _this = this;
                 _super.call(this, targetElement);
-                this.People = ko.observableArray([new Person.Models.Person()]);
-                this.Person = ko.observable(new Person.Models.Person());
+                this.people = ko.observableArray([new Person.Models.Person()]);
+                this.person = ko.observable(new Person.Models.Person());
                 this.getDetailPageUrl = function (id) {
                     return (window.location.toString() + "/detalhe/{0}").format(id);
                 };
@@ -68,6 +68,7 @@ var Person;
                         $(_this.vmTargetElement)
                             .modal()
                             .on('shown.bs.modal', function (shownElement) {
+                            _this._saved = false;
                         })
                             .on('hide.bs.modal', function (hideElement) {
                             if (!_this._saved) {
@@ -81,8 +82,7 @@ var Person;
                                     cancelButtonText: "Descartar!",
                                     confirmButtonText: "Voltar ao fomulário",
                                     closeOnConfirm: true,
-                                    closeOnCancel: true,
-                                    showLoaderOnConfirm: true
+                                    closeOnCancel: true
                                 }, function (isConfirm) {
                                     if (isConfirm) {
                                         $(hideElement.target).modal('show');
@@ -113,7 +113,7 @@ var Person;
                         }, function (isConfirm) {
                             if (isConfirm) {
                                 $.ajax({
-                                    url: $utils.baseApiUrls.person + '/' + _this.Person().Id,
+                                    url: $utils.baseApiUrls.person + '/' + _this.person().Id,
                                     contentType: "application/json",
                                     async: true,
                                     dataType: "json",
@@ -180,7 +180,7 @@ var Person;
                         defaultParser: true,
                         selectCallback: function (data, e) {
                             $utils.log.verbose('SelectRow :: Setting Person');
-                            _this.Person(data);
+                            _this.person(data);
                             $utils.log.verbose('SelectRow :: Activate Edit Button');
                             $('#peopleToolbar button[name="fullEditPerson"]').removeAttr('disabled');
                         },
@@ -215,9 +215,9 @@ var Person;
                         url: $utils.baseApiUrls.person
                     });
                 };
-                this.Save = function () {
+                this.save = function () {
                     _this._saved = true;
-                    var personJs = ko.toJS(_this.Person());
+                    var personJs = ko.toJS(_this.person());
                     var type = 'POST';
                     var url = $utils.baseApiUrls.person;
                     if (personJs.Id > 0) {
@@ -273,12 +273,12 @@ var Person;
                 this._saved = false;
                 $(document).ready(function () {
                     $('#peopleToolbar button[name="newPerson"]').on('click', function (e) {
-                        _this.Person(new Person.Models.Person());
+                        _this.person(new Person.Models.Person());
                         $(_this.vmTargetElement).modal('show');
                     });
                     $('#peopleToolbar button[name="fullEditPerson"]').on('click', function (e) {
                         $utils.log.verbose('People Table :: full edit clicked');
-                        var url = _this.getDetailPageUrl(_this.Person().Id);
+                        var url = _this.getDetailPageUrl(_this.person().Id);
                         $utils.log.verbose('People Table :: full edit clicked url', url);
                         window.open(url, '_blank');
                     });

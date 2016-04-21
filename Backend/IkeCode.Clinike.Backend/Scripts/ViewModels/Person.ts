@@ -53,8 +53,8 @@ module Person.ViewModel {
     }
 
     export class List extends Base {
-        People: KnockoutObservableArray<Person.Models.IPerson> = ko.observableArray([new Person.Models.Person()]);
-        Person: KnockoutObservable<Person.Models.IPerson> = ko.observable(new Person.Models.Person());
+        people: KnockoutObservableArray<Person.Models.IPerson> = ko.observableArray([new Person.Models.Person()]);
+        person: KnockoutObservable<Person.Models.IPerson> = ko.observable(new Person.Models.Person());
         private _tableSelector: string;
         private _saved: boolean;
 
@@ -65,13 +65,13 @@ module Person.ViewModel {
 
             $(document).ready(() => {
                 $('#peopleToolbar button[name="newPerson"]').on('click', (e) => {
-                    this.Person(new Person.Models.Person());
+                    this.person(new Person.Models.Person());
                     $(this.vmTargetElement).modal('show');
                 });
 
                 $('#peopleToolbar button[name="fullEditPerson"]').on('click', (e) => {
                     $utils.log.verbose('People Table :: full edit clicked');
-                    var url = this.getDetailPageUrl(this.Person().Id);
+                    var url = this.getDetailPageUrl(this.person().Id);
                     $utils.log.verbose('People Table :: full edit clicked url', url);
                     window.open(url, '_blank');
                 });
@@ -91,7 +91,7 @@ module Person.ViewModel {
                 $(this.vmTargetElement)
                     .modal()
                     .on('shown.bs.modal', (shownElement): any => {
-
+                        this._saved = false;
                     })
                     .on('hide.bs.modal', (hideElement): any => {
                         if (!this._saved) {
@@ -106,7 +106,6 @@ module Person.ViewModel {
                                 , confirmButtonText: "Voltar ao fomulário"
                                 , closeOnConfirm: true
                                 , closeOnCancel: true
-                                , showLoaderOnConfirm: true
                             }, function (isConfirm) {
                                 if (isConfirm) {
                                     $(hideElement.target).modal('show');
@@ -137,7 +136,7 @@ module Person.ViewModel {
                 }, (isConfirm) => {
                     if (isConfirm) {
                         $.ajax({
-                            url: $utils.baseApiUrls.person + '/' + this.Person().Id,
+                            url: $utils.baseApiUrls.person + '/' + this.person().Id,
                             contentType: "application/json",
                             async: true,
                             dataType: "json",
@@ -205,7 +204,7 @@ module Person.ViewModel {
                 , defaultParser: true
                 , selectCallback: (data, e) => {
                     $utils.log.verbose('SelectRow :: Setting Person');
-                    this.Person(data);
+                    this.person(data);
                     $utils.log.verbose('SelectRow :: Activate Edit Button');
                     $('#peopleToolbar button[name="fullEditPerson"]').removeAttr('disabled');
                 }
@@ -241,9 +240,9 @@ module Person.ViewModel {
             });
         }
 
-        public Save = () => {
+        public save = () => {
             this._saved = true;
-            var personJs = ko.toJS(this.Person());
+            var personJs = ko.toJS(this.person());
             var type = 'POST';
             var url = $utils.baseApiUrls.person;
 
