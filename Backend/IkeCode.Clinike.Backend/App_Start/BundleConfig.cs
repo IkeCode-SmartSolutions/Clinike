@@ -23,6 +23,8 @@ namespace IkeCode.Clinike.Backend
             jsBundles.Include("~/Scripts/knockout.mapping-latest.js");
             jsBundles.Include("~/Scripts/knockout.reactor.js");
             jsBundles.Include("~/Scripts/clinike.utils.js");
+
+            jsBundles.IncludeDirectory("~/Scripts/ViewModels", "*.js", true);
             bundles.Add(jsBundles);
 
             var styleBundle = new IkeCodeStyleBundle("~/cssBundles/styles");

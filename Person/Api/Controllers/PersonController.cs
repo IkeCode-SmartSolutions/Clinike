@@ -44,20 +44,22 @@
         }
 
         [HttpPost]
-        public async Task<IIkeCodeApiResponse<int>> Post([FromBody]Repository.Person person)
+        public async Task<IIkeCodeApiResponse<IPerson>> Post([FromBody]Repository.Person person)
         {
             return await RunAsync(async () =>
             {
-                return await _personRepository.SaveAsync(i => i.Id, person);
+                await _personRepository.SaveAsync(i => i.Id, person);
+                return (IPerson)person;
             });
         }
 
         [HttpPut]
-        public async Task<IIkeCodeApiResponse<int>> Put(int id, [FromBody]Repository.Person person)
+        public async Task<IIkeCodeApiResponse<IPerson>> Put(int id, [FromBody]Repository.Person person)
         {
             return await RunAsync(async () =>
             {
-                return await _personRepository.UpdateAsync(id, person);
+                await _personRepository.UpdateAsync(id, person);
+                return (IPerson)person;
             });
         }
 
@@ -66,7 +68,6 @@
         {
             return await RunAsync(async () =>
             {
-                throw new System.Exception("mensagem da exception");
                 return await _personRepository.DeleteAsync(id);
             });
         }

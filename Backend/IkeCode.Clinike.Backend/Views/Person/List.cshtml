@@ -26,13 +26,13 @@
                 <h4 class="modal-title">Editando Pessoa (modo: compacto)</h4>
             </div>
             <div class="modal-body">
-                <div class="row" data-bind="with: $root.person">
+                <div class="row" data-bind="with: $root.Person">
                     @Html.Partial("_Detail")
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                <button type="button" data-bind="click: $root.save" class="btn btn-primary">Salvar</button>
+                <button type="button" data-bind="click: $root.Save" class="btn btn-primary">Salvar</button>
             </div>
         </div>
     </div>
@@ -286,8 +286,10 @@
             };
         }
 
-        var peopleViewModel = new PeopleViewModel();
-        peopleViewModel.init();
+        //var peopleViewModel = new PeopleViewModel();
+        //peopleViewModel.init();
+
+        var peopleViewModel = new Person.ViewModel.List($('#divPersonEditForm')[0], '#dtPeople');
     </script>
 
 }

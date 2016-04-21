@@ -15,6 +15,8 @@
 	<li><a target="_blank" href="http://knockoutjs.com">KnockoutJs</a></li>
 	<li><a target="_blank" href="http://bootstrap-table.wenzhixin.net.cn/documentation/">Bootstrap Table</a></li>
 	<li><a target="_blank" href="http://t4t5.github.io/sweetalert/">SweetAlert</a></li>
+	<li><a target="_blank" href="https://www.typescriptlang.org/">TypeScript</a></li>
+	<li><a target="_blank" href="http://momentjs.com/docs/">momentjs</a></li>
 </ul>
 
 <hr/>
