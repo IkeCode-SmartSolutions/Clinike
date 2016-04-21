@@ -13,6 +13,23 @@ var Person;
 (function (Person_1) {
     var Models;
     (function (Models) {
+        var Phone = (function () {
+            function Phone(phone) {
+                this.Id = ko.observable(0);
+                this.DateIns = ko.observable(new Date());
+                this.LastUpdate = ko.observable(new Date());
+                this.Number = ko.observable('');
+                $utils.log.verbose('Person.Models.Phone :: constructor [phone]', phone);
+                if (phone) {
+                    this.Id(phone.Id());
+                    this.DateIns(phone.DateIns());
+                    this.LastUpdate(phone.LastUpdate());
+                    this.Number(phone.Number());
+                }
+            }
+            return Phone;
+        })();
+        Models.Phone = Phone;
         var Person = (function () {
             function Person(person) {
                 this.Id = ko.observable(0);
@@ -20,6 +37,7 @@ var Person;
                 this.LastUpdate = ko.observable(new Date());
                 this.Name = ko.observable('');
                 this.Email = ko.observable('');
+                $utils.log.verbose('Person.Models.Person :: constructor [person]', person);
                 if (person) {
                     this.Id(person.Id());
                     this.DateIns(person.DateIns());
@@ -39,6 +57,7 @@ var Person;
     (function (ViewModel) {
         var Base = (function () {
             function Base(targetElement) {
+                this.person = ko.observable(new Person.Models.Person());
                 this.vmTargetElement = targetElement;
             }
             Base.prototype.applyViewModel = function (data) {
@@ -59,7 +78,6 @@ var Person;
                 var _this = this;
                 _super.call(this, targetElement);
                 this.people = ko.observableArray([new Person.Models.Person()]);
-                this.person = ko.observable(new Person.Models.Person());
                 this.getDetailPageUrl = function (id) {
                     return (window.location.toString() + "/detalhe/{0}").format(id);
                 };
@@ -68,10 +86,10 @@ var Person;
                         $(_this.vmTargetElement)
                             .modal()
                             .on('shown.bs.modal', function (shownElement) {
-                            _this._saved = false;
+                            _this.saved = false;
                         })
                             .on('hide.bs.modal', function (hideElement) {
-                            if (!_this._saved) {
+                            if (!_this.saved) {
                                 swal({
                                     title: "Você tem certeza?",
                                     text: "Se mudanças tiverem sido feitas você perderá, deseja mesmo continuar?",
@@ -179,7 +197,7 @@ var Person;
                         selector: _this._tableSelector,
                         defaultParser: true,
                         selectCallback: function (data, e) {
-                            $utils.log.verbose('SelectRow :: Setting Person');
+                            $utils.log.verbose('SelectRow :: Setting Person data', data);
                             _this.person(data);
                             $utils.log.verbose('SelectRow :: Activate Edit Button');
                             $('#peopleToolbar button[name="fullEditPerson"]').removeAttr('disabled');
@@ -216,7 +234,7 @@ var Person;
                     });
                 };
                 this.save = function () {
-                    _this._saved = true;
+                    _this.saved = true;
                     var personJs = ko.toJS(_this.person());
                     var type = 'POST';
                     var url = $utils.baseApiUrls.person;
@@ -270,7 +288,7 @@ var Person;
                     });
                 };
                 this._tableSelector = _tableSelector;
-                this._saved = false;
+                this.saved = false;
                 $(document).ready(function () {
                     $('#peopleToolbar button[name="newPerson"]').on('click', function (e) {
                         _this.person(new Person.Models.Person());
@@ -289,6 +307,93 @@ var Person;
             return List;
         })(Base);
         ViewModel.List = List;
+        var Detail = (function (_super) {
+            __extends(Detail, _super);
+            function Detail(targetElement, personId) {
+                var _this = this;
+                _super.call(this, targetElement);
+                this.phones = ko.observableArray([new Person.Models.Phone()]);
+                this.getPhones = function () {
+                    var url = $utils.baseApiUrls.phone;
+                    $.ajax({
+                        url: url,
+                        contentType: "application/json",
+                        async: true,
+                        dataType: "json",
+                        type: 'GET',
+                        data: { personId: _this._personId },
+                        success: function (data) {
+                            $utils.log.verbose('Person getPhones :: ajax result', data);
+                            if (data.Status == 'Success') {
+                                _this.phones(data.Content.Items);
+                            }
+                            else {
+                                swal({
+                                    title: "Ooops...",
+                                    text: "Ocorreu um problema em sua requisição, tente novamente!",
+                                    type: "error"
+                                });
+                            }
+                        },
+                        error: function (data) {
+                            $utils.log.error('Phone :: Get Method', data);
+                        }
+                    });
+                };
+                this.getPerson = function (successCallback, errorCallback) {
+                    var url = $utils.baseApiUrls.person;
+                    $.ajax({
+                        url: url,
+                        contentType: "application/json",
+                        async: true,
+                        dataType: "json",
+                        type: 'GET',
+                        data: { id: _this._personId },
+                        success: function (data) {
+                            $utils.log.verbose('Person getPerson :: ajax result', data);
+                            if (data.Status == 'Success') {
+                                _this.person(data.Content);
+                                if (successCallback)
+                                    successCallback();
+                            }
+                            else {
+                                swal({
+                                    title: "Ooops...",
+                                    text: "Ocorreu um problema em sua requisição, tente novamente!",
+                                    type: "error"
+                                });
+                                if (errorCallback)
+                                    errorCallback();
+                            }
+                        },
+                        error: function (data) {
+                            $utils.log.error('Person :: Get Method', data);
+                        }
+                    });
+                };
+                this._personId = personId;
+                this.saved = false;
+                $(document).ready(function () {
+                    $('#personChildrenTabs')
+                        .on('click a#phones', function (e) {
+                        e.preventDefault();
+                        _this.getPhones();
+                        $(e.target).tab('show');
+                    })
+                        .on('click a#documents', function (e) {
+                        e.preventDefault();
+                        $(this).tab('show');
+                    })
+                        .on('click a#addresses', function (e) {
+                        e.preventDefault();
+                        $(this).tab('show');
+                    });
+                });
+                this.getPerson(function () { _this.applyViewModel(_this); });
+            }
+            return Detail;
+        })(Base);
+        ViewModel.Detail = Detail;
     })(ViewModel = Person.ViewModel || (Person.ViewModel = {}));
 })(Person || (Person = {}));
 //# sourceMappingURL=Person.js.map

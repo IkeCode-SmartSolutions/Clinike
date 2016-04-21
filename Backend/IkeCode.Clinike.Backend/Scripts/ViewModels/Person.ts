@@ -5,6 +5,30 @@
 ///<reference path="../typings/moment/moment.d.ts" />
 ///<reference path="../typings/custom/custom.d.ts" />
 module Person.Models {
+    export interface IPhone {
+        Id: KnockoutObservable<number>;
+        DateIns: KnockoutObservable<Date>;
+        LastUpdate: KnockoutObservable<Date>;
+        Number: KnockoutObservable<string>;
+    }
+
+    export class Phone implements IPhone {
+        Id: KnockoutObservable<number> = ko.observable(0);
+        DateIns: KnockoutObservable<Date> = ko.observable(new Date());
+        LastUpdate: KnockoutObservable<Date> = ko.observable(new Date());
+        Number: KnockoutObservable<string> = ko.observable('');
+
+        constructor(phone?: IPhone) {
+            $utils.log.verbose('Person.Models.Phone :: constructor [phone]', phone);
+            if (phone) {
+                this.Id(phone.Id());
+                this.DateIns(phone.DateIns());
+                this.LastUpdate(phone.LastUpdate());
+                this.Number(phone.Number());
+            }
+        }
+    }
+
     export interface IPerson {
         Id: KnockoutObservable<number>;
         DateIns: KnockoutObservable<Date>;
@@ -21,6 +45,7 @@ module Person.Models {
         Email: KnockoutObservable<string> = ko.observable('');
 
         constructor(person?: IPerson) {
+            $utils.log.verbose('Person.Models.Person :: constructor [person]', person);
             if (person) {
                 this.Id(person.Id());
                 this.DateIns(person.DateIns());
@@ -36,6 +61,8 @@ module Person.ViewModel {
     class Base {
         protected vmBinded: boolean;
         protected vmTargetElement: any;
+        protected saved: boolean;
+        person: KnockoutObservable<Person.Models.IPerson> = ko.observable(new Person.Models.Person());
 
         constructor(targetElement: any) {
             this.vmTargetElement = targetElement;
@@ -54,14 +81,12 @@ module Person.ViewModel {
 
     export class List extends Base {
         people: KnockoutObservableArray<Person.Models.IPerson> = ko.observableArray([new Person.Models.Person()]);
-        person: KnockoutObservable<Person.Models.IPerson> = ko.observable(new Person.Models.Person());
         private _tableSelector: string;
-        private _saved: boolean;
 
         constructor(targetElement: HTMLElement, _tableSelector: string) {
             super(targetElement);
             this._tableSelector = _tableSelector;
-            this._saved = false;
+            this.saved = false;
 
             $(document).ready(() => {
                 $('#peopleToolbar button[name="newPerson"]').on('click', (e) => {
@@ -91,10 +116,10 @@ module Person.ViewModel {
                 $(this.vmTargetElement)
                     .modal()
                     .on('shown.bs.modal', (shownElement): any => {
-                        this._saved = false;
+                        this.saved = false;
                     })
                     .on('hide.bs.modal', (hideElement): any => {
-                        if (!this._saved) {
+                        if (!this.saved) {
                             swal({
                                 title: "Você tem certeza?"
                                 , text: "Se mudanças tiverem sido feitas você perderá, deseja mesmo continuar?"
@@ -203,7 +228,7 @@ module Person.ViewModel {
                 selector: this._tableSelector
                 , defaultParser: true
                 , selectCallback: (data, e) => {
-                    $utils.log.verbose('SelectRow :: Setting Person');
+                    $utils.log.verbose('SelectRow :: Setting Person data', data);
                     this.person(data);
                     $utils.log.verbose('SelectRow :: Activate Edit Button');
                     $('#peopleToolbar button[name="fullEditPerson"]').removeAttr('disabled');
@@ -241,7 +266,7 @@ module Person.ViewModel {
         }
 
         public save = () => {
-            this._saved = true;
+            this.saved = true;
             var personJs = ko.toJS(this.person());
             var type = 'POST';
             var url = $utils.baseApiUrls.person;
@@ -295,6 +320,102 @@ module Person.ViewModel {
                 },
                 error: (data) => {
                     $utils.log.error('Person :: Save Method', data);
+                }
+            });
+        }
+    }
+
+    export class Detail extends Base {
+        private _personId: number;
+        phones: KnockoutObservableArray<Person.Models.IPhone> = ko.observableArray([new Person.Models.Phone()]);
+
+        constructor(targetElement: HTMLElement, personId: number) {
+            super(targetElement);
+
+            this._personId = personId;
+            this.saved = false;
+
+            $(document).ready(() => {
+                $('#personChildrenTabs')
+                    .on('click a#phones', (e) => {
+                        e.preventDefault();
+
+                        this.getPhones();
+
+                        $(e.target).tab('show');
+                    })
+                    .on('click a#documents', function (e) {
+                        e.preventDefault();
+                        $(this).tab('show');
+                    })
+                    .on('click a#addresses', function (e) {
+                        e.preventDefault();
+                        $(this).tab('show');
+                    });
+            });
+            this.getPerson(() => { this.applyViewModel(this); });
+        }
+        
+        private getPhones = () => {
+            var url = $utils.baseApiUrls.phone;
+
+            $.ajax({
+                url: url,
+                contentType: "application/json",
+                async: true,
+                dataType: "json",
+                type: 'GET',
+                data: { personId: this._personId },
+                success: (data) => {
+                    $utils.log.verbose('Person getPhones :: ajax result', data);
+
+                    if (data.Status == 'Success') {
+                        this.phones(data.Content.Items);
+                    } else {
+                        swal({
+                            title: "Ooops..."
+                            , text: "Ocorreu um problema em sua requisição, tente novamente!"
+                            , type: "error"
+                        });
+                    }
+                },
+                error: (data) => {
+                    $utils.log.error('Phone :: Get Method', data);
+                }
+            });
+        }
+
+        private getPerson = (successCallback?: () => any, errorCallback?: () => any) => {
+            var url = $utils.baseApiUrls.person;
+
+            $.ajax({
+                url: url,
+                contentType: "application/json",
+                async: true,
+                dataType: "json",
+                type: 'GET',
+                data: { id: this._personId },
+                success: (data) => {
+                    $utils.log.verbose('Person getPerson :: ajax result', data);
+
+                    if (data.Status == 'Success') {
+                        this.person(data.Content);
+
+                        if (successCallback)
+                            successCallback();
+                    } else {
+                        swal({
+                            title: "Ooops..."
+                            , text: "Ocorreu um problema em sua requisição, tente novamente!"
+                            , type: "error"
+                        });
+
+                        if (errorCallback)
+                            errorCallback();
+                    }
+                },
+                error: (data) => {
+                    $utils.log.error('Person :: Get Method', data);
                 }
             });
         }

@@ -12,7 +12,10 @@ function ClinikeUtils() {
 	var self = this;
 
 	self.baseApiUrls = {
-		person: 'http://localhost:11666/api/Person',
+	    person: 'http://localhost:11666/api/Person',
+	    phone: 'http://localhost:11666/api/Phone',
+	    document: 'http://localhost:11666/api/Document',
+	    address: 'http://localhost:11666/api/Address',
 		calendar: 'http://localhost:11666/api/Calendar'
 	};
 

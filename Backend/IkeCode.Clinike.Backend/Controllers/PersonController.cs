@@ -21,7 +21,7 @@ namespace IkeCode.Clinike.Backend.Controllers
         {
             ViewBag.Title = "Detalhe de Pessoa";
             SetPageTitle(string.Format("Detalhe de Pessoa [Id: {0}]", id), "fa-user");
-            return View();
+            return View(id);
         }
     }
 }

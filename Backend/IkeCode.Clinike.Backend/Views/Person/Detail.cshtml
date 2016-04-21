@@ -1,3 +1,38 @@
-﻿<div class="row">
-    @Html.Partial("_Detail")
+﻿@model int
+<div class="row" id="divPersonEditForm">
+    <div data-bind="with: $root.person">
+        @Html.Partial("_Detail")
+    </div>
+    <div class="col-sm-12">
+        @*<div class="pull-right">
+            <button class="btn btn-primary" data-bind="">Carregar Telefones</button>
+            <button class="btn btn-primary" data-bind="">Carregar Endereços</button>
+            <button class="btn btn-primary" data-bind="">Carregar Documentos</button>
+        </div>*@
+        <ul id="personChildrenTabs" class="nav nav-tabs">
+            <li>
+                <a href="#phones" data-toggle="tab"><i class="fa fa-phone"></i> Telefones <span class="label label-success">3</span></a>
+            </li>
+            <li>
+                <a href="#addresses" data-toggle="tab"><i class="fa fa-home"></i> Endereços <span class="label label-success">1</span></a>
+            </li>
+            <li>
+                <a href="#documents" data-toggle="tab"><i class="fa fa-file-text"></i> Documentos <span class="label label-success">2</span></a>
+            </li>
+        </ul>
+
+        <div class="tab-content tab-content-bordered">
+            <div role="tabpanel" class="tab-pane" id="phones">Carregando Telefones...</div>
+            <div role="tabpanel" class="tab-pane" id="addresses">Carregando Endereços...</div>
+            <div role="tabpanel" class="tab-pane" id="documents">Carregando Documentos...</div>
+        </div>
+    </div>
 </div>
+
+@section scripts{
+
+    <script type="text/javascript">
+        var personViewModel = new Person.ViewModel.Detail($('#divPersonEditForm')[0], @Html.Raw(Model));
+    </script>
+
+}

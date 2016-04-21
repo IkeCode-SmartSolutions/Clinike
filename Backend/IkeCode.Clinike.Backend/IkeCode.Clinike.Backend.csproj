@@ -206,7 +206,12 @@
     <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Person.ts" />
-    <Content Include="Scripts\ViewModels\Person.js" />
+    <Content Include="Scripts\ViewModels\Person.js">
+      <DependentUpon>Person.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\ViewModels\Person.js.map">
+      <DependentUpon>Person.ts</DependentUpon>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -247,7 +252,6 @@
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Person\Detail.cshtml" />
-    <Content Include="Scripts\ViewModels\Person.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
