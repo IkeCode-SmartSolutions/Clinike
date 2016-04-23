@@ -77,6 +77,13 @@ module Person.ViewModel {
                 this.vmBinded = true;
             }
         }
+
+        protected dateFormatter = (value, row, index) => {
+            //$utils.log.verbose('Bootstrap Table dateFormatter :: value', value);
+            //$utils.log.verbose('Bootstrap Table dateFormatter :: row', row);
+            //$utils.log.verbose('Bootstrap Table dateFormatter :: index', index);
+            return moment(value).format('DD/MM/YYYY HH:mm:ss');
+        };
     }
 
     export class List extends Base {
@@ -211,14 +218,7 @@ module Person.ViewModel {
                 });
             }
         };
-
-        private dateFormatter = (value, row, index) => {
-            //$utils.log.verbose('Bootstrap Table dateFormatter :: value', value);
-            //$utils.log.verbose('Bootstrap Table dateFormatter :: row', row);
-            //$utils.log.verbose('Bootstrap Table dateFormatter :: index', index);
-            return moment(value).format('DD/MM/YYYY HH:mm:ss');
-        };
-
+        
         private actionsFormatter = (value, row, index) => {
             return $('#peopleRowActions').html();
         };
@@ -328,6 +328,7 @@ module Person.ViewModel {
     export class Detail extends Base {
         private _personId: number;
         phones: KnockoutObservableArray<Person.Models.IPhone> = ko.observableArray([new Person.Models.Phone()]);
+        phone: KnockoutObservable<Person.Models.IPhone> = ko.observable(new Person.Models.Phone());
 
         constructor(targetElement: HTMLElement, personId: number) {
             super(targetElement);
@@ -355,33 +356,55 @@ module Person.ViewModel {
             });
             this.getPerson(() => { this.applyViewModel(this); });
         }
-        
+
         private getPhones = () => {
-            var url = $utils.baseApiUrls.phone;
-
-            $.ajax({
-                url: url,
-                contentType: "application/json",
-                async: true,
-                dataType: "json",
-                type: 'GET',
-                data: { personId: this._personId },
-                success: (data) => {
-                    $utils.log.verbose('Person getPhones :: ajax result', data);
-
-                    if (data.Status == 'Success') {
-                        this.phones(data.Content.Items);
-                    } else {
-                        swal({
-                            title: "Ooops..."
-                            , text: "Ocorreu um problema em sua requisição, tente novamente!"
-                            , type: "error"
-                        });
-                    }
-                },
-                error: (data) => {
-                    $utils.log.error('Phone :: Get Method', data);
+            var table = new $utils.bootstrapTable.load({
+                selector: "#dtPhones"
+                , defaultParser: true
+                , customQueryParams: { personId: this._personId }
+                , selectCallback: (data, e) => {
+                    $utils.log.verbose('SelectRow :: Setting Phone data', data);
+                    this.phone(data);
+                    $utils.log.verbose('SelectRow :: Activate Phone Edit Button');
+                    $('#phonesToolbar button[name="fullEdit"]').removeAttr('disabled');
                 }
+                , toolbar: '#phonesToolbar'
+                , columns: [
+                    {
+                        field: 'Id',
+                        title: 'ID'
+                    }
+                    , {
+                        field: 'DateIns',
+                        title: 'Data de Criação',
+                        formatter: this.dateFormatter
+                    }
+                    , {
+                        field: 'Number',
+                        title: 'Numero'
+                    }
+                    , {
+                        field: 'Contact',
+                        title: 'Contato'
+                    }
+                    , {
+                        field: 'AcceptSMS',
+                        title: 'SMS?'
+                    }
+                    , {
+                        field: 'PhoneType',
+                        title: 'Tipo'
+                    }
+                    //, {
+                    //    field: 'operate',
+                    //    title: 'Ações',
+                    //    align: 'center',
+                    //    events: this.actionsEvents,
+                    //    formatter: this.actionsFormatter,
+                    //    width: '100px'
+                    //}
+                ]
+                , url: $utils.baseApiUrls.phone
             });
         }
 

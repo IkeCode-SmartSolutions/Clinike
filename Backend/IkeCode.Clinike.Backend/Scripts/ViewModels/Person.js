@@ -58,6 +58,12 @@ var Person;
         var Base = (function () {
             function Base(targetElement) {
                 this.person = ko.observable(new Person.Models.Person());
+                this.dateFormatter = function (value, row, index) {
+                    //$utils.log.verbose('Bootstrap Table dateFormatter :: value', value);
+                    //$utils.log.verbose('Bootstrap Table dateFormatter :: row', row);
+                    //$utils.log.verbose('Bootstrap Table dateFormatter :: index', index);
+                    return moment(value).format('DD/MM/YYYY HH:mm:ss');
+                };
                 this.vmTargetElement = targetElement;
             }
             Base.prototype.applyViewModel = function (data) {
@@ -183,12 +189,6 @@ var Person;
                         });
                     }
                 };
-                this.dateFormatter = function (value, row, index) {
-                    //$utils.log.verbose('Bootstrap Table dateFormatter :: value', value);
-                    //$utils.log.verbose('Bootstrap Table dateFormatter :: row', row);
-                    //$utils.log.verbose('Bootstrap Table dateFormatter :: index', index);
-                    return moment(value).format('DD/MM/YYYY HH:mm:ss');
-                };
                 this.actionsFormatter = function (value, row, index) {
                     return $('#peopleRowActions').html();
                 };
@@ -313,31 +313,47 @@ var Person;
                 var _this = this;
                 _super.call(this, targetElement);
                 this.phones = ko.observableArray([new Person.Models.Phone()]);
+                this.phone = ko.observable(new Person.Models.Phone());
                 this.getPhones = function () {
-                    var url = $utils.baseApiUrls.phone;
-                    $.ajax({
-                        url: url,
-                        contentType: "application/json",
-                        async: true,
-                        dataType: "json",
-                        type: 'GET',
-                        data: { personId: _this._personId },
-                        success: function (data) {
-                            $utils.log.verbose('Person getPhones :: ajax result', data);
-                            if (data.Status == 'Success') {
-                                _this.phones(data.Content.Items);
-                            }
-                            else {
-                                swal({
-                                    title: "Ooops...",
-                                    text: "Ocorreu um problema em sua requisição, tente novamente!",
-                                    type: "error"
-                                });
-                            }
+                    var table = new $utils.bootstrapTable.load({
+                        selector: "#dtPhones",
+                        defaultParser: true,
+                        customQueryParams: { personId: _this._personId },
+                        selectCallback: function (data, e) {
+                            $utils.log.verbose('SelectRow :: Setting Phone data', data);
+                            _this.phone(data);
+                            $utils.log.verbose('SelectRow :: Activate Phone Edit Button');
+                            $('#phonesToolbar button[name="fullEdit"]').removeAttr('disabled');
                         },
-                        error: function (data) {
-                            $utils.log.error('Phone :: Get Method', data);
-                        }
+                        toolbar: '#phonesToolbar',
+                        columns: [
+                            {
+                                field: 'Id',
+                                title: 'ID'
+                            },
+                            {
+                                field: 'DateIns',
+                                title: 'Data de Criação',
+                                formatter: _this.dateFormatter
+                            },
+                            {
+                                field: 'Number',
+                                title: 'Numero'
+                            },
+                            {
+                                field: 'Contact',
+                                title: 'Contato'
+                            },
+                            {
+                                field: 'AcceptSMS',
+                                title: 'SMS?'
+                            },
+                            {
+                                field: 'PhoneType',
+                                title: 'Tipo'
+                            }
+                        ],
+                        url: $utils.baseApiUrls.phone
                     });
                 };
                 this.getPerson = function (successCallback, errorCallback) {

@@ -22,7 +22,27 @@
         </ul>
 
         <div class="tab-content tab-content-bordered">
-            <div role="tabpanel" class="tab-pane" id="phones">Carregando Telefones...</div>
+            <div role="tabpanel" class="tab-pane" id="phones">
+                <div id="phonesRowActions" style="display: none">
+                    <a class="personEdit" href="javascript:void(0)" title="Editação Compacta">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                    <a class="personDelete" href="javascript:void(0)" title="Apagar">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </div>
+                <div id="phonesToolbar">
+                    <button class="btn btn-success" type="button" name="new" title="Novo">
+                        <i class="fa fa-plus"></i>
+                        Novo
+                    </button>
+                    <button class="btn btn-primary" disabled="disabled" name="fullEdit" title="Editar">
+                        <i class="fa fa-pencil"></i>
+                        Edição completa
+                    </button>
+                </div>
+                <table id="dtPhones" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered"></table>
+            </div>
             <div role="tabpanel" class="tab-pane" id="addresses">Carregando Endereços...</div>
             <div role="tabpanel" class="tab-pane" id="documents">Carregando Documentos...</div>
         </div>
