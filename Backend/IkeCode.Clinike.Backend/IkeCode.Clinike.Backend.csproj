@@ -190,21 +190,44 @@
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-zh-TW.js" />
     <Content Include="Scripts\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <TypeScriptCompile Include="Scripts\clinike.ajax.ts" />
+    <TypeScriptCompile Include="Scripts\clinike.ts" />
+    <Content Include="Scripts\clinike.ajax.js">
+      <DependentUpon>clinike.ajax.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.js">
+      <DependentUpon>clinike.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.js.map">
+      <DependentUpon>clinike.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.prototype.utils.js" />
     <Content Include="Scripts\datatable.js" />
     <Content Include="Scripts\ie.min.js" />
-    <Content Include="Scripts\knockout-3.4.0.debug.js" />
+    <Content Include="Scripts\knockout-3.4.0.debug.js">
+      <DependentUpon>knockout-3.4.0.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\knockout-3.4.0.js" />
-    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
+    <Content Include="Scripts\knockout.mapping-latest.debug.js">
+      <DependentUpon>knockout.mapping-latest.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\knockout.reactor.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\pixel-admin.js" />
-    <Content Include="Scripts\pixel-admin.min.js" />
+    <Content Include="Scripts\pixel-admin.min.js">
+      <DependentUpon>pixel-admin.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\r.js">
+      <DependentUpon>require.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\require.js" />
     <Content Include="Scripts\sweetalert.js" />
     <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\custom\custom.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\requirejs\require.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\Person.ts" />
     <Content Include="Scripts\ViewModels\Person.js">
       <DependentUpon>Person.ts</DependentUpon>
@@ -245,13 +268,15 @@
     <Content Include="Views\Person\_Detail.cshtml" />
     <Content Include="Scripts\datatable.i18n\pt-br.json" />
     <Content Include="Scripts\datatable.i18n\es-es.json" />
-    <Content Include="Scripts\clinike.utils.js" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-en-US.js.template" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Person\Detail.cshtml" />
+    <Content Include="Scripts\clinike.ajax.js.map">
+      <DependentUpon>clinike.ajax.ts</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -283,11 +308,11 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptTarget>ES6</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile />
     <TypeScriptOutDir />

@@ -5,7 +5,7 @@ interface JQuery {
 }
 
 interface String {
-    format(params: any): string;
+    format(...params: any[]): string;
 }
 
 declare var $utils: any;

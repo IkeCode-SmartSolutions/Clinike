@@ -3,8 +3,61 @@
 ///<reference path="../typings/knockout/knockout.d.ts" />
 ///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
 ///<reference path="../typings/moment/moment.d.ts" />
+///<reference path="../typings/requirejs/require.d.ts" />
 ///<reference path="../typings/custom/custom.d.ts" />
+///<reference path="../clinike.ts" />
 module Person.Models {
+    export interface IAddress {
+        Id: KnockoutObservable<number>;
+        DateIns: KnockoutObservable<Date>;
+        LastUpdate: KnockoutObservable<Date>;
+        Street: KnockoutObservable<string>;
+        Number: KnockoutObservable<string>;
+    }
+
+    export class Address implements IAddress {
+        Id: KnockoutObservable<number> = ko.observable(0);
+        DateIns: KnockoutObservable<Date> = ko.observable(new Date());
+        LastUpdate: KnockoutObservable<Date> = ko.observable(new Date());
+        Street: KnockoutObservable<string> = ko.observable('');
+        Number: KnockoutObservable<string> = ko.observable('');
+
+        constructor(addr?: IAddress) {
+            $log.verbose('Person.Models.Document :: constructor [address]', addr);
+            if (addr) {
+                this.Id(addr.Id());
+                this.DateIns(addr.DateIns());
+                this.LastUpdate(addr.LastUpdate());
+                this.Number(addr.Number());
+                this.Street(addr.Street());
+            }
+        }
+    }
+
+    export interface IDocument {
+        Id: KnockoutObservable<number>;
+        DateIns: KnockoutObservable<Date>;
+        LastUpdate: KnockoutObservable<Date>;
+        Value: KnockoutObservable<string>;
+    }
+
+    export class Document implements IDocument {
+        Id: KnockoutObservable<number> = ko.observable(0);
+        DateIns: KnockoutObservable<Date> = ko.observable(new Date());
+        LastUpdate: KnockoutObservable<Date> = ko.observable(new Date());
+        Value: KnockoutObservable<string> = ko.observable('');
+
+        constructor(doc?: IDocument) {
+            $log.verbose('Person.Models.Document :: constructor [document]', doc);
+            if (doc) {
+                this.Id(doc.Id());
+                this.DateIns(doc.DateIns());
+                this.LastUpdate(doc.LastUpdate());
+                this.Value(doc.Value());
+            }
+        }
+    }
+
     export interface IPhone {
         Id: KnockoutObservable<number>;
         DateIns: KnockoutObservable<Date>;
@@ -19,7 +72,7 @@ module Person.Models {
         Number: KnockoutObservable<string> = ko.observable('');
 
         constructor(phone?: IPhone) {
-            $utils.log.verbose('Person.Models.Phone :: constructor [phone]', phone);
+            $log.verbose('Person.Models.Phone :: constructor [phone]', phone);
             if (phone) {
                 this.Id(phone.Id());
                 this.DateIns(phone.DateIns());
@@ -45,7 +98,7 @@ module Person.Models {
         Email: KnockoutObservable<string> = ko.observable('');
 
         constructor(person?: IPerson) {
-            $utils.log.verbose('Person.Models.Person :: constructor [person]', person);
+            $log.verbose('Person.Models.Person :: constructor [person]', person);
             if (person) {
                 this.Id(person.Id());
                 this.DateIns(person.DateIns());
@@ -58,7 +111,7 @@ module Person.Models {
 }
 
 module Person.ViewModel {
-    class Base {
+    export class Base {
         protected vmBinded: boolean;
         protected vmTargetElement: any;
         protected saved: boolean;
@@ -70,18 +123,18 @@ module Person.ViewModel {
 
         protected applyViewModel(data: any) {
             if (this.vmBinded) {
-                $utils.log.verbose('Ko :: Binding already applied to >', this.vmTargetElement);
+                $log.verbose('Ko :: Binding already applied to >', this.vmTargetElement);
             } else {
-                $utils.log.verbose('Ko :: Applying Binding to >', this.vmTargetElement);
+                $log.verbose('Ko :: Applying Binding to >', this.vmTargetElement);
                 ko.applyBindings(data, this.vmTargetElement);
                 this.vmBinded = true;
             }
         }
 
         protected dateFormatter = (value, row, index) => {
-            //$utils.log.verbose('Bootstrap Table dateFormatter :: value', value);
-            //$utils.log.verbose('Bootstrap Table dateFormatter :: row', row);
-            //$utils.log.verbose('Bootstrap Table dateFormatter :: index', index);
+            //$log.verbose('Bootstrap Table dateFormatter :: value', value);
+            //$log.verbose('Bootstrap Table dateFormatter :: row', row);
+            //$log.verbose('Bootstrap Table dateFormatter :: index', index);
             return moment(value).format('DD/MM/YYYY HH:mm:ss');
         };
     }
@@ -102,9 +155,9 @@ module Person.ViewModel {
                 });
 
                 $('#peopleToolbar button[name="fullEditPerson"]').on('click', (e) => {
-                    $utils.log.verbose('People Table :: full edit clicked');
+                    $log.verbose('People Table :: full edit clicked');
                     var url = this.getDetailPageUrl(this.person().Id);
-                    $utils.log.verbose('People Table :: full edit clicked url', url);
+                    $log.verbose('People Table :: full edit clicked url', url);
                     window.open(url, '_blank');
                 });
             });
@@ -151,9 +204,9 @@ module Person.ViewModel {
                     });
             },
             'click .personDelete': (e, value, row, index): any => {
-                //$utils.log.verbose('PeopleViewModel personDelete e', e);
-                //$utils.log.verbose('PeopleViewModel personDelete row', row);
-                //$utils.log.verbose('PeopleViewModel personDelete index', index);
+                //$log.verbose('PeopleViewModel personDelete e', e);
+                //$log.verbose('PeopleViewModel personDelete row', row);
+                //$log.verbose('PeopleViewModel personDelete index', index);
 
                 swal({
                     title: "Você tem certeza?"
@@ -168,13 +221,13 @@ module Person.ViewModel {
                 }, (isConfirm) => {
                     if (isConfirm) {
                         $.ajax({
-                            url: $utils.baseApiUrls.person + '/' + this.person().Id,
+                            url: $apis.person + '/' + this.person().Id,
                             contentType: "application/json",
                             async: true,
                             dataType: "json",
                             type: 'DELETE',
                             success: (data) => {
-                                $utils.log.verbose('PeopleViewModel personDelete ajax result data', data);
+                                $log.verbose('PeopleViewModel personDelete ajax result data', data);
                                 if (data.Status == 'Success') {
                                     $(this._tableSelector).bootstrapTable('remove', {
                                         field: 'Id',
@@ -218,19 +271,19 @@ module Person.ViewModel {
                 });
             }
         };
-        
+
         private actionsFormatter = (value, row, index) => {
             return $('#peopleRowActions').html();
         };
 
         private renderPeopleGrid = () => {
-            var table = new $utils.bootstrapTable.load({
+            var table = $bootstrapTable.load({
                 selector: this._tableSelector
                 , defaultParser: true
                 , selectCallback: (data, e) => {
-                    $utils.log.verbose('SelectRow :: Setting Person data', data);
+                    $log.verbose('SelectRow :: Setting Person data', data);
                     this.person(data);
-                    $utils.log.verbose('SelectRow :: Activate Edit Button');
+                    $log.verbose('SelectRow :: Activate Edit Button');
                     $('#peopleToolbar button[name="fullEditPerson"]').removeAttr('disabled');
                 }
                 , toolbar: '#peopleToolbar'
@@ -261,7 +314,7 @@ module Person.ViewModel {
                         width: '100px'
                     }
                 ]
-                , url: $utils.baseApiUrls.person
+                , url: $apis.person
             });
         }
 
@@ -269,7 +322,7 @@ module Person.ViewModel {
             this.saved = true;
             var personJs = ko.toJS(this.person());
             var type = 'POST';
-            var url = $utils.baseApiUrls.person;
+            var url = $apis.person;
 
             if (personJs.Id > 0) {
                 type = 'PUT';
@@ -284,7 +337,7 @@ module Person.ViewModel {
                 type: type,
                 data: JSON.stringify(personJs),
                 success: (data) => {
-                    $utils.log.verbose('Person Edit Save :: ajax result', data);
+                    $log.verbose('Person Edit Save :: ajax result', data);
 
                     if (data.Status == 'Success') {
                         swal({
@@ -319,7 +372,7 @@ module Person.ViewModel {
                     }
                 },
                 error: (data) => {
-                    $utils.log.error('Person :: Save Method', data);
+                    $log.error('Person :: Save Method', data);
                 }
             });
         }
@@ -327,8 +380,18 @@ module Person.ViewModel {
 
     export class Detail extends Base {
         private _personId: number;
-        phones: KnockoutObservableArray<Person.Models.IPhone> = ko.observableArray([new Person.Models.Phone()]);
+
+        phones: KnockoutObservableArray<Person.Models.IPhone> = ko.observableArray(new Array<Person.Models.Phone>());
+        phonesLoaded: boolean = false;
         phone: KnockoutObservable<Person.Models.IPhone> = ko.observable(new Person.Models.Phone());
+
+        document: KnockoutObservable<Person.Models.IDocument> = ko.observable(new Person.Models.Document());
+        documentsLoaded: boolean = false;
+        documents: KnockoutObservableArray<Person.Models.IDocument> = ko.observableArray(new Array<Person.Models.Document>());
+
+        address: KnockoutObservable<Person.Models.IAddress> = ko.observable(new Person.Models.Address());
+        addressesLoaded: boolean = false;
+        addresses: KnockoutObservableArray<Person.Models.IAddress> = ko.observableArray(new Array<Person.Models.Address>());
 
         constructor(targetElement: HTMLElement, personId: number) {
             super(targetElement);
@@ -336,80 +399,195 @@ module Person.ViewModel {
             this._personId = personId;
             this.saved = false;
 
-            $(document).ready(() => {
-                $('#personChildrenTabs')
-                    .on('click a#phones', (e) => {
-                        e.preventDefault();
+            var loadGrid = (e: JQueryEventObject, callback: () => any) => {
+                e.preventDefault();
+                callback();
+                $(e.target).tab('show');
+            }
+            
+            this.applyViewModel(this);
 
-                        this.getPhones();
+            if (this._personId > 0) {
+                $('#personChildrenTabs a[href="#phones"]').on('click', (e) => {
+                    loadGrid(e, this.getPhones);
+                });
 
-                        $(e.target).tab('show');
-                    })
-                    .on('click a#documents', function (e) {
-                        e.preventDefault();
-                        $(this).tab('show');
-                    })
-                    .on('click a#addresses', function (e) {
-                        e.preventDefault();
-                        $(this).tab('show');
-                    });
-            });
-            this.getPerson(() => { this.applyViewModel(this); });
+                $('#personChildrenTabs a[href="#documents"]').on('click', (e) => {
+                    loadGrid(e, this.getDocuments);
+                });
+
+                $('#personChildrenTabs a[href="#addresses"]').on('click', (e) => {
+                    loadGrid(e, this.getAddresses);
+                });
+
+                this.getPerson();
+            }
         }
 
         private getPhones = () => {
-            var table = new $utils.bootstrapTable.load({
-                selector: "#dtPhones"
-                , defaultParser: true
-                , customQueryParams: { personId: this._personId }
-                , selectCallback: (data, e) => {
-                    $utils.log.verbose('SelectRow :: Setting Phone data', data);
-                    this.phone(data);
-                    $utils.log.verbose('SelectRow :: Activate Phone Edit Button');
-                    $('#phonesToolbar button[name="fullEdit"]').removeAttr('disabled');
-                }
-                , toolbar: '#phonesToolbar'
-                , columns: [
-                    {
-                        field: 'Id',
-                        title: 'ID'
+            if (!this.phonesLoaded) {
+                this.phonesLoaded = true;
+                $bootstrapTable.load({
+                    selector: "#dtPhones"
+                    , defaultParser: true
+                    , customQueryParams: { personId: this._personId }
+                    , responseHandler: (result) => {
+                        this.phones(result.Content.Items);
+
+                        var data = $bootstrapTable.defaultParser(result);
+                        return data;
                     }
-                    , {
-                        field: 'DateIns',
-                        title: 'Data de Criação',
-                        formatter: this.dateFormatter
+                    , selectCallback: (data, e) => {
+                        $log.verbose('SelectRow :: Setting Phone data', data);
+                        this.phone(data);
+                        $log.verbose('SelectRow :: Activate Phone Edit Button');
+                        $('#phonesToolbar button[name="fullEdit"]').removeAttr('disabled');
                     }
-                    , {
-                        field: 'Number',
-                        title: 'Numero'
+                    , toolbar: '#phonesToolbar'
+                    , columns: [
+                        {
+                            field: 'Id',
+                            title: 'ID'
+                        }
+                        , {
+                            field: 'DateIns',
+                            title: 'Data de Criação',
+                            formatter: this.dateFormatter
+                        }
+                        , {
+                            field: 'Number',
+                            title: 'Numero'
+                        }
+                        , {
+                            field: 'Contact',
+                            title: 'Contato'
+                        }
+                        , {
+                            field: 'AcceptSMS',
+                            title: 'Aceita SMS?'
+                        }
+                        , {
+                            field: 'PhoneType',
+                            title: 'Tipo'
+                        }
+                        //, {
+                        //    field: 'operate',
+                        //    title: 'Ações',
+                        //    align: 'center',
+                        //    events: this.actionsEvents,
+                        //    formatter: this.actionsFormatter,
+                        //    width: '100px'
+                        //}
+                    ]
+                    , url: $apis.phone
+                });
+            }
+        }
+
+        private getDocuments = () => {
+            if (!this.documentsLoaded) {
+                this.documentsLoaded = true;
+                $bootstrapTable.load({
+                    selector: "#dtDocuments"
+                    , defaultParser: true
+                    , customQueryParams: { personId: this._personId }
+                    , responseHandler: (result) => {
+                        var data = $bootstrapTable.defaultParser(result);
+
+                        this.documents(result.Content.Items);
+
+                        return data;
                     }
-                    , {
-                        field: 'Contact',
-                        title: 'Contato'
+                    , selectCallback: (data, e) => {
+                        $log.verbose('SelectRow :: Setting Documents data', data);
+                        this.document(data);
+                        $log.verbose('SelectRow :: Activate Document Edit Button');
+                        $('#documentsToolbar button[name="fullEdit"]').removeAttr('disabled');
                     }
-                    , {
-                        field: 'AcceptSMS',
-                        title: 'SMS?'
+                    , toolbar: '#documentsToolbar'
+                    , columns: [
+                        {
+                            field: 'Id',
+                            title: 'ID'
+                        }
+                        , {
+                            field: 'DateIns',
+                            title: 'Data de Criação',
+                            formatter: this.dateFormatter
+                        }
+                        , {
+                            field: 'Value',
+                            title: 'Valor'
+                        }
+                        //, {
+                        //    field: 'operate',
+                        //    title: 'Ações',
+                        //    align: 'center',
+                        //    events: this.actionsEvents,
+                        //    formatter: this.actionsFormatter,
+                        //    width: '100px'
+                        //}
+                    ]
+                    , url: $apis.document
+                });
+            }
+        }
+
+        private getAddresses = () => {
+            if (!this.addressesLoaded) {
+                this.addressesLoaded = true;
+                $bootstrapTable.load({
+                    selector: "#dtAddresses"
+                    , defaultParser: true
+                    , customQueryParams: { personId: this._personId }
+                    , responseHandler: (result) => {
+                        var data = $bootstrapTable.defaultParser(result);
+
+                        this.addresses(result.Content.Items);
+
+                        return data;
                     }
-                    , {
-                        field: 'PhoneType',
-                        title: 'Tipo'
+                    , selectCallback: (data, e) => {
+                        $log.verbose('SelectRow :: Setting Addresses data', data);
+                        this.address(data);
+                        $log.verbose('SelectRow :: Activate Address Edit Button');
+                        $('#addressesToolbar button[name="fullEdit"]').removeAttr('disabled');
                     }
-                    //, {
-                    //    field: 'operate',
-                    //    title: 'Ações',
-                    //    align: 'center',
-                    //    events: this.actionsEvents,
-                    //    formatter: this.actionsFormatter,
-                    //    width: '100px'
-                    //}
-                ]
-                , url: $utils.baseApiUrls.phone
-            });
+                    , toolbar: '#addressesToolbar'
+                    , columns: [
+                        {
+                            field: 'Id',
+                            title: 'ID'
+                        }
+                        , {
+                            field: 'DateIns',
+                            title: 'Data de Criação',
+                            formatter: this.dateFormatter
+                        }
+                        , {
+                            field: 'Street',
+                            title: 'Rua'
+                        }
+                        , {
+                            field: 'Number',
+                            title: 'Numero'
+                        }
+                        //, {
+                        //    field: 'operate',
+                        //    title: 'Ações',
+                        //    align: 'center',
+                        //    events: this.actionsEvents,
+                        //    formatter: this.actionsFormatter,
+                        //    width: '100px'
+                        //}
+                    ]
+                    , url: $apis.address
+                });
+            }
         }
 
         private getPerson = (successCallback?: () => any, errorCallback?: () => any) => {
-            var url = $utils.baseApiUrls.person;
+            var url = $apis.person;
 
             $.ajax({
                 url: url,
@@ -419,7 +597,7 @@ module Person.ViewModel {
                 type: 'GET',
                 data: { id: this._personId },
                 success: (data) => {
-                    $utils.log.verbose('Person getPerson :: ajax result', data);
+                    $log.verbose('Person getPerson :: ajax result', data);
 
                     if (data.Status == 'Success') {
                         this.person(data.Content);
@@ -438,7 +616,7 @@ module Person.ViewModel {
                     }
                 },
                 error: (data) => {
-                    $utils.log.error('Person :: Get Method', data);
+                    $log.error('Person :: Get Method', data);
                 }
             });
         }
