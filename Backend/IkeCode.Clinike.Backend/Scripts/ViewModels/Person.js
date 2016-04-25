@@ -6,6 +6,9 @@
 ///<reference path="../typings/requirejs/require.d.ts" />
 ///<reference path="../typings/custom/custom.d.ts" />
 ///<reference path="../clinike.ts" />
+///<reference path="../clinike.ajax.ts" />
+///<reference path="../clinike.log.ts" />
+///<reference path="../clinike.apiBaseUrls.ts" />
 var Person;
 (function (Person_1) {
     var Models;
@@ -477,33 +480,15 @@ var Person;
                 };
                 this.getPerson = (successCallback, errorCallback) => {
                     var url = $apis.person;
-                    $.ajax({
-                        url: url,
-                        contentType: "application/json",
-                        async: true,
-                        dataType: "json",
-                        type: 'GET',
-                        data: { id: this._personId },
-                        success: (data) => {
-                            $log.verbose('Person getPerson :: ajax result', data);
-                            if (data.Status == 'Success') {
-                                this.person(data.Content);
-                                if (successCallback)
-                                    successCallback();
-                            }
-                            else {
-                                swal({
-                                    title: "Ooops...",
-                                    text: "Ocorreu um problema em sua requisição, tente novamente!",
-                                    type: "error"
-                                });
-                                if (errorCallback)
-                                    errorCallback();
-                            }
-                        },
-                        error: (data) => {
-                            $log.error('Person :: Get Method', data);
-                        }
+                    new Clinike.Ajax({
+                        url: $apis.person,
+                        data: { id: this._personId }
+                    }, (data) => {
+                        this.person(data.Content);
+                        if (successCallback)
+                            successCallback();
+                    }, (data) => {
+                        $log.error('Person :: Get Method', data);
                     });
                 };
                 this._personId = personId;

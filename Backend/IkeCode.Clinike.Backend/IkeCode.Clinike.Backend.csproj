@@ -190,10 +190,27 @@
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-zh-TW.js" />
     <Content Include="Scripts\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <TypeScriptCompile Include="Scripts\clinike.ajax.ts" />
+    <TypeScriptCompile Include="Scripts\clinike.ajax.ts">
+      <DependentUpon>clinike.ts</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\clinike.apiBaseUrls.ts">
+      <DependentUpon>clinike.ts</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\clinike.log.ts">
+      <DependentUpon>clinike.ts</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\clinike.ts" />
     <Content Include="Scripts\clinike.ajax.js">
       <DependentUpon>clinike.ajax.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.ajax.js.map">
+      <DependentUpon>clinike.ajax.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.apiBaseUrls.js">
+      <DependentUpon>clinike.apiBaseUrls.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.apiBaseUrls.js.map">
+      <DependentUpon>clinike.apiBaseUrls.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\clinike.js">
       <DependentUpon>clinike.ts</DependentUpon>
@@ -201,7 +218,15 @@
     <Content Include="Scripts\clinike.js.map">
       <DependentUpon>clinike.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\clinike.prototype.utils.js" />
+    <Content Include="Scripts\clinike.log.js">
+      <DependentUpon>clinike.log.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.log.js.map">
+      <DependentUpon>clinike.log.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.prototype.utils.js">
+      <DependentUpon>clinike.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\datatable.js" />
     <Content Include="Scripts\ie.min.js" />
     <Content Include="Scripts\knockout-3.4.0.debug.js">
@@ -274,9 +299,6 @@
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Person\Detail.cshtml" />
-    <Content Include="Scripts\clinike.ajax.js.map">
-      <DependentUpon>clinike.ajax.ts</DependentUpon>
-    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

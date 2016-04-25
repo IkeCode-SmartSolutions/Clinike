@@ -5,65 +5,89 @@
 ///<reference path="typings/moment/moment.d.ts" />
 ///<reference path="typings/requirejs/require.d.ts" />
 ///<reference path="typings/custom/custom.d.ts" />
-module ClinikeAjax {
-    interface IkeCodeResult {
-        Content: any;
+module Clinike {
+    export interface IkeCodeResult<T> {
+        Content: T;
         Status: string;
     }
 
-    interface IkeCodeResultListModel {
+    export interface IkeCodeResultListModel {
         Offset: number;
         Limit: number;
         TotalCount: number;
         Items: any;
     }
 
-    interface IkeCodeResultList {
-        Content: IkeCodeResultListModel[];
-        Status: string;
-    }
+    export class Ajax<TAjaxResult> {
+        private _successCallback: (data: any) => any;
+        private _errorCallback: (data: JQueryXHR) => any;
+        private _parseIkeCodeResult: boolean = true;
 
-    export class Ajax {
-        private successCallback: (data: any) => any;
-        private errorCallback: (data: JQueryXHR) => any;
+        private _settingsFactory = (settings: JQueryAjaxSettings): JQueryAjaxSettings => {
+            var defaults = {
+                contentType: "application/json",
+                async: true,
+                dataType: "json",
+                type: 'GET'
+            };
 
-        private defaultSuccessCallback = (data: any): any => {
+            var callbacks = {
+                success: (data: IkeCodeResult<TAjaxResult>): any => {
+                    $log.verbose('Clinike.Ajax {0} :: result', data);
+                    if (this._successCallback) {
+                        this._successCallback(data);
+                    }
+                    else if (this._parseIkeCodeResult) {
+                        this.defaultSuccessCallback(data);
+                    }
+                },
+                error: (data): any => {
+                    if (this._errorCallback) {
+                        this._errorCallback(data);
+                    }
+                    else {
+                        this.defaultErrorCallback(data);
+                    }
+                }
+            };
+
+            var merged = $.extend(true, {}, defaults, settings, callbacks);
+
+            return merged;
+        }
+
+        private defaultSuccessCallback = (data: IkeCodeResult<TAjaxResult>): any => {
             if (data.Status == 'Success') {
-                if (this.successCallback)
-                    this.successCallback(data);
+                if (this._successCallback)
+                    this._successCallback(data);
             } else {
                 this.defaultErrorCallback(data);
             }
         }
 
-        private defaultErrorCallback = (data: JQueryXHR): any => {
+        private defaultErrorCallback = (data: any): any => {
+            $log.error('Clinike.Ajax {0} :: Error data', data);
+
             swal({
                 title: "Ooops..."
                 , text: "Ocorreu um problema em sua requisição, tente novamente!"
                 , type: "error"
             });
 
-            if (this.errorCallback)
-                this.errorCallback(data);
+            if (this._errorCallback)
+                this._errorCallback(data);
         }
 
-        private defaults: JQueryAjaxSettings = {
-            contentType: "application/json",
-            async: true,
-            dataType: "json",
-            type: 'GET',
-            success: (data) => {
-                $log.verbose('Clinike.Ajax :: result', data);
+        constructor(settings: JQueryAjaxSettings, successCallback?: (data: any) => any, errorCallback?: (data: any) => any
+            , parseIkeCodeResult: boolean = true) {
 
-                this.defaultSuccessCallback(data);
-            },
-            error: this.defaultErrorCallback
-        };
-        constructor(settings: JQueryAjaxSettings
-            , successCallback: (data: any) => any
-            , errorCallback?: (data: any) => any) {
+            this._successCallback = successCallback;
+            this._errorCallback = errorCallback;
+            this._parseIkeCodeResult = parseIkeCodeResult;
 
+            var ajaxSettings = this._settingsFactory(settings);
+
+            $.ajax(ajaxSettings);
         }
     }
 }
-

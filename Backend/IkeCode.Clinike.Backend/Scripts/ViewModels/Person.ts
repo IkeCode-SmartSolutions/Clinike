@@ -6,6 +6,9 @@
 ///<reference path="../typings/requirejs/require.d.ts" />
 ///<reference path="../typings/custom/custom.d.ts" />
 ///<reference path="../clinike.ts" />
+///<reference path="../clinike.ajax.ts" />
+///<reference path="../clinike.log.ts" />
+///<reference path="../clinike.apiBaseUrls.ts" />
 module Person.Models {
     export interface IAddress {
         Id: KnockoutObservable<number>;
@@ -404,7 +407,7 @@ module Person.ViewModel {
                 callback();
                 $(e.target).tab('show');
             }
-            
+
             this.applyViewModel(this);
 
             if (this._personId > 0) {
@@ -589,35 +592,16 @@ module Person.ViewModel {
         private getPerson = (successCallback?: () => any, errorCallback?: () => any) => {
             var url = $apis.person;
 
-            $.ajax({
-                url: url,
-                contentType: "application/json",
-                async: true,
-                dataType: "json",
-                type: 'GET',
-                data: { id: this._personId },
-                success: (data) => {
-                    $log.verbose('Person getPerson :: ajax result', data);
+            new Clinike.Ajax<Person.Models.IPerson>({
+                url: $apis.person,
+                data: { id: this._personId }
+            }, (data) => {
+                this.person(data.Content);
 
-                    if (data.Status == 'Success') {
-                        this.person(data.Content);
-
-                        if (successCallback)
-                            successCallback();
-                    } else {
-                        swal({
-                            title: "Ooops..."
-                            , text: "Ocorreu um problema em sua requisição, tente novamente!"
-                            , type: "error"
-                        });
-
-                        if (errorCallback)
-                            errorCallback();
-                    }
-                },
-                error: (data) => {
-                    $log.error('Person :: Get Method', data);
-                }
+                if (successCallback)
+                    successCallback();
+            }, (data) => {
+                $log.error('Person :: Get Method', data);
             });
         }
     }

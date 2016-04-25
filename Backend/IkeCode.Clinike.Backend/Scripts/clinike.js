@@ -5,18 +5,9 @@
 ///<reference path="typings/moment/moment.d.ts" />
 ///<reference path="typings/requirejs/require.d.ts" />
 ///<reference path="typings/custom/custom.d.ts" />
+///<reference path="clinike.log.ts" />
 var Clinike;
 (function (Clinike) {
-    class ApiBaseUrls {
-        constructor() {
-            this.person = 'http://localhost:11666/api/Person';
-            this.phone = 'http://localhost:11666/api/Phone';
-            this.document = 'http://localhost:11666/api/Document';
-            this.address = 'http://localhost:11666/api/Address';
-            this.calendar = 'http://localhost:11666/api/Calendar';
-        }
-    }
-    Clinike.ApiBaseUrls = ApiBaseUrls;
     class BootstrapTable {
         constructor() {
             this._parsedOpt = {};
@@ -119,44 +110,6 @@ var Clinike;
         }
     }
     Clinike.BootstrapTable = BootstrapTable;
-    class Log {
-        constructor() {
-            this.globalEnabled = true;
-            this.write = (identifier, message, data) => {
-                try {
-                    if (this.globalEnabled && console !== undefined && console != null
-                        && console.log !== undefined && console.log != null) {
-                        var parsedData = data !== undefined && data != null ? data : '';
-                        console.log('[{0}] {1}'.format(identifier, message), parsedData);
-                    }
-                }
-                catch (ex) { }
-            };
-            this.checkpointEnabled = true;
-            this.checkpoint = (message, data) => {
-                this.write('CHECKPOINT', message, data);
-            };
-            this.verboseEnabled = true;
-            this.verbose = (message, data) => {
-                this.write('VERBOSE', message, data);
-            };
-            this.infoEnabled = false;
-            this.info = (message, data) => {
-                this.write('INFO', message, data);
-            };
-            this.warningEnabled = true;
-            this.warning = (message, data) => {
-                this.write('WARNING', message, data);
-            };
-            this.errorEnabled = true;
-            this.error = (message, data) => {
-                this.write('ERROR', message, data);
-            };
-        }
-    }
-    Clinike.Log = Log;
 })(Clinike || (Clinike = {}));
-var $apis = new Clinike.ApiBaseUrls();
-var $log = new Clinike.Log();
 var $bst, $bsTable, $bootstrapTable = new Clinike.BootstrapTable();
 //# sourceMappingURL=clinike.js.map
