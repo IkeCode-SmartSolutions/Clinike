@@ -387,14 +387,17 @@ module Person.ViewModel {
         phones: KnockoutObservableArray<Person.Models.IPhone> = ko.observableArray(new Array<Person.Models.Phone>());
         phonesLoaded: boolean = false;
         phone: KnockoutObservable<Person.Models.IPhone> = ko.observable(new Person.Models.Phone());
+        phoneSaved: boolean = false;
 
-        document: KnockoutObservable<Person.Models.IDocument> = ko.observable(new Person.Models.Document());
-        documentsLoaded: boolean = false;
         documents: KnockoutObservableArray<Person.Models.IDocument> = ko.observableArray(new Array<Person.Models.Document>());
+        documentsLoaded: boolean = false;
+        document: KnockoutObservable<Person.Models.IDocument> = ko.observable(new Person.Models.Document());
+        documentSaved: boolean = false;
 
-        address: KnockoutObservable<Person.Models.IAddress> = ko.observable(new Person.Models.Address());
-        addressesLoaded: boolean = false;
         addresses: KnockoutObservableArray<Person.Models.IAddress> = ko.observableArray(new Array<Person.Models.Address>());
+        addressesLoaded: boolean = false;
+        address: KnockoutObservable<Person.Models.IAddress> = ko.observable(new Person.Models.Address());
+        addressSaved: boolean = false;
 
         constructor(targetElement: HTMLElement, personId: number) {
             super(targetElement);
@@ -427,7 +430,132 @@ module Person.ViewModel {
             }
         }
 
+        private buildActionsEvents = (modalTarget: any
+            , editModalShownElement?: (shownElement, row) => any
+            , editModalHideCallback?: (hideElement, row) => any
+            , deleteCallback?: (row) => any) => {
+            var result = {
+                'click .edit': (e, value, row, index): any => {
+                    $(modalTarget)
+                        .modal()
+                        .on('shown.bs.modal', (shownElement): any => {
+                            $log.verbose('shown');
+                            if (editModalShownElement)
+                                editModalShownElement(shownElement, row);
+                        })
+                        .on('hide.bs.modal', (hideElement): any => {
+                            if (editModalHideCallback)
+                                editModalHideCallback(hideElement, row);
+                        });
+                },
+                'click .delete': (e, value, row, index): any => {
+                    //$log.verbose('PeopleViewModel personDelete e', e);
+                    //$log.verbose('PeopleViewModel personDelete row', row);
+                    //$log.verbose('PeopleViewModel personDelete index', index);
+                    if (deleteCallback)
+                        deleteCallback(row);
+                }
+            };
+
+            return result;
+        };
+
         private getPhones = () => {
+
+            var actionsEvents = this.buildActionsEvents('#defaultEditor'
+                , (e, row) => {
+                    $log.verbose('shown callback');
+                    this.phoneSaved = false;
+                }
+                , (e, row) => {
+                    $log.verbose('hide callback');
+                    if (!this.phoneSaved) {
+                        swal({
+                            title: "Você tem certeza?"
+                            , text: "Se mudanças tiverem sido feitas você perderá, deseja mesmo continuar?"
+                            , type: "warning"
+                            , allowEscapeKey: false
+                            , showCancelButton: true
+                            , cancelButtonColor: "#DD6B55"
+                            , cancelButtonText: "Descartar!"
+                            , confirmButtonText: "Voltar ao fomulário"
+                            , closeOnConfirm: true
+                            , closeOnCancel: true
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                $(e.target).modal('show');
+                            } else {
+                                setTimeout(() => {
+                                    swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
+                                }, 150);
+                            }
+                        });
+                    }
+                }
+                , (row) => {
+                    swal({
+                        title: "Você tem certeza?"
+                        , text: "Tem certeza que deseja excluir esse registro?"
+                        , type: "warning"
+                        , showCancelButton: true
+                        , confirmButtonColor: "#DD6B55"
+                        , confirmButtonText: "Sim"
+                        , cancelButtonText: "Não"
+                        , closeOnConfirm: true
+                        , showLoaderOnConfirm: true
+                    }, (isConfirm) => {
+                        if (isConfirm) {
+                            $.ajax({
+                                url: $apis.phone + '/' + row.Id,
+                                contentType: "application/json",
+                                async: true,
+                                dataType: "json",
+                                type: 'DELETE',
+                                success: (data) => {
+                                    $log.verbose('Phone Delete :: ajax result data', data);
+                                    if (data.Status == 'Success') {
+                                        $('#dtPhones').bootstrapTable('remove', {
+                                            field: 'Id',
+                                            values: [row.Id]
+                                        });
+
+                                        if (data.Content > 0) {
+                                            swal({
+                                                title: "Excluido!"
+                                                , text: "Registro excluido com sucesso!"
+                                                , type: "success"
+                                            });
+                                        } else {
+                                            swal({
+                                                title: "Ooops..."
+                                                , text: "Esse registro parece já ter sido excluido, mas tudo bem, atualizamos seu grid."
+                                                , type: "info"
+                                            });
+                                        }
+                                    } else {
+                                        swal({
+                                            title: "Ooops..."
+                                            , text: "Ocorreu um problema em sua requisição, tente novamente!"
+                                            , type: "error"
+                                        });
+                                    }
+                                },
+                                error: (data) => {
+                                    swal({
+                                        title: "Ooops..."
+                                        , text: "Ocorreu um erro em sua requisição! (código: {0})".format(data.statusText)
+                                        , type: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            setTimeout(() => {
+                                swal("Cancelado", "Tudo como estava! =)", "info");
+                            }, 150);
+                        }
+                    });
+                });
+
             if (!this.phonesLoaded) {
                 this.phonesLoaded = true;
                 $bootstrapTable.load({
@@ -473,14 +601,16 @@ module Person.ViewModel {
                             field: 'PhoneType',
                             title: 'Tipo'
                         }
-                        //, {
-                        //    field: 'operate',
-                        //    title: 'Ações',
-                        //    align: 'center',
-                        //    events: this.actionsEvents,
-                        //    formatter: this.actionsFormatter,
-                        //    width: '100px'
-                        //}
+                        , {
+                            field: 'operate',
+                            title: 'Ações',
+                            align: 'center',
+                            events: actionsEvents,
+                            formatter: (value, row, index) => {
+                                return $('#defaultRowActions').html();
+                            },
+                            width: '100px'
+                        }
                     ]
                     , url: $apis.phone
                 });
@@ -488,6 +618,98 @@ module Person.ViewModel {
         }
 
         private getDocuments = () => {
+            var actionsEvents = this.buildActionsEvents('#defaultEditor'
+                , (e, row) => {
+                    this.documentSaved = false;
+                }
+                , (e, row) => {
+                    if (!this.documentSaved) {
+                        swal({
+                            title: "Você tem certeza?"
+                            , text: "Se mudanças tiverem sido feitas você perderá, deseja mesmo continuar?"
+                            , type: "warning"
+                            , allowEscapeKey: false
+                            , showCancelButton: true
+                            , cancelButtonColor: "#DD6B55"
+                            , cancelButtonText: "Descartar!"
+                            , confirmButtonText: "Voltar ao fomulário"
+                            , closeOnConfirm: true
+                            , closeOnCancel: true
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                $(e.target).modal('show');
+                            } else {
+                                setTimeout(() => {
+                                    swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
+                                }, 150);
+                            }
+                        });
+                    }
+                }
+                , (row) => {
+                    swal({
+                        title: "Você tem certeza?"
+                        , text: "Tem certeza que deseja excluir esse registro?"
+                        , type: "warning"
+                        , showCancelButton: true
+                        , confirmButtonColor: "#DD6B55"
+                        , confirmButtonText: "Sim"
+                        , cancelButtonText: "Não"
+                        , closeOnConfirm: true
+                        , showLoaderOnConfirm: true
+                    }, (isConfirm) => {
+                        if (isConfirm) {
+                            $.ajax({
+                                url: $apis.document + '/' + row.Id,
+                                contentType: "application/json",
+                                async: true,
+                                dataType: "json",
+                                type: 'DELETE',
+                                success: (data) => {
+                                    $log.verbose('Documents Delete :: ajax result data', data);
+                                    if (data.Status == 'Success') {
+                                        $('#dtDocuments').bootstrapTable('remove', {
+                                            field: 'Id',
+                                            values: [row.Id]
+                                        });
+
+                                        if (data.Content > 0) {
+                                            swal({
+                                                title: "Excluido!"
+                                                , text: "Registro excluido com sucesso!"
+                                                , type: "success"
+                                            });
+                                        } else {
+                                            swal({
+                                                title: "Ooops..."
+                                                , text: "Esse registro parece já ter sido excluido, mas tudo bem, atualizamos seu grid."
+                                                , type: "info"
+                                            });
+                                        }
+                                    } else {
+                                        swal({
+                                            title: "Ooops..."
+                                            , text: "Ocorreu um problema em sua requisição, tente novamente!"
+                                            , type: "error"
+                                        });
+                                    }
+                                },
+                                error: (data) => {
+                                    swal({
+                                        title: "Ooops..."
+                                        , text: "Ocorreu um erro em sua requisição! (código: {0})".format(data.statusText)
+                                        , type: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            setTimeout(() => {
+                                swal("Cancelado", "Tudo como estava! =)", "info");
+                            }, 150);
+                        }
+                    });
+                });
+
             if (!this.documentsLoaded) {
                 this.documentsLoaded = true;
                 $bootstrapTable.load({
@@ -522,14 +744,16 @@ module Person.ViewModel {
                             field: 'Value',
                             title: 'Valor'
                         }
-                        //, {
-                        //    field: 'operate',
-                        //    title: 'Ações',
-                        //    align: 'center',
-                        //    events: this.actionsEvents,
-                        //    formatter: this.actionsFormatter,
-                        //    width: '100px'
-                        //}
+                        , {
+                            field: 'operate',
+                            title: 'Ações',
+                            align: 'center',
+                            events: actionsEvents,
+                            formatter: (value, row, index) => {
+                                return $('#defaultRowActions').html();
+                            },
+                            width: '100px'
+                        }
                     ]
                     , url: $apis.document
                 });
@@ -537,6 +761,98 @@ module Person.ViewModel {
         }
 
         private getAddresses = () => {
+            var actionsEvents = this.buildActionsEvents('#defaultEditor'
+                , (e, row) => {
+                    this.addressSaved = false;
+                }
+                , (e, row) => {
+                    if (!this.addressSaved) {
+                        swal({
+                            title: "Você tem certeza?"
+                            , text: "Se mudanças tiverem sido feitas você perderá, deseja mesmo continuar?"
+                            , type: "warning"
+                            , allowEscapeKey: false
+                            , showCancelButton: true
+                            , cancelButtonColor: "#DD6B55"
+                            , cancelButtonText: "Descartar!"
+                            , confirmButtonText: "Voltar ao fomulário"
+                            , closeOnConfirm: true
+                            , closeOnCancel: true
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                $(e.target).modal('show');
+                            } else {
+                                setTimeout(() => {
+                                    swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
+                                }, 150);
+                            }
+                        });
+                    }
+                }
+                , (row) => {
+                    swal({
+                        title: "Você tem certeza?"
+                        , text: "Tem certeza que deseja excluir esse registro?"
+                        , type: "warning"
+                        , showCancelButton: true
+                        , confirmButtonColor: "#DD6B55"
+                        , confirmButtonText: "Sim"
+                        , cancelButtonText: "Não"
+                        , closeOnConfirm: true
+                        , showLoaderOnConfirm: true
+                    }, (isConfirm) => {
+                        if (isConfirm) {
+                            $.ajax({
+                                url: $apis.document + '/' + row.Id,
+                                contentType: "application/json",
+                                async: true,
+                                dataType: "json",
+                                type: 'DELETE',
+                                success: (data) => {
+                                    $log.verbose('Address Delete :: ajax result data', data);
+                                    if (data.Status == 'Success') {
+                                        $('#dtAddresses').bootstrapTable('remove', {
+                                            field: 'Id',
+                                            values: [row.Id]
+                                        });
+
+                                        if (data.Content > 0) {
+                                            swal({
+                                                title: "Excluido!"
+                                                , text: "Registro excluido com sucesso!"
+                                                , type: "success"
+                                            });
+                                        } else {
+                                            swal({
+                                                title: "Ooops..."
+                                                , text: "Esse registro parece já ter sido excluido, mas tudo bem, atualizamos seu grid."
+                                                , type: "info"
+                                            });
+                                        }
+                                    } else {
+                                        swal({
+                                            title: "Ooops..."
+                                            , text: "Ocorreu um problema em sua requisição, tente novamente!"
+                                            , type: "error"
+                                        });
+                                    }
+                                },
+                                error: (data) => {
+                                    swal({
+                                        title: "Ooops..."
+                                        , text: "Ocorreu um erro em sua requisição! (código: {0})".format(data.statusText)
+                                        , type: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            setTimeout(() => {
+                                swal("Cancelado", "Tudo como estava! =)", "info");
+                            }, 150);
+                        }
+                    });
+                });
+
             if (!this.addressesLoaded) {
                 this.addressesLoaded = true;
                 $bootstrapTable.load({
@@ -575,14 +891,16 @@ module Person.ViewModel {
                             field: 'Number',
                             title: 'Numero'
                         }
-                        //, {
-                        //    field: 'operate',
-                        //    title: 'Ações',
-                        //    align: 'center',
-                        //    events: this.actionsEvents,
-                        //    formatter: this.actionsFormatter,
-                        //    width: '100px'
-                        //}
+                        , {
+                            field: 'operate',
+                            title: 'Ações',
+                            align: 'center',
+                            events: actionsEvents,
+                            formatter: (value, row, index) => {
+                                return $('#defaultRowActions').html();
+                            },
+                            width: '100px'
+                        }
                     ]
                     , url: $apis.address
                 });

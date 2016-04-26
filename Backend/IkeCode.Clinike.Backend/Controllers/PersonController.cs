@@ -10,6 +10,10 @@ namespace IkeCode.Clinike.Backend.Controllers
     public class PersonController : BaseController
     {
         // GET: Person
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult List()
         {
             ViewBag.Title = "Lista de Pessoas";
