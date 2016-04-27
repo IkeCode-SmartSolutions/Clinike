@@ -9,114 +9,19 @@
 ///<reference path="../typings/bootstrap-switch/bootstrap-switch.d.ts" />
 ///<reference path="../typings/bootbox/bootbox.d.ts" />
 ///<reference path="../clinike.ts" />
+///<reference path="Clinike.Base.ts" />
 ///<reference path="../clinike.ajax.ts" />
 ///<reference path="../clinike.log.ts" />
 ///<reference path="../clinike.apiBaseUrls.ts" />
-var Person;
-(function (Person_1) {
-    var Models;
-    (function (Models) {
-        class Address {
-            constructor(addr) {
-                this.Id = ko.observable(0);
-                this.DateIns = ko.observable(new Date());
-                this.LastUpdate = ko.observable(new Date());
-                this.Street = ko.observable('');
-                this.Number = ko.observable('');
-                $log.verbose('Person.Models.Document :: constructor [address]', addr);
-                if (addr) {
-                    this.Id(addr.Id());
-                    this.DateIns(addr.DateIns());
-                    this.LastUpdate(addr.LastUpdate());
-                    this.Number(addr.Number());
-                    this.Street(addr.Street());
-                }
-            }
-        }
-        Models.Address = Address;
-        class Document {
-            constructor(doc) {
-                this.Id = ko.observable(0);
-                this.DateIns = ko.observable(new Date());
-                this.LastUpdate = ko.observable(new Date());
-                this.Value = ko.observable('');
-                $log.verbose('Person.Models.Document :: constructor [document]', doc);
-                if (doc) {
-                    this.Id(doc.Id());
-                    this.DateIns(doc.DateIns());
-                    this.LastUpdate(doc.LastUpdate());
-                    this.Value(doc.Value());
-                }
-            }
-        }
-        Models.Document = Document;
-        class Phone {
-            constructor(phone) {
-                this.Id = ko.observable(0);
-                this.DateIns = ko.observable(new Date());
-                this.LastUpdate = ko.observable(new Date());
-                this.Number = ko.observable('');
-                $log.verbose('Person.Models.Phone :: constructor [phone]', phone);
-                if (phone) {
-                    this.Id(phone.Id());
-                    this.DateIns(phone.DateIns());
-                    this.LastUpdate(phone.LastUpdate());
-                    this.Number(phone.Number());
-                }
-            }
-        }
-        Models.Phone = Phone;
-        class Person {
-            constructor(person) {
-                this.Id = ko.observable(0);
-                this.DateIns = ko.observable(new Date());
-                this.LastUpdate = ko.observable(new Date());
-                this.Name = ko.observable('');
-                this.Email = ko.observable('');
-                $log.verbose('Person.Models.Person :: constructor [person]', person);
-                if (person) {
-                    this.Id(person.Id());
-                    this.DateIns(person.DateIns());
-                    this.LastUpdate(person.LastUpdate());
-                    this.Name(person.Name());
-                    this.Email(person.Email());
-                }
-            }
-        }
-        Models.Person = Person;
-    })(Models = Person_1.Models || (Person_1.Models = {}));
-})(Person || (Person = {}));
-var Person;
-(function (Person) {
-    var ViewModel;
-    (function (ViewModel) {
-        class Base {
-            constructor(targetElement) {
-                this.person = ko.observable(new Person.Models.Person());
-                this.dateFormatter = (value, row, index) => {
-                    //$log.verbose('Bootstrap Table dateFormatter :: value', value);
-                    //$log.verbose('Bootstrap Table dateFormatter :: row', row);
-                    //$log.verbose('Bootstrap Table dateFormatter :: index', index);
-                    return moment(value).format('DD/MM/YYYY HH:mm:ss');
-                };
-                this.vmTargetElement = targetElement;
-            }
-            applyViewModel(data) {
-                if (this.vmBinded) {
-                    $log.verbose('Ko :: Binding already applied to >', this.vmTargetElement);
-                }
-                else {
-                    $log.verbose('Ko :: Applying Binding to >', this.vmTargetElement);
-                    ko.applyBindings(data, this.vmTargetElement);
-                    this.vmBinded = true;
-                }
-            }
-        }
-        ViewModel.Base = Base;
-        class List extends Base {
+var ViewModels;
+(function (ViewModels) {
+    var Person;
+    (function (Person) {
+        class List extends Clinike.BaseKoViewModel {
             constructor(targetElement, _tableSelector) {
                 super(targetElement);
-                this.people = ko.observableArray([new Person.Models.Person()]);
+                this.person = ko.observable(new ClinikeModels.Person());
+                this.people = ko.observableArray([new ClinikeModels.Person()]);
                 this.getDetailPageUrl = (id) => {
                     return (window.location.toString() + "/detalhe/{0}").format(id);
                 };
@@ -143,12 +48,11 @@ var Person;
                                 }, function (isConfirm) {
                                     if (isConfirm) {
                                         $(hideElement.target).modal('show');
-                                    }
-                                    else {
+                                    } /* else {
                                         setTimeout(() => {
                                             swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
                                         }, 150);
-                                    }
+                                    }*/
                                 });
                             }
                         });
@@ -244,7 +148,7 @@ var Person;
                             {
                                 field: 'DateIns',
                                 title: 'Data de Criação',
-                                formatter: this.dateFormatter,
+                                formatter: $bootstrapTable.defaultDateFormatter,
                                 width: '150px'
                             },
                             {
@@ -325,7 +229,7 @@ var Person;
                 this.saved = false;
                 $(document).ready(() => {
                     $('#peopleToolbar button[name="newPerson"]').on('click', (e) => {
-                        this.person(new Person.Models.Person());
+                        this.person(new ClinikeModels.Person());
                         $(this.vmTargetElement).modal('show');
                     });
                     $('#peopleToolbar button[name="fullEditPerson"]').on('click', (e) => {
@@ -339,21 +243,18 @@ var Person;
                 this.applyViewModel(this);
             }
         }
-        ViewModel.List = List;
-        class Detail extends Base {
+        Person.List = List;
+        class Detail extends Clinike.BaseKoViewModel {
             constructor(targetElement, personId) {
                 super(targetElement);
-                this.phones = ko.observableArray(new Array());
-                this.phonesLoaded = false;
-                this.phone = ko.observable(new Person.Models.Phone());
-                this.phoneSaved = false;
+                this.person = ko.observable(new ClinikeModels.Person());
                 this.documents = ko.observableArray(new Array());
                 this.documentsLoaded = false;
-                this.document = ko.observable(new Person.Models.Document());
+                this.document = ko.observable(new ClinikeModels.Document());
                 this.documentSaved = false;
                 this.addresses = ko.observableArray(new Array());
                 this.addressesLoaded = false;
-                this.address = ko.observable(new Person.Models.Address());
+                this.address = ko.observable(new ClinikeModels.Address());
                 this.addressSaved = false;
                 this.buildActionsEvents = (modalTarget, editModalShownElement, editModalHideCallback, deleteCallback) => {
                     var result = {
@@ -379,159 +280,6 @@ var Person;
                     };
                     return result;
                 };
-                this.getPhones = () => {
-                    var actionsEvents = this.buildActionsEvents('#divPhoneEditForm', (e, row) => {
-                        this.phoneSaved = false;
-                    }, (e, row) => {
-                        if (!this.phoneSaved) {
-                            swal({
-                                title: "Você tem certeza?",
-                                text: "Se mudanças tiverem sido feitas você perderá, deseja mesmo continuar?",
-                                type: "warning",
-                                allowEscapeKey: false,
-                                showCancelButton: true,
-                                cancelButtonColor: "#DD6B55",
-                                cancelButtonText: "Descartar!",
-                                confirmButtonText: "Voltar ao fomulário",
-                                closeOnConfirm: true,
-                                closeOnCancel: true
-                            }, function (isConfirm) {
-                                if (isConfirm) {
-                                    $(e.target).modal('show');
-                                }
-                                else {
-                                    setTimeout(() => {
-                                        swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
-                                    }, 150);
-                                }
-                            });
-                        }
-                    }, (row) => {
-                        swal({
-                            title: "Você tem certeza?",
-                            text: "Tem certeza que deseja excluir esse registro?",
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "Sim",
-                            cancelButtonText: "Não",
-                            closeOnConfirm: true,
-                            showLoaderOnConfirm: true
-                        }, (isConfirm) => {
-                            if (isConfirm) {
-                                $.ajax({
-                                    url: $apis.phone + '/' + row.Id,
-                                    contentType: "application/json",
-                                    async: true,
-                                    dataType: "json",
-                                    type: 'DELETE',
-                                    success: (data) => {
-                                        $log.verbose('Phone Delete :: ajax result data', data);
-                                        if (data.Status == 'Success') {
-                                            $('#dtPhones').bootstrapTable('remove', {
-                                                field: 'Id',
-                                                values: [row.Id]
-                                            });
-                                            if (data.Content > 0) {
-                                                swal({
-                                                    title: "Excluido!",
-                                                    text: "Registro excluido com sucesso!",
-                                                    type: "success"
-                                                });
-                                            }
-                                            else {
-                                                swal({
-                                                    title: "Ooops...",
-                                                    text: "Esse registro parece já ter sido excluido, mas tudo bem, atualizamos seu grid.",
-                                                    type: "info"
-                                                });
-                                            }
-                                        }
-                                        else {
-                                            swal({
-                                                title: "Ooops...",
-                                                text: "Ocorreu um problema em sua requisição, tente novamente!",
-                                                type: "error"
-                                            });
-                                        }
-                                    },
-                                    error: (data) => {
-                                        swal({
-                                            title: "Ooops...",
-                                            text: "Ocorreu um erro em sua requisição! (código: {0})".format(data.statusText),
-                                            type: "error"
-                                        });
-                                    }
-                                });
-                            }
-                            else {
-                                setTimeout(() => {
-                                    swal("Cancelado", "Tudo como estava! =)", "info");
-                                }, 150);
-                            }
-                        });
-                    });
-                    if (!this.phonesLoaded) {
-                        this.phonesLoaded = true;
-                        $('#inputAcceptSMS').bootstrapSwitch({ size: 'mini', onText: 'Sim', offText: 'Não' });
-                        $bootstrapTable.load({
-                            selector: "#dtPhones",
-                            defaultParser: true,
-                            customQueryParams: { personId: this._personId },
-                            responseHandler: (result) => {
-                                this.phones(result.Content.Items);
-                                var data = $bootstrapTable.defaultParser(result);
-                                return data;
-                            },
-                            selectCallback: (data, e) => {
-                                $log.verbose('SelectRow :: Setting Phone data', data);
-                                this.phone(data);
-                                $log.verbose('SelectRow :: Activate Phone Edit Button');
-                                $('#phonesToolbar button[name="fullEdit"]').removeAttr('disabled');
-                            },
-                            toolbar: '#phonesToolbar',
-                            columns: [
-                                {
-                                    field: 'Id',
-                                    title: 'ID'
-                                },
-                                {
-                                    field: 'DateIns',
-                                    title: 'Data de Criação',
-                                    formatter: this.dateFormatter,
-                                    width: '150px'
-                                },
-                                {
-                                    field: 'Number',
-                                    title: 'Numero'
-                                },
-                                {
-                                    field: 'Contact',
-                                    title: 'Contato'
-                                },
-                                {
-                                    field: 'AcceptSMS',
-                                    title: 'Aceita SMS?'
-                                },
-                                {
-                                    field: 'PhoneType',
-                                    title: 'Tipo'
-                                },
-                                {
-                                    field: 'operate',
-                                    title: 'Ações',
-                                    align: 'center',
-                                    events: actionsEvents,
-                                    formatter: (value, row, index) => {
-                                        return $('#defaultRowActions').html();
-                                    },
-                                    width: '100px'
-                                }
-                            ],
-                            url: $apis.phone
-                        });
-                    }
-                };
                 this.getDocuments = () => {
                     var actionsEvents = this.buildActionsEvents('#defaultEditor', (e, row) => {
                         this.documentSaved = false;
@@ -551,12 +299,11 @@ var Person;
                             }, function (isConfirm) {
                                 if (isConfirm) {
                                     $(e.target).modal('show');
-                                }
-                                else {
+                                } /*else {
                                     setTimeout(() => {
                                         swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
                                     }, 150);
-                                }
+                                }*/
                             });
                         }
                     }, (row) => {
@@ -650,7 +397,7 @@ var Person;
                                 {
                                     field: 'DateIns',
                                     title: 'Data de Criação',
-                                    formatter: this.dateFormatter,
+                                    formatter: $bootstrapTable.defaultDateFormatter,
                                     width: '150px'
                                 },
                                 {
@@ -691,12 +438,11 @@ var Person;
                             }, function (isConfirm) {
                                 if (isConfirm) {
                                     $(e.target).modal('show');
-                                }
-                                else {
+                                } /* else {
                                     setTimeout(() => {
                                         swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
                                     }, 150);
-                                }
+                                }*/
                             });
                         }
                     }, (row) => {
@@ -790,7 +536,7 @@ var Person;
                                 {
                                     field: 'DateIns',
                                     title: 'Data de Criação',
-                                    formatter: this.dateFormatter,
+                                    formatter: $bootstrapTable.defaultDateFormatter,
                                     width: '150px'
                                 },
                                 {
@@ -838,9 +584,6 @@ var Person;
                 };
                 this.applyViewModel(this);
                 if (this._personId > 0) {
-                    $('#personChildrenTabs a[href="#phones"]').on('click', (e) => {
-                        loadGrid(e, this.getPhones);
-                    });
                     $('#personChildrenTabs a[href="#documents"]').on('click', (e) => {
                         loadGrid(e, this.getDocuments);
                     });
@@ -851,7 +594,184 @@ var Person;
                 }
             }
         }
-        ViewModel.Detail = Detail;
-    })(ViewModel = Person.ViewModel || (Person.ViewModel = {}));
-})(Person || (Person = {}));
+        Person.Detail = Detail;
+    })(Person = ViewModels.Person || (ViewModels.Person = {}));
+})(ViewModels || (ViewModels = {}));
+var ViewModels;
+(function (ViewModels) {
+    var Phone;
+    (function (Phone) {
+        class List extends Clinike.BaseKoViewModel {
+            constructor(targetElement, _tableSelector, personId) {
+                super(targetElement);
+                this.phones = ko.observableArray(new Array());
+                this.phonesLoaded = false;
+                this.phone = ko.observable(new ClinikeModels.Phone());
+                this.phoneSaved = false;
+                this.getPhones = () => {
+                    var actionsEvents = $bootstrapTable.defaultBuildActionsEvents('#divPhoneEditForm', (e, row) => {
+                        this.phoneSaved = false;
+                    }, (e, row) => {
+                        if (!this.phoneSaved) {
+                            swal({
+                                title: "Você tem certeza?",
+                                text: "Se mudanças tiverem sido feitas você perderá, deseja mesmo continuar?",
+                                type: "warning",
+                                allowEscapeKey: false,
+                                showCancelButton: true,
+                                cancelButtonColor: "#DD6B55",
+                                cancelButtonText: "Descartar!",
+                                confirmButtonText: "Voltar ao fomulário",
+                                closeOnConfirm: true,
+                                closeOnCancel: true
+                            }, function (isConfirm) {
+                                if (isConfirm) {
+                                    $(e.target).modal('show');
+                                } /*else {
+                                    setTimeout(() => {
+                                        swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
+                                    }, 150);
+                                }*/
+                            });
+                        }
+                    }, (row) => {
+                        swal({
+                            title: "Você tem certeza?",
+                            text: "Tem certeza que deseja excluir esse registro?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Sim",
+                            cancelButtonText: "Não",
+                            closeOnConfirm: true,
+                            showLoaderOnConfirm: true
+                        }, (isConfirm) => {
+                            if (isConfirm) {
+                                $.ajax({
+                                    url: $apis.phone + '/' + row.Id,
+                                    contentType: "application/json",
+                                    async: true,
+                                    dataType: "json",
+                                    type: 'DELETE',
+                                    success: (data) => {
+                                        $log.verbose('Phone Delete :: ajax result data', data);
+                                        if (data.Status == 'Success') {
+                                            $('#dtPhones').bootstrapTable('remove', {
+                                                field: 'Id',
+                                                values: [row.Id]
+                                            });
+                                            if (data.Content > 0) {
+                                                swal({
+                                                    title: "Excluido!",
+                                                    text: "Registro excluido com sucesso!",
+                                                    type: "success"
+                                                });
+                                            }
+                                            else {
+                                                swal({
+                                                    title: "Ooops...",
+                                                    text: "Esse registro parece já ter sido excluido, mas tudo bem, atualizamos seu grid.",
+                                                    type: "info"
+                                                });
+                                            }
+                                        }
+                                        else {
+                                            swal({
+                                                title: "Ooops...",
+                                                text: "Ocorreu um problema em sua requisição, tente novamente!",
+                                                type: "error"
+                                            });
+                                        }
+                                    },
+                                    error: (data) => {
+                                        swal({
+                                            title: "Ooops...",
+                                            text: "Ocorreu um erro em sua requisição! (código: {0})".format(data.statusText),
+                                            type: "error"
+                                        });
+                                    }
+                                });
+                            } /*else {
+                                setTimeout(() => {
+                                    swal("Cancelado", "Tudo como estava! =)", "info");
+                                }, 150);
+                            }*/
+                        });
+                    });
+                    if (!this.phonesLoaded) {
+                        this.phonesLoaded = true;
+                        $('#inputAcceptSMS').bootstrapSwitch({ size: 'mini', onText: 'Sim', offText: 'Não' });
+                        $bootstrapTable.load({
+                            selector: this._tableSelector,
+                            defaultParser: true,
+                            customQueryParams: { personId: this._personId },
+                            responseHandler: (result) => {
+                                this.phones(result.Content.Items);
+                                var data = $bootstrapTable.defaultParser(result);
+                                return data;
+                            },
+                            selectCallback: (data, e) => {
+                                $log.verbose('SelectRow :: Setting Phone data', data);
+                                this.phone(data);
+                                $log.verbose('SelectRow :: Activate Phone Edit Button');
+                                $('#phonesToolbar button[name="fullEdit"]').removeAttr('disabled');
+                            },
+                            toolbar: '#phonesToolbar',
+                            columns: [
+                                {
+                                    field: 'Id',
+                                    title: 'ID'
+                                },
+                                {
+                                    field: 'DateIns',
+                                    title: 'Data de Criação',
+                                    formatter: $bootstrapTable.defaultDateFormatter,
+                                    width: '150px'
+                                },
+                                {
+                                    field: 'Number',
+                                    title: 'Numero'
+                                },
+                                {
+                                    field: 'Contact',
+                                    title: 'Contato'
+                                },
+                                {
+                                    field: 'AcceptSMS',
+                                    title: 'Aceita SMS?'
+                                },
+                                {
+                                    field: 'PhoneType',
+                                    title: 'Tipo'
+                                },
+                                {
+                                    field: 'operate',
+                                    title: 'Ações',
+                                    align: 'center',
+                                    events: actionsEvents,
+                                    formatter: (value, row, index) => {
+                                        return $('#defaultRowActions').html();
+                                    },
+                                    width: '100px'
+                                }
+                            ],
+                            url: $apis.phone
+                        });
+                    }
+                };
+                this._tableSelector = _tableSelector;
+                this._personId = personId;
+                if (this._personId > 0) {
+                    $('#personChildrenTabs a[href="#phones"]').on('click', (e) => {
+                        e.preventDefault();
+                        this.getPhones();
+                        $(e.target).tab('show');
+                    });
+                }
+                this.applyViewModel(this);
+            }
+        }
+        Phone.List = List;
+    })(Phone = ViewModels.Phone || (ViewModels.Phone = {}));
+})(ViewModels || (ViewModels = {}));
 //# sourceMappingURL=Person.js.map

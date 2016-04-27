@@ -28,6 +28,36 @@ var Clinike;
                 checkboxHeader: true,
                 singleSelect: true
             };
+            this.defaultDateFormatter = (value, row, index) => {
+                //$log.verbose('Bootstrap Table dateFormatter :: value', value);
+                //$log.verbose('Bootstrap Table dateFormatter :: row', row);
+                //$log.verbose('Bootstrap Table dateFormatter :: index', index);
+                return moment(value).format('DD/MM/YYYY HH:mm:ss');
+            };
+            this.defaultBuildActionsEvents = (modalTarget, editModalShownElement, editModalHideCallback, deleteCallback) => {
+                var result = {
+                    'click .edit': (e, value, row, index) => {
+                        $(modalTarget)
+                            .modal()
+                            .on('shown.bs.modal', (shownElement) => {
+                            if (editModalShownElement)
+                                editModalShownElement(shownElement, row);
+                        })
+                            .on('hide.bs.modal', (hideElement) => {
+                            if (editModalHideCallback)
+                                editModalHideCallback(hideElement, row);
+                        });
+                    },
+                    'click .delete': (e, value, row, index) => {
+                        //$log.verbose('PeopleViewModel personDelete e', e);
+                        //$log.verbose('PeopleViewModel personDelete row', row);
+                        //$log.verbose('PeopleViewModel personDelete index', index);
+                        if (deleteCallback)
+                            deleteCallback(row);
+                    }
+                };
+                return result;
+            };
             this.defaultParser = (result) => {
                 var data = {
                     total: result.Content.TotalCount,

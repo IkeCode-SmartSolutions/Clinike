@@ -29,6 +29,8 @@ namespace IkeCode.Clinike.Backend
             jsBundles.Include("~/Scripts/pixel-admin.js");
 
             jsBundles.Include("~/Scripts/clinike.prototype.utils.js");
+            jsBundles.Include("~/Scripts/ClinikeModels.js");
+            jsBundles.Include("~/Scripts/ViewModels/Clinike.Base.js");
             jsBundles.Include("~/Scripts/clinike.js");
             jsBundles.Include("~/Scripts/clinike.log.js");
             jsBundles.Include("~/Scripts/clinike.apiBaseUrls.js");

@@ -190,6 +190,12 @@
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-vi-VN.js" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-zh-CN.js" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-zh-TW.js" />
+    <Content Include="Scripts\ViewModels\Clinike.Base.js">
+      <DependentUpon>Clinike.Base.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\ClinikeModels.js">
+      <DependentUpon>ClinikeModels.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\knockout.validation.localization\ar-JO.js" />
     <Content Include="Scripts\knockout.validation.localization\bg-BG.js" />
@@ -245,6 +251,7 @@
     <TypeScriptCompile Include="Scripts\clinike.apiBaseUrls.ts">
       <DependentUpon>clinike.ts</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\ViewModels\Clinike.Base.ts" />
     <TypeScriptCompile Include="Scripts\clinike.log.ts">
       <DependentUpon>clinike.ts</DependentUpon>
     </TypeScriptCompile>
@@ -276,9 +283,6 @@
     <Content Include="Scripts\clinike.prototype.utils.js">
       <DependentUpon>clinike.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\plugins\pixel\pixel.moment.js" />
-    <Content Include="Scripts\plugins\pixel\pixel.switcher.js" />
-    <Content Include="Scripts\plugins\pixel\pixel.datatable.js" />
     <Content Include="Scripts\ie.min.js" />
     <Content Include="Scripts\knockout-3.4.0.debug.js">
       <DependentUpon>knockout-3.4.0.js</DependentUpon>
@@ -299,6 +303,7 @@
     </Content>
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\plugins\sweetalert.js" />
+    <TypeScriptCompile Include="Scripts\ClinikeModels.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootbox\bootbox.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootstrap-switch\bootstrap-switch.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
@@ -353,6 +358,12 @@
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Person\Detail.cshtml" />
     <Content Include="Views\Person\_PhoneDetail.cshtml" />
+    <Content Include="Scripts\ClinikeModels.js.map">
+      <DependentUpon>ClinikeModels.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\ViewModels\Clinike.Base.js.map">
+      <DependentUpon>Clinike.Base.ts</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

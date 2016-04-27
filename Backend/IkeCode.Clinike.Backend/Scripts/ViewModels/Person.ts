@@ -9,144 +9,15 @@
 ///<reference path="../typings/bootstrap-switch/bootstrap-switch.d.ts" />
 ///<reference path="../typings/bootbox/bootbox.d.ts" />
 ///<reference path="../clinike.ts" />
+///<reference path="Clinike.Base.ts" />
 ///<reference path="../clinike.ajax.ts" />
 ///<reference path="../clinike.log.ts" />
 ///<reference path="../clinike.apiBaseUrls.ts" />
-module Person.Models {
-    export interface IAddress {
-        Id: KnockoutObservable<number>;
-        DateIns: KnockoutObservable<Date>;
-        LastUpdate: KnockoutObservable<Date>;
-        Street: KnockoutObservable<string>;
-        Number: KnockoutObservable<string>;
-    }
-
-    export class Address implements IAddress {
-        Id: KnockoutObservable<number> = ko.observable(0);
-        DateIns: KnockoutObservable<Date> = ko.observable(new Date());
-        LastUpdate: KnockoutObservable<Date> = ko.observable(new Date());
-        Street: KnockoutObservable<string> = ko.observable('');
-        Number: KnockoutObservable<string> = ko.observable('');
-
-        constructor(addr?: IAddress) {
-            $log.verbose('Person.Models.Document :: constructor [address]', addr);
-            if (addr) {
-                this.Id(addr.Id());
-                this.DateIns(addr.DateIns());
-                this.LastUpdate(addr.LastUpdate());
-                this.Number(addr.Number());
-                this.Street(addr.Street());
-            }
-        }
-    }
-
-    export interface IDocument {
-        Id: KnockoutObservable<number>;
-        DateIns: KnockoutObservable<Date>;
-        LastUpdate: KnockoutObservable<Date>;
-        Value: KnockoutObservable<string>;
-    }
-
-    export class Document implements IDocument {
-        Id: KnockoutObservable<number> = ko.observable(0);
-        DateIns: KnockoutObservable<Date> = ko.observable(new Date());
-        LastUpdate: KnockoutObservable<Date> = ko.observable(new Date());
-        Value: KnockoutObservable<string> = ko.observable('');
-
-        constructor(doc?: IDocument) {
-            $log.verbose('Person.Models.Document :: constructor [document]', doc);
-            if (doc) {
-                this.Id(doc.Id());
-                this.DateIns(doc.DateIns());
-                this.LastUpdate(doc.LastUpdate());
-                this.Value(doc.Value());
-            }
-        }
-    }
-
-    export interface IPhone {
-        Id: KnockoutObservable<number>;
-        DateIns: KnockoutObservable<Date>;
-        LastUpdate: KnockoutObservable<Date>;
-        Number: KnockoutObservable<string>;
-    }
-
-    export class Phone implements IPhone {
-        Id: KnockoutObservable<number> = ko.observable(0);
-        DateIns: KnockoutObservable<Date> = ko.observable(new Date());
-        LastUpdate: KnockoutObservable<Date> = ko.observable(new Date());
-        Number: KnockoutObservable<string> = ko.observable('');
-
-        constructor(phone?: IPhone) {
-            $log.verbose('Person.Models.Phone :: constructor [phone]', phone);
-            if (phone) {
-                this.Id(phone.Id());
-                this.DateIns(phone.DateIns());
-                this.LastUpdate(phone.LastUpdate());
-                this.Number(phone.Number());
-            }
-        }
-    }
-
-    export interface IPerson {
-        Id: KnockoutObservable<number>;
-        DateIns: KnockoutObservable<Date>;
-        LastUpdate: KnockoutObservable<Date>;
-        Name: KnockoutObservable<string>;
-        Email: KnockoutObservable<string>;
-    }
-
-    export class Person implements IPerson {
-        Id: KnockoutObservable<number> = ko.observable(0);
-        DateIns: KnockoutObservable<Date> = ko.observable(new Date());
-        LastUpdate: KnockoutObservable<Date> = ko.observable(new Date());
-        Name: KnockoutObservable<string> = ko.observable('');
-        Email: KnockoutObservable<string> = ko.observable('');
-
-        constructor(person?: IPerson) {
-            $log.verbose('Person.Models.Person :: constructor [person]', person);
-            if (person) {
-                this.Id(person.Id());
-                this.DateIns(person.DateIns());
-                this.LastUpdate(person.LastUpdate());
-                this.Name(person.Name());
-                this.Email(person.Email());
-            }
-        }
-    }
-}
-
-module Person.ViewModel {
-    export class Base {
-        protected vmBinded: boolean;
-        protected vmTargetElement: any;
+module ViewModels.Person {
+    export class List extends Clinike.BaseKoViewModel {
         protected saved: boolean;
-        person: KnockoutObservable<Person.Models.IPerson> = ko.observable(new Person.Models.Person());
-
-        constructor(targetElement: any) {
-            this.vmTargetElement = targetElement;
-        }
-
-        protected applyViewModel(data: any) {
-            if (this.vmBinded) {
-                $log.verbose('Ko :: Binding already applied to >', this.vmTargetElement);
-            } else {
-                $log.verbose('Ko :: Applying Binding to >', this.vmTargetElement);
-                ko.applyBindings(data, this.vmTargetElement);
-                this.vmBinded = true;
-            }
-        }
-
-        protected dateFormatter = (value, row, index) => {
-            //$log.verbose('Bootstrap Table dateFormatter :: value', value);
-            //$log.verbose('Bootstrap Table dateFormatter :: row', row);
-            //$log.verbose('Bootstrap Table dateFormatter :: index', index);
-            return moment(value).format('DD/MM/YYYY HH:mm:ss');
-        };
-    }
-
-    export class List extends Base {
-        people: KnockoutObservableArray<Person.Models.IPerson> = ko.observableArray([new Person.Models.Person()]);
+        person: KnockoutObservable<ClinikeModels.IPerson> = ko.observable(new ClinikeModels.Person());
+        people: KnockoutObservableArray<ClinikeModels.IPerson> = ko.observableArray([new ClinikeModels.Person()]);
         private _tableSelector: string;
 
         constructor(targetElement: HTMLElement, _tableSelector: string) {
@@ -156,7 +27,7 @@ module Person.ViewModel {
 
             $(document).ready(() => {
                 $('#peopleToolbar button[name="newPerson"]').on('click', (e) => {
-                    this.person(new Person.Models.Person());
+                    this.person(new ClinikeModels.Person());
                     $(this.vmTargetElement).modal('show');
                 });
 
@@ -200,11 +71,11 @@ module Person.ViewModel {
                             }, function (isConfirm) {
                                 if (isConfirm) {
                                     $(hideElement.target).modal('show');
-                                } else {
+                                } /* else {
                                     setTimeout(() => {
                                         swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
                                     }, 150);
-                                }
+                                }*/
                             });
                         }
                     });
@@ -301,7 +172,7 @@ module Person.ViewModel {
                     , {
                         field: 'DateIns',
                         title: 'Data de Criação',
-                        formatter: this.dateFormatter,
+                        formatter: $bootstrapTable.defaultDateFormatter,
                         width: '150px'
                     }
                     , {
@@ -385,22 +256,19 @@ module Person.ViewModel {
         }
     }
 
-    export class Detail extends Base {
+    export class Detail extends Clinike.BaseKoViewModel {
         private _personId: number;
+        protected saved: boolean;
+        person: KnockoutObservable<ClinikeModels.IPerson> = ko.observable(new ClinikeModels.Person());
 
-        phones: KnockoutObservableArray<Person.Models.IPhone> = ko.observableArray(new Array<Person.Models.Phone>());
-        phonesLoaded: boolean = false;
-        phone: KnockoutObservable<Person.Models.IPhone> = ko.observable(new Person.Models.Phone());
-        phoneSaved: boolean = false;
-
-        documents: KnockoutObservableArray<Person.Models.IDocument> = ko.observableArray(new Array<Person.Models.Document>());
+        documents: KnockoutObservableArray<ClinikeModels.IDocument> = ko.observableArray(new Array<ClinikeModels.Document>());
         documentsLoaded: boolean = false;
-        document: KnockoutObservable<Person.Models.IDocument> = ko.observable(new Person.Models.Document());
+        document: KnockoutObservable<ClinikeModels.IDocument> = ko.observable(new ClinikeModels.Document());
         documentSaved: boolean = false;
 
-        addresses: KnockoutObservableArray<Person.Models.IAddress> = ko.observableArray(new Array<Person.Models.Address>());
+        addresses: KnockoutObservableArray<ClinikeModels.IAddress> = ko.observableArray(new Array<ClinikeModels.Address>());
         addressesLoaded: boolean = false;
-        address: KnockoutObservable<Person.Models.IAddress> = ko.observable(new Person.Models.Address());
+        address: KnockoutObservable<ClinikeModels.IAddress> = ko.observable(new ClinikeModels.Address());
         addressSaved: boolean = false;
 
         constructor(targetElement: HTMLElement, personId: number) {
@@ -418,10 +286,6 @@ module Person.ViewModel {
             this.applyViewModel(this);
 
             if (this._personId > 0) {
-                $('#personChildrenTabs a[href="#phones"]').on('click', (e) => {
-                    loadGrid(e, this.getPhones);
-                });
-
                 $('#personChildrenTabs a[href="#documents"]').on('click', (e) => {
                     loadGrid(e, this.getDocuments);
                 });
@@ -462,165 +326,7 @@ module Person.ViewModel {
 
             return result;
         };
-
-        private getPhones = () => {
-
-            var actionsEvents = this.buildActionsEvents('#divPhoneEditForm'
-                , (e, row) => {
-                    this.phoneSaved = false;
-                }
-                , (e, row) => {
-                    if (!this.phoneSaved) {
-                        swal({
-                            title: "Você tem certeza?"
-                            , text: "Se mudanças tiverem sido feitas você perderá, deseja mesmo continuar?"
-                            , type: "warning"
-                            , allowEscapeKey: false
-                            , showCancelButton: true
-                            , cancelButtonColor: "#DD6B55"
-                            , cancelButtonText: "Descartar!"
-                            , confirmButtonText: "Voltar ao fomulário"
-                            , closeOnConfirm: true
-                            , closeOnCancel: true
-                        }, function (isConfirm) {
-                            if (isConfirm) {
-                                $(e.target).modal('show');
-                            } else {
-                                setTimeout(() => {
-                                    swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
-                                }, 150);
-                            }
-                        });
-                    }
-                }
-                , (row) => {
-                    swal({
-                        title: "Você tem certeza?"
-                        , text: "Tem certeza que deseja excluir esse registro?"
-                        , type: "warning"
-                        , showCancelButton: true
-                        , confirmButtonColor: "#DD6B55"
-                        , confirmButtonText: "Sim"
-                        , cancelButtonText: "Não"
-                        , closeOnConfirm: true
-                        , showLoaderOnConfirm: true
-                    }, (isConfirm) => {
-                        if (isConfirm) {
-                            $.ajax({
-                                url: $apis.phone + '/' + row.Id,
-                                contentType: "application/json",
-                                async: true,
-                                dataType: "json",
-                                type: 'DELETE',
-                                success: (data) => {
-                                    $log.verbose('Phone Delete :: ajax result data', data);
-                                    if (data.Status == 'Success') {
-                                        $('#dtPhones').bootstrapTable('remove', {
-                                            field: 'Id',
-                                            values: [row.Id]
-                                        });
-
-                                        if (data.Content > 0) {
-                                            swal({
-                                                title: "Excluido!"
-                                                , text: "Registro excluido com sucesso!"
-                                                , type: "success"
-                                            });
-                                        } else {
-                                            swal({
-                                                title: "Ooops..."
-                                                , text: "Esse registro parece já ter sido excluido, mas tudo bem, atualizamos seu grid."
-                                                , type: "info"
-                                            });
-                                        }
-                                    } else {
-                                        swal({
-                                            title: "Ooops..."
-                                            , text: "Ocorreu um problema em sua requisição, tente novamente!"
-                                            , type: "error"
-                                        });
-                                    }
-                                },
-                                error: (data) => {
-                                    swal({
-                                        title: "Ooops..."
-                                        , text: "Ocorreu um erro em sua requisição! (código: {0})".format(data.statusText)
-                                        , type: "error"
-                                    });
-                                }
-                            });
-                        } else {
-                            setTimeout(() => {
-                                swal("Cancelado", "Tudo como estava! =)", "info");
-                            }, 150);
-                        }
-                    });
-                });
-
-            if (!this.phonesLoaded) {
-                this.phonesLoaded = true;
-                $('#inputAcceptSMS').bootstrapSwitch({ size: 'mini', onText: 'Sim', offText: 'Não' });
-
-                $bootstrapTable.load({
-                    selector: "#dtPhones"
-                    , defaultParser: true
-                    , customQueryParams: { personId: this._personId }
-                    , responseHandler: (result) => {
-                        this.phones(result.Content.Items);
-
-                        var data = $bootstrapTable.defaultParser(result);
-                        return data;
-                    }
-                    , selectCallback: (data, e) => {
-                        $log.verbose('SelectRow :: Setting Phone data', data);
-                        this.phone(data);
-                        $log.verbose('SelectRow :: Activate Phone Edit Button');
-                        $('#phonesToolbar button[name="fullEdit"]').removeAttr('disabled');
-                    }
-                    , toolbar: '#phonesToolbar'
-                    , columns: [
-                        {
-                            field: 'Id',
-                            title: 'ID'
-                        }
-                        , {
-                            field: 'DateIns',
-                            title: 'Data de Criação',
-                            formatter: this.dateFormatter,
-                            width: '150px'
-                        }
-                        , {
-                            field: 'Number',
-                            title: 'Numero'
-                        }
-                        , {
-                            field: 'Contact',
-                            title: 'Contato'
-                        }
-                        , {
-                            field: 'AcceptSMS',
-                            title: 'Aceita SMS?'
-                        }
-                        , {
-                            field: 'PhoneType',
-                            title: 'Tipo'
-                        }
-                        , {
-                            field: 'operate',
-                            title: 'Ações',
-                            align: 'center',
-                            events: actionsEvents,
-                            formatter: (value, row, index) => {
-                                return $('#defaultRowActions').html();
-                            },
-                            width: '100px'
-                        }
-                    ]
-                    , url: $apis.phone
-                });
-            }
-        }
-
+        
         private getDocuments = () => {
             var actionsEvents = this.buildActionsEvents('#defaultEditor'
                 , (e, row) => {
@@ -642,11 +348,11 @@ module Person.ViewModel {
                         }, function (isConfirm) {
                             if (isConfirm) {
                                 $(e.target).modal('show');
-                            } else {
+                            } /*else {
                                 setTimeout(() => {
                                     swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
                                 }, 150);
-                            }
+                            }*/
                         });
                     }
                 }
@@ -742,7 +448,7 @@ module Person.ViewModel {
                         , {
                             field: 'DateIns',
                             title: 'Data de Criação',
-                            formatter: this.dateFormatter,
+                            formatter: $bootstrapTable.defaultDateFormatter,
                             width: '150px'
                         }
                         , {
@@ -786,11 +492,11 @@ module Person.ViewModel {
                         }, function (isConfirm) {
                             if (isConfirm) {
                                 $(e.target).modal('show');
-                            } else {
+                            } /* else {
                                 setTimeout(() => {
                                     swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
                                 }, 150);
-                            }
+                            }*/
                         });
                     }
                 }
@@ -886,7 +592,7 @@ module Person.ViewModel {
                         , {
                             field: 'DateIns',
                             title: 'Data de Criação',
-                            formatter: this.dateFormatter,
+                            formatter: $bootstrapTable.defaultDateFormatter,
                             width: '150px'
                         }
                         , {
@@ -916,7 +622,7 @@ module Person.ViewModel {
         private getPerson = (successCallback?: () => any, errorCallback?: () => any) => {
             var url = $apis.person;
 
-            new Clinike.Ajax<Person.Models.IPerson>({
+            new Clinike.Ajax<ClinikeModels.IPerson>({
                 url: $apis.person,
                 data: { id: this._personId }
             }, (data) => {
@@ -927,6 +633,191 @@ module Person.ViewModel {
             }, (data) => {
                 $log.error('Person :: Get Method', data);
             });
+        }
+    }
+}
+
+module ViewModels.Phone {
+    export class List extends Clinike.BaseKoViewModel {
+        private _tableSelector: string;
+        phones: KnockoutObservableArray<ClinikeModels.IPhone> = ko.observableArray(new Array<ClinikeModels.Phone>());
+        phonesLoaded: boolean = false;
+        phone: KnockoutObservable<ClinikeModels.IPhone> = ko.observable(new ClinikeModels.Phone());
+        phoneSaved: boolean = false;
+        _personId: number;
+
+        constructor(targetElement: HTMLElement, _tableSelector: string, personId: number) {
+            super(targetElement);
+            this._tableSelector = _tableSelector;
+            this._personId = personId;
+
+            if (this._personId > 0) {
+                $('#personChildrenTabs a[href="#phones"]').on('click', (e) => {
+                    e.preventDefault();
+                    this.getPhones();
+                    $(e.target).tab('show');
+                });
+            }
+
+            this.applyViewModel(this);
+        }
+
+        private getPhones = () => {
+
+            var actionsEvents = $bootstrapTable.defaultBuildActionsEvents('#divPhoneEditForm'
+                , (e, row) => {
+                    this.phoneSaved = false;
+                }
+                , (e, row) => {
+                    if (!this.phoneSaved) {
+                        swal({
+                            title: "Você tem certeza?"
+                            , text: "Se mudanças tiverem sido feitas você perderá, deseja mesmo continuar?"
+                            , type: "warning"
+                            , allowEscapeKey: false
+                            , showCancelButton: true
+                            , cancelButtonColor: "#DD6B55"
+                            , cancelButtonText: "Descartar!"
+                            , confirmButtonText: "Voltar ao fomulário"
+                            , closeOnConfirm: true
+                            , closeOnCancel: true
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                $(e.target).modal('show');
+                            } /*else {
+                                setTimeout(() => {
+                                    swal("Alterações descartadas.", "Tudo como estava antes! =)", "info");
+                                }, 150);
+                            }*/
+                        });
+                    }
+                }
+                , (row) => {
+                    swal({
+                        title: "Você tem certeza?"
+                        , text: "Tem certeza que deseja excluir esse registro?"
+                        , type: "warning"
+                        , showCancelButton: true
+                        , confirmButtonColor: "#DD6B55"
+                        , confirmButtonText: "Sim"
+                        , cancelButtonText: "Não"
+                        , closeOnConfirm: true
+                        , showLoaderOnConfirm: true
+                    }, (isConfirm) => {
+                        if (isConfirm) {
+                            $.ajax({
+                                url: $apis.phone + '/' + row.Id,
+                                contentType: "application/json",
+                                async: true,
+                                dataType: "json",
+                                type: 'DELETE',
+                                success: (data) => {
+                                    $log.verbose('Phone Delete :: ajax result data', data);
+                                    if (data.Status == 'Success') {
+                                        $('#dtPhones').bootstrapTable('remove', {
+                                            field: 'Id',
+                                            values: [row.Id]
+                                        });
+
+                                        if (data.Content > 0) {
+                                            swal({
+                                                title: "Excluido!"
+                                                , text: "Registro excluido com sucesso!"
+                                                , type: "success"
+                                            });
+                                        } else {
+                                            swal({
+                                                title: "Ooops..."
+                                                , text: "Esse registro parece já ter sido excluido, mas tudo bem, atualizamos seu grid."
+                                                , type: "info"
+                                            });
+                                        }
+                                    } else {
+                                        swal({
+                                            title: "Ooops..."
+                                            , text: "Ocorreu um problema em sua requisição, tente novamente!"
+                                            , type: "error"
+                                        });
+                                    }
+                                },
+                                error: (data) => {
+                                    swal({
+                                        title: "Ooops..."
+                                        , text: "Ocorreu um erro em sua requisição! (código: {0})".format(data.statusText)
+                                        , type: "error"
+                                    });
+                                }
+                            });
+                        } /*else {
+                            setTimeout(() => {
+                                swal("Cancelado", "Tudo como estava! =)", "info");
+                            }, 150);
+                        }*/
+                    });
+                });
+
+            if (!this.phonesLoaded) {
+                this.phonesLoaded = true;
+                $('#inputAcceptSMS').bootstrapSwitch({ size: 'mini', onText: 'Sim', offText: 'Não' });
+
+                $bootstrapTable.load({
+                    selector: this._tableSelector
+                    , defaultParser: true
+                    , customQueryParams: { personId: this._personId }
+                    , responseHandler: (result) => {
+                        this.phones(result.Content.Items);
+
+                        var data = $bootstrapTable.defaultParser(result);
+                        return data;
+                    }
+                    , selectCallback: (data, e) => {
+                        $log.verbose('SelectRow :: Setting Phone data', data);
+                        this.phone(data);
+                        $log.verbose('SelectRow :: Activate Phone Edit Button');
+                        $('#phonesToolbar button[name="fullEdit"]').removeAttr('disabled');
+                    }
+                    , toolbar: '#phonesToolbar'
+                    , columns: [
+                        {
+                            field: 'Id',
+                            title: 'ID'
+                        }
+                        , {
+                            field: 'DateIns',
+                            title: 'Data de Criação',
+                            formatter: $bootstrapTable.defaultDateFormatter,
+                            width: '150px'
+                        }
+                        , {
+                            field: 'Number',
+                            title: 'Numero'
+                        }
+                        , {
+                            field: 'Contact',
+                            title: 'Contato'
+                        }
+                        , {
+                            field: 'AcceptSMS',
+                            title: 'Aceita SMS?'
+                        }
+                        , {
+                            field: 'PhoneType',
+                            title: 'Tipo'
+                        }
+                        , {
+                            field: 'operate',
+                            title: 'Ações',
+                            align: 'center',
+                            events: actionsEvents,
+                            formatter: (value, row, index) => {
+                                return $('#defaultRowActions').html();
+                            },
+                            width: '100px'
+                        }
+                    ]
+                    , url: $apis.phone
+                });
+            }
         }
     }
 }

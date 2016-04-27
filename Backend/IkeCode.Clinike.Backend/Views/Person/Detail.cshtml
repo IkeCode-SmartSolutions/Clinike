@@ -1,18 +1,18 @@
 ﻿@model int
-<div class="row" id="divPersonEditForm">
-    <div data-bind="with: $root.person">
+<div class="row">
+    <div id="divPersonEditForm" data-bind="with: $root.person">
         @Html.Partial("_Detail")
     </div>
     <div class="col-sm-12">
         <ul id="personChildrenTabs" class="nav nav-tabs">
             <li>
-                <a href="#phones" data-toggle="tab"><i class="fa fa-phone"></i> Telefones <span class="label label-success" data-bind="text: $root.phones().length > 0 ? $root.phones().length : '-'"></span></a>
+                <a href="#phones" data-toggle="tab"><i class="fa fa-phone"></i> Telefones</a>
             </li>
             <li>
-                <a href="#addresses" data-toggle="tab"><i class="fa fa-home"></i> Endereços <span class="label label-success" data-bind="text: $root.addresses().length > 0 ? $root.addresses().length : '-'"></span></a>
+                <a href="#addresses" data-toggle="tab"><i class="fa fa-home"></i> Endereços</a>
             </li>
             <li>
-                <a href="#documents" data-toggle="tab"><i class="fa fa-file-text"></i> Documentos <span class="label label-success" data-bind="text: $root.documents().length > 0 ? $root.documents().length : '-'"></span></a>
+                <a href="#documents" data-toggle="tab"><i class="fa fa-file-text"></i> Documentos</a>
             </li>
         </ul>
 
@@ -38,6 +38,26 @@
                     </button>
                 </div>
                 <table id="dtPhones" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered"></table>
+
+                <div class="modal fade" id="divPhoneEditForm" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Editando Telefone</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row" data-bind="with: $root.phone">
+                                    @Html.Partial("_PhoneDetail")
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                <button type="button" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="addresses">
                 <div id="addressesToolbar">
@@ -69,30 +89,11 @@
     </div>
 </div>
 
-<div class="modal fade" id="divPhoneEditForm" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Editando Telefone</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    @Html.Partial("_PhoneDetail")
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary">Salvar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section scripts{
 
     <script type="text/javascript">
-        var personViewModel = new Person.ViewModel.Detail($('#divPersonEditForm')[0], @Html.Raw(Model));
+        var personViewModel = new ViewModels.Person.Detail($('#divPersonEditForm')[0], @Html.Raw(Model));
+        var phonesViewModel = new ViewModels.Phone.List($('#phones')[0], '#dtPhones', @Html.Raw(Model));
     </script>
 
 }

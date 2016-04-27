@@ -34,6 +34,42 @@ module Clinike {
             , singleSelect: true
         };
 
+        public defaultDateFormatter = (value, row, index) => {
+            //$log.verbose('Bootstrap Table dateFormatter :: value', value);
+            //$log.verbose('Bootstrap Table dateFormatter :: row', row);
+            //$log.verbose('Bootstrap Table dateFormatter :: index', index);
+            return moment(value).format('DD/MM/YYYY HH:mm:ss');
+        };
+
+        public defaultBuildActionsEvents = (modalTarget: any
+            , editModalShownElement?: (shownElement, row) => any
+            , editModalHideCallback?: (hideElement, row) => any
+            , deleteCallback?: (row) => any) => {
+            var result = {
+                'click .edit': (e, value, row, index): any => {
+                    $(modalTarget)
+                        .modal()
+                        .on('shown.bs.modal', (shownElement): any => {
+                            if (editModalShownElement)
+                                editModalShownElement(shownElement, row);
+                        })
+                        .on('hide.bs.modal', (hideElement): any => {
+                            if (editModalHideCallback)
+                                editModalHideCallback(hideElement, row);
+                        });
+                },
+                'click .delete': (e, value, row, index): any => {
+                    //$log.verbose('PeopleViewModel personDelete e', e);
+                    //$log.verbose('PeopleViewModel personDelete row', row);
+                    //$log.verbose('PeopleViewModel personDelete index', index);
+                    if (deleteCallback)
+                        deleteCallback(row);
+                }
+            };
+
+            return result;
+        };
+
         public defaultParser = (result: any): IBootstrapTableModel => {
             var data = {
                 total: result.Content.TotalCount,
