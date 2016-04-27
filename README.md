@@ -10,12 +10,15 @@
 <ul>
 	<li><a target="_blank" href="https://github.com/castleproject/Windsor/blob/master/docs/README.md">Castle.Windsor</a> (IoC)</li>
 	<li><a target="_blank" href="http://www.asp.net/entity-framework">Entity Framework</a></li>
-	<li><a target="_blank" href="http://getbootstrap.com">Bootstrap CSS</a></li>
-	<li><a target="_blank" href="http://jquery.com">jQuery</a></li>
-	<li><a target="_blank" href="http://knockoutjs.com">KnockoutJs</a></li>
-	<li><a target="_blank" href="http://bootstrap-table.wenzhixin.net.cn/documentation/">Bootstrap Table</a></li>
-	<li><a target="_blank" href="http://t4t5.github.io/sweetalert/">SweetAlert</a></li>
 	<li><a target="_blank" href="https://www.typescriptlang.org/">TypeScript</a></li>
+	<li><a target="_blank" href="http://jquery.com">jQuery</a></li>
+	<li><a target="_blank" href="http://getbootstrap.com">Bootstrap CSS</a></li>
+	<li><a target="_blank" href="http://bootstrap-table.wenzhixin.net.cn/documentation/">Bootstrap Table</a></li>
+	<li><a target="_blank" href="http://www.bootstrap-switch.org/documentation-2.html">Bootstrap Switch</a></li>
+	<li><a target="_blank" href="http://bootboxjs.com/documentation.html">Bootbox</a></li>
+	<li><a target="_blank" href="http://knockoutjs.com">KnockoutJs</a></li>
+	<li><a target="_blank" href="https://github.com/Knockout-Contrib/Knockout-Validation/wiki">Knockout Validation</a></li>
+	<li><a target="_blank" href="http://t4t5.github.io/sweetalert/">SweetAlert</a></li>
 	<li><a target="_blank" href="http://momentjs.com/docs/">momentjs</a></li>
 </ul>
 

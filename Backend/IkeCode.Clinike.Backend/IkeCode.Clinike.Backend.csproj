@@ -123,6 +123,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Css\bootstrap-switch.css" />
+    <Content Include="Content\Css\bootstrap-switch.min.css" />
     <Content Include="Content\Css\bootstrap-table.css" />
     <Content Include="Content\Css\bootstrap.css" />
     <Content Include="Content\Css\clinike.css" />
@@ -188,7 +190,54 @@
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-vi-VN.js" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-zh-CN.js" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-zh-TW.js" />
-    <Content Include="Scripts\bootstrap-table.js" />
+    <Content Include="Scripts\knockout.validation.js" />
+    <Content Include="Scripts\knockout.validation.localization\ar-JO.js" />
+    <Content Include="Scripts\knockout.validation.localization\bg-BG.js" />
+    <Content Include="Scripts\knockout.validation.localization\ca-ES.js" />
+    <Content Include="Scripts\knockout.validation.localization\cs-CZ.js" />
+    <Content Include="Scripts\knockout.validation.localization\da-DK.js" />
+    <Content Include="Scripts\knockout.validation.localization\de-DE.js" />
+    <Content Include="Scripts\knockout.validation.localization\el-GR.js" />
+    <Content Include="Scripts\knockout.validation.localization\en-US.js" />
+    <Content Include="Scripts\knockout.validation.localization\es-ES.js" />
+    <Content Include="Scripts\knockout.validation.localization\fa-IR.js" />
+    <Content Include="Scripts\knockout.validation.localization\fr-FR.js" />
+    <Content Include="Scripts\knockout.validation.localization\he-IL.js" />
+    <Content Include="Scripts\knockout.validation.localization\hr-HR.js" />
+    <Content Include="Scripts\knockout.validation.localization\hu-HU.js" />
+    <Content Include="Scripts\knockout.validation.localization\it-IT.js" />
+    <Content Include="Scripts\knockout.validation.localization\ja-JP.js" />
+    <Content Include="Scripts\knockout.validation.localization\ko-KR.js" />
+    <Content Include="Scripts\knockout.validation.localization\lv-LV.js" />
+    <Content Include="Scripts\knockout.validation.localization\nb-NO.js" />
+    <Content Include="Scripts\knockout.validation.localization\nl-BE.js" />
+    <Content Include="Scripts\knockout.validation.localization\nl-NL.js" />
+    <Content Include="Scripts\knockout.validation.localization\pl-PL.js" />
+    <Content Include="Scripts\knockout.validation.localization\pt-BR.js" />
+    <Content Include="Scripts\knockout.validation.localization\pt-PT.js" />
+    <Content Include="Scripts\knockout.validation.localization\ro-RO.js" />
+    <Content Include="Scripts\knockout.validation.localization\ru-RU.js" />
+    <Content Include="Scripts\knockout.validation.localization\sv-SE.js" />
+    <Content Include="Scripts\knockout.validation.localization\tr-TR.js" />
+    <Content Include="Scripts\knockout.validation.localization\zh-CN.js" />
+    <Content Include="Scripts\knockout.validation.localization\zh-TW.js" />
+    <Content Include="Scripts\knockout.validation.min.js">
+      <DependentUpon>knockout.validation.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\knockout.validation.min.js.map">
+      <DependentUpon>knockout.validation.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\moment-with-locales.min.js">
+      <DependentUpon>moment-with-locales.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js">
+      <DependentUpon>moment.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\plugins\bootbox.js" />
+    <Content Include="Scripts\plugins\bootstrap-switch.js" />
+    <Content Include="Scripts\plugins\bootstrap-switch.min.js" />
+    <Content Include="Scripts\plugins\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <TypeScriptCompile Include="Scripts\clinike.ajax.ts">
       <DependentUpon>clinike.ts</DependentUpon>
@@ -227,7 +276,9 @@
     <Content Include="Scripts\clinike.prototype.utils.js">
       <DependentUpon>clinike.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\datatable.js" />
+    <Content Include="Scripts\plugins\pixel\pixel.moment.js" />
+    <Content Include="Scripts\plugins\pixel\pixel.switcher.js" />
+    <Content Include="Scripts\plugins\pixel\pixel.datatable.js" />
     <Content Include="Scripts\ie.min.js" />
     <Content Include="Scripts\knockout-3.4.0.debug.js">
       <DependentUpon>knockout-3.4.0.js</DependentUpon>
@@ -247,7 +298,9 @@
       <DependentUpon>require.js</DependentUpon>
     </Content>
     <Content Include="Scripts\require.js" />
-    <Content Include="Scripts\sweetalert.js" />
+    <Content Include="Scripts\plugins\sweetalert.js" />
+    <TypeScriptCompile Include="Scripts\typings\bootbox\bootbox.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\bootstrap-switch\bootstrap-switch.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\custom\custom.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
@@ -299,6 +352,7 @@
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Person\Detail.cshtml" />
+    <Content Include="Views\Person\_PhoneDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

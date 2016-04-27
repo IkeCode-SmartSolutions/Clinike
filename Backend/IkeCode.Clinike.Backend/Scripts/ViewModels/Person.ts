@@ -2,9 +2,12 @@
 ///<reference path="../typings/bootstrap/bootstrap.d.ts" />
 ///<reference path="../typings/knockout/knockout.d.ts" />
 ///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
+///<reference path="../typings/knockout.validation/knockout.validation.d.ts" />
 ///<reference path="../typings/moment/moment.d.ts" />
 ///<reference path="../typings/requirejs/require.d.ts" />
 ///<reference path="../typings/custom/custom.d.ts" />
+///<reference path="../typings/bootstrap-switch/bootstrap-switch.d.ts" />
+///<reference path="../typings/bootbox/bootbox.d.ts" />
 ///<reference path="../clinike.ts" />
 ///<reference path="../clinike.ajax.ts" />
 ///<reference path="../clinike.log.ts" />
@@ -298,7 +301,8 @@ module Person.ViewModel {
                     , {
                         field: 'DateIns',
                         title: 'Data de Criação',
-                        formatter: this.dateFormatter
+                        formatter: this.dateFormatter,
+                        width: '150px'
                     }
                     , {
                         field: 'Name',
@@ -439,7 +443,6 @@ module Person.ViewModel {
                     $(modalTarget)
                         .modal()
                         .on('shown.bs.modal', (shownElement): any => {
-                            $log.verbose('shown');
                             if (editModalShownElement)
                                 editModalShownElement(shownElement, row);
                         })
@@ -462,13 +465,11 @@ module Person.ViewModel {
 
         private getPhones = () => {
 
-            var actionsEvents = this.buildActionsEvents('#defaultEditor'
+            var actionsEvents = this.buildActionsEvents('#divPhoneEditForm'
                 , (e, row) => {
-                    $log.verbose('shown callback');
                     this.phoneSaved = false;
                 }
                 , (e, row) => {
-                    $log.verbose('hide callback');
                     if (!this.phoneSaved) {
                         swal({
                             title: "Você tem certeza?"
@@ -558,6 +559,8 @@ module Person.ViewModel {
 
             if (!this.phonesLoaded) {
                 this.phonesLoaded = true;
+                $('#inputAcceptSMS').bootstrapSwitch({ size: 'mini', onText: 'Sim', offText: 'Não' });
+
                 $bootstrapTable.load({
                     selector: "#dtPhones"
                     , defaultParser: true
@@ -583,7 +586,8 @@ module Person.ViewModel {
                         , {
                             field: 'DateIns',
                             title: 'Data de Criação',
-                            formatter: this.dateFormatter
+                            formatter: this.dateFormatter,
+                            width: '150px'
                         }
                         , {
                             field: 'Number',
@@ -738,7 +742,8 @@ module Person.ViewModel {
                         , {
                             field: 'DateIns',
                             title: 'Data de Criação',
-                            formatter: this.dateFormatter
+                            formatter: this.dateFormatter,
+                            width: '150px'
                         }
                         , {
                             field: 'Value',
@@ -881,7 +886,8 @@ module Person.ViewModel {
                         , {
                             field: 'DateIns',
                             title: 'Data de Criação',
-                            formatter: this.dateFormatter
+                            formatter: this.dateFormatter,
+                            width: '150px'
                         }
                         , {
                             field: 'Street',

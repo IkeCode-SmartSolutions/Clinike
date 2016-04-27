@@ -7,3 +7,9 @@
     }
     return s;
 };
+
+try {
+    ko.validation.locale('pt-BR');
+} catch (e) {
+
+}
