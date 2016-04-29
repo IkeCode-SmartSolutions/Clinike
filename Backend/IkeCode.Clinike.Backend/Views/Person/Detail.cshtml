@@ -128,10 +128,10 @@
 @section scripts{
 
     <script type="text/javascript">
-        var personViewModel = new ViewModels.Person.Detail($('#divPersonEditForm')[0], @Html.Raw(Model));
-        var phoneViewModel = new ViewModels.Phone.List($('#phones')[0], '#dtPhones', @Html.Raw(Model));
-        var documentViewModel = new ViewModels.Document.List($('#documents')[0], '#dtDocuments', @Html.Raw(Model));
-        var addressViewModel = new ViewModels.Address.List($('#addresses')[0], '#dtAddresses', @Html.Raw(Model));
+        var personViewModel = new ViewModels.Person.Detail('#divPersonEditForm', @Html.Raw(Model));
+        var phoneViewModel = new ViewModels.Phone.List(@Html.Raw(Model), '#divPhoneEditForm', '#dtPhones', '#phonesToolbar');
+        var documentViewModel = new ViewModels.Document.List(@Html.Raw(Model), '#divDocumentEditForm', '#dtDocuments', '#documentsToolbar');
+        var addressViewModel = new ViewModels.Address.List(@Html.Raw(Model), '#divAddressEditForm', '#dtAddresses', '#addressesToolbar');
     </script>
 
 }

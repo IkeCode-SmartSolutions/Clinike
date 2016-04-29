@@ -18,10 +18,9 @@ var ViewModels;
     var Person;
     (function (Person) {
         class List extends ViewModels.BaseKoViewModel {
-            constructor(targetElement, _tableSelector) {
+            constructor(targetElement, tableSelector, tableToolbarSelector = '') {
                 super(targetElement);
-                this.person = ko.observable(new ClinikeModels.Person());
-                this.people = ko.observableArray([new ClinikeModels.Person()]);
+                this.person = ko.observable();
                 this.getDetailPageUrl = (id) => {
                     return (window.location.toString() + "/detalhe/{0}").format(id);
                 };
@@ -137,9 +136,9 @@ var ViewModels;
                             $log.verbose('SelectRow :: Setting Person data', data);
                             this.person(data);
                             $log.verbose('SelectRow :: Activate Edit Button');
-                            $('#peopleToolbar button[name="fullEditPerson"]').removeAttr('disabled');
+                            $(this._tableToolbarSelector).find('button[name="fullEdit"]').removeAttr('disabled');
                         },
-                        toolbar: '#peopleToolbar',
+                        toolbar: this._tableToolbarSelector,
                         columns: [
                             {
                                 field: 'Id',
@@ -225,14 +224,15 @@ var ViewModels;
                         }
                     });
                 };
-                this._tableSelector = _tableSelector;
+                this._tableSelector = tableSelector;
+                this._tableToolbarSelector = tableToolbarSelector;
                 this.saved = false;
                 $(document).ready(() => {
-                    $('#peopleToolbar button[name="newPerson"]').on('click', (e) => {
+                    $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
                         this.person(new ClinikeModels.Person());
                         $(this.vmTargetElement).modal('show');
                     });
-                    $('#peopleToolbar button[name="fullEditPerson"]').on('click', (e) => {
+                    $(this._tableToolbarSelector).find('button[name="fullEdit"]').on('click', (e) => {
                         $log.verbose('People Table :: full edit clicked');
                         var url = this.getDetailPageUrl(this.person().Id);
                         $log.verbose('People Table :: full edit clicked url', url);
@@ -263,10 +263,10 @@ var ViewModels;
                 };
                 this._personId = personId;
                 this.saved = false;
-                this.applyViewModel(this);
                 if (this._personId > 0) {
                     this.getPerson();
                 }
+                this.applyViewModel(this);
             }
         }
         Person.Detail = Detail;
@@ -277,11 +277,11 @@ var ViewModels;
     var Phone;
     (function (Phone) {
         class List extends ViewModels.BaseKoViewModel {
-            constructor(targetElement, _tableSelector, personId) {
+            constructor(personId, targetElement, tableSelector, tableToolbarSelector = '') {
                 super(targetElement);
                 this.phonesLoaded = false;
                 this.getList = () => {
-                    var actionsEvents = $bootstrapTable.defaultActionsEventsBuilder('#divPhoneEditForm', (e, row) => {
+                    var actionsEvents = $bootstrapTable.defaultActionsEventsBuilder(this.vmTargetElementSelector, (e, row) => {
                         this.Detail.saved = false;
                     }, (e, row) => {
                         if (!this.Detail.saved) {
@@ -328,7 +328,7 @@ var ViewModels;
                                     success: (data) => {
                                         $log.verbose('Phone Delete :: ajax result data', data);
                                         if (data.Status == 'Success') {
-                                            $('#dtPhones').bootstrapTable('remove', {
+                                            $(this._tableSelector).bootstrapTable('remove', {
                                                 field: 'Id',
                                                 values: [row.Id]
                                             });
@@ -386,9 +386,9 @@ var ViewModels;
                                 $log.verbose('SelectRow :: Setting Phone data mapped >', mapped);
                                 this.Detail.phone(mapped);
                                 $log.verbose('SelectRow :: Activate Phone Edit Button');
-                                $('#phonesToolbar button[name="fullEdit"]').removeAttr('disabled');
+                                $(this._tableToolbarSelector).find('button[name="fullEdit"]').removeAttr('disabled');
                             },
-                            toolbar: '#phonesToolbar',
+                            toolbar: this._tableToolbarSelector,
                             columns: [
                                 {
                                     field: 'Id',
@@ -429,9 +429,10 @@ var ViewModels;
                         });
                     }
                 };
-                this._tableSelector = _tableSelector;
+                this._tableSelector = tableSelector;
+                this._tableToolbarSelector = tableToolbarSelector;
                 this._personId = personId;
-                this.Detail = this.Detail || new ViewModels.Phone.Detail($('#divPhoneEditForm')[0]);
+                this.Detail = this.Detail || new ViewModels.Phone.Detail(this.vmTargetElementSelector);
                 if (this._personId > 0) {
                     $('#personChildrenTabs a[href="#phones"]').on('click', (e) => {
                         e.preventDefault();
@@ -439,9 +440,9 @@ var ViewModels;
                         $(e.target).tab('show');
                     });
                 }
-                $('#phonesToolbar button[name="new"]').on('click', (e) => {
+                $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
                     this.Detail.phone(new ClinikeModels.KoPhone());
-                    $('#divPhoneEditForm').modal('show');
+                    $(this.vmTargetElementSelector).modal('show');
                 });
             }
         }
@@ -473,11 +474,11 @@ var ViewModels;
     var Document;
     (function (Document) {
         class List extends ViewModels.BaseKoViewModel {
-            constructor(targetElement, _tableSelector, personId) {
+            constructor(personId, targetElement, tableSelector, tableToolbarSelector = '') {
                 super(targetElement);
                 this.documentsLoaded = false;
                 this.getList = () => {
-                    var actionsEvents = $bootstrapTable.defaultActionsEventsBuilder('#divDocumentEditForm', (e, row) => {
+                    var actionsEvents = $bootstrapTable.defaultActionsEventsBuilder(this.vmTargetElementSelector, (e, row) => {
                         this.Detail.saved = false;
                     }, (e, row) => {
                         if (!this.Detail.saved) {
@@ -524,7 +525,7 @@ var ViewModels;
                                     success: (data) => {
                                         $log.verbose('Document Delete :: ajax result data', data);
                                         if (data.Status == 'Success') {
-                                            $('#dtDocuments').bootstrapTable('remove', {
+                                            $(this._tableSelector).bootstrapTable('remove', {
                                                 field: 'Id',
                                                 values: [row.Id]
                                             });
@@ -583,9 +584,9 @@ var ViewModels;
                                 $log.verbose('SelectRow :: Setting Document data mapped >', mapped);
                                 this.Detail.document(mapped);
                                 $log.verbose('SelectRow :: Activate Document Edit Button');
-                                $('#documentsToolbar button[name="fullEdit"]').removeAttr('disabled');
+                                $(this._tableToolbarSelector).find('button[name="fullEdit"]').removeAttr('disabled');
                             },
-                            toolbar: '#documentsToolbar',
+                            toolbar: this._tableToolbarSelector,
                             columns: [
                                 {
                                     field: 'Id',
@@ -614,9 +615,10 @@ var ViewModels;
                         });
                     }
                 };
-                this._tableSelector = _tableSelector;
+                this._tableSelector = tableSelector;
+                this._tableToolbarSelector = tableToolbarSelector;
                 this._personId = personId;
-                this.Detail = this.Detail || new ViewModels.Document.Detail($('#divDocumentEditForm')[0]);
+                this.Detail = this.Detail || new ViewModels.Document.Detail(this.vmTargetElementSelector);
                 if (this._personId > 0) {
                     $('#personChildrenTabs a[href="#documents"]').on('click', (e) => {
                         e.preventDefault();
@@ -624,9 +626,9 @@ var ViewModels;
                         $(e.target).tab('show');
                     });
                 }
-                $('#documentsToolbar button[name="new"]').on('click', (e) => {
+                $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
                     this.Detail.document(new ClinikeModels.KoDocument());
-                    $('#divDocumentEditForm').modal('show');
+                    $(this.vmTargetElementSelector).modal('show');
                 });
             }
         }
@@ -658,11 +660,11 @@ var ViewModels;
     var Address;
     (function (Address) {
         class List extends ViewModels.BaseKoViewModel {
-            constructor(targetElement, _tableSelector, personId) {
+            constructor(personId, targetElement, tableSelector, tableToolbarSelector = '') {
                 super(targetElement);
                 this.loaded = false;
                 this.getList = () => {
-                    var actionsEvents = $bootstrapTable.defaultActionsEventsBuilder('#divAddressEditForm', (e, row) => {
+                    var actionsEvents = $bootstrapTable.defaultActionsEventsBuilder(this.vmTargetElementSelector, (e, row) => {
                         this.Detail.saved = false;
                     }, (e, row) => {
                         if (!this.Detail.saved) {
@@ -768,9 +770,9 @@ var ViewModels;
                                 $log.verbose('SelectRow :: Setting Address data mapped >', mapped);
                                 this.Detail.address(mapped);
                                 $log.verbose('SelectRow :: Activate Address Edit Button');
-                                $('#addressesToolbar button[name="fullEdit"]').removeAttr('disabled');
+                                $(this._tableToolbarSelector).find('button[name="fullEdit"]').removeAttr('disabled');
                             },
-                            toolbar: '#addressesToolbar',
+                            toolbar: this._tableToolbarSelector,
                             columns: [
                                 {
                                     field: 'Id',
@@ -823,9 +825,10 @@ var ViewModels;
                         });
                     }
                 };
-                this._tableSelector = _tableSelector;
+                this._tableSelector = tableSelector;
+                this._tableToolbarSelector = tableToolbarSelector;
                 this._personId = personId;
-                this.Detail = this.Detail || new ViewModels.Address.Detail($('#divAddressEditForm')[0]);
+                this.Detail = this.Detail || new ViewModels.Address.Detail(this.vmTargetElementSelector);
                 if (this._personId > 0) {
                     $('#personChildrenTabs a[href="#addresses"]').on('click', (e) => {
                         e.preventDefault();
@@ -833,9 +836,9 @@ var ViewModels;
                         $(e.target).tab('show');
                     });
                 }
-                $('#addressesToolbar button[name="new"]').on('click', (e) => {
+                $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
                     this.Detail.address(new ClinikeModels.KoAddress());
-                    $('#divAddressEditForm').modal('show');
+                    $(this.vmTargetElementSelector).modal('show');
                 });
             }
         }

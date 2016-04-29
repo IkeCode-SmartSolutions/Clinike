@@ -1,8 +1,9 @@
 var ViewModels;
 (function (ViewModels) {
     class BaseKoViewModel {
-        constructor(targetElement) {
-            this.vmTargetElement = targetElement;
+        constructor(vmTargetElementSelector) {
+            this.vmTargetElementSelector = vmTargetElementSelector;
+            this.vmTargetElement = $(vmTargetElementSelector)[0];
         }
         applyViewModel(data) {
             if (this.vmBinded) {

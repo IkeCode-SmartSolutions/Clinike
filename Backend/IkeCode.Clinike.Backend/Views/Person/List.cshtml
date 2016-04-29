@@ -7,11 +7,11 @@
     </a>
 </div>
 <div id="peopleToolbar">
-    <button class="btn btn-success" type="button" name="newPerson" title="Novo">
+    <button class="btn btn-success" type="button" name="new" title="Novo">
         <i class="fa fa-plus"></i>
         Novo
     </button>
-    <button class="btn btn-primary" disabled="disabled" name="fullEditPerson" title="Editar">
+    <button class="btn btn-primary" disabled="disabled" name="fullEdit" title="Editar">
         <i class="fa fa-pencil"></i>
         Edição completa
     </button>
@@ -41,7 +41,7 @@
 @section scripts{
 
     <script type="text/javascript">
-        var peopleViewModel = new ViewModels.Person.List($('#divPersonEditForm')[0], '#dtPeople');
+        var peopleViewModel = new ViewModels.Person.List('#divPersonEditForm', '#dtPeople', '#peopleToolbar');
     </script>
 
 }

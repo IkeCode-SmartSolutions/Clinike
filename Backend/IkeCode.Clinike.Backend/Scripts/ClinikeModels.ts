@@ -63,7 +63,7 @@ module ClinikeModels {
         PersonId: KnockoutObservable<number> = ko.observable<number>();
 
         constructor(addr?: IAddress) {
-            $log.verbose('ClinikeModels.Address :: constructor | [address] >', addr);
+            $log.verbose('ClinikeModels.KoAddress :: constructor | [address] >', addr);
             this.Id(addr && addr.Id || 0);
             this.DateIns(addr && addr.DateIns || new Date());
             this.LastUpdate(addr && addr.LastUpdate || new Date());

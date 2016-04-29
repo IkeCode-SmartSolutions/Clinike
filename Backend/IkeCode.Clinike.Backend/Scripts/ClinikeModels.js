@@ -35,7 +35,7 @@ var ClinikeModels;
             this.State = ko.observable();
             this.AddressType = ko.observable();
             this.PersonId = ko.observable();
-            $log.verbose('ClinikeModels.Address :: constructor | [address] >', addr);
+            $log.verbose('ClinikeModels.KoAddress :: constructor | [address] >', addr);
             this.Id(addr && addr.Id || 0);
             this.DateIns(addr && addr.DateIns || new Date());
             this.LastUpdate(addr && addr.LastUpdate || new Date());

@@ -1,10 +1,12 @@
 ﻿module ViewModels {
     export class BaseKoViewModel {
         protected vmBinded: boolean;
-        protected vmTargetElement: any;
+        protected vmTargetElementSelector: string;
+        protected vmTargetElement: HTMLElement;
 
-        constructor(targetElement: any) {
-            this.vmTargetElement = targetElement;
+        constructor(vmTargetElementSelector: string) {
+            this.vmTargetElementSelector = vmTargetElementSelector;
+            this.vmTargetElement = $(vmTargetElementSelector)[0];
         }
 
         protected applyViewModel(data: any) {
