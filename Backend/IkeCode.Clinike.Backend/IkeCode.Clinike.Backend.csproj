@@ -295,13 +295,6 @@
     <Content Include="Scripts\knockout.reactor.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\pixel-admin.js" />
-    <Content Include="Scripts\pixel-admin.min.js">
-      <DependentUpon>pixel-admin.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\r.js">
-      <DependentUpon>require.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\require.js" />
     <Content Include="Scripts\plugins\sweetalert.js" />
     <TypeScriptCompile Include="Scripts\ClinikeModels.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootbox\bootbox.d.ts" />
@@ -364,6 +357,8 @@
     <Content Include="Scripts\ViewModels\Clinike.Base.js.map">
       <DependentUpon>Clinike.Base.ts</DependentUpon>
     </Content>
+    <Content Include="Views\Person\_DocumentDetail.cshtml" />
+    <Content Include="Views\Person\_AddressDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

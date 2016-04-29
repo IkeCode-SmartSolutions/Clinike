@@ -5,57 +5,139 @@ var ClinikeModels;
 (function (ClinikeModels) {
     class Address {
         constructor(addr) {
-            this.Id = ko.observable(0);
-            this.DateIns = ko.observable(new Date());
-            this.LastUpdate = ko.observable(new Date());
-            this.Street = ko.observable('');
-            this.Number = ko.observable('');
-            $log.verbose('Person.Models.Document :: constructor [address]', addr);
-            if (addr) {
-                this.Id(addr.Id());
-                this.DateIns(addr.DateIns());
-                this.LastUpdate(addr.LastUpdate());
-                this.Number(addr.Number());
-                this.Street(addr.Street());
-            }
+            $log.verbose('ClinikeModels.Address :: constructor [address]', addr);
+            this.Id = addr && addr.Id || 0;
+            this.DateIns = addr && addr.DateIns || new Date();
+            this.LastUpdate = addr && addr.LastUpdate || new Date();
+            this.Street = addr && addr.Street || '';
+            this.Number = addr && addr.Number || '';
+            this.Complement = addr && addr.Complement || '';
+            this.Neighborhood = addr && addr.Neighborhood || '';
+            this.ZipCode = addr && addr.ZipCode || '';
+            this.City = addr && addr.City || '';
+            this.State = addr && addr.State || '';
+            this.AddressType = addr && addr.AddressType || '';
+            this.PersonId = addr && addr.PersonId || 0;
         }
     }
     ClinikeModels.Address = Address;
+    class KoAddress {
+        constructor(addr) {
+            this.Id = ko.observable();
+            this.DateIns = ko.observable();
+            this.LastUpdate = ko.observable();
+            this.Street = ko.observable();
+            this.Number = ko.observable();
+            this.Complement = ko.observable();
+            this.Neighborhood = ko.observable();
+            this.ZipCode = ko.observable();
+            this.City = ko.observable();
+            this.State = ko.observable();
+            this.AddressType = ko.observable();
+            this.PersonId = ko.observable();
+            $log.verbose('ClinikeModels.Address :: constructor | [address] >', addr);
+            this.Id(addr && addr.Id || 0);
+            this.DateIns(addr && addr.DateIns || new Date());
+            this.LastUpdate(addr && addr.LastUpdate || new Date());
+            this.Street(addr && addr.Street || '');
+            this.Number(addr && addr.Number || '');
+            this.Complement(addr && addr.Complement || '');
+            this.Neighborhood(addr && addr.Neighborhood || '');
+            this.ZipCode(addr && addr.ZipCode || '');
+            this.City(addr && addr.City || '');
+            this.State(addr && addr.State || '');
+            this.AddressType(addr && addr.AddressType || '');
+            this.PersonId(addr && addr.PersonId || 0);
+        }
+    }
+    ClinikeModels.KoAddress = KoAddress;
+    class KoDocumentType {
+        constructor(docType) {
+            this.Id = ko.observable();
+            this.DateIns = ko.observable();
+            this.LastUpdate = ko.observable();
+            this.Name = ko.observable();
+            $log.verbose('ClinikeModels.KoDocumentType :: constructor [documentType]', docType);
+            this.Id(docType && docType.Id || 0);
+            this.DateIns(docType && docType.DateIns || new Date());
+            this.LastUpdate(docType && docType.LastUpdate || new Date());
+            this.Name(docType && docType.Name || '');
+        }
+    }
+    ClinikeModels.KoDocumentType = KoDocumentType;
+    class DocumentType {
+        constructor(docType) {
+            $log.verbose('ClinikeModels.DocumentType :: constructor [documentType]', docType);
+            this.Id = docType && docType.Id || 0;
+            this.DateIns = docType && docType.DateIns || new Date();
+            this.LastUpdate = docType && docType.LastUpdate || new Date();
+            this.Name = docType && docType.Name || '';
+        }
+    }
+    ClinikeModels.DocumentType = DocumentType;
+    class KoDocument {
+        constructor(doc) {
+            this.Id = ko.observable();
+            this.DateIns = ko.observable();
+            this.LastUpdate = ko.observable();
+            this.Value = ko.observable();
+            this.DocumentType = ko.observable();
+            this.PersonId = ko.observable();
+            $log.verbose('ClinikeModels.KoDocument :: constructor [document]', doc);
+            this.Id(doc && doc.Id || 0);
+            this.DateIns(doc && doc.DateIns || new Date());
+            this.LastUpdate(doc && doc.LastUpdate || new Date());
+            this.Value(doc && doc.Value || '');
+            this.DocumentType(doc && doc.DocumentType || new DocumentType());
+            this.PersonId(doc && doc.PersonId || 0);
+        }
+    }
+    ClinikeModels.KoDocument = KoDocument;
     class Document {
         constructor(doc) {
-            this.Id = ko.observable(0);
-            this.DateIns = ko.observable(new Date());
-            this.LastUpdate = ko.observable(new Date());
-            this.Value = ko.observable('');
-            $log.verbose('Person.Models.Document :: constructor [document]', doc);
-            if (doc) {
-                this.Id(doc.Id());
-                this.DateIns(doc.DateIns());
-                this.LastUpdate(doc.LastUpdate());
-                this.Value(doc.Value());
-            }
+            $log.verbose('ClinikeModels.Document :: constructor [document]', doc);
+            this.Id = doc && doc.Id || 0;
+            this.DateIns = doc && doc.DateIns || new Date();
+            this.LastUpdate = doc && doc.LastUpdate || new Date();
+            this.Value = doc && doc.Value || '';
+            this.DocumentType = doc && doc.DocumentType || new DocumentType();
+            this.PersonId = doc && doc.PersonId || 0;
         }
     }
     ClinikeModels.Document = Document;
+    class KoPhone {
+        constructor(phone) {
+            this.Id = ko.observable();
+            this.DateIns = ko.observable();
+            this.LastUpdate = ko.observable();
+            this.Number = ko.observable();
+            this.Contact = ko.observable();
+            this.PhoneType = ko.observable();
+            this.AcceptSMS = ko.observable();
+            this.PersonId = ko.observable();
+            $log.verbose('ClinikeModels.KoPhone :: constructor | [phone] > ', phone);
+            this.Id(phone && phone.Id || 0);
+            this.DateIns(phone && phone.DateIns || new Date());
+            this.LastUpdate(phone && phone.LastUpdate || new Date());
+            this.Number(phone && phone.Number || '');
+            this.Contact(phone && phone.Contact || '');
+            this.PhoneType(phone && phone.PhoneType || 'Unknown');
+            this.AcceptSMS(phone && phone.AcceptSMS || false);
+            this.PersonId(phone && phone.PersonId || 0);
+        }
+    }
+    ClinikeModels.KoPhone = KoPhone;
     class Phone {
         constructor(phone) {
-            this.Id = ko.observable(0);
-            this.DateIns = ko.observable(new Date());
-            this.LastUpdate = ko.observable(new Date());
-            this.Number = ko.observable('');
-            this.Contact = ko.observable('');
-            this.PhoneType = ko.observable('');
-            this.AcceptSMS = ko.observable(false);
-            $log.verbose('Person.Models.Phone :: constructor [phone]', phone);
-            if (phone) {
-                this.Id(phone.Id());
-                this.DateIns(phone.DateIns());
-                this.LastUpdate(phone.LastUpdate());
-                this.Number(phone.Number());
-                this.Contact(phone.Contact());
-                this.PhoneType(phone.PhoneType());
-                this.AcceptSMS(phone.AcceptSMS());
-            }
+            $log.verbose('ClinikeModels.Phone :: constructor | [phone] > ', phone);
+            this.Id = phone && phone.Id || 0;
+            this.DateIns = phone && phone.DateIns || new Date();
+            this.LastUpdate = phone && phone.LastUpdate || new Date();
+            this.Number = phone && phone.Number || '';
+            this.Contact = phone && phone.Contact || '';
+            this.PhoneType = phone && phone.PhoneType || 'Unknown';
+            this.AcceptSMS = phone && phone.AcceptSMS || false;
+            this.PersonId = phone && phone.PersonId || 0;
         }
     }
     ClinikeModels.Phone = Phone;
@@ -66,7 +148,7 @@ var ClinikeModels;
             this.LastUpdate = ko.observable(new Date());
             this.Name = ko.observable('');
             this.Email = ko.observable('');
-            $log.verbose('Person.Models.Person :: constructor [person]', person);
+            $log.verbose('ClinikeModels.Person :: constructor [person]', person);
             if (person) {
                 this.Id(person.Id());
                 this.DateIns(person.DateIns());

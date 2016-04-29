@@ -28,13 +28,24 @@ var Clinike;
                 checkboxHeader: true,
                 singleSelect: true
             };
+            this.defaultActionFormatter = () => {
+                var result = '<div id="defaultRowActions" style="display: none">\
+                            <a class="edit" href="javascript:void(0)" title="Editação Compacta">\
+                                <i class="fa fa-pencil"></i>\
+                            </a>\
+                            <a class="delete" href="javascript:void(0)" title="Apagar">\
+                                <i class="fa fa-trash-o"></i>\
+                            </a>\
+                        </div>';
+                return $(result).html();
+            };
             this.defaultDateFormatter = (value, row, index) => {
                 //$log.verbose('Bootstrap Table dateFormatter :: value', value);
                 //$log.verbose('Bootstrap Table dateFormatter :: row', row);
                 //$log.verbose('Bootstrap Table dateFormatter :: index', index);
                 return moment(value).format('DD/MM/YYYY HH:mm:ss');
             };
-            this.defaultBuildActionsEvents = (modalTarget, editModalShownElement, editModalHideCallback, deleteCallback) => {
+            this.defaultActionsEventsBuilder = (modalTarget, editModalShownElement, editModalHideCallback, deleteCallback) => {
                 var result = {
                     'click .edit': (e, value, row, index) => {
                         $(modalTarget)

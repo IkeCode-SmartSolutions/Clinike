@@ -32,10 +32,6 @@
                         <i class="fa fa-plus"></i>
                         Novo
                     </button>
-                    <button class="btn btn-primary" disabled="disabled" name="fullEdit" title="Editar">
-                        <i class="fa fa-pencil"></i>
-                        Edição completa
-                    </button>
                 </div>
                 <table id="dtPhones" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered"></table>
 
@@ -43,8 +39,10 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">Editando Telefone</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">Telefone</h4>
                             </div>
                             <div class="modal-body">
                                 <div class="row" data-bind="with: $root.phone">
@@ -53,37 +51,75 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                <button type="button" class="btn btn-primary">Salvar</button>
+                                <button type="button" data-bind="$root.save" class="btn btn-primary">Salvar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div role="tabpanel" class="tab-pane" id="addresses">
                 <div id="addressesToolbar">
                     <button class="btn btn-success" type="button" name="new" title="Novo">
                         <i class="fa fa-plus"></i>
                         Novo
                     </button>
-                    <button class="btn btn-primary" disabled="disabled" name="fullEdit" title="Editar">
-                        <i class="fa fa-pencil"></i>
-                        Edição completa
-                    </button>
                 </div>
                 <table id="dtAddresses" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered"></table>
+
+                <div class="modal fade" id="divAddressEditForm" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">Endereço</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row" data-bind="with: $root.address">
+                                    @Html.Partial("_AddressDetail")
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                <button type="button" data-bind="$root.save" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
             <div role="tabpanel" class="tab-pane" id="documents">
                 <div id="documentsToolbar">
                     <button class="btn btn-success" type="button" name="new" title="Novo">
                         <i class="fa fa-plus"></i>
                         Novo
                     </button>
-                    <button class="btn btn-primary" disabled="disabled" name="fullEdit" title="Editar">
-                        <i class="fa fa-pencil"></i>
-                        Edição completa
-                    </button>
                 </div>
                 <table id="dtDocuments" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered"></table>
+
+                <div class="modal fade" id="divDocumentEditForm" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">Documento</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row" data-bind="with: $root.document">
+                                    @Html.Partial("_DocumentDetail")
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                <button type="button" data-bind="$root.save" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -93,7 +129,9 @@
 
     <script type="text/javascript">
         var personViewModel = new ViewModels.Person.Detail($('#divPersonEditForm')[0], @Html.Raw(Model));
-        var phonesViewModel = new ViewModels.Phone.List($('#phones')[0], '#dtPhones', @Html.Raw(Model));
+        var phoneViewModel = new ViewModels.Phone.List($('#phones')[0], '#dtPhones', @Html.Raw(Model));
+        var documentViewModel = new ViewModels.Document.List($('#documents')[0], '#dtDocuments', @Html.Raw(Model));
+        var addressViewModel = new ViewModels.Address.List($('#addresses')[0], '#dtAddresses', @Html.Raw(Model));
     </script>
 
 }

@@ -34,6 +34,18 @@ module Clinike {
             , singleSelect: true
         };
 
+        public defaultActionFormatter = () => {
+            var result = '<div id="defaultRowActions" style="display: none">\
+                            <a class="edit" href="javascript:void(0)" title="Editação Compacta">\
+                                <i class="fa fa-pencil"></i>\
+                            </a>\
+                            <a class="delete" href="javascript:void(0)" title="Apagar">\
+                                <i class="fa fa-trash-o"></i>\
+                            </a>\
+                        </div>';
+            return $(result).html();
+        }
+        
         public defaultDateFormatter = (value, row, index) => {
             //$log.verbose('Bootstrap Table dateFormatter :: value', value);
             //$log.verbose('Bootstrap Table dateFormatter :: row', row);
@@ -41,7 +53,7 @@ module Clinike {
             return moment(value).format('DD/MM/YYYY HH:mm:ss');
         };
 
-        public defaultBuildActionsEvents = (modalTarget: any
+        public defaultActionsEventsBuilder = (modalTarget: any
             , editModalShownElement?: (shownElement, row) => any
             , editModalHideCallback?: (hideElement, row) => any
             , deleteCallback?: (row) => any) => {

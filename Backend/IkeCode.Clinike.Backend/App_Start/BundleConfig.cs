@@ -23,9 +23,7 @@ namespace IkeCode.Clinike.Backend
             jsBundles.Include("~/Scripts/knockout.reactor.js");
             jsBundles.Include("~/Scripts/knockout.validation.js");
             jsBundles.IncludeDirectory("~/Scripts/knockout.validation.localization", "*.js");
-
-            //jsBundles.Include("~/Scripts/require.js");
-
+            
             jsBundles.Include("~/Scripts/pixel-admin.js");
 
             jsBundles.Include("~/Scripts/clinike.prototype.utils.js");

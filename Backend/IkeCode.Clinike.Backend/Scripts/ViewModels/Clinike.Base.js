@@ -1,5 +1,5 @@
-var Clinike;
-(function (Clinike) {
+var ViewModels;
+(function (ViewModels) {
     class BaseKoViewModel {
         constructor(targetElement) {
             this.vmTargetElement = targetElement;
@@ -10,11 +10,12 @@ var Clinike;
             }
             else {
                 $log.verbose('Ko :: Applying Binding to >', this.vmTargetElement);
+                $log.verbose('Ko :: Aplied data', data);
                 ko.applyBindings(data, this.vmTargetElement);
                 this.vmBinded = true;
             }
         }
     }
-    Clinike.BaseKoViewModel = BaseKoViewModel;
-})(Clinike || (Clinike = {}));
+    ViewModels.BaseKoViewModel = BaseKoViewModel;
+})(ViewModels || (ViewModels = {}));
 //# sourceMappingURL=Clinike.Base.js.map
