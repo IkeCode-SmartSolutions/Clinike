@@ -16,7 +16,7 @@
 module ViewModels.Person {
     export class List extends ViewModels.BaseKoViewModel {
         protected saved: boolean;
-        person: KnockoutObservable<ClinikeModels.IPerson> = ko.observable<ClinikeModels.Person>();
+        person: KnockoutObservable<ClinikeModels.KoPerson> = ko.observable<ClinikeModels.KoPerson>();
         private _tableSelector: string;
         private _tableToolbarSelector: string;
 
@@ -28,7 +28,7 @@ module ViewModels.Person {
 
             $(document).ready(() => {
                 $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                    this.person(new ClinikeModels.Person());
+                    this.person(new ClinikeModels.KoPerson());
                     $(this.vmTargetElement).modal('show');
                 });
 
@@ -260,7 +260,7 @@ module ViewModels.Person {
     export class Detail extends ViewModels.BaseKoViewModel {
         private _personId: number;
         protected saved: boolean;
-        person: KnockoutObservable<ClinikeModels.IPerson> = ko.observable(new ClinikeModels.Person());
+        person: KnockoutObservable<ClinikeModels.KoPerson> = ko.observable<ClinikeModels.KoPerson>();
         
         constructor(targetElement: string, personId: number) {
             super(targetElement);
@@ -278,7 +278,7 @@ module ViewModels.Person {
         private getPerson = (successCallback?: () => any, errorCallback?: () => any) => {
             var url = $apis.person;
 
-            new Clinike.Ajax<ClinikeModels.IPerson>({
+            new Clinike.Ajax<ClinikeModels.KoPerson>({
                 url: $apis.person,
                 data: { id: this._personId }
             }, (data) => {

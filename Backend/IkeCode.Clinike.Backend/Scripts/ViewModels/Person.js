@@ -229,7 +229,7 @@ var ViewModels;
                 this.saved = false;
                 $(document).ready(() => {
                     $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                        this.person(new ClinikeModels.Person());
+                        this.person(new ClinikeModels.KoPerson());
                         $(this.vmTargetElement).modal('show');
                     });
                     $(this._tableToolbarSelector).find('button[name="fullEdit"]').on('click', (e) => {
@@ -247,7 +247,7 @@ var ViewModels;
         class Detail extends ViewModels.BaseKoViewModel {
             constructor(targetElement, personId) {
                 super(targetElement);
-                this.person = ko.observable(new ClinikeModels.Person());
+                this.person = ko.observable();
                 this.getPerson = (successCallback, errorCallback) => {
                     var url = $apis.person;
                     new Clinike.Ajax({
