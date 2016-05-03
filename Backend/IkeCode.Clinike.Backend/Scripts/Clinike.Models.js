@@ -26,6 +26,20 @@ var Clinike;
                 }
             }
         }
+        (function (PhoneType) {
+            PhoneType[PhoneType["Unknown"] = -1] = "Unknown";
+            PhoneType[PhoneType["Mobile"] = 0] = "Mobile";
+            PhoneType[PhoneType["Residential"] = 1] = "Residential";
+            PhoneType[PhoneType["Business"] = 2] = "Business";
+        })(Models.PhoneType || (Models.PhoneType = {}));
+        var PhoneType = Models.PhoneType;
+        (function (AddressType) {
+            AddressType[AddressType["Residential"] = 1] = "Residential";
+            AddressType[AddressType["Commercial"] = 2] = "Commercial";
+            AddressType[AddressType["Delivery"] = 3] = "Delivery";
+            AddressType[AddressType["Mail"] = 4] = "Mail";
+        })(Models.AddressType || (Models.AddressType = {}));
+        var AddressType = Models.AddressType;
         class Address extends BaseModel {
             constructor(obj) {
                 super(obj);
@@ -131,7 +145,7 @@ var Clinike;
                 if (obj) {
                     this.Number(obj.Number || '');
                     this.Contact(obj.Contact || '');
-                    this.PhoneType(obj.PhoneType || 'Unknown');
+                    this.PhoneType(obj.PhoneType || PhoneType.Unknown);
                     this.AcceptSMS(obj.AcceptSMS || false);
                     this.PersonId(obj.PersonId || 0);
                 }
@@ -145,7 +159,7 @@ var Clinike;
                 if (obj) {
                     this.Number = obj.Number || '';
                     this.Contact = obj.Contact || '';
-                    this.PhoneType = obj.PhoneType || 'Unknown';
+                    this.PhoneType = obj.PhoneType || PhoneType.Unknown;
                     this.AcceptSMS = obj.AcceptSMS || false;
                     this.PersonId = obj.PersonId || 0;
                 }

@@ -1,4 +1,5 @@
 ///<reference path="../typings/jquery/jquery.d.ts" />
+///<reference path="../typings/jquery.inputmask/jquery.inputmask.d.ts" />
 ///<reference path="../typings/bootstrap/bootstrap.d.ts" />
 ///<reference path="../typings/knockout/knockout.d.ts" />
 ///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
@@ -452,8 +453,9 @@ var ViewModels;
                 super(targetElement);
                 this.phone = ko.observable();
                 this.saved = false;
+                this.phoneTypes = ko.observableArray();
                 this.save = (callback) => {
-                    var data = new Clinike.Models.KoPhone();
+                    var data = ko.mapping.toJS(this.phone);
                     $log.checkpoint('ViewModels.Phone.Detail.save :: data >', data);
                     //DO STUFF
                     if (callback) {
@@ -462,6 +464,7 @@ var ViewModels;
                         this.saved = true;
                     }
                 };
+                this.phoneTypes($enumEx.getNames(Clinike.Models.PhoneType));
                 this.phone(phone);
                 this.applyViewModel(this);
             }

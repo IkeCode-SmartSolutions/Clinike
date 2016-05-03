@@ -1,6 +1,7 @@
 ﻿///<reference path="typings/knockout/knockout.d.ts" />
 ///<reference path="typings/knockout.mapping/knockout.mapping.d.ts" />
 ///<reference path="typings/knockout.validation/knockout.validation.d.ts" />
+
 module Clinike.Models {
     interface IBaseModel {
         Id: number;
@@ -34,6 +35,20 @@ module Clinike.Models {
                 this.LastUpdate(obj.LastUpdate || new Date());
             }
         }
+    }
+
+    export enum PhoneType {
+        Unknown = -1,
+        Mobile = 0,
+        Residential = 1,
+        Business = 2
+    }
+
+    export enum AddressType {
+        Residential = 1,
+        Commercial = 2,
+        Delivery = 3,
+        Mail = 4
     }
 
     export interface IAddress extends IBaseModel {
@@ -173,7 +188,7 @@ module Clinike.Models {
     export interface IPhone extends IBaseModel {
         Number: string;
         Contact: string;
-        PhoneType: string;
+        PhoneType: PhoneType;
         AcceptSMS: boolean;
         PersonId: number;
     }
@@ -181,7 +196,7 @@ module Clinike.Models {
     export class KoPhone extends KoBaseModel {
         Number: KnockoutObservable<string> = ko.observable<string>();
         Contact: KnockoutObservable<string> = ko.observable<string>();
-        PhoneType: KnockoutObservable<string> = ko.observable<string>();
+        PhoneType: KnockoutObservable<PhoneType> = ko.observable<PhoneType>();
         AcceptSMS: KnockoutObservable<boolean> = ko.observable<boolean>();
         PersonId: KnockoutObservable<number> = ko.observable<number>();
 
@@ -191,7 +206,7 @@ module Clinike.Models {
             if (obj) {
                 this.Number(obj.Number || '');
                 this.Contact(obj.Contact || '');
-                this.PhoneType(obj.PhoneType || 'Unknown');
+                this.PhoneType(obj.PhoneType || PhoneType.Unknown);
                 this.AcceptSMS(obj.AcceptSMS || false);
                 this.PersonId(obj.PersonId || 0);
             }
@@ -201,7 +216,7 @@ module Clinike.Models {
     export class Phone extends BaseModel implements IPhone {
         Number: string;
         Contact: string;
-        PhoneType: string;
+        PhoneType: PhoneType;
         AcceptSMS: boolean;
         PersonId: number;
 
@@ -211,7 +226,7 @@ module Clinike.Models {
             if (obj) {
                 this.Number = obj.Number || '';
                 this.Contact = obj.Contact || '';
-                this.PhoneType = obj.PhoneType || 'Unknown';
+                this.PhoneType = obj.PhoneType || PhoneType.Unknown;
                 this.AcceptSMS = obj.AcceptSMS || false;
                 this.PersonId = obj.PersonId || 0;
             }

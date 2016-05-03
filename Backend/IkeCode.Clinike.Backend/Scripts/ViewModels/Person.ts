@@ -1,4 +1,5 @@
 ﻿///<reference path="../typings/jquery/jquery.d.ts" />
+///<reference path="../typings/jquery.inputmask/jquery.inputmask.d.ts" />
 ///<reference path="../typings/bootstrap/bootstrap.d.ts" />
 ///<reference path="../typings/knockout/knockout.d.ts" />
 ///<reference path="../typings/knockout.mapping/knockout.mapping.d.ts" />
@@ -480,19 +481,21 @@ module ViewModels.Phone {
             }
         }
     }
-
+    
     export class Detail extends ViewModels.BaseKoViewModel {
         phone: KnockoutObservable<Clinike.Models.KoPhone> = ko.observable<Clinike.Models.KoPhone>();
         saved: boolean = false;
+        phoneTypes: KnockoutObservableArray<string> = ko.observableArray<string>();
         
         constructor(targetElement: string, phone?: Clinike.Models.KoPhone) {
             super(targetElement);
+            this.phoneTypes($enumEx.getNames(Clinike.Models.PhoneType));
             this.phone(phone);
             this.applyViewModel(this);
         }
         
         save = (callback?: (phone: Clinike.Models.KoPhone) => any) => {
-            var data = new Clinike.Models.KoPhone();
+            var data = ko.mapping.toJS(this.phone);
             $log.checkpoint('ViewModels.Phone.Detail.save :: data >', data);
             //DO STUFF
             if (callback) {

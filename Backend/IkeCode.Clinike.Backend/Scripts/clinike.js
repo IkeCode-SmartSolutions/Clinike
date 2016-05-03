@@ -151,6 +151,29 @@ var Clinike;
         }
     }
     Clinike.BootstrapTable = BootstrapTable;
+    class EnumEx {
+        static getNames(e) {
+            return Object.keys(e).filter(v => isNaN(parseInt(v, 10)));
+        }
+        static getValues(e) {
+            return Object.keys(e).map(v => parseInt(v, 10)).filter(v => !isNaN(v));
+        }
+        static getNamesAndValues(e) {
+            return EnumEx.getValues(e).map(v => { return { name: e[v], value: v }; });
+        }
+        getNames(e) {
+            return EnumEx.getNames(e);
+        }
+        getValues(e) {
+            return EnumEx.getValues(e);
+        }
+        getNamesAndValues(e) {
+            return EnumEx.getNamesAndValues(e);
+        }
+    }
+    Clinike.EnumEx = EnumEx;
 })(Clinike || (Clinike = {}));
 var $bst, $bsTable, $bootstrapTable = new Clinike.BootstrapTable();
+var $enumEx = new Clinike.EnumEx();
+var $enumExStatic = Clinike.EnumEx;
 //# sourceMappingURL=clinike.js.map

@@ -170,6 +170,34 @@ module Clinike {
             }
         }
     }
+
+    export class EnumEx {
+        public static getNames(e: any) {
+            return Object.keys(e).filter(v => isNaN(parseInt(v, 10)));
+        }
+
+        public static getValues(e: any) {
+            return Object.keys(e).map(v => parseInt(v, 10)).filter(v => !isNaN(v));
+        }
+
+        public static getNamesAndValues(e: any) {
+            return EnumEx.getValues(e).map(v => { return { name: e[v] as string, value: v }; });
+        }
+
+        public getNames(e: any) {
+            return EnumEx.getNames(e);
+        }
+
+        public getValues(e: any) {
+            return EnumEx.getValues(e);
+        }
+
+        public getNamesAndValues(e: any) {
+            return EnumEx.getNamesAndValues(e);
+        }
+    }
 }
 var $bst, $bsTable, $bootstrapTable = new Clinike.BootstrapTable();
+var $enumEx = new Clinike.EnumEx();
+var $enumExStatic = Clinike.EnumEx;
 

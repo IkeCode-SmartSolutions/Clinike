@@ -23,11 +23,12 @@ namespace IkeCode.Clinike.Backend
             jsBundles.Include("~/Scripts/knockout.reactor.js");
             jsBundles.Include("~/Scripts/knockout.validation.js");
             jsBundles.IncludeDirectory("~/Scripts/knockout.validation.localization", "*.js");
-            
+
             jsBundles.Include("~/Scripts/pixel-admin.js");
 
             jsBundles.Include("~/Scripts/clinike.prototype.utils.js");
-            jsBundles.Include("~/Scripts/ClinikeModels.js");
+            jsBundles.Include("~/Scripts/Clinike.Models.js");
+            jsBundles.Include("~/Scripts/ViewModels/ViewModels.Base.js");
             jsBundles.Include("~/Scripts/clinike.js");
             jsBundles.Include("~/Scripts/clinike.log.js");
             jsBundles.Include("~/Scripts/clinike.apiBaseUrls.js");
@@ -35,7 +36,7 @@ namespace IkeCode.Clinike.Backend
 
             jsBundles.IncludeDirectory("~/Scripts/ViewModels", "*.js", true);
             bundles.Add(jsBundles);
-
+            
             var styleBundle = new IkeCodeStyleBundle("~/cssBundles/styles");
             styleBundle.Orderer = new AsDefinedBundleOrderer();
             //styleBundle.Include("~/Content/Css", new CssRewriteUrlTransform());

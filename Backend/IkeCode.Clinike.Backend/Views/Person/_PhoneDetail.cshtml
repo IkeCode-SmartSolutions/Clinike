@@ -1,34 +1,35 @@
 ﻿@{
     Layout = null;
 }
-<div class="col-sm-12"S>
+<div class="col-sm-12" S>
     <form class="form-horizontal" role="form" id="formPhoneDetail">
         <input type="hidden" data-bind="value: Id" name="Id" />
         <input type="hidden" data-bind="value: DateIns" name="DateIns" />
         <input type="hidden" data-bind="value: LastUpdate" name="LastUpdate" />
         <input type="hidden" data-bind="value: PersonId" name="PersonId" />
         <div class="form-group">
-            <label for="inputName" class="col-sm-3 control-label">Número</label>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" data-bind="textInput: Number" name="Number" id="inputNumber" placeholder="Número" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputEmail" class="col-sm-3 control-label">Contato</label>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" data-bind="textInput: Contact" name="Contact" id="inputContact" placeholder="Contato" />
-            </div>
-        </div>
-        <div class="form-group">
             <label for="inputPhoneType" class="col-sm-3 control-label">Tipo</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" data-bind="textInput: PhoneType" name="Contact" id="inputPhoneType" placeholder="Tipo" />
+                <select class="form-control" data-bind="options: $root.phoneTypes, value: PhoneType, optionsCaption: 'Selecione...'" name="Contact" id="inputPhoneType" placeholder="Tipo"></select>
             </div>
         </div>
-        <div class="form-group">
-            <label for="inputAcceptSMS" class="col-sm-3 control-label">Aceita SMS?</label>
-            <div class="col-sm-3">
-                <input type="checkbox" data-bind="switcher: AcceptSMS" name="Contact" id="inputAcceptSMS" />
+        <div data-bind="if: PhoneType() !== undefined && PhoneType() != 'Unknown'">
+            <div class="form-group">
+                <label for="inputName" class="col-sm-3 control-label">Número</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" data-bind="textInput: Number" name="Number" id="inputNumber" placeholder="Número" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="col-sm-3 control-label">Contato</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" data-bind="textInput: Contact" name="Contact" id="inputContact" placeholder="Contato" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-3 col-sm-offset-3">
+                    <input type="checkbox" data-size="small" data-on-text="Aceito SMS" data-off-text="Não Aceito SMS" data-bind="switcher: AcceptSMS" name="Contact" id="inputAcceptSMS" />
+                </div>
             </div>
         </div>
     </form>
