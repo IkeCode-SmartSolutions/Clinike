@@ -5,6 +5,7 @@
 ///<reference path="typings/moment/moment.d.ts" />
 ///<reference path="typings/requirejs/require.d.ts" />
 ///<reference path="typings/custom/custom.d.ts" />
+"use strict"
 module Clinike {
     export interface ILog {
         write(type: string, message: string, data?: any): void;

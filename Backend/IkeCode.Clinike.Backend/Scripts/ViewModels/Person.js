@@ -9,7 +9,7 @@
 ///<reference path="../typings/bootstrap-switch/bootstrap-switch.d.ts" />
 ///<reference path="../typings/bootbox/bootbox.d.ts" />
 ///<reference path="../clinike.ts" />
-///<reference path="Clinike.Base.ts" />
+///<reference path="ViewModels.Base.ts" />
 ///<reference path="../clinike.ajax.ts" />
 ///<reference path="../clinike.log.ts" />
 ///<reference path="../clinike.apiBaseUrls.ts" />
@@ -229,7 +229,7 @@ var ViewModels;
                 this.saved = false;
                 $(document).ready(() => {
                     $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                        this.person(new ClinikeModels.KoPerson());
+                        this.person(new Clinike.Models.KoPerson());
                         $(this.vmTargetElement).modal('show');
                     });
                     $(this._tableToolbarSelector).find('button[name="fullEdit"]').on('click', (e) => {
@@ -382,7 +382,7 @@ var ViewModels;
                             },
                             selectCallback: (data, e) => {
                                 $log.verbose('SelectRow :: Setting Phone data >', data);
-                                var mapped = new ClinikeModels.KoPhone(data);
+                                var mapped = new Clinike.Models.KoPhone(data);
                                 $log.verbose('SelectRow :: Setting Phone data mapped >', mapped);
                                 this.Detail.phone(mapped);
                                 $log.verbose('SelectRow :: Activate Phone Edit Button');
@@ -441,7 +441,7 @@ var ViewModels;
                     });
                 }
                 $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                    this.Detail.phone(new ClinikeModels.KoPhone());
+                    this.Detail.phone(new Clinike.Models.KoPhone());
                     $(this.vmTargetElementSelector).modal('show');
                 });
             }
@@ -453,7 +453,7 @@ var ViewModels;
                 this.phone = ko.observable();
                 this.saved = false;
                 this.save = (callback) => {
-                    var data = new ClinikeModels.KoPhone();
+                    var data = new Clinike.Models.KoPhone();
                     $log.checkpoint('ViewModels.Phone.Detail.save :: data >', data);
                     //DO STUFF
                     if (callback) {
@@ -580,7 +580,7 @@ var ViewModels;
                             },
                             selectCallback: (data, e) => {
                                 $log.verbose('SelectRow :: Setting Document data >', data);
-                                var mapped = new ClinikeModels.KoDocument(data);
+                                var mapped = new Clinike.Models.KoDocument(data);
                                 $log.verbose('SelectRow :: Setting Document data mapped >', mapped);
                                 this.Detail.document(mapped);
                                 $log.verbose('SelectRow :: Activate Document Edit Button');
@@ -627,7 +627,7 @@ var ViewModels;
                     });
                 }
                 $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                    this.Detail.document(new ClinikeModels.KoDocument());
+                    this.Detail.document(new Clinike.Models.KoDocument());
                     $(this.vmTargetElementSelector).modal('show');
                 });
             }
@@ -639,7 +639,7 @@ var ViewModels;
                 this.document = ko.observable();
                 this.saved = false;
                 this.save = (callback) => {
-                    var data = new ClinikeModels.KoDocument();
+                    var data = new Clinike.Models.KoDocument();
                     $log.checkpoint('ViewModels.Document.Detail.save :: data >', data);
                     //DO STUFF
                     if (callback) {
@@ -766,7 +766,7 @@ var ViewModels;
                             },
                             selectCallback: (data, e) => {
                                 $log.verbose('SelectRow :: Setting Address data >', data);
-                                var mapped = new ClinikeModels.KoAddress(data);
+                                var mapped = new Clinike.Models.KoAddress(data);
                                 $log.verbose('SelectRow :: Setting Address data mapped >', mapped);
                                 this.Detail.address(mapped);
                                 $log.verbose('SelectRow :: Activate Address Edit Button');
@@ -837,7 +837,7 @@ var ViewModels;
                     });
                 }
                 $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                    this.Detail.address(new ClinikeModels.KoAddress());
+                    this.Detail.address(new Clinike.Models.KoAddress());
                     $(this.vmTargetElementSelector).modal('show');
                 });
             }
@@ -849,7 +849,7 @@ var ViewModels;
                 this.address = ko.observable();
                 this.saved = false;
                 this.save = (callback) => {
-                    var data = new ClinikeModels.KoAddress();
+                    var data = new Clinike.Models.KoAddress();
                     $log.checkpoint('ViewModels.Address.Detail.save :: data >', data);
                     //DO STUFF
                     if (callback) {

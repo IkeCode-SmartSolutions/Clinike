@@ -19,4 +19,4 @@ var ViewModels;
     }
     ViewModels.BaseKoViewModel = BaseKoViewModel;
 })(ViewModels || (ViewModels = {}));
-//# sourceMappingURL=Clinike.Base.js.map
+//# sourceMappingURL=ViewModels.Base.js.map

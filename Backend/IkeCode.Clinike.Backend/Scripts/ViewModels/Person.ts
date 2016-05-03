@@ -9,14 +9,14 @@
 ///<reference path="../typings/bootstrap-switch/bootstrap-switch.d.ts" />
 ///<reference path="../typings/bootbox/bootbox.d.ts" />
 ///<reference path="../clinike.ts" />
-///<reference path="Clinike.Base.ts" />
+///<reference path="ViewModels.Base.ts" />
 ///<reference path="../clinike.ajax.ts" />
 ///<reference path="../clinike.log.ts" />
 ///<reference path="../clinike.apiBaseUrls.ts" />
 module ViewModels.Person {
     export class List extends ViewModels.BaseKoViewModel {
         protected saved: boolean;
-        person: KnockoutObservable<ClinikeModels.KoPerson> = ko.observable<ClinikeModels.KoPerson>();
+        person: KnockoutObservable<Clinike.Models.KoPerson> = ko.observable<Clinike.Models.KoPerson>();
         private _tableSelector: string;
         private _tableToolbarSelector: string;
 
@@ -28,7 +28,7 @@ module ViewModels.Person {
 
             $(document).ready(() => {
                 $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                    this.person(new ClinikeModels.KoPerson());
+                    this.person(new Clinike.Models.KoPerson());
                     $(this.vmTargetElement).modal('show');
                 });
 
@@ -260,7 +260,7 @@ module ViewModels.Person {
     export class Detail extends ViewModels.BaseKoViewModel {
         private _personId: number;
         protected saved: boolean;
-        person: KnockoutObservable<ClinikeModels.KoPerson> = ko.observable<ClinikeModels.KoPerson>();
+        person: KnockoutObservable<Clinike.Models.KoPerson> = ko.observable<Clinike.Models.KoPerson>();
         
         constructor(targetElement: string, personId: number) {
             super(targetElement);
@@ -278,7 +278,7 @@ module ViewModels.Person {
         private getPerson = (successCallback?: () => any, errorCallback?: () => any) => {
             var url = $apis.person;
 
-            new Clinike.Ajax<ClinikeModels.KoPerson>({
+            new Clinike.Ajax<Clinike.Models.KoPerson>({
                 url: $apis.person,
                 data: { id: this._personId }
             }, (data) => {
@@ -318,7 +318,7 @@ module ViewModels.Phone {
             }
 
             $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                this.Detail.phone(new ClinikeModels.KoPhone());
+                this.Detail.phone(new Clinike.Models.KoPhone());
                 $(this.vmTargetElementSelector).modal('show');
             });
         }
@@ -430,7 +430,7 @@ module ViewModels.Phone {
                     }
                     , selectCallback: (data, e) => {
                         $log.verbose('SelectRow :: Setting Phone data >', data);
-                        var mapped = new ClinikeModels.KoPhone(data);
+                        var mapped = new Clinike.Models.KoPhone(data);
                         $log.verbose('SelectRow :: Setting Phone data mapped >', mapped);
 
                         this.Detail.phone(mapped);
@@ -482,17 +482,17 @@ module ViewModels.Phone {
     }
 
     export class Detail extends ViewModels.BaseKoViewModel {
-        phone: KnockoutObservable<ClinikeModels.KoPhone> = ko.observable<ClinikeModels.KoPhone>();
+        phone: KnockoutObservable<Clinike.Models.KoPhone> = ko.observable<Clinike.Models.KoPhone>();
         saved: boolean = false;
         
-        constructor(targetElement: string, phone?: ClinikeModels.KoPhone) {
+        constructor(targetElement: string, phone?: Clinike.Models.KoPhone) {
             super(targetElement);
             this.phone(phone);
             this.applyViewModel(this);
         }
         
-        save = (callback?: (phone: ClinikeModels.KoPhone) => any) => {
-            var data = new ClinikeModels.KoPhone();
+        save = (callback?: (phone: Clinike.Models.KoPhone) => any) => {
+            var data = new Clinike.Models.KoPhone();
             $log.checkpoint('ViewModels.Phone.Detail.save :: data >', data);
             //DO STUFF
             if (callback) {
@@ -529,7 +529,7 @@ module ViewModels.Document {
             }
 
             $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                this.Detail.document(new ClinikeModels.KoDocument());
+                this.Detail.document(new Clinike.Models.KoDocument());
                 $(this.vmTargetElementSelector).modal('show');
             });
         }
@@ -640,7 +640,7 @@ module ViewModels.Document {
                     }
                     , selectCallback: (data, e) => {
                         $log.verbose('SelectRow :: Setting Document data >', data);
-                        var mapped = new ClinikeModels.KoDocument(data);
+                        var mapped = new Clinike.Models.KoDocument(data);
                         $log.verbose('SelectRow :: Setting Document data mapped >', mapped);
 
                         this.Detail.document(mapped);
@@ -680,17 +680,17 @@ module ViewModels.Document {
     }
 
     export class Detail extends ViewModels.BaseKoViewModel {
-        document: KnockoutObservable<ClinikeModels.KoDocument> = ko.observable<ClinikeModels.KoDocument>();
+        document: KnockoutObservable<Clinike.Models.KoDocument> = ko.observable<Clinike.Models.KoDocument>();
         saved: boolean = false;
 
-        constructor(targetElement: string, document?: ClinikeModels.KoDocument) {
+        constructor(targetElement: string, document?: Clinike.Models.KoDocument) {
             super(targetElement);
             this.document(document);
             this.applyViewModel(this);
         }
 
-        save = (callback?: (document: ClinikeModels.KoDocument) => any) => {
-            var data = new ClinikeModels.KoDocument();
+        save = (callback?: (document: Clinike.Models.KoDocument) => any) => {
+            var data = new Clinike.Models.KoDocument();
             $log.checkpoint('ViewModels.Document.Detail.save :: data >', data);
             //DO STUFF
             if (callback) {
@@ -727,7 +727,7 @@ module ViewModels.Address {
             }
 
             $(this._tableToolbarSelector).find('button[name="new"]').on('click', (e) => {
-                this.Detail.address(new ClinikeModels.KoAddress());
+                this.Detail.address(new Clinike.Models.KoAddress());
                 $(this.vmTargetElementSelector).modal('show');
             });
         }
@@ -838,7 +838,7 @@ module ViewModels.Address {
                     }
                     , selectCallback: (data, e) => {
                         $log.verbose('SelectRow :: Setting Address data >', data);
-                        var mapped = new ClinikeModels.KoAddress(data);
+                        var mapped = new Clinike.Models.KoAddress(data);
                         $log.verbose('SelectRow :: Setting Address data mapped >', mapped);
 
                         this.Detail.address(mapped);
@@ -902,17 +902,17 @@ module ViewModels.Address {
     }
 
     export class Detail extends ViewModels.BaseKoViewModel {
-        address: KnockoutObservable<ClinikeModels.KoAddress> = ko.observable<ClinikeModels.KoAddress>();
+        address: KnockoutObservable<Clinike.Models.KoAddress> = ko.observable<Clinike.Models.KoAddress>();
         saved: boolean = false;
 
-        constructor(targetElement: string, address?: ClinikeModels.KoAddress) {
+        constructor(targetElement: string, address?: Clinike.Models.KoAddress) {
             super(targetElement);
             this.address(address);
             this.applyViewModel(this);
         }
 
-        save = (callback?: (document: ClinikeModels.KoAddress) => any) => {
-            var data = new ClinikeModels.KoAddress();
+        save = (callback?: (document: Clinike.Models.KoAddress) => any) => {
+            var data = new Clinike.Models.KoAddress();
             $log.checkpoint('ViewModels.Address.Detail.save :: data >', data);
             //DO STUFF
             if (callback) {

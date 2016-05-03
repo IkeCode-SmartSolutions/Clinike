@@ -190,12 +190,28 @@
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-vi-VN.js" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-zh-CN.js" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-zh-TW.js" />
-    <Content Include="Scripts\ViewModels\Clinike.Base.js">
-      <DependentUpon>Clinike.Base.ts</DependentUpon>
+    <Content Include="Scripts\clinike.ajax.js">
+      <DependentUpon>clinike.ajax.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\ClinikeModels.js">
-      <DependentUpon>ClinikeModels.ts</DependentUpon>
+    <Content Include="Scripts\clinike.ajax.js.map">
+      <DependentUpon>clinike.ajax.ts</DependentUpon>
     </Content>
+    <Content Include="Scripts\clinike.apiBaseUrls.js">
+      <DependentUpon>clinike.apiBaseUrls.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.apiBaseUrls.js.map">
+      <DependentUpon>clinike.apiBaseUrls.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.log.js">
+      <DependentUpon>clinike.log.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.log.js.map">
+      <DependentUpon>clinike.log.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Clinike.Models.js">
+      <DependentUpon>Clinike.Models.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\clinike.prototype.utils.js" />
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\knockout.validation.localization\ar-JO.js" />
     <Content Include="Scripts\knockout.validation.localization\bg-BG.js" />
@@ -245,42 +261,15 @@
     <Content Include="Scripts\plugins\bootstrap-switch.min.js" />
     <Content Include="Scripts\plugins\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <TypeScriptCompile Include="Scripts\clinike.ajax.ts">
-      <DependentUpon>clinike.ts</DependentUpon>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Scripts\clinike.apiBaseUrls.ts">
-      <DependentUpon>clinike.ts</DependentUpon>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Scripts\ViewModels\Clinike.Base.ts" />
-    <TypeScriptCompile Include="Scripts\clinike.log.ts">
-      <DependentUpon>clinike.ts</DependentUpon>
-    </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\clinike.ajax.ts" />
+    <TypeScriptCompile Include="Scripts\clinike.apiBaseUrls.ts" />
+    <TypeScriptCompile Include="Scripts\clinike.log.ts" />
+    <TypeScriptCompile Include="Scripts\ViewModels\ViewModels.Base.ts" />
     <TypeScriptCompile Include="Scripts\clinike.ts" />
-    <Content Include="Scripts\clinike.ajax.js">
-      <DependentUpon>clinike.ajax.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\clinike.ajax.js.map">
-      <DependentUpon>clinike.ajax.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\clinike.apiBaseUrls.js">
-      <DependentUpon>clinike.apiBaseUrls.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\clinike.apiBaseUrls.js.map">
-      <DependentUpon>clinike.apiBaseUrls.ts</DependentUpon>
-    </Content>
     <Content Include="Scripts\clinike.js">
       <DependentUpon>clinike.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\clinike.js.map">
-      <DependentUpon>clinike.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\clinike.log.js">
-      <DependentUpon>clinike.log.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\clinike.log.js.map">
-      <DependentUpon>clinike.log.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\clinike.prototype.utils.js">
       <DependentUpon>clinike.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\ie.min.js" />
@@ -296,7 +285,7 @@
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\pixel-admin.js" />
     <Content Include="Scripts\plugins\sweetalert.js" />
-    <TypeScriptCompile Include="Scripts\ClinikeModels.ts" />
+    <TypeScriptCompile Include="Scripts\Clinike.Models.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootbox\bootbox.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootstrap-switch\bootstrap-switch.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
@@ -310,6 +299,9 @@
     </Content>
     <Content Include="Scripts\ViewModels\Person.js.map">
       <DependentUpon>Person.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\ViewModels\ViewModels.Base.js">
+      <DependentUpon>ViewModels.Base.ts</DependentUpon>
     </Content>
     <Content Include="Web.config" />
   </ItemGroup>
@@ -351,14 +343,14 @@
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Person\Detail.cshtml" />
     <Content Include="Views\Person\_PhoneDetail.cshtml" />
-    <Content Include="Scripts\ClinikeModels.js.map">
-      <DependentUpon>ClinikeModels.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\ViewModels\Clinike.Base.js.map">
-      <DependentUpon>Clinike.Base.ts</DependentUpon>
-    </Content>
     <Content Include="Views\Person\_DocumentDetail.cshtml" />
     <Content Include="Views\Person\_AddressDetail.cshtml" />
+    <Content Include="Scripts\ViewModels\ViewModels.Base.js.map">
+      <DependentUpon>ViewModels.Base.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Clinike.Models.js.map">
+      <DependentUpon>Clinike.Models.ts</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

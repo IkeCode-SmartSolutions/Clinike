@@ -5,6 +5,7 @@
 ///<reference path="typings/moment/moment.d.ts" />
 ///<reference path="typings/requirejs/require.d.ts" />
 ///<reference path="typings/custom/custom.d.ts" />
+"use strict";
 var Clinike;
 (function (Clinike) {
     class Log {
