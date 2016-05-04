@@ -123,8 +123,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Css\bootstrap-switch.css" />
-    <Content Include="Content\Css\bootstrap-switch.min.css" />
+    <Content Include="Content\bootstrap-switch\bootstrap2\bootstrap-switch.css" />
+    <Content Include="Content\bootstrap-switch\bootstrap2\bootstrap-switch.min.css" />
+    <Content Include="Content\bootstrap-switch\bootstrap3\bootstrap-switch.css" />
+    <Content Include="Content\bootstrap-switch\bootstrap3\bootstrap-switch.min.css">
+      <DependentUpon>bootstrap-switch.css</DependentUpon>
+    </Content>
     <Content Include="Content\Css\bootstrap-table.css" />
     <Content Include="Content\Css\bootstrap.css" />
     <Content Include="Content\Css\clinike.css" />
@@ -141,13 +145,19 @@
     <Content Include="Content\Images\pixel-admin\main-menu-bg.png" />
     <Content Include="Content\Images\pixel-admin\main-navbar-bg.png" />
     <Content Include="Content\Images\pixel-admin\main-navbar-logo.png" />
-    <Content Include="Content\Images\plugins\bootstrap-editable\loading.gif" />
-    <Content Include="Content\Images\plugins\jquery.minicolors.png" />
     <Content Include="Content\Images\themes\adminflare\body-bg.png" />
     <Content Include="Content\Images\themes\adminflare\ie-navbar-bg.png" />
     <Content Include="Content\Images\themes\adminflare\menu-bg.png" />
     <Content Include="Content\Images\themes\clean\body-bg.gif" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js">
+      <DependentUpon>bootbox.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\bootstrap-switch.js" />
+    <Content Include="Scripts\bootstrap-switch.min.js">
+      <DependentUpon>bootstrap-switch.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-af-ZA.js" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-ar-SA.js" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-ca-ES.js" />
@@ -212,6 +222,17 @@
       <DependentUpon>Clinike.Models.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\clinike.prototype.utils.js" />
+    <Content Include="Scripts\jquery-2.2.3.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.js">
+      <DependentUpon>jquery-2.2.3.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-2.2.3.min.map">
+      <DependentUpon>jquery-2.2.3.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery.maskedinput.js" />
+    <Content Include="Scripts\jquery.maskedinput.min.js">
+      <DependentUpon>jquery.maskedinput.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\knockout.validation.localization\ar-JO.js" />
     <Content Include="Scripts\knockout.validation.localization\bg-BG.js" />
@@ -256,14 +277,16 @@
     <Content Include="Scripts\moment.min.js">
       <DependentUpon>moment.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\plugins\bootbox.js" />
-    <Content Include="Scripts\plugins\bootstrap-switch.js" />
-    <Content Include="Scripts\plugins\bootstrap-switch.min.js" />
     <Content Include="Scripts\plugins\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <TypeScriptCompile Include="Scripts\clinike.ajax.ts" />
     <TypeScriptCompile Include="Scripts\clinike.apiBaseUrls.ts" />
     <TypeScriptCompile Include="Scripts\clinike.log.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\knockout\tests\jasmine.extensions.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\maskedinput\maskedinput.d.ts" />
     <TypeScriptCompile Include="Scripts\ViewModels\ViewModels.Base.ts" />
     <TypeScriptCompile Include="Scripts\clinike.ts" />
     <Content Include="Scripts\clinike.js">
@@ -334,8 +357,6 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Person\List.cshtml" />
     <Content Include="Views\Person\_Detail.cshtml" />
-    <Content Include="Scripts\datatable.i18n\pt-br.json" />
-    <Content Include="Scripts\datatable.i18n\es-es.json" />
     <Content Include="Scripts\bootstrap-table.i18n\bootstrap-table-en-US.js.template" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.ttf" />
@@ -351,6 +372,9 @@
     <Content Include="Scripts\Clinike.Models.js.map">
       <DependentUpon>Clinike.Models.ts</DependentUpon>
     </Content>
+    <None Include="Scripts\jquery-2.2.3.intellisense.js">
+      <DependentUpon>jquery-2.2.3.js</DependentUpon>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -359,13 +383,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.mapper\knockout.mapper.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.mapping\knockout.mapping.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout.viewmodel\knockout.viewmodel.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\knockout\tests\jasmine.extensions.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Person\Domain\IkeCode.Clinike.Person.Domain.csproj">

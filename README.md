@@ -18,8 +18,9 @@
 	<li><a target="_blank" href="http://bootboxjs.com/documentation.html">Bootbox</a></li>
 	<li><a target="_blank" href="http://knockoutjs.com">KnockoutJs</a></li>
 	<li><a target="_blank" href="https://github.com/Knockout-Contrib/Knockout-Validation/wiki">Knockout Validation</a></li>
-	<li><a target="_blank" href="http://t4t5.github.io/sweetalert/">SweetAlert</a></li>
+	<li><a target="_blank" href="https://lipis.github.io/bootstrap-sweetalert/">SweetAlert</a></li>
 	<li><a target="_blank" href="http://momentjs.com/docs/">momentjs</a></li>
+	<li><a target="_blank" href="http://digitalbush.com/projects/masked-input-plugin/">Masked Input</a></li>
 </ul>
 
 <hr/>

@@ -11,7 +11,11 @@ namespace IkeCode.Clinike.Backend
             var jsBundles = new ScriptBundle("~/jsBundles/js");
             jsBundles.Orderer = new AsDefinedBundleOrderer();
             //jsBundles.Include("~/Scripts");
+            jsBundles.Include("~/Scripts/jquery-{version}.js");
+            jsBundles.Include("~/Scripts/jquery.maskedinput.js");
             jsBundles.Include("~/Scripts/bootstrap.min.js");
+            jsBundles.Include("~/Scripts/bootbox.min.js");
+            jsBundles.Include("~/Scripts/bootstrap-switch.min.js");
             jsBundles.Include("~/Scripts/moment.min.js");
             jsBundles.Include("~/Scripts/moment-with-locales.min.js");
             
@@ -46,7 +50,7 @@ namespace IkeCode.Clinike.Backend
             styleBundle.Include("~/Content/Css/rtl.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/Css/themes.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/Css/bootstrap-table.css", new CssRewriteUrlTransform());
-            styleBundle.Include("~/Content/Css/bootstrap-switch.css", new CssRewriteUrlTransform());
+            styleBundle.Include("~/Content/bootstrap-switch/bootstrap3/bootstrap-switch.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/Css/sweetalert.css", new CssRewriteUrlTransform());
             styleBundle.Include("~/Content/Css/clinike.css", new CssRewriteUrlTransform());
             bundles.Add(styleBundle);
